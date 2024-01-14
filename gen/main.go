@@ -1,27 +1,153 @@
 package main
 
 import (
+	"encoding/json"
+	"os"
+
+	"github.com/golangdaddy/leap"
 	"github.com/golangdaddy/leap/models"
 )
 
 func main() {
 
 	tree := models.Stack{
-		ProjectID: "npg-generic",
-		DatabaseID: "go-gen-test",	
+		RepoURI:    "github.com/golangdaddy/newtown",
+		SiteName:   "NewTown",
+		ProjectID:  "npg-generic",
+		DatabaseID: "go-gen-test",
 	}
 
 	town := &models.Object{
 		Parents: []string{},
-		Name: "town",
-		Fields: []*Field{
-
+		Name:    "town",
+		Fields: []*models.Field{
+			{
+				Name:     "name",
+				JSON:     "string_30",
+				Required: true,
+			},
 		},
-		Options: Options{
-			Token: true,
-		}
+		Options: models.Options{},
+		Assetlayer: models.Assetlayer{
+			Wallet: true,
+		},
 	}
 
-	tree..Objects = append(tree.Objects, town)
+	quarter := &models.Object{
+		Parents: []string{
+			town.Name,
+		},
+		Name: "quarter",
+		Fields: []*models.Field{
+			{
+				Name: "name",
+				JSON: "string_30",
+			},
+		},
+		Assetlayer: models.Assetlayer{
+			Wallet: true,
+		},
+	}
 
+	street := &models.Object{
+		Parents: []string{
+			quarter.Name,
+		},
+		Name: "street",
+		Fields: []*models.Field{
+			{
+				Name: "name",
+				JSON: "string_30",
+			},
+		},
+		Assetlayer: models.Assetlayer{
+			Wallet: true,
+		},
+	}
+
+	building := &models.Object{
+		Parents: []string{
+			street.Name,
+		},
+		Name: "building",
+		Fields: []*models.Field{
+			{
+				Name:     "xunits",
+				JSON:     "number_float",
+				Required: true,
+			},
+			{
+				Name:     "yunits",
+				JSON:     "number_float",
+				Required: true,
+			},
+			{
+				Name:     "doors",
+				JSON:     "number_int",
+				Required: true,
+			},
+		},
+		Assetlayer: models.Assetlayer{
+			Wallet: true,
+		},
+	}
+
+	floor := &models.Object{
+		Parents: []string{
+			building.Name,
+		},
+		Name: "floor",
+		Fields: []*models.Field{
+			// using order from context
+			{
+				Name:     "rooms",
+				JSON:     "number_int",
+				Required: true,
+			},
+		},
+		Assetlayer: models.Assetlayer{
+			Wallet: true,
+		},
+	}
+
+	room := &models.Object{
+		Parents: []string{
+			floor.Name,
+		},
+		Name: "room",
+		Fields: []*models.Field{
+			{
+				Name:     "name",
+				JSON:     "string_30",
+				Required: true,
+			},
+		},
+		Assetlayer: models.Assetlayer{
+			Wallet: true,
+		},
+	}
+
+	tree.Objects = append(tree.Objects, town)
+	tree.Objects = append(tree.Objects, quarter)
+	tree.Objects = append(tree.Objects, street)
+	tree.Objects = append(tree.Objects, building)
+	tree.Objects = append(tree.Objects, floor)
+	tree.Objects = append(tree.Objects, room)
+
+	if err := models.Prepare(&tree); err != nil {
+		panic(err)
+	}
+
+	if err := leap.Build(&tree); err != nil {
+		panic(err)
+	}
+
+	// export debug json
+	b, err := json.Marshal(tree)
+	if err != nil {
+		panic(err)
+	}
+	if err := os.WriteFile("../out.json", b, 0755); err != nil {
+		panic(err)
+	}
 }
