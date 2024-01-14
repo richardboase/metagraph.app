@@ -18,6 +18,10 @@ export default function Home(props) {
 	return (
 		<div className='flex flex-col text-sm cursor-pointer'>
 			
+			<div id="towns" className='text-xl font-bold' onClick={updateTabEvent}>
+			Towns
+			</div>
+			
 		</div>
 	)
 

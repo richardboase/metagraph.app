@@ -15,9 +15,13 @@ func main() {
 		SiteName:   "NewTown",
 		ProjectID:  "npg-generic",
 		DatabaseID: "go-gen-test",
+		Entrypoints: []string{
+			"town",
+		},
 	}
 
 	town := &models.Object{
+		Mode:    "root",
 		Parents: []string{},
 		Name:    "town",
 		Fields: []*models.Field{
