@@ -1,6 +1,6 @@
 import axios, {isCancel, AxiosError} from 'axios';
 
-export const host = "http://localhost:8080/"
+export const host = "https://server-go-gen-test-da7z6jf32a-nw.a.run.app"
 
 export function PublicFetch(method, url, body) {
 
