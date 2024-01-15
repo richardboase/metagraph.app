@@ -21,7 +21,17 @@ export function BuildingEdit(props) {
 	}
 
 	const [inputs, setInputs] = useState({
-		"xunits": {
+		"name": {
+			id: "name",
+			type: "string",
+			value: subject.fields.name,
+			required: false,
+		},"number": {
+			id: "number",
+			type: "int",
+			value: subject.fields.number,
+			required: false,
+		},"xunits": {
 			id: "xunits",
 			type: "float64",
 			value: subject.fields.xunits,
@@ -44,6 +54,12 @@ export function BuildingEdit(props) {
 
 	return (
 		<div className='flex flex-col'>
+			
+			<Input id="name" type='text' required={ false } title="building name" placeholder="building name" inputChange={handleInputChange} value={ inputs["name"].value } />
+			<Spacer/>
+			
+			<Input id="number" type='number' required={ false } title="building number" placeholder="building number" inputChange={handleInputChange} value={ inputs["number"].value } />
+			<Spacer/>
 			
 			<Input id="xunits" type='number' required={ true } title="building xunits" placeholder="building xunits" inputChange={handleInputChange} value={ inputs["xunits"].value } />
 			<Spacer/>

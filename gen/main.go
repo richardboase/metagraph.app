@@ -76,6 +76,14 @@ func main() {
 		Name: "building",
 		Fields: []*models.Field{
 			{
+				Name: "name",
+				JSON: "string_30",
+			},
+			{
+				Name: "number",
+				JSON: "number_int",
+			},
+			{
 				Name:     "xunits",
 				JSON:     "number_float",
 				Required: true,

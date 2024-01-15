@@ -25,6 +25,12 @@ export function BuildingForm(props) {
 	return (
 		<div className='flex flex-col'>
 			
+			<Input id="name" type='text' required={ false } title="building name" placeholder="building name" inputChange={handleInputChange}/>
+			<Spacer/>
+			
+			<Input id="number" type='number' required={ false } title="building number" placeholder="building number" inputChange={handleInputChange}/>
+			<Spacer/>
+			
 			<Input id="xunits" type='number' required={ true } title="building xunits" placeholder="building xunits" inputChange={handleInputChange}/>
 			<Spacer/>
 			

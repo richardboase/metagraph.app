@@ -24,7 +24,11 @@ export function Preview(props) {
 		<div className='flex flex-row justify-between items-center w-full my-2'>
 			
 			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer m-4'>
-				<div className='text-xl font-bold' title="xunits">{ props.item.fields["xunits"] }</div>
+				<div className='text-xl font-bold' title="name">{ props.item.fields["name"] }</div>
+				<div className="px-4"></div>
+				<Spacer/><div className='text-xl font-bold' title="number">{ props.item.fields["number"] }</div>
+				<div className="px-4"></div>
+				<Spacer/><div className='text-xl font-bold' title="xunits">{ props.item.fields["xunits"] }</div>
 				<div className="px-4"></div>
 				<Spacer/><div className='text-xl font-bold' title="yunits">{ props.item.fields["yunits"] }</div>
 				<div className="px-4"></div>

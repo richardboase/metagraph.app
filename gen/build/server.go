@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"net/http"
 	"os"
 )
@@ -91,7 +92,10 @@ func main() {
 
 	http.HandleFunc("/ws", app.HandleConnections)
 
-	port := 8080
+	port, err := strconv.Atoi(os.Getenv("PORT"))
+	if err != nil {
+		port = 8080
+	}
 	addr := fmt.Sprintf(":%d", port)
 	fmt.Printf("Server is running on http://localhost:%d\n", port)
 	if err := http.ListenAndServe(addr, nil); err != nil {
