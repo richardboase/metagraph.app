@@ -84,14 +84,19 @@ func (app *App) AuthEntrypoint(w http.ResponseWriter, r *http.Request) {
 			from := mail.NewEmail("", "richard@ninjapunkgirls.com")
 			to := mail.NewEmail(user.Username, email)
 			subject := "MAGIC LINK for NewTown"
-			plainTextContent := "and easy to do anywhere, even with Go follow this link: "
+			plainTextContent := fmt.Sprintf(
+				"one time password link: %shome?otp=%s",
+				"https://newtown.vercel.app/",
+				secret,
+			)
 
 			htmlContent := fmt.Sprintf(
 				`<h2>One-time-password link:</h2>
 				<br/>
 				<a href='http://localhost:3000/home?otp=%s'>Debug</a>
 				<br/>
-				<a href='http://npgplatform.vercel.app/home?otp=%s'>Login</a>
+				<br/>
+				<a href='https://newtown.vercel.app/home?otp=%s'>Click here to Login</a>
 				`,
 				secret,
 				secret,

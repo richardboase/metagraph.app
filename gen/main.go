@@ -13,6 +13,7 @@ import (
 func main() {
 
 	tree := models.Stack{
+		WebAPI:     "https://newtown.vercel.app/",
 		HostAPI:    "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/",
 		RepoURI:    "github.com/golangdaddy/newtown",
 		SiteName:   "NewTown",
