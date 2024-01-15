@@ -23,6 +23,10 @@ func NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
 			Fields: fields,
 		}
 	}
+	object.Meta.Context.Children = []string{
+		"quarter",
+		
+	}
 	return object
 }
 

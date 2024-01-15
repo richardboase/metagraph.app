@@ -23,6 +23,9 @@ func NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
 			Fields: fields,
 		}
 	}
+	object.Meta.Context.Children = []string{
+		
+	}
 	return object
 }
 

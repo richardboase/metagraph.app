@@ -23,6 +23,10 @@ func NewQUARTER(parent *Internals, fields FieldsQUARTER) *QUARTER {
 			Fields: fields,
 		}
 	}
+	object.Meta.Context.Children = []string{
+		"street",
+		
+	}
 	return object
 }
 

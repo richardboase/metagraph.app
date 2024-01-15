@@ -23,6 +23,10 @@ func NewBUILDING(parent *Internals, fields FieldsBUILDING) *BUILDING {
 			Fields: fields,
 		}
 	}
+	object.Meta.Context.Children = []string{
+		"floor",
+		
+	}
 	return object
 }
 

@@ -23,6 +23,10 @@ func NewSTREET(parent *Internals, fields FieldsSTREET) *STREET {
 			Fields: fields,
 		}
 	}
+	object.Meta.Context.Children = []string{
+		"building",
+		
+	}
 	return object
 }
 

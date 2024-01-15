@@ -2,16 +2,18 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"os"
 
 	"github.com/golangdaddy/leap"
 	"github.com/golangdaddy/leap/models"
+	"github.com/otiai10/copy"
 )
 
 func main() {
 
 	tree := models.Stack{
-		HostAPI:    "https://server-go-gen-test-da7z6jf32a-nw.a.run.app",
+		HostAPI:    "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/",
 		RepoURI:    "github.com/golangdaddy/newtown",
 		SiteName:   "NewTown",
 		ProjectID:  "npg-generic",
@@ -153,6 +155,10 @@ func main() {
 
 	if err := leap.Build(&tree); err != nil {
 		panic(err)
+	}
+
+	if err := copy.Copy("node_modules", "build/app/node_modules"); err != nil {
+		log.Println(err)
 	}
 
 	// export debug json

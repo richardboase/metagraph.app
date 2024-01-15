@@ -9,7 +9,10 @@ import (
 
 func main() {
 
-	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "../../../npg-generic-d0985a6033b3.json")
+	// handle local dev
+	if os.Getenv("ENVIRONMENT") != "production" {
+		os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "../../../npg-generic-d0985a6033b3.json")
+	}
 
 	app := NewApp()
 	app.UseGCP("npg-generic")
