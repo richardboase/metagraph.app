@@ -80,10 +80,18 @@ func (app *App) EntrypointFLOORS(w http.ResponseWriter, r *http.Request) {
 			return
 
 		/*
-		case "archiveupload":
+		case "initupload":
 			// reuse code
-			app.UploadArchiveFLOOR(w, r, parent)
-			return*/
+			app.UploadFLOOR(w, r, parent)
+			return
+		*/
+
+		/*
+		case "inituploads":
+			// reuse code
+			app.ArchiveUploadFLOOR(w, r, parent)
+			return
+		*/
 
 		default:
 			err := fmt.Errorf("function not found: %s", function)

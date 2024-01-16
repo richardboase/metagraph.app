@@ -143,7 +143,7 @@ func (app *App) UploadSTREET(w http.ResponseWriter, r *http.Request, parent *Int
 	return
 }
 
-func (app *App) UploadArchiveSTREET(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) ArchiveUploadSTREET(w http.ResponseWriter, r *http.Request, parent *Internals) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {

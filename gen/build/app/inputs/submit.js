@@ -32,12 +32,6 @@ export default function Submit(props) {
 						setValid++
 						break
 					case "text":
-						if (i.value == "") {
-							isValid = false
-							continue
-						}
-						setValid++
-						break
 					case "string":
 						if (i.value == "") {
 							isValid = false
@@ -45,7 +39,16 @@ export default function Submit(props) {
 						}
 						setValid++
 						break
+					case "int":
 					case "number":
+						if (parseInt(i.value) < 0) {
+							isValid = false
+							continue
+						}
+						setValid++
+						break
+					case "float":
+					case "float64":
 						if (parseInt(i.value) < 0) {
 							isValid = false
 							continue

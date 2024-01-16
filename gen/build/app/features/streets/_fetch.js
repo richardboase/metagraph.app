@@ -40,6 +40,16 @@ export function StreetFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/street?function="+func+"&id="+id)
 }
 
-export function StreetFileUpload(user, id, formData) {
+// file handling
+
+export function StreetUpload(user, id, formData) {
     return AxiosPOST(user, "api/street?function=upload&id="+id, formData)
+}
+
+export function StreetInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/streets?function=initupload&parent="+parentID, formData)
+}
+
+export function StreetInitUploads(user, parentID, formData) {
+    return AxiosPOST(user, "api/streets?function=inituploads&parent="+parentID, formData)
 }

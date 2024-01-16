@@ -40,6 +40,16 @@ export function TownFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/town?function="+func+"&id="+id)
 }
 
-export function TownFileUpload(user, id, formData) {
+// file handling
+
+export function TownUpload(user, id, formData) {
     return AxiosPOST(user, "api/town?function=upload&id="+id, formData)
+}
+
+export function TownInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/towns?function=initupload&parent="+parentID, formData)
+}
+
+export function TownInitUploads(user, parentID, formData) {
+    return AxiosPOST(user, "api/towns?function=inituploads&parent="+parentID, formData)
 }

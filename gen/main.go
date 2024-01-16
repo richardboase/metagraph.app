@@ -35,9 +35,10 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{},
-		Assetlayer: models.Assetlayer{
-			Wallet: true,
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{
+				Wallet: true,
+			},
 		},
 	}
 
@@ -52,8 +53,10 @@ func main() {
 				JSON: "string_30",
 			},
 		},
-		Assetlayer: models.Assetlayer{
-			Wallet: true,
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{
+				Wallet: true,
+			},
 		},
 	}
 
@@ -68,8 +71,10 @@ func main() {
 				JSON: "string_30",
 			},
 		},
-		Assetlayer: models.Assetlayer{
-			Wallet: true,
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{
+				Wallet: true,
+			},
 		},
 	}
 
@@ -103,8 +108,10 @@ func main() {
 				Required: true,
 			},
 		},
-		Assetlayer: models.Assetlayer{
-			Wallet: true,
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{
+				Wallet: true,
+			},
 		},
 	}
 
@@ -121,8 +128,10 @@ func main() {
 				Required: true,
 			},
 		},
-		Assetlayer: models.Assetlayer{
-			Wallet: true,
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{
+				Wallet: true,
+			},
 		},
 	}
 
@@ -138,8 +147,10 @@ func main() {
 				Required: true,
 			},
 		},
-		Assetlayer: models.Assetlayer{
-			Wallet: true,
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{
+				Wallet: true,
+			},
 		},
 	}
 

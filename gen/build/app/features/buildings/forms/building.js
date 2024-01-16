@@ -10,6 +10,7 @@ import InputChange from '@/inputs/inputChange';
 import Checkbox from '@/inputs/checkbox';
 import Select from '@/inputs/select';
 import CollectionSelect from '@/inputs/collectionSelect';
+import Color from '@/inputs/color';
 
 export function BuildingForm(props) {
 
@@ -28,16 +29,16 @@ export function BuildingForm(props) {
 			<Input id="name" type='text' required={ false } title="building name" placeholder="building name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="number" type='number' required={ false } title="building number" placeholder="building number" inputChange={handleInputChange}/>
+			<Input id="number" type='number' required={ false } title="building number" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="xunits" type='number' required={ true } title="building xunits" placeholder="building xunits" inputChange={handleInputChange}/>
+			<Input id="xunits" type='number' required={ true } title="building xunits" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="yunits" type='number' required={ true } title="building yunits" placeholder="building yunits" inputChange={handleInputChange}/>
+			<Input id="yunits" type='number' required={ true } title="building yunits" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="doors" type='number' required={ true } title="building doors" placeholder="building doors" inputChange={handleInputChange}/>
+			<Input id="doors" type='number' required={ true } title="building doors" inputChange={handleInputChange}/>
 			<Spacer/>
 			
 			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["xunits","yunits","doors"]}/>

@@ -40,6 +40,16 @@ export function FloorFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/floor?function="+func+"&id="+id)
 }
 
-export function FloorFileUpload(user, id, formData) {
+// file handling
+
+export function FloorUpload(user, id, formData) {
     return AxiosPOST(user, "api/floor?function=upload&id="+id, formData)
+}
+
+export function FloorInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/floors?function=initupload&parent="+parentID, formData)
+}
+
+export function FloorInitUploads(user, parentID, formData) {
+    return AxiosPOST(user, "api/floors?function=inituploads&parent="+parentID, formData)
 }

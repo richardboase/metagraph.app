@@ -143,7 +143,7 @@ func (app *App) UploadFLOOR(w http.ResponseWriter, r *http.Request, parent *Inte
 	return
 }
 
-func (app *App) UploadArchiveFLOOR(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) ArchiveUploadFLOOR(w http.ResponseWriter, r *http.Request, parent *Internals) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {

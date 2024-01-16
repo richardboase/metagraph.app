@@ -143,7 +143,7 @@ func (app *App) UploadROOM(w http.ResponseWriter, r *http.Request, parent *Inter
 	return
 }
 
-func (app *App) UploadArchiveROOM(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) ArchiveUploadROOM(w http.ResponseWriter, r *http.Request, parent *Internals) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {

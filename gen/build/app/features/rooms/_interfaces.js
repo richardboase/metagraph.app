@@ -1,10 +1,14 @@
 import * as React from 'react'
 
+import { RoomMatrix } from './shared/roomMatrix'
 import { Rooms } from './rooms'
 import { Room } from './room'
 import { NewRoom } from './newRoom'
 import { EditRoom } from './editRoom'
 import { DeleteRoom } from './deleteRoom'
+import { InitUploadRoom } from './initUploadRoom'
+import { InitUploadRooms } from './initUploadRooms'
+import { UploadRoom } from './uploadRoom'
 
 export var RoomInterfaces = {
 	"deleteroom": {
@@ -27,6 +31,13 @@ export var RoomInterfaces = {
 		level: 10+1,
 		name: "Rooms", 
 		component: (<Rooms />),
+		subsublinks: ["newroom"],
+		hasNewButton: true,
+	},
+	"roomsmatrix": {
+		level: 10+1,
+		name: "Rooms", 
+		component: (<RoomMatrix />),
 		subsublinks: ["newroom"],
 		hasNewButton: true,
 	},

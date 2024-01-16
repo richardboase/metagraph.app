@@ -5,9 +5,11 @@ import (
 	"strconv"
 	"net/http"
 	"os"
+	"log"
 )
 
 func main() {
+	log.Println("Starting Application", "npg-generic", "go-gen-test")
 
 	// handle local dev
 	if os.Getenv("ENVIRONMENT") != "production" {

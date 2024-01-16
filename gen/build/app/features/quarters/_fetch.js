@@ -40,6 +40,16 @@ export function QuarterFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/quarter?function="+func+"&id="+id)
 }
 
-export function QuarterFileUpload(user, id, formData) {
+// file handling
+
+export function QuarterUpload(user, id, formData) {
     return AxiosPOST(user, "api/quarter?function=upload&id="+id, formData)
+}
+
+export function QuarterInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/quarters?function=initupload&parent="+parentID, formData)
+}
+
+export function QuarterInitUploads(user, parentID, formData) {
+    return AxiosPOST(user, "api/quarters?function=inituploads&parent="+parentID, formData)
 }

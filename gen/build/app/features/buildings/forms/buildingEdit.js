@@ -3,10 +3,15 @@ import { useUserContext } from '@/context/user';
 import { useLocalContext } from '@/context/local';
 
 import Spacer from '@/inputs/spacer';
-import Select from '@/inputs/select';
 import Submit from '@/inputs/submit';
 import Input from '@/inputs/input';
+import Color from '@/inputs/color';
+import Checkbox from '@/inputs/checkbox';
+import Select from '@/inputs/select';
+import CollectionSelect from '@/inputs/collectionSelect';
+
 import InputChange from '@/inputs/inputChange';
+
 
 export function BuildingEdit(props) {
 
@@ -58,16 +63,16 @@ export function BuildingEdit(props) {
 			<Input id="name" type='text' required={ false } title="building name" placeholder="building name" inputChange={handleInputChange} value={ inputs["name"].value } />
 			<Spacer/>
 			
-			<Input id="number" type='number' required={ false } title="building number" placeholder="building number" inputChange={handleInputChange} value={ inputs["number"].value } />
+			<Input id="number" type='number' required={ false } title="building number" inputChange={handleInputChange} value={ inputs["number"].value } />
 			<Spacer/>
 			
-			<Input id="xunits" type='number' required={ true } title="building xunits" placeholder="building xunits" inputChange={handleInputChange} value={ inputs["xunits"].value } />
+			<Input id="xunits" type='number' required={ true } title="building xunits" inputChange={handleInputChange} value={ inputs["xunits"].value } />
 			<Spacer/>
 			
-			<Input id="yunits" type='number' required={ true } title="building yunits" placeholder="building yunits" inputChange={handleInputChange} value={ inputs["yunits"].value } />
+			<Input id="yunits" type='number' required={ true } title="building yunits" inputChange={handleInputChange} value={ inputs["yunits"].value } />
 			<Spacer/>
 			
-			<Input id="doors" type='number' required={ true } title="building doors" placeholder="building doors" inputChange={handleInputChange} value={ inputs["doors"].value } />
+			<Input id="doors" type='number' required={ true } title="building doors" inputChange={handleInputChange} value={ inputs["doors"].value } />
 			<Spacer/>
 			
 			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["xunits","yunits","doors"]}/>

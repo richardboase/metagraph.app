@@ -40,6 +40,16 @@ export function BuildingFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/building?function="+func+"&id="+id)
 }
 
-export function BuildingFileUpload(user, id, formData) {
+// file handling
+
+export function BuildingUpload(user, id, formData) {
     return AxiosPOST(user, "api/building?function=upload&id="+id, formData)
+}
+
+export function BuildingInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/buildings?function=initupload&parent="+parentID, formData)
+}
+
+export function BuildingInitUploads(user, parentID, formData) {
+    return AxiosPOST(user, "api/buildings?function=inituploads&parent="+parentID, formData)
 }

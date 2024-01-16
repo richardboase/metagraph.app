@@ -143,7 +143,7 @@ func (app *App) UploadTOWN(w http.ResponseWriter, r *http.Request, parent *Inter
 	return
 }
 
-func (app *App) UploadArchiveTOWN(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) ArchiveUploadTOWN(w http.ResponseWriter, r *http.Request, parent *Internals) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {

@@ -40,6 +40,16 @@ export function RoomFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/room?function="+func+"&id="+id)
 }
 
-export function RoomFileUpload(user, id, formData) {
+// file handling
+
+export function RoomUpload(user, id, formData) {
     return AxiosPOST(user, "api/room?function=upload&id="+id, formData)
+}
+
+export function RoomInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/rooms?function=initupload&parent="+parentID, formData)
+}
+
+export function RoomInitUploads(user, parentID, formData) {
+    return AxiosPOST(user, "api/rooms?function=inituploads&parent="+parentID, formData)
 }

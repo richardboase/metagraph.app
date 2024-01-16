@@ -80,10 +80,18 @@ func (app *App) EntrypointSTREETS(w http.ResponseWriter, r *http.Request) {
 			return
 
 		/*
-		case "archiveupload":
+		case "initupload":
 			// reuse code
-			app.UploadArchiveSTREET(w, r, parent)
-			return*/
+			app.UploadSTREET(w, r, parent)
+			return
+		*/
+
+		/*
+		case "inituploads":
+			// reuse code
+			app.ArchiveUploadSTREET(w, r, parent)
+			return
+		*/
 
 		default:
 			err := fmt.Errorf("function not found: %s", function)

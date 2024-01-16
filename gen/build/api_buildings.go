@@ -80,10 +80,18 @@ func (app *App) EntrypointBUILDINGS(w http.ResponseWriter, r *http.Request) {
 			return
 
 		/*
-		case "archiveupload":
+		case "initupload":
 			// reuse code
-			app.UploadArchiveBUILDING(w, r, parent)
-			return*/
+			app.UploadBUILDING(w, r, parent)
+			return
+		*/
+
+		/*
+		case "inituploads":
+			// reuse code
+			app.ArchiveUploadBUILDING(w, r, parent)
+			return
+		*/
 
 		default:
 			err := fmt.Errorf("function not found: %s", function)

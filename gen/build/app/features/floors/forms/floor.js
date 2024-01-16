@@ -10,6 +10,7 @@ import InputChange from '@/inputs/inputChange';
 import Checkbox from '@/inputs/checkbox';
 import Select from '@/inputs/select';
 import CollectionSelect from '@/inputs/collectionSelect';
+import Color from '@/inputs/color';
 
 export function FloorForm(props) {
 
@@ -25,7 +26,7 @@ export function FloorForm(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="rooms" type='number' required={ true } title="floor rooms" placeholder="floor rooms" inputChange={handleInputChange}/>
+			<Input id="rooms" type='number' required={ true } title="floor rooms" inputChange={handleInputChange}/>
 			<Spacer/>
 			
 			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["rooms"]}/>

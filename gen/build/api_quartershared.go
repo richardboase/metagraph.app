@@ -143,7 +143,7 @@ func (app *App) UploadQUARTER(w http.ResponseWriter, r *http.Request, parent *In
 	return
 }
 
-func (app *App) UploadArchiveQUARTER(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) ArchiveUploadQUARTER(w http.ResponseWriter, r *http.Request, parent *Internals) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {

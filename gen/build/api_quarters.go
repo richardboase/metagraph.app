@@ -80,10 +80,18 @@ func (app *App) EntrypointQUARTERS(w http.ResponseWriter, r *http.Request) {
 			return
 
 		/*
-		case "archiveupload":
+		case "initupload":
 			// reuse code
-			app.UploadArchiveQUARTER(w, r, parent)
-			return*/
+			app.UploadQUARTER(w, r, parent)
+			return
+		*/
+
+		/*
+		case "inituploads":
+			// reuse code
+			app.ArchiveUploadQUARTER(w, r, parent)
+			return
+		*/
 
 		default:
 			err := fmt.Errorf("function not found: %s", function)

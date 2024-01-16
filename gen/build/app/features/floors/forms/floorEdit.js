@@ -3,10 +3,15 @@ import { useUserContext } from '@/context/user';
 import { useLocalContext } from '@/context/local';
 
 import Spacer from '@/inputs/spacer';
-import Select from '@/inputs/select';
 import Submit from '@/inputs/submit';
 import Input from '@/inputs/input';
+import Color from '@/inputs/color';
+import Checkbox from '@/inputs/checkbox';
+import Select from '@/inputs/select';
+import CollectionSelect from '@/inputs/collectionSelect';
+
 import InputChange from '@/inputs/inputChange';
+
 
 export function FloorEdit(props) {
 
@@ -35,7 +40,7 @@ export function FloorEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="rooms" type='number' required={ true } title="floor rooms" placeholder="floor rooms" inputChange={handleInputChange} value={ inputs["rooms"].value } />
+			<Input id="rooms" type='number' required={ true } title="floor rooms" inputChange={handleInputChange} value={ inputs["rooms"].value } />
 			<Spacer/>
 			
 			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["rooms"]}/>

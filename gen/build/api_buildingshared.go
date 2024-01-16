@@ -143,7 +143,7 @@ func (app *App) UploadBUILDING(w http.ResponseWriter, r *http.Request, parent *I
 	return
 }
 
-func (app *App) UploadArchiveBUILDING(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) ArchiveUploadBUILDING(w http.ResponseWriter, r *http.Request, parent *Internals) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {

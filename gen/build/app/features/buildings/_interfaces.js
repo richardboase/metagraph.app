@@ -1,10 +1,14 @@
 import * as React from 'react'
 
+import { BuildingMatrix } from './shared/buildingMatrix'
 import { Buildings } from './buildings'
 import { Building } from './building'
 import { NewBuilding } from './newBuilding'
 import { EditBuilding } from './editBuilding'
 import { DeleteBuilding } from './deleteBuilding'
+import { InitUploadBuilding } from './initUploadBuilding'
+import { InitUploadBuildings } from './initUploadBuildings'
+import { UploadBuilding } from './uploadBuilding'
 
 export var BuildingInterfaces = {
 	"deletebuilding": {
@@ -27,6 +31,13 @@ export var BuildingInterfaces = {
 		level: 6+1,
 		name: "Buildings", 
 		component: (<Buildings />),
+		subsublinks: ["newbuilding"],
+		hasNewButton: true,
+	},
+	"buildingsmatrix": {
+		level: 6+1,
+		name: "Buildings", 
+		component: (<BuildingMatrix />),
 		subsublinks: ["newbuilding"],
 		hasNewButton: true,
 	},
