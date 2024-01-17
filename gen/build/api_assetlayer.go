@@ -55,7 +55,7 @@ func (app *App) EntrypointASSETLAYER(w http.ResponseWriter, r *http.Request) {
 
 			println(parent.ID)
 
-			walletID := parent.AssetlayerWalletID()
+			walletID := "$" + parent.AssetlayerWalletID()
 			println("checking wallet:", walletID)
 			list, err := app.Assetlayer().AssetUser(walletID, false, false)
 			if err != nil {

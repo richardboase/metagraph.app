@@ -111,11 +111,11 @@ export function BuildingMatrix(props) {
 	{
 		!list && <Loading/>
 	}
-		<table className='w-full' style={cellStyle}><tbody>
+		<table className='w-full'><tbody>
 			<tr>
 				<td className='flex flex-row justify-center font-bold px-2' style={cellStyle}>
 					<div>#</div>
-			</td>
+				</td>
 				<td className='font-bold px-2' style={cellStyle}>name</td><td className='font-bold px-2' style={cellStyle}>number</td><td className='font-bold px-2' style={cellStyle}>xunits</td><td className='font-bold px-2' style={cellStyle}>yunits</td><td className='font-bold px-2' style={cellStyle}>doors</td>
 			</tr>
 			{
@@ -125,6 +125,12 @@ export function BuildingMatrix(props) {
 					)
 				})
 			}
+			<tr>
+				<td className='flex flex-row justify-center font-bold px-2' style={cellStyle}>
+					<div className='bg-gray-200 cursor-pointer'>+</div>
+				</td>
+				<td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td>
+			</tr>
 		</tbody></table>
 		<Spacer/>
 
