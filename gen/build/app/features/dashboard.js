@@ -101,7 +101,7 @@ export default function Dashboard(props) {
 				}
 				{
 					localdata?.tab && localdata.tab.hasListButton && <div className="m-2 flex flex-col justify-center">
-						<div id={localdata.tab.name.toLowerCase()}
+						<div id={localdata.tab.name.toLowerCase()+"s"}
 						onClick={updateTabEvent} className="flex flex-col justify-center items-center m-2 cursor-pointer" style={{width:"20px",height:"20px"}}>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" style={{pointerEvents:"none"}}>
 							<path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
