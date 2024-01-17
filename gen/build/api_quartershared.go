@@ -36,18 +36,6 @@ func (app *App) CreateDocumentQUARTER(parent *Internals, object *QUARTER) error 
 	object.Meta.Context.Order = order
 	*/
 
-	/*
-	// create asset
-	{
-		log.Println("CREATING TOKEN")
-		assetID, err := app.Assetlayer().MintAssetWithProperties(object.Meta.AssetlayerCollectionID(), object)
-		if err != nil {
-			return err
-		}
-		object.Meta.Asset = assetID
-	}
-	*/
-
 	
 	// create app wallet
 	{
@@ -59,6 +47,21 @@ func (app *App) CreateDocumentQUARTER(parent *Internals, object *QUARTER) error 
 		object.Meta.Wallet = wallerUserID
 	}
 	
+
+	/*
+	// create asset
+	{
+		log.Println("CREATING TOKEN")
+		assetID, err := app.Assetlayer().MintAssetWithProperties(object.Meta.AssetlayerCollectionID(), object)
+		if err != nil {
+			return err
+		}
+		object.Meta.Asset = assetID
+		if err := app.Assetlayer().SendAsset(assetID, "$"+object.Meta.AssetlayerWalletID()); err != nil {
+			return err
+		}
+	}
+	*/
 	
 	// write new QUARTER to the DB
 	if err := object.Meta.SaveToFirestore(app.App, object); err != nil {

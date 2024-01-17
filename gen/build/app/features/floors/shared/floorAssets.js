@@ -8,12 +8,12 @@ import { titlecase } from '../_interfaces';
 import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
-import { AssetsWallet } from "@/app/fetch"
+import { FloorListRow } from './floorListRow';
+import { FloorDELETE, FloorsListGET, FloorMoveUpPOST, FloorMoveDownPOST } from '../_fetch';
 
-import { TownAssetsRow } from './townAssetsRow';
-import { TownDELETE, TownsListGET, TownMoveUpPOST, TownMoveDownPOST } from '../_fetch';
+export function FloorAssets(props) {
 
-export function TownList(props) {
+	// set props.limit if you want to limit query results
 
 	const [ userdata, setUserdata] = useUserContext()
 	const [ localdata, setLocaldata] = useLocalContext()
@@ -21,7 +21,7 @@ export function TownList(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		AssetsWallet(userdata, props.subject?.Meta.ID)
+		FloorsListGET(userdata, props.subject?.Meta.ID, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -35,19 +35,19 @@ export function TownList(props) {
 
 	// update tabs handles the updated context and sends the user to a new interface
 	function selectItem(id) {
-		console.log("SELECT Town", id)
+		console.log("SELECT Floor", id)
 		const next = list[parseInt(id)]
 		const context = {
 			"_": next.fields.name,
 			"object": next,
 		}
-		setLocaldata(VisitTab(localdata, "town", context))
+		setLocaldata(VisitTab(localdata, "floor", context))
 	}
 
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		TownMoveUpPOST(userdata, object.Meta.ID)
+		FloorMoveUpPOST(userdata, object.Meta.ID)
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -60,7 +60,7 @@ export function TownList(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		TownMoveDownPOST(userdata, object.Meta.ID)
+		FloorMoveDownPOST(userdata, object.Meta.ID)
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -73,7 +73,7 @@ export function TownList(props) {
 	function deleteItem(id) {
 		const object = list[parseInt(id)]
 		console.log("DELETING", object)
-		TownDELETE(userdata, object.Meta.ID)
+		FloorDELETE(userdata, object.Meta.ID)
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -99,7 +99,7 @@ export function TownList(props) {
 
 			return (
 				<div key={i}>
-					<TownListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					<FloorListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
 					<Spacer/>
 				</div>
 			)

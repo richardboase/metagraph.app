@@ -8,8 +8,9 @@ import VisitTab from '../interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
 
-import { AssetsUser, AssetsWallet } from '@/app/fetch'
+import { TownAssets } from './shared/townAssets'
 
+import { AssetsUser, AssetsWallet } from '@/app/fetch'
 import { TownObjectGET } from './_fetch'
 
 export function TownAssets(props) {  
@@ -52,7 +53,7 @@ export function TownAssets(props) {
 
 	return (
 		<div style={ {padding:"30px 60px 30px 60px"} }>
-
+			<TownAssets subject={subject}/>
 		</div>
 	)
 

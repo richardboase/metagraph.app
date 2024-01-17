@@ -8,8 +8,9 @@ import VisitTab from '../interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
 
-import { AssetsUser, AssetsWallet } from '@/app/fetch'
+import { QuarterAssets } from './shared/quarterAssets'
 
+import { AssetsUser, AssetsWallet } from '@/app/fetch'
 import { QuarterObjectGET } from './_fetch'
 
 export function QuarterAssets(props) {  
@@ -52,7 +53,7 @@ export function QuarterAssets(props) {
 
 	return (
 		<div style={ {padding:"30px 60px 30px 60px"} }>
-
+			<QuarterAssets subject={subject}/>
 		</div>
 	)
 

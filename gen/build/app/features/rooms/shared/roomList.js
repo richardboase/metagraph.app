@@ -8,12 +8,12 @@ import { titlecase } from '../_interfaces';
 import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
-import { RoomListRow } from './roomListRow';
+import { AssetsWallet } from "@/app/fetch"
+
+import { RoomAssetsRow } from './roomAssetsRow';
 import { RoomDELETE, RoomsListGET, RoomMoveUpPOST, RoomMoveDownPOST } from '../_fetch';
 
 export function RoomList(props) {
-
-	// set props.limit if you want to limit query results
 
 	const [ userdata, setUserdata] = useUserContext()
 	const [ localdata, setLocaldata] = useLocalContext()
@@ -21,7 +21,7 @@ export function RoomList(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		RoomsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		AssetsWallet(userdata, props.subject?.Meta.ID)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

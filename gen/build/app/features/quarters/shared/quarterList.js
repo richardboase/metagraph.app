@@ -8,12 +8,12 @@ import { titlecase } from '../_interfaces';
 import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
-import { QuarterListRow } from './quarterListRow';
+import { AssetsWallet } from "@/app/fetch"
+
+import { QuarterAssetsRow } from './quarterAssetsRow';
 import { QuarterDELETE, QuartersListGET, QuarterMoveUpPOST, QuarterMoveDownPOST } from '../_fetch';
 
 export function QuarterList(props) {
-
-	// set props.limit if you want to limit query results
 
 	const [ userdata, setUserdata] = useUserContext()
 	const [ localdata, setLocaldata] = useLocalContext()
@@ -21,7 +21,7 @@ export function QuarterList(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		QuartersListGET(userdata, props.subject?.Meta.ID, props.limit)
+		AssetsWallet(userdata, props.subject?.Meta.ID)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

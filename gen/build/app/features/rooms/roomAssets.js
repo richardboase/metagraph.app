@@ -8,8 +8,9 @@ import VisitTab from '../interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
 
-import { AssetsUser, AssetsWallet } from '@/app/fetch'
+import { RoomAssets } from './shared/roomAssets'
 
+import { AssetsUser, AssetsWallet } from '@/app/fetch'
 import { RoomObjectGET } from './_fetch'
 
 export function RoomAssets(props) {  
@@ -52,7 +53,7 @@ export function RoomAssets(props) {
 
 	return (
 		<div style={ {padding:"30px 60px 30px 60px"} }>
-
+			<RoomAssets subject={subject}/>
 		</div>
 	)
 

@@ -8,8 +8,9 @@ import VisitTab from '../interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
 
-import { AssetsUser, AssetsWallet } from '@/app/fetch'
+import { BuildingAssets } from './shared/buildingAssets'
 
+import { AssetsUser, AssetsWallet } from '@/app/fetch'
 import { BuildingObjectGET } from './_fetch'
 
 export function BuildingAssets(props) {  
@@ -52,7 +53,7 @@ export function BuildingAssets(props) {
 
 	return (
 		<div style={ {padding:"30px 60px 30px 60px"} }>
-
+			<BuildingAssets subject={subject}/>
 		</div>
 	)
 
