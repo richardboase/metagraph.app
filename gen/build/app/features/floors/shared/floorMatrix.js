@@ -41,6 +41,10 @@ export function FloorMatrix(props) {
 		updateList()
 	}, [])
 
+	function newobject() {
+		setLocaldata(VisitTab(localdata, "newfloor", localdata.tab.context))
+	}
+
 	function saveUpdate(rowID, fieldID, value) {
 		const row = list[rowID]
 		console.log("SAVEUPDATE", row, fieldID, value)
@@ -126,8 +130,8 @@ export function FloorMatrix(props) {
 				})
 			}
 			<tr>
-				<td className='flex flex-row justify-center font-bold px-2' style={cellStyle}>
-					<div className='bg-gray-200 cursor-pointer'>+</div>
+				<td className='flex flex-row justify-center font-bold px-2 bg-gray-200' style={cellStyle}>
+					<div className='cursor-pointer' onClick={newobject}>+</div>
 				</td>
 				<td className='font-bold px-2'></td>
 			</tr>

@@ -52,9 +52,11 @@ func (app *App) CreateDocumentROOM(parent *Internals, object *ROOM) error {
 	// create app wallet
 	{
 		log.Println("CREATING WALLET")
-		if err := app.Assetlayer().NewAppWallet(object.Meta.AssetlayerWalletID()); err != nil {
+		wallerUserID, err := app.Assetlayer().NewAppWallet(object.Meta.AssetlayerWalletID())
+		if err != nil {
 			return err
 		}
+		object.Meta.Wallet = wallerUserID
 	}
 	
 	

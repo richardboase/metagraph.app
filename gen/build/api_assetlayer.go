@@ -55,9 +55,8 @@ func (app *App) EntrypointASSETLAYER(w http.ResponseWriter, r *http.Request) {
 
 			println(parent.ID)
 
-			walletID := "$" + parent.AssetlayerWalletID()
-			println("checking wallet:", walletID)
-			list, err := app.Assetlayer().AssetUser(walletID, false, false)
+			println("checking wallet:", parent.Wallet)
+			list, err := app.Assetlayer().AssetUser(parent.Wallet, false, false)
 			if err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
