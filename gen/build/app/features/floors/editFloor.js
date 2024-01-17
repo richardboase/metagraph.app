@@ -45,10 +45,10 @@ export function EditFloor(props) {
 	}
 
 	return (
-		<>
+		<div style={ {padding:"30px 60px 30px 60px"} }>
 		{
 			subject && <FloorEdit subject={subject} submit={submitEdit}/>
 		}
-		</>
+		</div>
   	);
 }

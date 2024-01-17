@@ -33,6 +33,8 @@ export function NewBuilding(props) {
 	}
 
 	return (
-		<BuildingForm submit={submitNew}/>
+		<div style={ {padding:"30px 60px 30px 60px"} }>
+			<BuildingForm submit={submitNew}/>
+		</div>
 	);
 }

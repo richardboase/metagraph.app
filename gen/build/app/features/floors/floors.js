@@ -13,6 +13,8 @@ export function Floors(props) {
 	const [ parent ] = useState(localdata.tab.context.object)
 
 	return (
-		<FloorList subject={parent} />
+		<div style={ {padding:"30px 60px 30px 60px"} }>
+			<FloorList subject={parent} />
+		</div>
 	)
 }

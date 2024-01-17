@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -61,19 +62,19 @@ func (app *App) EntrypointROOMS(w http.ResponseWriter, r *http.Request) {
 			}
 
 			fields := FieldsROOM{}
-			room := NewROOM(parent, fields)
-			if !room.ValidateInput(w, m) {
+			object := NewROOM(parent, fields)
+			if !object.ValidateInput(w, m) {
 				return
 			}
 
 			// reuse document init create code
-			if err := app.CreateDocumentROOM(parent, room); err != nil {
+			if err := app.CreateDocumentROOM(parent, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return				
 			}
 
 			// finish the request
-			if err := cloudfunc.ServeJSON(w, room); err != nil {
+			if err := cloudfunc.ServeJSON(w, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}

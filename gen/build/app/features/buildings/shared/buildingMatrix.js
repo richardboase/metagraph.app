@@ -3,14 +3,21 @@ import { useUserContext } from '@/context/user';
 import { useLocalContext } from '@/context/local';
 import { useState, useEffect } from 'react';
 
-import { BuildingDELETE, BuildingsListGET, BuildingMoveUpPOST, BuildingMoveDownPOST } from '../_fetch';
-
 import VisitTab from '@/features/interfaces';
+import { titlecase } from '../_interfaces';
 
 import Loading from '@/app/loading';
-import { Preview } from './building';
 import Spacer from '@/inputs/spacer';
-import { titlecase } from '../_interfaces';
+
+import { BuildingMatrixRow } from './buildingMatrixRow';
+import {
+	BuildingDELETE,
+	BuildingsListGET,
+	BuildingMoveUpPOST,
+	BuildingMoveDownPOST,
+} from '../_fetch';
+import { ObjectPATCH } from '@/app/fetch'
+
 
 export function BuildingMatrix(props) {
 
@@ -33,6 +40,17 @@ export function BuildingMatrix(props) {
 	useEffect(() => {
 		updateList()
 	}, [])
+
+	function saveUpdate(rowID, fieldID, value) {
+		const row = list[rowID]
+		console.log("SAVEUPDATE", row, fieldID, value)
+		row.fields[fieldID] = value
+		ObjectPATCH(userdata, row, fieldID, value)
+		.catch(function (e) {
+			console.error("FAILED TO SEND", e)
+		})
+		setList(list)
+	}
 
 	// update tabs handles the updated context and sends the user to a new interface
 	function selectItem(id) {
@@ -84,32 +102,33 @@ export function BuildingMatrix(props) {
 		})
 	}
 
+	const cellStyle = {
+		border: "1px solid"
+	}
+
 	return (
-	<div className='flex flex-col my-4'>
-	{
-		props.title && <div className='py-4 my-4 text-xl font-bold'>{props.title}s:</div>
-	}
-	{
-		props.title && <hr/>
-	}
+	<>
 	{
 		!list && <Loading/>
 	}
-		<table className='w-full'><tbody>
-		{
-			list && list.map(function (item, i) {
-
-				return (
-					<tr key={i}>
-						<td>{ item.fields["name"] }</td><td>{ item.fields["number"] }</td><td>{ item.fields["xunits"] }</td><td>{ item.fields["yunits"] }</td><td>{ item.fields["doors"] }</td>
-					</tr>
-				)
-			})
-		}
+		<table className='w-full' style={cellStyle}><tbody>
+			<tr>
+				<td className='flex flex-row justify-center font-bold px-2' style={cellStyle}>
+					<div>#</div>
+			</td>
+				<td className='font-bold px-2' style={cellStyle}>name</td><td className='font-bold px-2' style={cellStyle}>number</td><td className='font-bold px-2' style={cellStyle}>xunits</td><td className='font-bold px-2' style={cellStyle}>yunits</td><td className='font-bold px-2' style={cellStyle}>doors</td>
+			</tr>
+			{
+				list && list.map(function (row, i) {
+					return (
+						<BuildingMatrixRow id={i} key={i} row={row} save={saveUpdate}/>
+					)
+				})
+			}
 		</tbody></table>
 		<Spacer/>
 
-	</div>
+	</>
 	)
 
 }

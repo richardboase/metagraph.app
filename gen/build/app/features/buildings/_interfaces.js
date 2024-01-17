@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { BuildingMatrix } from './shared/buildingMatrix'
+import { BuildingsMatrix } from './buildingsMatrix'
 import { Buildings } from './buildings'
 import { Building } from './building'
 import { NewBuilding } from './newBuilding'
@@ -31,15 +31,17 @@ export var BuildingInterfaces = {
 		level: 6+1,
 		name: "Buildings", 
 		component: (<Buildings />),
-		subsublinks: ["newbuilding"],
+		subsublinks: ["buildingsmatrix", "newbuilding"],
 		hasNewButton: true,
+		hasSpreadsheetButton: true,
 	},
 	"buildingsmatrix": {
-		level: 6+1,
-		name: "Buildings", 
-		component: (<BuildingMatrix />),
+		level: 6+2,
+		name: "Buildings Matrix", 
+		component: (<BuildingsMatrix />),
 		subsublinks: ["newbuilding"],
 		hasNewButton: true,
+		hasListButton: true,
 	},
 	"building": {
 		level: 6+2,

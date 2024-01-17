@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { StreetMatrix } from './shared/streetMatrix'
+import { StreetsMatrix } from './streetsMatrix'
 import { Streets } from './streets'
 import { Street } from './street'
 import { NewStreet } from './newStreet'
@@ -31,15 +31,17 @@ export var StreetInterfaces = {
 		level: 4+1,
 		name: "Streets", 
 		component: (<Streets />),
-		subsublinks: ["newstreet"],
+		subsublinks: ["streetsmatrix", "newstreet"],
 		hasNewButton: true,
+		hasSpreadsheetButton: true,
 	},
 	"streetsmatrix": {
-		level: 4+1,
-		name: "Streets", 
-		component: (<StreetMatrix />),
+		level: 4+2,
+		name: "Streets Matrix", 
+		component: (<StreetsMatrix />),
 		subsublinks: ["newstreet"],
 		hasNewButton: true,
+		hasListButton: true,
 	},
 	"street": {
 		level: 4+2,

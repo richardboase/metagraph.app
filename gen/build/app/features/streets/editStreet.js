@@ -45,10 +45,10 @@ export function EditStreet(props) {
 	}
 
 	return (
-		<>
+		<div style={ {padding:"30px 60px 30px 60px"} }>
 		{
 			subject && <StreetEdit subject={subject} submit={submitEdit}/>
 		}
-		</>
+		</div>
   	);
 }

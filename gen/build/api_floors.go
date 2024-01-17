@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -61,19 +62,19 @@ func (app *App) EntrypointFLOORS(w http.ResponseWriter, r *http.Request) {
 			}
 
 			fields := FieldsFLOOR{}
-			floor := NewFLOOR(parent, fields)
-			if !floor.ValidateInput(w, m) {
+			object := NewFLOOR(parent, fields)
+			if !object.ValidateInput(w, m) {
 				return
 			}
 
 			// reuse document init create code
-			if err := app.CreateDocumentFLOOR(parent, floor); err != nil {
+			if err := app.CreateDocumentFLOOR(parent, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return				
 			}
 
 			// finish the request
-			if err := cloudfunc.ServeJSON(w, floor); err != nil {
+			if err := cloudfunc.ServeJSON(w, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}

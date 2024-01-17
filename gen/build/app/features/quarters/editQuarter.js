@@ -45,10 +45,10 @@ export function EditQuarter(props) {
 	}
 
 	return (
-		<>
+		<div style={ {padding:"30px 60px 30px 60px"} }>
 		{
 			subject && <QuarterEdit subject={subject} submit={submitEdit}/>
 		}
-		</>
+		</div>
   	);
 }

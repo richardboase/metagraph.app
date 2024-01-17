@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -61,19 +62,19 @@ func (app *App) EntrypointBUILDINGS(w http.ResponseWriter, r *http.Request) {
 			}
 
 			fields := FieldsBUILDING{}
-			building := NewBUILDING(parent, fields)
-			if !building.ValidateInput(w, m) {
+			object := NewBUILDING(parent, fields)
+			if !object.ValidateInput(w, m) {
 				return
 			}
 
 			// reuse document init create code
-			if err := app.CreateDocumentBUILDING(parent, building); err != nil {
+			if err := app.CreateDocumentBUILDING(parent, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return				
 			}
 
 			// finish the request
-			if err := cloudfunc.ServeJSON(w, building); err != nil {
+			if err := cloudfunc.ServeJSON(w, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}

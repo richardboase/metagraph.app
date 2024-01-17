@@ -3,14 +3,21 @@ import { useUserContext } from '@/context/user';
 import { useLocalContext } from '@/context/local';
 import { useState, useEffect } from 'react';
 
-import { QuarterDELETE, QuartersListGET, QuarterMoveUpPOST, QuarterMoveDownPOST } from '../_fetch';
-
 import VisitTab from '@/features/interfaces';
+import { titlecase } from '../_interfaces';
 
 import Loading from '@/app/loading';
-import { Preview } from './quarter';
 import Spacer from '@/inputs/spacer';
-import { titlecase } from '../_interfaces';
+
+import { QuarterMatrixRow } from './quarterMatrixRow';
+import {
+	QuarterDELETE,
+	QuartersListGET,
+	QuarterMoveUpPOST,
+	QuarterMoveDownPOST,
+} from '../_fetch';
+import { ObjectPATCH } from '@/app/fetch'
+
 
 export function QuarterMatrix(props) {
 
@@ -33,6 +40,17 @@ export function QuarterMatrix(props) {
 	useEffect(() => {
 		updateList()
 	}, [])
+
+	function saveUpdate(rowID, fieldID, value) {
+		const row = list[rowID]
+		console.log("SAVEUPDATE", row, fieldID, value)
+		row.fields[fieldID] = value
+		ObjectPATCH(userdata, row, fieldID, value)
+		.catch(function (e) {
+			console.error("FAILED TO SEND", e)
+		})
+		setList(list)
+	}
 
 	// update tabs handles the updated context and sends the user to a new interface
 	function selectItem(id) {
@@ -84,32 +102,33 @@ export function QuarterMatrix(props) {
 		})
 	}
 
+	const cellStyle = {
+		border: "1px solid"
+	}
+
 	return (
-	<div className='flex flex-col my-4'>
-	{
-		props.title && <div className='py-4 my-4 text-xl font-bold'>{props.title}s:</div>
-	}
-	{
-		props.title && <hr/>
-	}
+	<>
 	{
 		!list && <Loading/>
 	}
-		<table className='w-full'><tbody>
-		{
-			list && list.map(function (item, i) {
-
-				return (
-					<tr key={i}>
-						<td>{ item.fields["name"] }</td>
-					</tr>
-				)
-			})
-		}
+		<table className='w-full' style={cellStyle}><tbody>
+			<tr>
+				<td className='flex flex-row justify-center font-bold px-2' style={cellStyle}>
+					<div>#</div>
+			</td>
+				<td className='font-bold px-2' style={cellStyle}>name</td>
+			</tr>
+			{
+				list && list.map(function (row, i) {
+					return (
+						<QuarterMatrixRow id={i} key={i} row={row} save={saveUpdate}/>
+					)
+				})
+			}
 		</tbody></table>
 		<Spacer/>
 
-	</div>
+	</>
 	)
 
 }

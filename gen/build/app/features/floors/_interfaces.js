@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { FloorMatrix } from './shared/floorMatrix'
+import { FloorsMatrix } from './floorsMatrix'
 import { Floors } from './floors'
 import { Floor } from './floor'
 import { NewFloor } from './newFloor'
@@ -31,15 +31,17 @@ export var FloorInterfaces = {
 		level: 8+1,
 		name: "Floors", 
 		component: (<Floors />),
-		subsublinks: ["newfloor"],
+		subsublinks: ["floorsmatrix", "newfloor"],
 		hasNewButton: true,
+		hasSpreadsheetButton: true,
 	},
 	"floorsmatrix": {
-		level: 8+1,
-		name: "Floors", 
-		component: (<FloorMatrix />),
+		level: 8+2,
+		name: "Floors Matrix", 
+		component: (<FloorsMatrix />),
 		subsublinks: ["newfloor"],
 		hasNewButton: true,
+		hasListButton: true,
 	},
 	"floor": {
 		level: 8+2,

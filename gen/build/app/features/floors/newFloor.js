@@ -33,6 +33,8 @@ export function NewFloor(props) {
 	}
 
 	return (
-		<FloorForm submit={submitNew}/>
+		<div style={ {padding:"30px 60px 30px 60px"} }>
+			<FloorForm submit={submitNew}/>
+		</div>
 	);
 }

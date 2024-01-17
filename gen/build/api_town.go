@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -34,13 +35,89 @@ func (app *App) EntrypointTOWN(w http.ResponseWriter, r *http.Request) {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
 		return
 	}
-	town := &TOWN{}
-	if err := utils.GetDocument(app.App, id, town); err != nil {
+	object := &TOWN{}
+	if err := utils.GetDocument(app.App, id, object); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 
 	switch r.Method {
+
+	case "PATCH":
+
+		// KV params for opject update
+		m := map[string]interface{}{}
+		if err := cloudfunc.ParseJSON(r, &m); err != nil {
+			cloudfunc.HttpError(w, err, http.StatusBadRequest)
+			return
+		}
+		field, ok := m["field"].(string)
+		if !ok {
+			err := errors.New("'field' parameter is not a string")
+			cloudfunc.HttpError(w, err, http.StatusBadRequest)
+			return
+		}
+		if len(field) < 1 {
+			err := errors.New("'field' parameter must be non-zero length")
+			cloudfunc.HttpError(w, err, http.StatusBadRequest)
+			return
+		}
+		if m["value"] == nil {
+			err := errors.New("'value' parameter must not be nil")
+			cloudfunc.HttpError(w, err, http.StatusBadRequest)
+			return
+		}
+
+		bb, err := app.MarshalJSON(object.Fields)
+		if err != nil {
+			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+			return
+		}
+		fields := map[string]interface{}{}
+		if err := app.UnmarshalJSON(bb, &fields);err != nil {
+			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+			return
+		}
+		fields[field] = m["value"]
+
+		updateBytes, err := app.MarshalJSON(fields)
+		if err != nil {
+			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+			return
+		}
+		if err := app.UnmarshalJSON(updateBytes, &object.Fields); err != nil {
+			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+			return
+		}
+
+		/*
+		updates := []firestore.Update{
+			{
+				Path: "Meta.Modified",
+				Value: app.TimeNow().Unix(),
+			},
+			{
+				Path: fmt.Sprintf("fields.%s", strings.ToLower(field)),
+				Value: m["value"],
+			},
+		}
+		for _, update := range updates {
+			println(update.Path, update.Value)
+		}
+		if _, err := object.Meta.Firestore(app.App).Update(context.Background(), updates); err != nil {
+			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+			return
+		}
+		*/
+
+		object.Meta.Modify()
+		if err := object.Meta.SaveToFirestore(app.App, object); err != nil {
+			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+			return
+		}
+		return
+
+
 	case "POST":
 
 		// get function
@@ -61,14 +138,40 @@ func (app *App) EntrypointTOWN(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			if !town.ValidateInput(w, m) {
+			if !object.ValidateInput(w, m) {
 				return
 			}
 
-			if err := town.Meta.SaveToFirestore(app.App, town); err != nil {
+			/*
+			updates := []firestore.Update{
+				{
+					Path: "Meta.Modified",
+					Value: app.TimeNow().Unix(),
+				},
+				{
+					Path: "fields.name",
+					Value: object.Fields.Name,
+				},
+			}
+			for _, update := range updates {
+				println(update.Path, update.Value)
+			}
+			if _, err := object.Meta.Firestore(app.App).Update(app.Context(), updates); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
+			*/
+
+			if err := object.Meta.SaveToFirestore(app.App, object); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			}
+
+			if err := cloudfunc.ServeJSON(w, object); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			}
+			return
 
 		case "upload":
 
@@ -88,7 +191,7 @@ func (app *App) EntrypointTOWN(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("MIME Header: %+v\n", handler.Header)
 
 			// prepare upload with a new URI
-			objectName := town.Meta.NewURI()
+			objectName := object.Meta.NewURI()
 			writer := app.GCPClients.GCS().Bucket("npg-generic-uploads").Object(objectName).NewWriter(app.Context())
 			//writer.ObjectAttrs.CacheControl = "no-store"
 			defer writer.Close()
@@ -109,7 +212,7 @@ func (app *App) EntrypointTOWN(w http.ResponseWriter, r *http.Request) {
 			}
 		
 			// update file with new URI value
-			if err := town.Meta.SaveToFirestore(app.App, town); err != nil {
+			if err := object.Meta.SaveToFirestore(app.App, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
@@ -134,10 +237,10 @@ func (app *App) EntrypointTOWN(w http.ResponseWriter, r *http.Request) {
 
 		switch function {
 
-		// return a specific town object by id
+		// return a specific object object by id
 		case "object":
 
-			cloudfunc.ServeJSON(w, town)
+			cloudfunc.ServeJSON(w, object)
 			return
 
 		default:
@@ -148,7 +251,7 @@ func (app *App) EntrypointTOWN(w http.ResponseWriter, r *http.Request) {
 
 	case "DELETE":
 
-		_, err := town.Meta.Firestore(app.App).Delete(app.Context())
+		_, err := object.Meta.Firestore(app.App).Delete(app.Context())
 		if err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return

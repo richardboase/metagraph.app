@@ -33,6 +33,8 @@ export function NewQuarter(props) {
 	}
 
 	return (
-		<QuarterForm submit={submitNew}/>
+		<div style={ {padding:"30px 60px 30px 60px"} }>
+			<QuarterForm submit={submitNew}/>
+		</div>
 	);
 }

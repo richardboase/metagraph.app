@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -61,19 +62,19 @@ func (app *App) EntrypointSTREETS(w http.ResponseWriter, r *http.Request) {
 			}
 
 			fields := FieldsSTREET{}
-			street := NewSTREET(parent, fields)
-			if !street.ValidateInput(w, m) {
+			object := NewSTREET(parent, fields)
+			if !object.ValidateInput(w, m) {
 				return
 			}
 
 			// reuse document init create code
-			if err := app.CreateDocumentSTREET(parent, street); err != nil {
+			if err := app.CreateDocumentSTREET(parent, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return				
 			}
 
 			// finish the request
-			if err := cloudfunc.ServeJSON(w, street); err != nil {
+			if err := cloudfunc.ServeJSON(w, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}

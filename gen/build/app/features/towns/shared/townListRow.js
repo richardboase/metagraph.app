@@ -7,8 +7,9 @@ import { RowThumbnail } from "@/components/rowThumbnail"
 import { RowDelete } from "@/components/rowDelete"
 import { RowEdit } from "@/components/rowEdit"
 import { RowOrder } from "@/components/rowOrder"
+import { titlecase } from "../_interfaces"
 
-export function Preview(props) {
+export function TownListRow(props) {
 
 	const [userdata, setUserdata] = useUserContext()
 
@@ -29,7 +30,7 @@ export function Preview(props) {
 				<Spacer/>
 			</div>
 			
-			<RowEdit object={props.item} editInterface="editquarter"/>
+			<RowEdit object={props.item} editInterface="edittown"/>
 			<RowDelete id={props.id} delete={deleteItem}/>
 		</div>
 	)

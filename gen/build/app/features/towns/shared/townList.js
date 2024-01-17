@@ -3,14 +3,13 @@ import { useUserContext } from '@/context/user';
 import { useLocalContext } from '@/context/local';
 import { useState, useEffect } from 'react';
 
-import { TownDELETE, TownsListGET, TownMoveUpPOST, TownMoveDownPOST } from '../_fetch';
-
 import VisitTab from '@/features/interfaces';
-
-import Loading from '@/app/loading';
-import { Preview } from './town';
-import Spacer from '@/inputs/spacer';
 import { titlecase } from '../_interfaces';
+import Loading from '@/app/loading'
+import Spacer from '@/inputs/spacer';
+
+import { TownListRow } from './townListRow';
+import { TownDELETE, TownsListGET, TownMoveUpPOST, TownMoveDownPOST } from '../_fetch';
 
 export function TownList(props) {
 
@@ -100,7 +99,7 @@ export function TownList(props) {
 
 			return (
 				<div key={i}>
-					<Preview id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					<TownListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
 					<Spacer/>
 				</div>
 			)

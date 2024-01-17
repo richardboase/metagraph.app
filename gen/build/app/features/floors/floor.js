@@ -50,7 +50,7 @@ export function Floor(props) {
 	}, [])
 
     return (
-        <>
+        <div style={ {padding:"30px 60px 30px 60px"} }>
 			{ !subject && <Loading/> }
 			{
 				subject && <div>
@@ -83,7 +83,7 @@ export function Floor(props) {
             
 			<RoomList title="Room" subject={subject} limit={4} />
 			
-        </>
+        </div>
     )
 
 }

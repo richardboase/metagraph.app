@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { RoomMatrix } from './shared/roomMatrix'
+import { RoomsMatrix } from './roomsMatrix'
 import { Rooms } from './rooms'
 import { Room } from './room'
 import { NewRoom } from './newRoom'
@@ -31,15 +31,17 @@ export var RoomInterfaces = {
 		level: 10+1,
 		name: "Rooms", 
 		component: (<Rooms />),
-		subsublinks: ["newroom"],
+		subsublinks: ["roomsmatrix", "newroom"],
 		hasNewButton: true,
+		hasSpreadsheetButton: true,
 	},
 	"roomsmatrix": {
-		level: 10+1,
-		name: "Rooms", 
-		component: (<RoomMatrix />),
+		level: 10+2,
+		name: "Rooms Matrix", 
+		component: (<RoomsMatrix />),
 		subsublinks: ["newroom"],
 		hasNewButton: true,
+		hasListButton: true,
 	},
 	"room": {
 		level: 10+2,

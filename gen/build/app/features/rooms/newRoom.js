@@ -33,6 +33,8 @@ export function NewRoom(props) {
 	}
 
 	return (
-		<RoomForm submit={submitNew}/>
+		<div style={ {padding:"30px 60px 30px 60px"} }>
+			<RoomForm submit={submitNew}/>
+		</div>
 	);
 }

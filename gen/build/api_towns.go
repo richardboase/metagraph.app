@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -49,19 +50,19 @@ func (app *App) EntrypointTOWNS(w http.ResponseWriter, r *http.Request) {
 		case "init":
 
 			fields := FieldsTOWN{}
-			town := NewTOWN(nil, fields)
-			if !town.ValidateInput(w, m) {
+			object := NewTOWN(nil, fields)
+			if !object.ValidateInput(w, m) {
 				return
 			}
 
 			// reuse document init create code
-			if err := app.CreateDocumentTOWN(nil, town); err != nil {
+			if err := app.CreateDocumentTOWN(nil, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return				
 			}
 
 			// finish the request
-			if err := cloudfunc.ServeJSON(w, town); err != nil {
+			if err := cloudfunc.ServeJSON(w, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
@@ -132,12 +133,12 @@ func (app *App) EntrypointTOWNS(w http.ResponseWriter, r *http.Request) {
 					log.Println(err)
 					break
 				}
-				town := &TOWN{}
-				if err := doc.DataTo(town); err != nil {
+				object := &TOWN{}
+				if err := doc.DataTo(object); err != nil {
 					log.Println(err)
 					continue
 				}
-				list = append(list, town)
+				list = append(list, object)
 			}
 
 			if err := cloudfunc.ServeJSON(w, list); err != nil {

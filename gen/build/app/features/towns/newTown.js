@@ -33,6 +33,8 @@ export function NewTown(props) {
 	}
 
 	return (
-		<TownForm submit={submitNew}/>
+		<div style={ {padding:"30px 60px 30px 60px"} }>
+			<TownForm submit={submitNew}/>
+		</div>
 	);
 }

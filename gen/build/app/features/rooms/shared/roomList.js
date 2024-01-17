@@ -3,14 +3,13 @@ import { useUserContext } from '@/context/user';
 import { useLocalContext } from '@/context/local';
 import { useState, useEffect } from 'react';
 
-import { RoomDELETE, RoomsListGET, RoomMoveUpPOST, RoomMoveDownPOST } from '../_fetch';
-
 import VisitTab from '@/features/interfaces';
-
-import Loading from '@/app/loading';
-import { Preview } from './room';
-import Spacer from '@/inputs/spacer';
 import { titlecase } from '../_interfaces';
+import Loading from '@/app/loading'
+import Spacer from '@/inputs/spacer';
+
+import { RoomListRow } from './roomListRow';
+import { RoomDELETE, RoomsListGET, RoomMoveUpPOST, RoomMoveDownPOST } from '../_fetch';
 
 export function RoomList(props) {
 
@@ -100,7 +99,7 @@ export function RoomList(props) {
 
 			return (
 				<div key={i}>
-					<Preview id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					<RoomListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
 					<Spacer/>
 				</div>
 			)

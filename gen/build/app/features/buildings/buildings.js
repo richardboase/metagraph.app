@@ -13,6 +13,8 @@ export function Buildings(props) {
 	const [ parent ] = useState(localdata.tab.context.object)
 
 	return (
-		<BuildingList subject={parent} />
+		<div style={ {padding:"30px 60px 30px 60px"} }>
+			<BuildingList subject={parent} />
+		</div>
 	)
 }

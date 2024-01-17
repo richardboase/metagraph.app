@@ -56,5 +56,35 @@ func (x *ROOM) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bo
 		return false
 	}
 
+	x.Meta.Modify()
+
 	return true
+}
+
+func (x *ROOM) ValidateByCount(w http.ResponseWriter, m map[string]interface{}, count int) bool {
+
+	var counter int
+	var exists bool
+	
+	x.Fields.Name, exists = AssertSTRING(w, m, "name")
+	if exists {
+		counter++
+	}
+
+	// ignore this, a mostly redundant artifact
+	{
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, x.Fields.Name) {
+				return false
+			}
+		}
+	}
+	if !AssertRange(w, 1, 30, x.Fields.Name) {
+		return false
+	}
+
+	x.Meta.Modify()
+
+	return counter == count
 }

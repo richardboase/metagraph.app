@@ -89,5 +89,63 @@ func (x *BUILDING) ValidateInput(w http.ResponseWriter, m map[string]interface{}
 	// ignore this, a mostly redundant artifact
 	
 
+	x.Meta.Modify()
+
 	return true
+}
+
+func (x *BUILDING) ValidateByCount(w http.ResponseWriter, m map[string]interface{}, count int) bool {
+
+	var counter int
+	var exists bool
+	
+	x.Fields.Name, exists = AssertSTRING(w, m, "name")
+	if exists {
+		counter++
+	}
+
+	// ignore this, a mostly redundant artifact
+	{
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, x.Fields.Name) {
+				return false
+			}
+		}
+	}
+	if !AssertRange(w, 1, 30, x.Fields.Name) {
+		return false
+	}
+	x.Fields.Number, exists = AssertINT(w, m, "number")
+	if exists {
+		counter++
+	}
+
+	// ignore this, a mostly redundant artifact
+	
+	x.Fields.Xunits, exists = AssertFLOAT64(w, m, "xunits")
+	if exists {
+		counter++
+	}
+
+	// ignore this, a mostly redundant artifact
+	
+	x.Fields.Yunits, exists = AssertFLOAT64(w, m, "yunits")
+	if exists {
+		counter++
+	}
+
+	// ignore this, a mostly redundant artifact
+	
+	x.Fields.Doors, exists = AssertINT(w, m, "doors")
+	if exists {
+		counter++
+	}
+
+	// ignore this, a mostly redundant artifact
+	
+
+	x.Meta.Modify()
+
+	return counter == count
 }

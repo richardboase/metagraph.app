@@ -3,14 +3,13 @@ import { useUserContext } from '@/context/user';
 import { useLocalContext } from '@/context/local';
 import { useState, useEffect } from 'react';
 
-import { BuildingDELETE, BuildingsListGET, BuildingMoveUpPOST, BuildingMoveDownPOST } from '../_fetch';
-
 import VisitTab from '@/features/interfaces';
-
-import Loading from '@/app/loading';
-import { Preview } from './building';
-import Spacer from '@/inputs/spacer';
 import { titlecase } from '../_interfaces';
+import Loading from '@/app/loading'
+import Spacer from '@/inputs/spacer';
+
+import { BuildingListRow } from './buildingListRow';
+import { BuildingDELETE, BuildingsListGET, BuildingMoveUpPOST, BuildingMoveDownPOST } from '../_fetch';
 
 export function BuildingList(props) {
 
@@ -100,7 +99,7 @@ export function BuildingList(props) {
 
 			return (
 				<div key={i}>
-					<Preview id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					<BuildingListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
 					<Spacer/>
 				</div>
 			)

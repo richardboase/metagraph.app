@@ -7,8 +7,9 @@ import { RowThumbnail } from "@/components/rowThumbnail"
 import { RowDelete } from "@/components/rowDelete"
 import { RowEdit } from "@/components/rowEdit"
 import { RowOrder } from "@/components/rowOrder"
+import { titlecase } from "../_interfaces"
 
-export function Preview(props) {
+export function FloorListRow(props) {
 
 	const [userdata, setUserdata] = useUserContext()
 
@@ -24,12 +25,12 @@ export function Preview(props) {
 		<div className='flex flex-row justify-between items-center w-full my-2'>
 			
 			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer m-4'>
-				<div className='text-xl font-bold' title="name">{ props.item.fields["name"] }</div>
+				<div className='text-xl font-bold' title="rooms">{ props.item.fields["rooms"] }</div>
 				<div className="px-4"></div>
 				<Spacer/>
 			</div>
 			
-			<RowEdit object={props.item} editInterface="edittown"/>
+			<RowEdit object={props.item} editInterface="editfloor"/>
 			<RowDelete id={props.id} delete={deleteItem}/>
 		</div>
 	)

@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { TownMatrix } from './shared/townMatrix'
+import { TownsMatrix } from './townsMatrix'
 import { Towns } from './towns'
 import { Town } from './town'
 import { NewTown } from './newTown'
@@ -31,15 +31,17 @@ export var TownInterfaces = {
 		level: 0+1,
 		name: "Towns", 
 		component: (<Towns />),
-		subsublinks: ["newtown"],
+		subsublinks: ["townsmatrix", "newtown"],
 		hasNewButton: true,
+		hasSpreadsheetButton: true,
 	},
 	"townsmatrix": {
-		level: 0+1,
-		name: "Towns", 
-		component: (<TownMatrix />),
+		level: 0+2,
+		name: "Towns Matrix", 
+		component: (<TownsMatrix />),
 		subsublinks: ["newtown"],
 		hasNewButton: true,
+		hasListButton: true,
 	},
 	"town": {
 		level: 0+2,

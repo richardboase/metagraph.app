@@ -47,5 +47,25 @@ func (x *FLOOR) ValidateInput(w http.ResponseWriter, m map[string]interface{}) b
 	// ignore this, a mostly redundant artifact
 	
 
+	x.Meta.Modify()
+
 	return true
+}
+
+func (x *FLOOR) ValidateByCount(w http.ResponseWriter, m map[string]interface{}, count int) bool {
+
+	var counter int
+	var exists bool
+	
+	x.Fields.Rooms, exists = AssertINT(w, m, "rooms")
+	if exists {
+		counter++
+	}
+
+	// ignore this, a mostly redundant artifact
+	
+
+	x.Meta.Modify()
+
+	return counter == count
 }

@@ -49,7 +49,7 @@ export function Room(props) {
 	}, [])
 
     return (
-        <>
+        <div style={ {padding:"30px 60px 30px 60px"} }>
 			{ !subject && <Loading/> }
 			{
 				subject && <div>
@@ -80,7 +80,7 @@ export function Room(props) {
 				</div>
 			}
             
-        </>
+        </div>
     )
 
 }

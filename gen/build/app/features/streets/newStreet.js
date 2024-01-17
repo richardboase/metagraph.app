@@ -33,6 +33,8 @@ export function NewStreet(props) {
 	}
 
 	return (
-		<StreetForm submit={submitNew}/>
+		<div style={ {padding:"30px 60px 30px 60px"} }>
+			<StreetForm submit={submitNew}/>
+		</div>
 	);
 }

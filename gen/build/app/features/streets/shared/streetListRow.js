@@ -7,8 +7,9 @@ import { RowThumbnail } from "@/components/rowThumbnail"
 import { RowDelete } from "@/components/rowDelete"
 import { RowEdit } from "@/components/rowEdit"
 import { RowOrder } from "@/components/rowOrder"
+import { titlecase } from "../_interfaces"
 
-export function Preview(props) {
+export function StreetListRow(props) {
 
 	const [userdata, setUserdata] = useUserContext()
 
@@ -26,18 +27,10 @@ export function Preview(props) {
 			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer m-4'>
 				<div className='text-xl font-bold' title="name">{ props.item.fields["name"] }</div>
 				<div className="px-4"></div>
-				<Spacer/><div className='text-xl font-bold' title="number">{ props.item.fields["number"] }</div>
-				<div className="px-4"></div>
-				<Spacer/><div className='text-xl font-bold' title="xunits">{ props.item.fields["xunits"] }</div>
-				<div className="px-4"></div>
-				<Spacer/><div className='text-xl font-bold' title="yunits">{ props.item.fields["yunits"] }</div>
-				<div className="px-4"></div>
-				<Spacer/><div className='text-xl font-bold' title="doors">{ props.item.fields["doors"] }</div>
-				<div className="px-4"></div>
 				<Spacer/>
 			</div>
 			
-			<RowEdit object={props.item} editInterface="editbuilding"/>
+			<RowEdit object={props.item} editInterface="editstreet"/>
 			<RowDelete id={props.id} delete={deleteItem}/>
 		</div>
 	)

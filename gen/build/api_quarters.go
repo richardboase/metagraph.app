@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -61,19 +62,19 @@ func (app *App) EntrypointQUARTERS(w http.ResponseWriter, r *http.Request) {
 			}
 
 			fields := FieldsQUARTER{}
-			quarter := NewQUARTER(parent, fields)
-			if !quarter.ValidateInput(w, m) {
+			object := NewQUARTER(parent, fields)
+			if !object.ValidateInput(w, m) {
 				return
 			}
 
 			// reuse document init create code
-			if err := app.CreateDocumentQUARTER(parent, quarter); err != nil {
+			if err := app.CreateDocumentQUARTER(parent, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return				
 			}
 
 			// finish the request
-			if err := cloudfunc.ServeJSON(w, quarter); err != nil {
+			if err := cloudfunc.ServeJSON(w, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}

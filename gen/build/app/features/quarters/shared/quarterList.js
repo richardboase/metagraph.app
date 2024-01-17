@@ -3,14 +3,13 @@ import { useUserContext } from '@/context/user';
 import { useLocalContext } from '@/context/local';
 import { useState, useEffect } from 'react';
 
-import { QuarterDELETE, QuartersListGET, QuarterMoveUpPOST, QuarterMoveDownPOST } from '../_fetch';
-
 import VisitTab from '@/features/interfaces';
-
-import Loading from '@/app/loading';
-import { Preview } from './quarter';
-import Spacer from '@/inputs/spacer';
 import { titlecase } from '../_interfaces';
+import Loading from '@/app/loading'
+import Spacer from '@/inputs/spacer';
+
+import { QuarterListRow } from './quarterListRow';
+import { QuarterDELETE, QuartersListGET, QuarterMoveUpPOST, QuarterMoveDownPOST } from '../_fetch';
 
 export function QuarterList(props) {
 
@@ -100,7 +99,7 @@ export function QuarterList(props) {
 
 			return (
 				<div key={i}>
-					<Preview id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					<QuarterListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
 					<Spacer/>
 				</div>
 			)
