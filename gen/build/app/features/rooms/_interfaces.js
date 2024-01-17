@@ -3,6 +3,7 @@ import * as React from 'react'
 import { RoomsMatrix } from './roomsMatrix'
 import { Rooms } from './rooms'
 import { Room } from './room'
+import { RoomAssets } from './roomAssets'
 import { NewRoom } from './newRoom'
 import { EditRoom } from './editRoom'
 import { DeleteRoom } from './deleteRoom'
@@ -51,5 +52,10 @@ export var RoomInterfaces = {
 		component: (<Room />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"roomassets": {
+		level: 10+2,
+		name: "Room Assets",
+		component: (<RoomAssets />),
 	},
 }

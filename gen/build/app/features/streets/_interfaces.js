@@ -3,6 +3,7 @@ import * as React from 'react'
 import { StreetsMatrix } from './streetsMatrix'
 import { Streets } from './streets'
 import { Street } from './street'
+import { StreetAssets } from './streetAssets'
 import { NewStreet } from './newStreet'
 import { EditStreet } from './editStreet'
 import { DeleteStreet } from './deleteStreet'
@@ -51,5 +52,10 @@ export var StreetInterfaces = {
 		component: (<Street />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"streetassets": {
+		level: 4+2,
+		name: "Street Assets",
+		component: (<StreetAssets />),
 	},
 }

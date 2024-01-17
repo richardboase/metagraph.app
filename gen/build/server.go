@@ -19,8 +19,13 @@ func main() {
 	app := NewApp()
 	app.UseGCP("npg-generic")
 	app.UseGCPFirestore("go-gen-test")
+	app.UseAssetlayer(
+		os.Getenv("ASSETLAYERAPPID"),
+		os.Getenv("ASSETLAYERSECRET"),
+		os.Getenv("DIDTOKEN"),
+	)
 
-	slotID, err := app.Assetlayer.EnsureSlotExists("go-gen-test-models", "description...", "")
+	slotID, err := app.Assetlayer().EnsureSlotExists("go-gen-test-models", "description...", "")
 	if err != nil {
 		panic(err)
 	}
@@ -28,42 +33,42 @@ func main() {
 
 	
 	{
-		collectionID, err := app.Assetlayer.EnsureCollectionExists(slotID, "Unique", "towns", "description...", "", 1000000, nil)
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "towns", "description...", "", 1000000, nil)
 		if err != nil {
 			panic(err)
 		}
 		os.Setenv("MODEL_TOWNS", collectionID)
 	}
 	{
-		collectionID, err := app.Assetlayer.EnsureCollectionExists(slotID, "Unique", "quarters", "description...", "", 1000000, nil)
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "quarters", "description...", "", 1000000, nil)
 		if err != nil {
 			panic(err)
 		}
 		os.Setenv("MODEL_QUARTERS", collectionID)
 	}
 	{
-		collectionID, err := app.Assetlayer.EnsureCollectionExists(slotID, "Unique", "streets", "description...", "", 1000000, nil)
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "streets", "description...", "", 1000000, nil)
 		if err != nil {
 			panic(err)
 		}
 		os.Setenv("MODEL_STREETS", collectionID)
 	}
 	{
-		collectionID, err := app.Assetlayer.EnsureCollectionExists(slotID, "Unique", "buildings", "description...", "", 1000000, nil)
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "buildings", "description...", "", 1000000, nil)
 		if err != nil {
 			panic(err)
 		}
 		os.Setenv("MODEL_BUILDINGS", collectionID)
 	}
 	{
-		collectionID, err := app.Assetlayer.EnsureCollectionExists(slotID, "Unique", "floors", "description...", "", 1000000, nil)
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "floors", "description...", "", 1000000, nil)
 		if err != nil {
 			panic(err)
 		}
 		os.Setenv("MODEL_FLOORS", collectionID)
 	}
 	{
-		collectionID, err := app.Assetlayer.EnsureCollectionExists(slotID, "Unique", "rooms", "description...", "", 1000000, nil)
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "rooms", "description...", "", 1000000, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -75,6 +80,8 @@ func main() {
 	http.HandleFunc("/api/user", app.UserEntrypoint)
 	http.HandleFunc("/api/users", app.UsersEntrypoint)
 	http.HandleFunc("/api/auth", app.AuthEntrypoint)
+	http.HandleFunc("/api/assetlayer", app.EntrypointASSETLAYER)
+	http.HandleFunc("/api/asyncjob", app.EntrypointASYNCJOB)
 	
 	http.HandleFunc("/api/town", app.EntrypointTOWN)
 	http.HandleFunc("/api/towns", app.EntrypointTOWNS)

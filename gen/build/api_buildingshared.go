@@ -40,7 +40,7 @@ func (app *App) CreateDocumentBUILDING(parent *Internals, object *BUILDING) erro
 	// create asset
 	{
 		log.Println("CREATING TOKEN")
-		assetID, err := app.Assetlayer.MintAssetWithProperties(object.Meta.AssetlayerCollectionID(), object)
+		assetID, err := app.Assetlayer().MintAssetWithProperties(object.Meta.AssetlayerCollectionID(), object)
 		if err != nil {
 			return err
 		}
@@ -52,7 +52,7 @@ func (app *App) CreateDocumentBUILDING(parent *Internals, object *BUILDING) erro
 	// create app wallet
 	{
 		log.Println("CREATING WALLET")
-		if err := app.Assetlayer.NewAppWallet(object.Meta.AssetlayerWalletID()); err != nil {
+		if err := app.Assetlayer().NewAppWallet(object.Meta.AssetlayerWalletID()); err != nil {
 			return err
 		}
 	}

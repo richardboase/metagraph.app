@@ -3,6 +3,7 @@ import * as React from 'react'
 import { BuildingsMatrix } from './buildingsMatrix'
 import { Buildings } from './buildings'
 import { Building } from './building'
+import { BuildingAssets } from './buildingAssets'
 import { NewBuilding } from './newBuilding'
 import { EditBuilding } from './editBuilding'
 import { DeleteBuilding } from './deleteBuilding'
@@ -51,5 +52,10 @@ export var BuildingInterfaces = {
 		component: (<Building />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"buildingassets": {
+		level: 6+2,
+		name: "Building Assets",
+		component: (<BuildingAssets />),
 	},
 }

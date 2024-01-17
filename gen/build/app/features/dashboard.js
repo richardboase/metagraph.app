@@ -104,8 +104,8 @@ export default function Dashboard(props) {
 						<div id={localdata.tab.name.toLowerCase()+"s"}
 						onClick={updateTabEvent} className="flex flex-col justify-center items-center m-2 cursor-pointer" style={{width:"20px",height:"20px"}}>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" style={{pointerEvents:"none"}}>
-							<path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-							</svg>
+							<path strokeLinecap="round" strokeLinejoin="round" d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0 4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3" />
+							</svg>	
 						</div>
 					</div>
 				}
@@ -192,6 +192,13 @@ export default function Dashboard(props) {
 								</svg>
 							</div>
 						</div>
+					</div>
+				}
+				{
+					localdata?.tab.context.object && <div id={localdata.tab.context.object.Meta.Class.substr(0, localdata.tab.context.object.Meta.Class.length-1)+"assets"} onClick={updateTabEvent} className="flex flex-col justify-center items-center m-4 cursor-pointer" style={{width:"36px",height:"36px"}}>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" style={{pointerEvents:"none"}}>
+						<path strokeLinecap="round" strokeLinejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
+						</svg>
 					</div>
 				}
 			</div>

@@ -3,6 +3,7 @@ import * as React from 'react'
 import { FloorsMatrix } from './floorsMatrix'
 import { Floors } from './floors'
 import { Floor } from './floor'
+import { FloorAssets } from './floorAssets'
 import { NewFloor } from './newFloor'
 import { EditFloor } from './editFloor'
 import { DeleteFloor } from './deleteFloor'
@@ -51,5 +52,10 @@ export var FloorInterfaces = {
 		component: (<Floor />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"floorassets": {
+		level: 8+2,
+		name: "Floor Assets",
+		component: (<FloorAssets />),
 	},
 }

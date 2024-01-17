@@ -3,6 +3,7 @@ import * as React from 'react'
 import { TownsMatrix } from './townsMatrix'
 import { Towns } from './towns'
 import { Town } from './town'
+import { TownAssets } from './townAssets'
 import { NewTown } from './newTown'
 import { EditTown } from './editTown'
 import { DeleteTown } from './deleteTown'
@@ -51,5 +52,10 @@ export var TownInterfaces = {
 		component: (<Town />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"townassets": {
+		level: 0+2,
+		name: "Town Assets",
+		component: (<TownAssets />),
 	},
 }
