@@ -8,7 +8,7 @@ import VisitTab from '../interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
 
-import { AssetUser } from '@/app/fetch'
+import { AssetsUser, AssetsWallet } from '@/app/fetch'
 
 import { RoomObjectGET } from './_fetch'
 
@@ -33,7 +33,7 @@ export function RoomAssets(props) {
 	}
 
 	function getAssets() {
-		AssetUser(userdata, subject.Meta.ID)
+		AssetsWallet(userdata, subject.Meta.ID)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

@@ -51,12 +51,30 @@ func (app *App) EntrypointASSETLAYER(w http.ResponseWriter, r *http.Request) {
 		switch function {
 
 		// return a list of assets by account
-		case "list":
+		case "assets":
 
 			println(parent.ID)
 
 			println("checking wallet:", parent.Wallet)
-			list, err := app.Assetlayer().AssetUser(parent.Wallet, false, false)
+			list, err := app.Assetlayer().GetWalletAssets(parent.Wallet, false, false)
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			}
+			if err := cloudfunc.ServeJSON(w, list); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			}
+
+			return
+
+		// return a list of assets by account
+		case "walletassets":
+
+			println(parent.ID)
+
+			println("checking wallet:", parent.Wallet)
+			list, err := app.Assetlayer().GetWalletAssets(parent.Wallet, false, false)
 			if err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
