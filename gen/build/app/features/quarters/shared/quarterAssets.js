@@ -101,7 +101,7 @@ export function QuarterAssets(props) {
 
 			return (
 				<div key={i}>
-					<QuarterListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					<QuarterAssetsRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
 					<Spacer/>
 				</div>
 			)

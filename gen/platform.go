@@ -21,6 +21,41 @@ func main() {
 		DatabaseID: "go-gen-test",
 		Entrypoints: []string{
 			"town",
+			"game",
+		},
+	}
+
+	game := &models.Object{
+		Mode:    "root",
+		Parents: []string{},
+		Name:    "game",
+		Fields: []*models.Field{
+			{
+				Name:     "name",
+				JSON:     "string_30",
+				Required: true,
+			},
+		},
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{},
+		},
+	}
+
+	lobby := &models.Object{
+		Parents: []string{
+			game.Name,
+		},
+		Name: "lobby",
+		Fields: []*models.Field{
+			{
+				Name: "name",
+				JSON: "string_30",
+			},
+		},
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{
+				Wallet: true,
+			},
 		},
 	}
 
@@ -154,6 +189,9 @@ func main() {
 			},
 		},
 	}
+
+	tree.Objects = append(tree.Objects, game)
+	tree.Objects = append(tree.Objects, lobby)
 
 	tree.Objects = append(tree.Objects, town)
 	tree.Objects = append(tree.Objects, quarter)

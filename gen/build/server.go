@@ -33,6 +33,20 @@ func main() {
 
 	
 	{
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "games", "description...", "", 1000000, nil)
+		if err != nil {
+			panic(err)
+		}
+		os.Setenv("MODEL_GAMES", collectionID)
+	}
+	{
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "lobbys", "description...", "", 1000000, nil)
+		if err != nil {
+			panic(err)
+		}
+		os.Setenv("MODEL_LOBBYS", collectionID)
+	}
+	{
 		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "towns", "description...", "", 1000000, nil)
 		if err != nil {
 			panic(err)
@@ -83,6 +97,12 @@ func main() {
 	http.HandleFunc("/api/assetlayer", app.EntrypointASSETLAYER)
 	http.HandleFunc("/api/asyncjob", app.EntrypointASYNCJOB)
 	
+	http.HandleFunc("/api/game", app.EntrypointGAME)
+	http.HandleFunc("/api/games", app.EntrypointGAMES)
+	println("registering handlers for games")
+	http.HandleFunc("/api/lobby", app.EntrypointLOBBY)
+	http.HandleFunc("/api/lobbys", app.EntrypointLOBBYS)
+	println("registering handlers for lobbys")
 	http.HandleFunc("/api/town", app.EntrypointTOWN)
 	http.HandleFunc("/api/towns", app.EntrypointTOWNS)
 	println("registering handlers for towns")

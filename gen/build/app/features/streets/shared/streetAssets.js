@@ -101,7 +101,7 @@ export function StreetAssets(props) {
 
 			return (
 				<div key={i}>
-					<StreetListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					<StreetAssetsRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
 					<Spacer/>
 				</div>
 			)

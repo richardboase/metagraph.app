@@ -101,7 +101,7 @@ export function RoomAssets(props) {
 
 			return (
 				<div key={i}>
-					<RoomListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					<RoomAssetsRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
 					<Spacer/>
 				</div>
 			)

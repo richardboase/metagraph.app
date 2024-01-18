@@ -1,6 +1,8 @@
 import * as React from 'react'
 
 
+import { GameInterfaces } from '@/features/games/_interfaces'
+import { LobbyInterfaces } from '@/features/lobbys/_interfaces'
 import { TownInterfaces } from '@/features/towns/_interfaces'
 import { QuarterInterfaces } from '@/features/quarters/_interfaces'
 import { StreetInterfaces } from '@/features/streets/_interfaces'
@@ -31,7 +33,13 @@ export function GetInterfaces() {
 	}
 	// custom features
 
-	// TownInterfaces
+	// GameInterfaces
+	for (const k in GameInterfaces) {
+		interfaces[k.toLowerCase()] = GameInterfaces[k]
+	}// LobbyInterfaces
+	for (const k in LobbyInterfaces) {
+		interfaces[k.toLowerCase()] = LobbyInterfaces[k]
+	}// TownInterfaces
 	for (const k in TownInterfaces) {
 		interfaces[k.toLowerCase()] = TownInterfaces[k]
 	}// QuarterInterfaces
