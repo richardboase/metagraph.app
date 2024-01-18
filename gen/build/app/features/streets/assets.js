@@ -8,12 +8,12 @@ import VisitTab from '../interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
 
-import { TownAssets } from './shared/townAssets'
+import { StreetAssets } from './shared/streetAssets'
 
 import { AssetsUser, AssetsWallet } from '@/app/fetch'
-import { TownObjectGET } from './_fetch'
+import { StreetObjectGET } from './_fetch'
 
-export function TownAssets(props) {  
+export function Assets(props) {  
 
 	const [userdata, setUserdata] = useUserContext()
 	const [localdata, setLocaldata] = useLocalContext() 
@@ -21,7 +21,7 @@ export function TownAssets(props) {
 	const [assets, setAssets] = useState()
 
 	function getObject() {
-		TownObjectGET(userdata, subject.Meta.ID)
+		StreetObjectGET(userdata, subject.Meta.ID)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -53,7 +53,7 @@ export function TownAssets(props) {
 
 	return (
 		<div style={ {padding:"30px 60px 30px 60px"} }>
-			<TownAssets subject={subject}/>
+			<StreetAssets subject={subject}/>
 		</div>
 	)
 

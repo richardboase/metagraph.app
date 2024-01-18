@@ -8,9 +8,7 @@ import { titlecase } from '../_interfaces';
 import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
-import { AssetsWallet } from "@/app/fetch"
-
-import { QuarterAssetsRow } from './quarterAssetsRow';
+import { QuarterListRow } from './quarterListRow';
 import { QuarterDELETE, QuartersListGET, QuarterMoveUpPOST, QuarterMoveDownPOST } from '../_fetch';
 
 export function QuarterList(props) {
@@ -21,7 +19,7 @@ export function QuarterList(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		AssetsWallet(userdata, props.subject?.Meta.ID)
+		QuartersListGET(userdata, props.subject?.Meta.ID, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

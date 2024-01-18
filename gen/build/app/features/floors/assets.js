@@ -8,12 +8,12 @@ import VisitTab from '../interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
 
-import { BuildingAssets } from './shared/buildingAssets'
+import { FloorAssets } from './shared/floorAssets'
 
 import { AssetsUser, AssetsWallet } from '@/app/fetch'
-import { BuildingObjectGET } from './_fetch'
+import { FloorObjectGET } from './_fetch'
 
-export function BuildingAssets(props) {  
+export function Assets(props) {  
 
 	const [userdata, setUserdata] = useUserContext()
 	const [localdata, setLocaldata] = useLocalContext() 
@@ -21,7 +21,7 @@ export function BuildingAssets(props) {
 	const [assets, setAssets] = useState()
 
 	function getObject() {
-		BuildingObjectGET(userdata, subject.Meta.ID)
+		FloorObjectGET(userdata, subject.Meta.ID)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -53,7 +53,7 @@ export function BuildingAssets(props) {
 
 	return (
 		<div style={ {padding:"30px 60px 30px 60px"} }>
-			<BuildingAssets subject={subject}/>
+			<FloorAssets subject={subject}/>
 		</div>
 	)
 

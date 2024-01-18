@@ -8,12 +8,12 @@ import VisitTab from '../interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
 
-import { RoomAssets } from './shared/roomAssets'
+import { QuarterAssets } from './shared/quarterAssets'
 
 import { AssetsUser, AssetsWallet } from '@/app/fetch'
-import { RoomObjectGET } from './_fetch'
+import { QuarterObjectGET } from './_fetch'
 
-export function RoomAssets(props) {  
+export function Assets(props) {  
 
 	const [userdata, setUserdata] = useUserContext()
 	const [localdata, setLocaldata] = useLocalContext() 
@@ -21,7 +21,7 @@ export function RoomAssets(props) {
 	const [assets, setAssets] = useState()
 
 	function getObject() {
-		RoomObjectGET(userdata, subject.Meta.ID)
+		QuarterObjectGET(userdata, subject.Meta.ID)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -53,7 +53,7 @@ export function RoomAssets(props) {
 
 	return (
 		<div style={ {padding:"30px 60px 30px 60px"} }>
-			<RoomAssets subject={subject}/>
+			<QuarterAssets subject={subject}/>
 		</div>
 	)
 

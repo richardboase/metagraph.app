@@ -8,9 +8,7 @@ import { titlecase } from '../_interfaces';
 import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
-import { AssetsWallet } from "@/app/fetch"
-
-import { RoomAssetsRow } from './roomAssetsRow';
+import { RoomListRow } from './roomListRow';
 import { RoomDELETE, RoomsListGET, RoomMoveUpPOST, RoomMoveDownPOST } from '../_fetch';
 
 export function RoomList(props) {
@@ -21,7 +19,7 @@ export function RoomList(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		AssetsWallet(userdata, props.subject?.Meta.ID)
+		RoomsListGET(userdata, props.subject?.Meta.ID, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

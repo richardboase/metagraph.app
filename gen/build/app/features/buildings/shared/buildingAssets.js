@@ -8,7 +8,9 @@ import { titlecase } from '../_interfaces';
 import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
-import { BuildingListRow } from './buildingListRow';
+import { AssetsWallet } from '@/app/fetch'
+
+import { BuildingAssetsRow } from './buildingAssetsRow';
 import { BuildingDELETE, BuildingsListGET, BuildingMoveUpPOST, BuildingMoveDownPOST } from '../_fetch';
 
 export function BuildingAssets(props) {
@@ -21,7 +23,7 @@ export function BuildingAssets(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		BuildingsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		AssetsWallet(userdata, props.subject?.Meta.ID, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

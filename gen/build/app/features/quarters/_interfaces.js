@@ -3,7 +3,7 @@ import * as React from 'react'
 import { QuartersMatrix } from './quartersMatrix'
 import { Quarters } from './quarters'
 import { Quarter } from './quarter'
-import { QuarterAssets } from './quarterAssets'
+import { Assets } from './assets'
 import { NewQuarter } from './newQuarter'
 import { EditQuarter } from './editQuarter'
 import { DeleteQuarter } from './deleteQuarter'
@@ -56,6 +56,6 @@ export var QuarterInterfaces = {
 	"quarterassets": {
 		level: 2+2,
 		name: "Quarter Assets",
-		component: (<QuarterAssets />),
+		component: (<Assets />),
 	},
 }

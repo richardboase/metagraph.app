@@ -8,7 +8,9 @@ import { titlecase } from '../_interfaces';
 import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
-import { FloorListRow } from './floorListRow';
+import { AssetsWallet } from '@/app/fetch'
+
+import { FloorAssetsRow } from './floorAssetsRow';
 import { FloorDELETE, FloorsListGET, FloorMoveUpPOST, FloorMoveDownPOST } from '../_fetch';
 
 export function FloorAssets(props) {
@@ -21,7 +23,7 @@ export function FloorAssets(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		FloorsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		AssetsWallet(userdata, props.subject?.Meta.ID, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

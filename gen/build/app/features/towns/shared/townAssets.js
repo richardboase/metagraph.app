@@ -8,7 +8,9 @@ import { titlecase } from '../_interfaces';
 import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
-import { TownListRow } from './townListRow';
+import { AssetsWallet } from '@/app/fetch'
+
+import { TownAssetsRow } from './townAssetsRow';
 import { TownDELETE, TownsListGET, TownMoveUpPOST, TownMoveDownPOST } from '../_fetch';
 
 export function TownAssets(props) {
@@ -21,7 +23,7 @@ export function TownAssets(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		TownsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		AssetsWallet(userdata, props.subject?.Meta.ID, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

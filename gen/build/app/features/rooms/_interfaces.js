@@ -3,7 +3,7 @@ import * as React from 'react'
 import { RoomsMatrix } from './roomsMatrix'
 import { Rooms } from './rooms'
 import { Room } from './room'
-import { RoomAssets } from './roomAssets'
+import { Assets } from './assets'
 import { NewRoom } from './newRoom'
 import { EditRoom } from './editRoom'
 import { DeleteRoom } from './deleteRoom'
@@ -56,6 +56,6 @@ export var RoomInterfaces = {
 	"roomassets": {
 		level: 10+2,
 		name: "Room Assets",
-		component: (<RoomAssets />),
+		component: (<Assets />),
 	},
 }
