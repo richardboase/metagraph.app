@@ -48,7 +48,7 @@ func (app *App) CreateDocumentSTREET(parent *Internals, object *STREET) error {
 	}
 	
 
-	/*
+	
 	// create asset
 	{
 		log.Println("CREATING TOKEN")
@@ -61,7 +61,7 @@ func (app *App) CreateDocumentSTREET(parent *Internals, object *STREET) error {
 			return err
 		}
 	}
-	*/
+	
 	
 	// write new STREET to the DB
 	if err := object.Meta.SaveToFirestore(app.App, object); err != nil {

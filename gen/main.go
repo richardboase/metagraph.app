@@ -74,6 +74,7 @@ func main() {
 		Options: models.Options{
 			Assetlayer: models.Assetlayer{
 				Wallet: true,
+				Token:  true,
 			},
 		},
 	}
