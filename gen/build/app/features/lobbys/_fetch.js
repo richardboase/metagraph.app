@@ -53,3 +53,9 @@ export function LobbyInitUpload(user, parentID, formData) {
 export function LobbyInitUploads(user, parentID, formData) {
     return AxiosPOST(user, "api/lobbys?function=inituploads&parent="+parentID, formData)
 }
+
+// misc
+
+export function LobbyOpenaiPOST(user, parentID, formData) {
+    return AxiosPOST(user, "api/openai?function=collectionprompt&parent="+parentID, formData)
+}

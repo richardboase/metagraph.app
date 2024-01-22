@@ -53,3 +53,9 @@ export function FloorInitUpload(user, parentID, formData) {
 export function FloorInitUploads(user, parentID, formData) {
     return AxiosPOST(user, "api/floors?function=inituploads&parent="+parentID, formData)
 }
+
+// misc
+
+export function FloorOpenaiPOST(user, parentID, formData) {
+    return AxiosPOST(user, "api/openai?function=collectionprompt&parent="+parentID, formData)
+}

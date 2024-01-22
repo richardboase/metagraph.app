@@ -53,3 +53,9 @@ export function StreetInitUpload(user, parentID, formData) {
 export function StreetInitUploads(user, parentID, formData) {
     return AxiosPOST(user, "api/streets?function=inituploads&parent="+parentID, formData)
 }
+
+// misc
+
+export function StreetOpenaiPOST(user, parentID, formData) {
+    return AxiosPOST(user, "api/openai?function=collectionprompt&parent="+parentID, formData)
+}

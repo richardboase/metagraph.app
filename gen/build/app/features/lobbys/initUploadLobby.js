@@ -29,7 +29,8 @@ export function InitUploadLobby(props) {
 		formData.append('file', file);
 		formData.append('fileName', file.name);
 
-		LobbyInitUpload(userdata, element.Meta.ID, formData).then((response) => {
+		LobbyInitUpload(userdata, element.Meta.ID, formData)
+		.then((response) => {
 			console.log(response.data);
 			if (props.done) {
 				props.done()

@@ -53,3 +53,9 @@ export function QuarterInitUpload(user, parentID, formData) {
 export function QuarterInitUploads(user, parentID, formData) {
     return AxiosPOST(user, "api/quarters?function=inituploads&parent="+parentID, formData)
 }
+
+// misc
+
+export function QuarterOpenaiPOST(user, parentID, formData) {
+    return AxiosPOST(user, "api/openai?function=collectionprompt&parent="+parentID, formData)
+}

@@ -53,3 +53,9 @@ export function BuildingInitUpload(user, parentID, formData) {
 export function BuildingInitUploads(user, parentID, formData) {
     return AxiosPOST(user, "api/buildings?function=inituploads&parent="+parentID, formData)
 }
+
+// misc
+
+export function BuildingOpenaiPOST(user, parentID, formData) {
+    return AxiosPOST(user, "api/openai?function=collectionprompt&parent="+parentID, formData)
+}

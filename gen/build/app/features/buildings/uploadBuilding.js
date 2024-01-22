@@ -29,7 +29,8 @@ export function UploadBuilding(props) {
 		formData.append('file', file);
 		formData.append('fileName', file.name);
 
-		BuildingUpload(userdata, element.Meta.ID, formData).then((response) => {
+		BuildingUpload(userdata, element.Meta.ID, formData)
+		.then((response) => {
 			console.log(response.data);
 			if (props.done) {
 				props.done()

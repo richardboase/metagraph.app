@@ -29,7 +29,8 @@ export function UploadRoom(props) {
 		formData.append('file', file);
 		formData.append('fileName', file.name);
 
-		RoomUpload(userdata, element.Meta.ID, formData).then((response) => {
+		RoomUpload(userdata, element.Meta.ID, formData)
+		.then((response) => {
 			console.log(response.data);
 			if (props.done) {
 				props.done()

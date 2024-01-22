@@ -53,3 +53,9 @@ export function RoomInitUpload(user, parentID, formData) {
 export function RoomInitUploads(user, parentID, formData) {
     return AxiosPOST(user, "api/rooms?function=inituploads&parent="+parentID, formData)
 }
+
+// misc
+
+export function RoomOpenaiPOST(user, parentID, formData) {
+    return AxiosPOST(user, "api/openai?function=collectionprompt&parent="+parentID, formData)
+}

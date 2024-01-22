@@ -29,7 +29,8 @@ export function InitUploadQuarter(props) {
 		formData.append('file', file);
 		formData.append('fileName', file.name);
 
-		QuarterInitUpload(userdata, element.Meta.ID, formData).then((response) => {
+		QuarterInitUpload(userdata, element.Meta.ID, formData)
+		.then((response) => {
 			console.log(response.data);
 			if (props.done) {
 				props.done()

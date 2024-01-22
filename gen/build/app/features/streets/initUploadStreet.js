@@ -29,7 +29,8 @@ export function InitUploadStreet(props) {
 		formData.append('file', file);
 		formData.append('fileName', file.name);
 
-		StreetInitUpload(userdata, element.Meta.ID, formData).then((response) => {
+		StreetInitUpload(userdata, element.Meta.ID, formData)
+		.then((response) => {
 			console.log(response.data);
 			if (props.done) {
 				props.done()

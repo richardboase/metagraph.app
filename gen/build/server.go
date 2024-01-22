@@ -24,6 +24,7 @@ func main() {
 		os.Getenv("ASSETLAYERSECRET"),
 		os.Getenv("DIDTOKEN"),
 	)
+	app.UseChatGPT(os.Getenv("OPENAI_KEY"))
 
 	slotID, err := app.Assetlayer().EnsureSlotExists("go-gen-test-models", "description...", "")
 	if err != nil {
@@ -96,6 +97,7 @@ func main() {
 	http.HandleFunc("/api/auth", app.AuthEntrypoint)
 	http.HandleFunc("/api/assetlayer", app.EntrypointASSETLAYER)
 	http.HandleFunc("/api/asyncjob", app.EntrypointASYNCJOB)
+	http.HandleFunc("/api/asyncjob", app.EntrypointOPENAI)
 	
 	http.HandleFunc("/api/game", app.EntrypointGAME)
 	http.HandleFunc("/api/games", app.EntrypointGAMES)

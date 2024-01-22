@@ -29,7 +29,8 @@ export function InitUploadFloor(props) {
 		formData.append('file', file);
 		formData.append('fileName', file.name);
 
-		FloorInitUpload(userdata, element.Meta.ID, formData).then((response) => {
+		FloorInitUpload(userdata, element.Meta.ID, formData)
+		.then((response) => {
 			console.log(response.data);
 			if (props.done) {
 				props.done()

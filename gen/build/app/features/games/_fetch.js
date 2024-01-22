@@ -53,3 +53,9 @@ export function GameInitUpload(user, parentID, formData) {
 export function GameInitUploads(user, parentID, formData) {
     return AxiosPOST(user, "api/games?function=inituploads&parent="+parentID, formData)
 }
+
+// misc
+
+export function GameOpenaiPOST(user, parentID, formData) {
+    return AxiosPOST(user, "api/openai?function=collectionprompt&parent="+parentID, formData)
+}

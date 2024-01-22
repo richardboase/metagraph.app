@@ -53,3 +53,9 @@ export function TownInitUpload(user, parentID, formData) {
 export function TownInitUploads(user, parentID, formData) {
     return AxiosPOST(user, "api/towns?function=inituploads&parent="+parentID, formData)
 }
+
+// misc
+
+export function TownOpenaiPOST(user, parentID, formData) {
+    return AxiosPOST(user, "api/openai?function=collectionprompt&parent="+parentID, formData)
+}
