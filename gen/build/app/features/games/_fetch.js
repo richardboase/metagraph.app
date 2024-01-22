@@ -57,5 +57,5 @@ export function GameInitUploads(user, parentID, formData) {
 // misc
 
 export function GameOpenaiPOST(user, parentID, formData) {
-    return AxiosPOST(user, "api/openai?function=collectionprompt&parent="+parentID, formData)
+    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&parent="+parentID, formData)
 }

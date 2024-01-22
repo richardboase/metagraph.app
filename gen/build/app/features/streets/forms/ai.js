@@ -37,7 +37,7 @@ export function AI(props) {
         const payload = {
             "prompt": document.getElementById("prompt").value,
         }
-        StreetOpenaiPOST(userdata, props.subject.Meta.ID)
+        StreetOpenaiPOST(userdata, props.subject.Meta.ID, payload)
         .then((res) => res.json())
 		.then((data) => {
 			console.log(data)
