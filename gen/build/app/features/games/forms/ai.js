@@ -45,7 +45,7 @@ export function AI(props) {
 		}) 
 		.catch((e) => {
 			console.error(e)
-			setLocaldata(GoBack(localdata))
+			props.updateList(true)
 		})
     }
 
