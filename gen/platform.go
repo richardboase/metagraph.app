@@ -60,6 +60,7 @@ func main() {
 	}
 
 	town := &models.Object{
+		Context: "A town where people live.",
 		Mode:    "root",
 		Parents: []string{},
 		Name:    "town",
@@ -78,6 +79,7 @@ func main() {
 	}
 
 	quarter := &models.Object{
+		Context: "A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.",
 		Parents: []string{
 			town.Name,
 		},
@@ -96,6 +98,7 @@ func main() {
 	}
 
 	street := &models.Object{
+		Context: "A street, part of the transaportation network of a town or city.",
 		Parents: []string{
 			quarter.Name,
 		},
@@ -115,6 +118,7 @@ func main() {
 	}
 
 	building := &models.Object{
+		Context: "A building which exists in a street, could be residential, commercial, or industrial.",
 		Parents: []string{
 			street.Name,
 		},
@@ -152,6 +156,7 @@ func main() {
 	}
 
 	floor := &models.Object{
+		Context: "A level or floor of a building where rooms or spaces are located.",
 		Parents: []string{
 			building.Name,
 		},

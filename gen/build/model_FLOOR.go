@@ -2,6 +2,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 )
 
@@ -50,6 +51,23 @@ func (x *FLOOR) ValidateInput(w http.ResponseWriter, m map[string]interface{}) b
 	x.Meta.Modify()
 
 	return true
+}
+
+func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	
+	x.Fields.Rooms, err = assertINT(m, "rooms")
+	if err != nil {
+		return errors.New(err.Error())
+	}
+
+	// ignore this, a mostly redundant artifact
+	
+
+	x.Meta.Modify()
+
+	return nil
 }
 
 func (x *FLOOR) ValidateByCount(w http.ResponseWriter, m map[string]interface{}, count int) bool {

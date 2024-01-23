@@ -2,6 +2,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 )
 
@@ -59,6 +60,33 @@ func (x *ROOM) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bo
 	x.Meta.Modify()
 
 	return true
+}
+
+func (x *ROOM) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	
+	x.Fields.Name, err = assertSTRING(m, "name")
+	if err != nil {
+		return errors.New(err.Error())
+	}
+
+	// ignore this, a mostly redundant artifact
+	{
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, x.Fields.Name) {
+				return errors.New("failed to regexp")
+			}
+		}
+	}
+	if err := assertRange(1, 30, x.Fields.Name); err != nil {
+		return err
+	}
+
+	x.Meta.Modify()
+
+	return nil
 }
 
 func (x *ROOM) ValidateByCount(w http.ResponseWriter, m map[string]interface{}, count int) bool {

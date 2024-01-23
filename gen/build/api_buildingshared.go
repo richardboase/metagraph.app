@@ -10,6 +10,9 @@ import (
 	_ "image/png"
 	"io"
 	"net/http"
+	"encoding/json"
+
+	"github.com/sashabaranov/go-openai"
 
 	//"google.golang.org/api/iterator"
 
@@ -259,4 +262,63 @@ func (app *App) writeBuildingFile(bucketName, objectName string, content []byte)
 	n, err := writer.Write(content)
 	fmt.Printf("wrote %s %d bytes to bucket: %s \n", objectName, n, bucketName)
 	return err
+}
+
+func (app *App) buildingChatGPT(parent *Internals, collection, prompt string) error {
+
+	fmt.Println("prompt with parent", parent.ID, prompt)
+
+	prompt = fmt.Sprintf(`
+We want to create one or more of these data objects: A building which exists in a street, could be residential, commercial, or industrial.
+
+Its schema is:
+{
+name (string)number (int)xunits (float64)yunits (float64)doors (int)
+}
+
+MY PROMPT: %s
+
+REPLY ONLY WITH A JSON ENCODED ARRAY OF THE GENERATED OBJECTS.
+`,
+		prompt,
+	)
+
+	println(prompt)
+
+	resp, err := app.ChatGPT().CreateChatCompletion(
+		app.Context(),
+		openai.ChatCompletionRequest{
+			Model: openai.GPT3Dot5Turbo,
+			Messages: []openai.ChatCompletionMessage{
+				{
+					Role:    openai.ChatMessageRoleUser,
+					Content: prompt,
+				},
+			},
+		},
+	)
+	if err != nil {
+		err = fmt.Errorf("ChatCompletion error: %v\n", err)
+		return err
+	}
+
+	reply := resp.Choices[0].Message.Content
+	log.Println("reply >>", reply)
+
+	newResults := []interface{}{}
+	if err := json.Unmarshal([]byte(reply), &newResults); err != nil {
+		return err
+	}
+
+	for _, result := range newResults {
+		object := NewBUILDING(parent, FieldsBUILDING{})
+		if err := object.ValidateObject(result.(map[string]interface{})); err != nil {
+			return err
+		}
+		if err := object.Meta.SaveToFirestore(app.App, object); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
