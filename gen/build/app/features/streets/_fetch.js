@@ -56,6 +56,10 @@ export function StreetInitUploads(user, parentID, formData) {
 
 // misc
 
-export function StreetOpenaiPOST(user, parentID, collectionID, formData) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, formData)
+export function StreetChatGPTModifyPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+}
+
+export function StreetChatGPTInitPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/streets?function=prompt&parent="+parentID, payload)
 }

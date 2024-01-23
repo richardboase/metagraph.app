@@ -56,6 +56,10 @@ export function QuarterInitUploads(user, parentID, formData) {
 
 // misc
 
-export function QuarterOpenaiPOST(user, parentID, collectionID, formData) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, formData)
+export function QuarterChatGPTModifyPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+}
+
+export function QuarterChatGPTInitPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/quarters?function=prompt&parent="+parentID, payload)
 }

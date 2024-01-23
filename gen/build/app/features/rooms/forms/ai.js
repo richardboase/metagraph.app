@@ -12,7 +12,8 @@ import Select from '@/inputs/select';
 import CollectionSelect from '@/inputs/collectionSelect';
 import Color from '@/inputs/color';
 
-import { RoomOpenaiPOST } from '../_fetch'
+import { RoomChatGPTModifyPOST } from '../_fetch'
+import { RoomChatGPTInitPOST } from '../_fetch'
 
 export function AI(props) {
 
@@ -27,9 +28,9 @@ export function AI(props) {
         setToggle(!toggle)
     }
 
-	const [inputs, setInputs] = useState({})
-	function handleInputChange(obj) {
-		InputChange(inputs, setInputs, obj)
+	const [select, setSelect] = useState('create')
+	function updateSelect(e) {
+        setSelect(e.target.value)
 	}
 
     function sendPrompt() {
@@ -37,7 +38,7 @@ export function AI(props) {
         const payload = {
             "prompt": document.getElementById("prompt").value,
         }
-        RoomOpenaiPOST(userdata, props.subject.Meta.ID, props.collection, payload)
+        RoomChatGPTModifyPOST(userdata, props.subject.Meta.ID, props.collection, payload)
         .then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -62,6 +63,11 @@ export function AI(props) {
             }
 			{
                 toggle && <>
+                    <select onChange={updateSelect}>
+                        <option value="create">Create</option>
+                        <option value="modify">Modify</option>
+                    </select>
+                    <Spacer/>
                     <textarea id='prompt' placeholder="your prompt..."></textarea>
                     <div>
                         <button onClick={sendPrompt} className="my-4 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Send</button>

@@ -315,7 +315,7 @@ REPLY ONLY WITH A JSON ENCODED ARRAY OF THE GENERATED OBJECTS.
 		if err := object.ValidateObject(result.(map[string]interface{})); err != nil {
 			return err
 		}
-		if err := object.Meta.SaveToFirestore(app.App, object); err != nil {
+		if err := app.CreateDocumentROOM(parent, object); err != nil {
 			return err
 		}
 	}

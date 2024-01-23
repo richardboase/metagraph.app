@@ -56,6 +56,10 @@ export function GameInitUploads(user, parentID, formData) {
 
 // misc
 
-export function GameOpenaiPOST(user, parentID, collectionID, formData) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, formData)
+export function GameChatGPTModifyPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+}
+
+export function GameChatGPTInitPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/games?function=prompt&parent="+parentID, payload)
 }
