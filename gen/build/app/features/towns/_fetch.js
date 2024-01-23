@@ -56,6 +56,6 @@ export function TownInitUploads(user, parentID, formData) {
 
 // misc
 
-export function TownOpenaiPOST(user, parentID, formData) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&parent="+parentID, formData)
+export function TownOpenaiPOST(user, parentID, collectionID, formData) {
+    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, formData)
 }

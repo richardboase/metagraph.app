@@ -56,6 +56,6 @@ export function BuildingInitUploads(user, parentID, formData) {
 
 // misc
 
-export function BuildingOpenaiPOST(user, parentID, formData) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&parent="+parentID, formData)
+export function BuildingOpenaiPOST(user, parentID, collectionID, formData) {
+    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, formData)
 }

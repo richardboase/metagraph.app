@@ -10,6 +10,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 	"github.com/golangdaddy/leap/utils"
+	"github.com/kr/pretty"
 	"github.com/richardboase/npgpublic/models"
 	"github.com/sashabaranov/go-openai"
 	"google.golang.org/api/iterator"
@@ -78,6 +79,9 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 			m["_"] = m["Meta"].(map[string]interface{})["ID"].(string)
 			// prune metadata
 			delete(m, "Meta")
+
+			pretty.Println(m)
+
 			list = append(list, m)
 		}
 
@@ -98,13 +102,17 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			b, _ := json.Marshal(list)
+			b, err := json.Marshal(list)
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
 
 			prompt = fmt.Sprintf(`
 			This JSON represents the current state of items in a database table:
 			%s
 
-			%s
+			MY PROMPT: %s
 
 			REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
 			`, string(b), prompt)

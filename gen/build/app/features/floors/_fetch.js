@@ -56,6 +56,6 @@ export function FloorInitUploads(user, parentID, formData) {
 
 // misc
 
-export function FloorOpenaiPOST(user, parentID, formData) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&parent="+parentID, formData)
+export function FloorOpenaiPOST(user, parentID, collectionID, formData) {
+    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, formData)
 }

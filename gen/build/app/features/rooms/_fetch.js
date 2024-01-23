@@ -56,6 +56,6 @@ export function RoomInitUploads(user, parentID, formData) {
 
 // misc
 
-export function RoomOpenaiPOST(user, parentID, formData) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&parent="+parentID, formData)
+export function RoomOpenaiPOST(user, parentID, collectionID, formData) {
+    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, formData)
 }

@@ -56,6 +56,6 @@ export function LobbyInitUploads(user, parentID, formData) {
 
 // misc
 
-export function LobbyOpenaiPOST(user, parentID, formData) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&parent="+parentID, formData)
+export function LobbyOpenaiPOST(user, parentID, collectionID, formData) {
+    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, formData)
 }
