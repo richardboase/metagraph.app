@@ -21,7 +21,7 @@ export function Games(props) {
 
 	return (
 		<div style={ {padding:"30px 60px 30px 60px"} }>
-			<AI subject={subject} updateList={updateList} collection="Games"/>
+			<AI subject={subject} updateList={updateList} collection="games"/>
 			{
 				promptToggle && <GameList subject={subject} />
 			}

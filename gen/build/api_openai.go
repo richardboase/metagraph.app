@@ -110,13 +110,16 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 			}
 
 			prompt = fmt.Sprintf(`
-			This JSON represents the current state of items in a database table:
-			%s
+This JSON represents the current state of items in a database table:
+%s
 
-			MY PROMPT: %s
+MY PROMPT: %s
 
-			REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
-			`, string(b), prompt)
+REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
+`,
+				string(b),
+				prompt,
+			)
 
 			println(prompt)
 
@@ -138,7 +141,26 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			fmt.Println("RESPONSE", resp.Choices[0].Message.Content)
+			updates := []firestore.Update{}
+			for _, item := range list {
+				for field, value := range item["fields"].(map[string]interface{}) {
+					updates = append(updates, firestore.Update{
+						Path:  "fields/" + field,
+						Value: value,
+					})
+				}
+				docID := item["_"].(string)
+				log.Println("updating firestore doc:", docID)
+				if updateInfo, err := parent.Firestore(app.App).Collection(collection).Doc(docID).Update(
+					app.Context(),
+					updates,
+				); err != nil {
+					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+					return
+				} else {
+					log.Println(updateInfo)
+				}
+			}
 
 			if err := cloudfunc.ServeJSON(w, resp.Choices[0].Message.Content); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
