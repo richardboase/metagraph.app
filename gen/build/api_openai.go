@@ -101,11 +101,12 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 			b, _ := json.Marshal(list)
 
 			prompt = fmt.Sprintf(`
-			
+			This JSON represents the current state of items in a database table:
 			%s
 
 			%s
 
+			REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
 			`, string(b), prompt)
 
 			println(prompt)
