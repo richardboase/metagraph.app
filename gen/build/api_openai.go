@@ -59,6 +59,8 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 
 	case "POST":
 
+		println("grabbing results for prompt:", collection)
+
 		var list []map[string]interface{}
 		q := parent.Firestore(app.App).Collection(collection).OrderBy("Meta.Created", firestore.Asc)
 		iter := q.Documents(app.Context())
