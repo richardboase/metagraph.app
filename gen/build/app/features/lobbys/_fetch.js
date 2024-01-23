@@ -60,6 +60,6 @@ export function LobbyChatGPTModifyPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
 }
 
-export function LobbyChatGPTInitPOST(user, parentID, collectionID, payload) {
+export function LobbyChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/lobbys?function=prompt&parent="+parentID, payload)
 }

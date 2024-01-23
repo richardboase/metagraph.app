@@ -60,6 +60,6 @@ export function GameChatGPTModifyPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
 }
 
-export function GameChatGPTInitPOST(user, parentID, collectionID, payload) {
+export function GameChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/games?function=prompt&parent="+parentID, payload)
 }

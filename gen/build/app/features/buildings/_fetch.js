@@ -60,6 +60,6 @@ export function BuildingChatGPTModifyPOST(user, parentID, collectionID, payload)
     return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
 }
 
-export function BuildingChatGPTInitPOST(user, parentID, collectionID, payload) {
+export function BuildingChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/buildings?function=prompt&parent="+parentID, payload)
 }

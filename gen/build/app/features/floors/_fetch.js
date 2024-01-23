@@ -60,6 +60,6 @@ export function FloorChatGPTModifyPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
 }
 
-export function FloorChatGPTInitPOST(user, parentID, collectionID, payload) {
+export function FloorChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/floors?function=prompt&parent="+parentID, payload)
 }

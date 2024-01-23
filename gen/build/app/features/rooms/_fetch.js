@@ -60,6 +60,6 @@ export function RoomChatGPTModifyPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
 }
 
-export function RoomChatGPTInitPOST(user, parentID, collectionID, payload) {
+export function RoomChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/rooms?function=prompt&parent="+parentID, payload)
 }

@@ -60,6 +60,6 @@ export function TownChatGPTModifyPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
 }
 
-export function TownChatGPTInitPOST(user, parentID, collectionID, payload) {
+export function TownChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/towns?function=prompt&parent="+parentID, payload)
 }
