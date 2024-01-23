@@ -53,6 +53,26 @@ func (app *App) EntrypointROOMS(w http.ResponseWriter, r *http.Request) {
 
 		switch function {
 
+		case "prompt":
+
+			m := map[string]interface{}{}
+			if err := cloudfunc.ParseJSON(r, &m); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
+
+			prompt, ok := AssertSTRING(w, m, "prompt")
+			if !ok {
+				return
+			}
+
+			if err := app.roomChatGPT(parent, prompt); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			}
+
+			return
+
 		case "init":
 
 			m := map[string]interface{}{}

@@ -264,7 +264,7 @@ func (app *App) writeRoomFile(bucketName, objectName string, content []byte) err
 	return err
 }
 
-func (app *App) roomChatGPT(parent *Internals, collection, prompt string) error {
+func (app *App) roomChatGPT(parent *Internals, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 

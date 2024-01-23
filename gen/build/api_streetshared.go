@@ -264,7 +264,7 @@ func (app *App) writeStreetFile(bucketName, objectName string, content []byte) e
 	return err
 }
 
-func (app *App) streetChatGPT(parent *Internals, collection, prompt string) error {
+func (app *App) streetChatGPT(parent *Internals, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 

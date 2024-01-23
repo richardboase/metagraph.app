@@ -264,7 +264,7 @@ func (app *App) writeGameFile(bucketName, objectName string, content []byte) err
 	return err
 }
 
-func (app *App) gameChatGPT(parent *Internals, collection, prompt string) error {
+func (app *App) gameChatGPT(parent *Internals, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
