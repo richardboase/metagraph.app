@@ -62,8 +62,7 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 		println("grabbing results for prompt:", collection)
 
 		var list []map[string]interface{}
-		q := parent.Firestore(app.App).Collection(collection).OrderBy("Meta.Created", firestore.Asc)
-		iter := q.Documents(app.Context())
+		iter := parent.Firestore(app.App).Collection(collection).OrderBy("Meta.Created", firestore.Asc).Documents(app.Context())
 		for {
 			doc, err := iter.Next()
 			if err == iterator.Done {
@@ -91,8 +90,6 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 
 		case "collectionprompt":
 
-			fmt.Println("prompt with parent", parent.ID)
-
 			m := map[string]interface{}{}
 			if err := cloudfunc.ParseJSON(r, &m); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusBadRequest)
@@ -103,6 +100,8 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 			if !ok {
 				return
 			}
+
+			fmt.Println("prompt with parent", parent.ID, prompt)
 
 			b, err := json.Marshal(list)
 			if err != nil {
@@ -134,11 +133,12 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 				},
 			)
 			if err != nil {
-				fmt.Printf("ChatCompletion error: %v\n", err)
+				err = fmt.Errorf("ChatCompletion error: %v\n", err)
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
 
-			fmt.Println(resp.Choices[0].Message.Content)
+			fmt.Println("RESPONSE", resp.Choices[0].Message.Content)
 
 			if err := cloudfunc.ServeJSON(w, resp.Choices[0].Message.Content); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
