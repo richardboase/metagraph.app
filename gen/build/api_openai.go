@@ -159,6 +159,7 @@ REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
 				}
 				docID := item["_"].(string)
 				log.Println("updating firestore doc:", docID)
+				pretty.Println(updates)
 				if updateInfo, err := parent.Firestore(app.App).Collection(collection).Doc(docID).Update(
 					app.Context(),
 					updates,
