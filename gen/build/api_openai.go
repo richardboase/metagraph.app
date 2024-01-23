@@ -142,7 +142,14 @@ REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
 				return
 			}
 
-			for _, item := range list {
+			newResults := []interface{}{}
+			if err := json.Unmarshal([]byte(resp.Choices[0].Message.Content), &newResults); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			}
+
+			for _, result := range newResults {
+				item := result.(map[string]interface{})
 				updates := []firestore.Update{}
 				for field, value := range item["fields"].(map[string]interface{}) {
 					updates = append(updates, firestore.Update{
@@ -163,7 +170,7 @@ REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
 				}
 			}
 
-			if err := cloudfunc.ServeJSON(w, resp.Choices[0].Message.Content); err != nil {
+			if err := cloudfunc.ServeJSON(w, newResults); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
