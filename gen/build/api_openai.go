@@ -142,8 +142,11 @@ REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
 				return
 			}
 
+			reply := resp.Choices[0].Message.Content
+			log.Println("reply >>", reply)
+
 			newResults := []interface{}{}
-			if err := json.Unmarshal([]byte(resp.Choices[0].Message.Content), &newResults); err != nil {
+			if err := json.Unmarshal([]byte(reply), &newResults); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
