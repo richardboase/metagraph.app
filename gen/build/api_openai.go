@@ -142,8 +142,8 @@ REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
 				return
 			}
 
-			updates := []firestore.Update{}
 			for _, item := range list {
+				updates := []firestore.Update{}
 				for field, value := range item["fields"].(map[string]interface{}) {
 					updates = append(updates, firestore.Update{
 						Path:  "fields." + strings.ToLower(field),
