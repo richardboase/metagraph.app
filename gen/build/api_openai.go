@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"cloud.google.com/go/firestore"
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
@@ -145,7 +146,7 @@ REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
 			for _, item := range list {
 				for field, value := range item["fields"].(map[string]interface{}) {
 					updates = append(updates, firestore.Update{
-						Path:  "fields/" + field,
+						Path:  "fields." + strings.ToLower(field),
 						Value: value,
 					})
 				}
