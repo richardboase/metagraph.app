@@ -37,7 +37,7 @@ export function AI(props) {
         const payload = {
             "prompt": document.getElementById("prompt").value,
         }
-        RoomOpenaiPOST(userdata, props.subject.Meta.ID, props.subject.Meta.Class, payload)
+        RoomOpenaiPOST(userdata, props.subject.Meta.ID, props.collection, payload)
         .then((res) => res.json())
 		.then((data) => {
 			console.log(data)

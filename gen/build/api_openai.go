@@ -62,7 +62,7 @@ func (app *App) EntrypointOPENAI(w http.ResponseWriter, r *http.Request) {
 		println("grabbing results for prompt:", collection)
 
 		var list []map[string]interface{}
-		iter := parent.Firestore(app.App).Collection(parent.Context.Children[0]).OrderBy("Meta.Created", firestore.Asc).Documents(app.Context())
+		iter := parent.Firestore(app.App).Collection(collection).OrderBy("Meta.Created", firestore.Asc).Documents(app.Context())
 		for {
 			doc, err := iter.Next()
 			if err == iterator.Done {
