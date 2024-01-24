@@ -20,6 +20,8 @@ export default function Dashboard(props) {
 	const [localdata, setLocaldata] = useLocalContext()
 	const [messaging, setMessaging] = useMessagingContext()
 
+	const [feed, setFeed] = useState([])
+
 	const router = useRouter();
 	console.log("USERDATA", userdata)
 
@@ -39,14 +41,15 @@ export default function Dashboard(props) {
 					console.log('Connected to WebSocket server');
 				});
 				messaging.socket.addEventListener('message', (event) => {
-					console.log('Received message:', event.data);
 
 					var msg = JSON.parse(event.data)
-					if (messaging[msg.Test] == null) {
-						messaging[msg.Test] = []
+					console.log('Received message:', msg);
+
+					if (msg.Type == "shout") {
+						return
 					}
-					messaging[msg.Test].push(event.data)
-					setMessaging(messaging)
+
+					setFeed([...feed, msg]);
 				});
 
 			})
@@ -212,11 +215,11 @@ export default function Dashboard(props) {
 						localdata && localdata.tab && localdata.tab.component
 					}
 					</div>
-					<div className='bg-gray-200' style={ {width:"30vw"} }>
+					<div className='flex flex-col bg-gray-200' style={ {width:"30vw"} }>
 						{
-							messaging["async-create"] && messaging["async-create"].map(function (item, i) {
+							feed.map(function (item, i) {
 								return (
-									<div>
+									<div key={i}>
 										{item.fields.Meta.Class}
 									</div>
 								)

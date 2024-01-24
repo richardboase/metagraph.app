@@ -274,19 +274,19 @@ ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE A VALID JSON...
 We want to create one or more of these data objects: 
 {
 
-	// 
+	//  
 	name (string)
 
-	// 
+	//  
 	number (int)
 
-	// 
+	//   (THIS FIELD IS REQUIRED)
 	xunits (float64)
 
-	// 
+	//   (THIS FIELD IS REQUIRED)
 	yunits (float64)
 
-	// 
+	//   (THIS FIELD IS REQUIRED)
 	doors (int)
 
 }
