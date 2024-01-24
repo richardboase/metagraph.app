@@ -29,6 +29,9 @@ export function TeststreetForm(props) {
 			<Input id="name" type='text' required={ true } title="teststreet name" placeholder="teststreet name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
+			<Input id="description" type='text' required={ false } title="teststreet description" placeholder="teststreet description" inputChange={handleInputChange}/>
+			<Spacer/>
+			
 			<Input id="start" type='text' required={ false } title="teststreet start" placeholder="teststreet start" inputChange={handleInputChange}/>
 			<Spacer/>
 			

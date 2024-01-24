@@ -70,6 +70,12 @@ export function Teststreet(props) {
 									</tr>
 								
 									<tr>
+										<td className='font-bold'>description</td>
+										<td><div className='px-4'></div></td>
+										<td>{ subject.fields["description"] }</td>
+									</tr>
+								
+									<tr>
 										<td className='font-bold'>start</td>
 										<td><div className='px-4'></div></td>
 										<td>{ subject.fields["start"] }</td>

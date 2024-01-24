@@ -152,6 +152,9 @@ func (app *App) EntrypointTESTSTREET(w http.ResponseWriter, r *http.Request) {
 					Path: "fields.name",
 					Value: object.Fields.Name,
 				},{
+					Path: "fields.description",
+					Value: object.Fields.Description,
+				},{
 					Path: "fields.start",
 					Value: object.Fields.Start,
 				},{

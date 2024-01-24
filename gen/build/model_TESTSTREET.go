@@ -32,6 +32,7 @@ func NewTESTSTREET(parent *Internals, fields FieldsTESTSTREET) *TESTSTREET {
 
 type FieldsTESTSTREET struct {
 	Name string `json:"name"`
+	Description string `json:"description"`
 	Start string `json:"start"`
 	End string `json:"end"`
 	
@@ -56,6 +57,23 @@ func (x *TESTSTREET) ValidateInput(w http.ResponseWriter, m map[string]interface
 		}
 	}
 	if !AssertRange(w, 1, 60, x.Fields.Name) {
+		return false
+	}
+	x.Fields.Description, exists = AssertSTRING(w, m, "description")
+	if !exists {
+		return false
+	}
+
+	// ignore this, a mostly redundant artifact
+	{
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, x.Fields.Description) {
+				return false
+			}
+		}
+	}
+	if !AssertRange(w, 1, 1000, x.Fields.Description) {
 		return false
 	}
 	x.Fields.Start, exists = AssertSTRING(w, m, "start")
@@ -119,6 +137,23 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 	if err := assertRange(1, 60, x.Fields.Name); err != nil {
 		return err
 	}
+	x.Fields.Description, err = assertSTRING(m, "description")
+	if err != nil {
+		return errors.New(err.Error())
+	}
+
+	// ignore this, a mostly redundant artifact
+	{
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, x.Fields.Description) {
+				return errors.New("failed to regexp")
+			}
+		}
+	}
+	if err := assertRange(1, 1000, x.Fields.Description); err != nil {
+		return err
+	}
 	x.Fields.Start, err = assertSTRING(m, "start")
 	if err != nil {
 		return errors.New(err.Error())
@@ -179,6 +214,23 @@ func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interfa
 		}
 	}
 	if !AssertRange(w, 1, 60, x.Fields.Name) {
+		return false
+	}
+	x.Fields.Description, exists = AssertSTRING(w, m, "description")
+	if exists {
+		counter++
+	}
+
+	// ignore this, a mostly redundant artifact
+	{
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, x.Fields.Description) {
+				return false
+			}
+		}
+	}
+	if !AssertRange(w, 1, 1000, x.Fields.Description) {
 		return false
 	}
 	x.Fields.Start, exists = AssertSTRING(w, m, "start")

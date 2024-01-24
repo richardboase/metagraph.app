@@ -31,6 +31,11 @@ export function TeststreetEdit(props) {
 			type: "string",
 			value: subject.fields.name,
 			required: true,
+		},"description": {
+			id: "description",
+			type: "string",
+			value: subject.fields.description,
+			required: false,
 		},"start": {
 			id: "start",
 			type: "string",
@@ -51,6 +56,9 @@ export function TeststreetEdit(props) {
 		<div className='flex flex-col'>
 			
 			<Input id="name" type='text' required={ true } title="teststreet name" placeholder="teststreet name" inputChange={handleInputChange} value={ inputs["name"].value } />
+			<Spacer/>
+			
+			<Input id="description" type='text' required={ false } title="teststreet description" placeholder="teststreet description" inputChange={handleInputChange} value={ inputs["description"].value } />
 			<Spacer/>
 			
 			<Input id="start" type='text' required={ false } title="teststreet start" placeholder="teststreet start" inputChange={handleInputChange} value={ inputs["start"].value } />

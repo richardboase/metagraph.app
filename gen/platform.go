@@ -91,6 +91,12 @@ func main() {
 				Required: true,
 			},
 			{
+				Context:  "a description of the street",
+				Name:     "description",
+				JSON:     "string_1000",
+				Required: false,
+			},
+			{
 				Context:  "the junction at the START of the road, if any",
 				Name:     "start",
 				JSON:     "string_60",

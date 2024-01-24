@@ -120,7 +120,7 @@ export function TeststreetMatrix(props) {
 				<td className='flex flex-row justify-center font-bold px-2' style={cellStyle}>
 					<div>#</div>
 				</td>
-				<td className='font-bold px-2' style={cellStyle}>name</td><td className='font-bold px-2' style={cellStyle}>start</td><td className='font-bold px-2' style={cellStyle}>end</td>
+				<td className='font-bold px-2' style={cellStyle}>name</td><td className='font-bold px-2' style={cellStyle}>description</td><td className='font-bold px-2' style={cellStyle}>start</td><td className='font-bold px-2' style={cellStyle}>end</td>
 			</tr>
 			{
 				list && list.map(function (row, i) {
@@ -133,7 +133,7 @@ export function TeststreetMatrix(props) {
 				<td className='flex flex-row justify-center font-bold px-2 bg-gray-200' style={cellStyle}>
 					<div className='cursor-pointer' onClick={newobject}>+</div>
 				</td>
-				<td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td>
+				<td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td>
 			</tr>
 		</tbody></table>
 		<Spacer/>

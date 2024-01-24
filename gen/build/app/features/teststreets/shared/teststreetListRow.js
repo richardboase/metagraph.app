@@ -27,6 +27,8 @@ export function TeststreetListRow(props) {
 			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer m-4'>
 				<div className='text-xl font-bold' title="name">{ props.item.fields["name"] }</div>
 				<div className="px-4"></div>
+				<Spacer/><div className='text-xl font-bold' title="description">{ props.item.fields["description"] }</div>
+				<div className="px-4"></div>
 				<Spacer/><div className='text-xl font-bold' title="start">{ props.item.fields["start"] }</div>
 				<div className="px-4"></div>
 				<Spacer/><div className='text-xl font-bold' title="end">{ props.item.fields["end"] }</div>

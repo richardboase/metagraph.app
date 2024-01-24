@@ -70,11 +70,12 @@ func (app *App) chatgpt_modifyList(w http.ResponseWriter, r *http.Request, paren
 		return
 	}
 
-	prompt = fmt.Sprintf(`
-This JSON represents the current state of items in a database table:
+	prompt = fmt.Sprintf(`ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON...
+
+	This JSON represents the current state of items in a database table:
 %s
 
-MY PROMPT: %s
+MY MUTATION PROMPT: %s
 
 REPLY ONLY WITH A JSON ENCODED ARRAY OF THE END RESULT
 `,
