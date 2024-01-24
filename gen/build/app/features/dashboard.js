@@ -202,12 +202,27 @@ export default function Dashboard(props) {
 					</div>
 				}
 			</div>
+			{
+				localdata?.tab && <Subsublinks></Subsublinks>
+			}
 			{ 
-				localdata?.tab && <div className='flex flex-col min-h-full w-full bg-white'>
-					<Subsublinks></Subsublinks>			
+				localdata?.tab && <div className='flex flex-row min-h-full w-full bg-white'>
+					<div className='flex flex-col min-h-full w-full bg-white'>		
 					{ 
 						localdata && localdata.tab && localdata.tab.component
 					}
+					</div>
+					<div className='bg-gray-200' style={ {width:"30vw"} }>
+						{
+							messaging["async-create"] && messaging["async-create"].map(function (item, i) {
+								return (
+									<div>
+										{item.fields.Meta.Class}
+									</div>
+								)
+							})
+						}
+					</div>
 				</div>
 			}
 		</div>
