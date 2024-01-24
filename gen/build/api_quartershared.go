@@ -275,8 +275,10 @@ We want to create one or more of these data objects: A quarter, or part of a cit
 
 Its schema is:
 {
-// 
-name (string)
+
+	// 
+	name (string)
+
 }
 
 MY PROMPT: %s

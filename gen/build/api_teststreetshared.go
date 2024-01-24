@@ -275,11 +275,19 @@ We want to create one or more of these data objects: A street where people live.
 
 Its schema is:
 {
-// 
-name (string)// 
-description (string)// 
-start (string)// 
-end (string)
+
+	// 
+	name (string)
+
+	// 
+	description (string)
+
+	// 
+	start (string)
+
+	// 
+	end (string)
+
 }
 
 MY PROMPT: %s

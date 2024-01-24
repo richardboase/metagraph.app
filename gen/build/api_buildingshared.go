@@ -275,12 +275,22 @@ We want to create one or more of these data objects: A building which exists in 
 
 Its schema is:
 {
-// 
-name (string)// 
-number (int)// 
-xunits (float64)// 
-yunits (float64)// 
-doors (int)
+
+	// 
+	name (string)
+
+	// 
+	number (int)
+
+	// 
+	xunits (float64)
+
+	// 
+	yunits (float64)
+
+	// 
+	doors (int)
+
 }
 
 MY PROMPT: %s

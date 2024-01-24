@@ -275,8 +275,10 @@ We want to create one or more of these data objects: A level or floor of a build
 
 Its schema is:
 {
-// 
-rooms (int)
+
+	// 
+	rooms (int)
+
 }
 
 MY PROMPT: %s
