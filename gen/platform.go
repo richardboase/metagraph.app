@@ -13,12 +13,13 @@ import (
 func main() {
 
 	tree := models.Stack{
-		WebAPI:     "https://newtown.vercel.app/",
-		HostAPI:    "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/",
-		RepoURI:    "github.com/golangdaddy/newtown",
-		SiteName:   "NewTown",
-		ProjectID:  "npg-generic",
-		DatabaseID: "go-gen-test",
+		WebsocketHost: "server-go-gen-test-da7z6jf32a-nw.a.run.app",
+		WebAPI:        "https://newtown.vercel.app/",
+		HostAPI:       "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/",
+		RepoURI:       "github.com/golangdaddy/newtown",
+		SiteName:      "NewTown",
+		ProjectID:     "npg-generic",
+		DatabaseID:    "go-gen-test",
 		Entrypoints: []string{
 			"town",
 			"game",
