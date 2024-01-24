@@ -34,7 +34,7 @@ export default function Dashboard(props) {
 				user.headers = {"Authorization": data.secret}
 				setUserdata(user)
 				// init websocket
-				messaging.socket = new WebSocket('ws://server-go-gen-test-da7z6jf32a-nw.a.run.app/ws');
+				messaging.socket = new WebSocket('ws://server-go-gen-test-da7z6jf32a-nw.a.run.app/ws?key='+data.secret);
 				messaging.socket.addEventListener('open', (event) => {
 					console.log('Connected to WebSocket server');
 				});

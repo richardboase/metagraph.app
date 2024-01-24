@@ -68,7 +68,7 @@ func (app *App) HandleConnections(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// fetch the user record
-	doc, err = app.Firestore().Collection("sessions").Doc(session.UserID).Get(app.Context())
+	doc, err = app.Firestore().Collection("users").Doc(session.UserID).Get(app.Context())
 	if err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
@@ -87,13 +87,13 @@ func (app *App) HandleConnections(w http.ResponseWriter, r *http.Request) {
 	defer func() {
 		conn.Close()
 		app.Lock()
-		delete(app.connections, id)
+		delete(app.connections, user.Username)
 		app.Unlock()
-		log.Println("closed connection:", id)
+		log.Println("closed connection:", user.Username)
 	}()
 
 	app.Lock()
-	app.connections[id] = conn
+	app.connections[user.Username] = conn
 	app.Unlock()
 
 	fmt.Println("Client connected: " + user.Username)
