@@ -32,7 +32,7 @@ func NewGAME(parent *Internals, fields FieldsGAME) *GAME {
 }
 
 type FieldsGAME struct {
-	Name string `json:"name"`
+	Name string `json:"name" firestore:"name`
 	
 }
 

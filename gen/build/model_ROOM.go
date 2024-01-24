@@ -31,7 +31,7 @@ func NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
 }
 
 type FieldsROOM struct {
-	Name string `json:"name"`
+	Name string `json:"name" firestore:"name`
 	
 }
 

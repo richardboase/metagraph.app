@@ -31,7 +31,7 @@ func NewLOBBY(parent *Internals, fields FieldsLOBBY) *LOBBY {
 }
 
 type FieldsLOBBY struct {
-	Name string `json:"name"`
+	Name string `json:"name" firestore:"name`
 	
 }
 

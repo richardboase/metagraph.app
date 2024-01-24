@@ -32,7 +32,7 @@ func NewSTREET(parent *Internals, fields FieldsSTREET) *STREET {
 }
 
 type FieldsSTREET struct {
-	Name string `json:"name"`
+	Name string `json:"name" firestore:"name`
 	
 }
 

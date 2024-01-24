@@ -32,7 +32,7 @@ func NewFLOOR(parent *Internals, fields FieldsFLOOR) *FLOOR {
 }
 
 type FieldsFLOOR struct {
-	Rooms int `json:"rooms"`
+	Rooms int `json:"rooms" firestore:"rooms`
 	
 }
 
