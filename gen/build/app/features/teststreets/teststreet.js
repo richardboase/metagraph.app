@@ -8,13 +8,11 @@ import VisitTab from '../interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
 
-import { TeststreetList } from '@/features/teststreets/shared/teststreetList'
-import { QuarterList } from '@/features/quarters/shared/quarterList'
 
 
-import { TownObjectGET } from './_fetch'
+import { TeststreetObjectGET } from './_fetch'
 
-export function Town(props) {  
+export function Teststreet(props) {  
 
     const [userdata, setUserdata] = useUserContext()
     const [localdata, setLocaldata] = useLocalContext() 
@@ -25,11 +23,11 @@ export function Town(props) {
 
 	// update tabs handles the updated context and sends the user to a new interface
 	function editData() {
-		setLocaldata(VisitTab(localdata, "edittown", localdata.tab.context))
+		setLocaldata(VisitTab(localdata, "editteststreet", localdata.tab.context))
 	}
 
 	function getObject() {
-		TownObjectGET(userdata, subject.Meta.ID)
+		TeststreetObjectGET(userdata, subject.Meta.ID)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -70,6 +68,18 @@ export function Town(props) {
 										<td><div className='px-4'></div></td>
 										<td>{ subject.fields["name"] }</td>
 									</tr>
+								
+									<tr>
+										<td className='font-bold'>start</td>
+										<td><div className='px-4'></div></td>
+										<td>{ subject.fields["start"] }</td>
+									</tr>
+								
+									<tr>
+										<td className='font-bold'>end</td>
+										<td><div className='px-4'></div></td>
+										<td>{ subject.fields["end"] }</td>
+									</tr>
 								</tbody>
 							</table>
 							<div className='px-4'>
@@ -82,10 +92,6 @@ export function Town(props) {
 				</div>
 			}
             
-			<TeststreetList title="Teststreet" subject={subject} limit={4} />
-			
-			<QuarterList title="Quarter" subject={subject} limit={4} />
-			
         </div>
     )
 

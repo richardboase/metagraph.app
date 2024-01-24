@@ -269,10 +269,13 @@ func (app *App) quarterChatGPT(parent *Internals, prompt string) error {
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
 	prompt = fmt.Sprintf(`
+ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON...
+
 We want to create one or more of these data objects: A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.
 
 Its schema is:
 {
+// 
 name (string)
 }
 

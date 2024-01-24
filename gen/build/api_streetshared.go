@@ -269,10 +269,13 @@ func (app *App) streetChatGPT(parent *Internals, prompt string) error {
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
 	prompt = fmt.Sprintf(`
+ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON...
+
 We want to create one or more of these data objects: A street, part of the transaportation network of a town or city.
 
 Its schema is:
 {
+// 
 name (string)
 }
 

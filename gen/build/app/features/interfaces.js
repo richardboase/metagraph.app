@@ -4,6 +4,7 @@ import * as React from 'react'
 import { GameInterfaces } from '@/features/games/_interfaces'
 import { LobbyInterfaces } from '@/features/lobbys/_interfaces'
 import { TownInterfaces } from '@/features/towns/_interfaces'
+import { TeststreetInterfaces } from '@/features/teststreets/_interfaces'
 import { QuarterInterfaces } from '@/features/quarters/_interfaces'
 import { StreetInterfaces } from '@/features/streets/_interfaces'
 import { BuildingInterfaces } from '@/features/buildings/_interfaces'
@@ -42,6 +43,9 @@ export function GetInterfaces() {
 	}// TownInterfaces
 	for (const k in TownInterfaces) {
 		interfaces[k.toLowerCase()] = TownInterfaces[k]
+	}// TeststreetInterfaces
+	for (const k in TeststreetInterfaces) {
+		interfaces[k.toLowerCase()] = TeststreetInterfaces[k]
 	}// QuarterInterfaces
 	for (const k in QuarterInterfaces) {
 		interfaces[k.toLowerCase()] = QuarterInterfaces[k]

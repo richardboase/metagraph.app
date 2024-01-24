@@ -78,6 +78,38 @@ func main() {
 		},
 	}
 
+	teststreet := &models.Object{
+		Context: "A street where people live.",
+		Mode:    "many",
+		Parents: []string{town.Name},
+		Name:    "teststreet",
+		Fields: []*models.Field{
+			{
+				Context:  "the name of the street",
+				Name:     "name",
+				JSON:     "string_60",
+				Required: true,
+			},
+			{
+				Context:  "the junction at the START of the road, if any",
+				Name:     "start",
+				JSON:     "string_60",
+				Required: false,
+			},
+			{
+				Context:  "the junction at the END of the road, if any",
+				Name:     "end",
+				JSON:     "string_60",
+				Required: false,
+			},
+		},
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{
+				Wallet: true,
+			},
+		},
+	}
+
 	quarter := &models.Object{
 		Context: "A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.",
 		Parents: []string{
@@ -199,6 +231,8 @@ func main() {
 	tree.Objects = append(tree.Objects, lobby)
 
 	tree.Objects = append(tree.Objects, town)
+	tree.Objects = append(tree.Objects, teststreet)
+
 	tree.Objects = append(tree.Objects, quarter)
 	tree.Objects = append(tree.Objects, street)
 	tree.Objects = append(tree.Objects, building)

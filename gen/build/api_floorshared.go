@@ -269,10 +269,13 @@ func (app *App) floorChatGPT(parent *Internals, prompt string) error {
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
 	prompt = fmt.Sprintf(`
+ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON...
+
 We want to create one or more of these data objects: A level or floor of a building where rooms or spaces are located.
 
 Its schema is:
 {
+// 
 rooms (int)
 }
 

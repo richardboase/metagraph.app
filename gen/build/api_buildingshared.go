@@ -269,11 +269,18 @@ func (app *App) buildingChatGPT(parent *Internals, prompt string) error {
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
 	prompt = fmt.Sprintf(`
+ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON...
+
 We want to create one or more of these data objects: A building which exists in a street, could be residential, commercial, or industrial.
 
 Its schema is:
 {
-name (string)number (int)xunits (float64)yunits (float64)doors (int)
+// 
+name (string)// 
+number (int)// 
+xunits (float64)// 
+yunits (float64)// 
+doors (int)
 }
 
 MY PROMPT: %s

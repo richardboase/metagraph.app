@@ -48,7 +48,7 @@ export var TownInterfaces = {
 		level: 0+2,
 		name: "Town",
 		sublinks: [],
-		subsublinks: ["quarters",""],
+		subsublinks: ["teststreets","quarters",""],
 		component: (<Town />),
 		hasDeleteButton: true,
 		hasEditButton: true,

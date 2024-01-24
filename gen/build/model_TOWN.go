@@ -25,6 +25,7 @@ func NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
 		}
 	}
 	object.Meta.Context.Children = []string{
+		"teststreet",
 		"quarter",
 		
 	}

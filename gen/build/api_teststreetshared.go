@@ -19,7 +19,7 @@ import (
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
 
-func (app *App) CreateDocumentLOBBY(parent *Internals, object *LOBBY) error {
+func (app *App) CreateDocumentTESTSTREET(parent *Internals, object *TESTSTREET) error {
 	log.Println(*object)
 
 	/*
@@ -66,7 +66,7 @@ func (app *App) CreateDocumentLOBBY(parent *Internals, object *LOBBY) error {
 	}
 	*/
 	
-	// write new LOBBY to the DB
+	// write new TESTSTREET to the DB
 	if err := object.Meta.SaveToFirestore(app.App, object); err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func (app *App) CreateDocumentLOBBY(parent *Internals, object *LOBBY) error {
 	return nil
 }
 
-func (app *App) UploadLOBBY(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) UploadTESTSTREET(w http.ResponseWriter, r *http.Request, parent *Internals) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -121,37 +121,37 @@ func (app *App) UploadLOBBY(w http.ResponseWriter, r *http.Request, parent *Inte
 	}
 
 	/*
-	if err := checkImageLOBBY(buf.Bytes()); err != nil {
+	if err := checkImageTESTSTREET(buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 	*/
-	log.Println("creating new lobby:", handler.Filename)
-	fields := FieldsLOBBY{}
-	lobby := NewLOBBY(parent, fields)
+	log.Println("creating new teststreet:", handler.Filename)
+	fields := FieldsTESTSTREET{}
+	teststreet := NewTESTSTREET(parent, fields)
 
-	// hidden line here if noparent: lobby.Fields.Filename = zipFile.Name
+	// hidden line here if noparent: teststreet.Fields.Filename = zipFile.Name
 	
 
 	// generate a new URI
-	uri := lobby.Meta.NewURI()
+	uri := teststreet.Meta.NewURI()
 	println ("URI", uri)
 
 	bucketName := "go-gen-test-uploads"
-	if err := app.writeLobbyFile(bucketName, uri, buf.Bytes()); err != nil {
+	if err := app.writeTeststreetFile(bucketName, uri, buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 
 	// reuse document init create code
-	if err := app.CreateDocumentLOBBY(parent, lobby); err != nil {
+	if err := app.CreateDocumentTESTSTREET(parent, teststreet); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return		
 	}
 	return
 }
 
-func (app *App) ArchiveUploadLOBBY(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) ArchiveUploadTESTSTREET(w http.ResponseWriter, r *http.Request, parent *Internals) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -191,39 +191,39 @@ func (app *App) ArchiveUploadLOBBY(w http.ResponseWriter, r *http.Request, paren
 	// Extract each file from the zip archive
 	for n, zipFile := range zipReader.File {
 
-		extractedContent, err := readZipFileLOBBY(zipFile)
+		extractedContent, err := readZipFileTESTSTREET(zipFile)
 		if err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		/*
-		if err := checkImageLOBBY(extractedContent); err != nil {
+		if err := checkImageTESTSTREET(extractedContent); err != nil {
 			log.Println("skipping file that cannot be decoded:", zipFile.Name)
 			continue
 		}
 		*/
-		log.Println("creating new lobby:", zipFile.Name)
-		fields := FieldsLOBBY{}
-		lobby := NewLOBBY(parent, fields)
+		log.Println("creating new teststreet:", zipFile.Name)
+		fields := FieldsTESTSTREET{}
+		teststreet := NewTESTSTREET(parent, fields)
 
-		// hidden line here if noparent: lobby.Fields.Filename = zipFile.Name
+		// hidden line here if noparent: teststreet.Fields.Filename = zipFile.Name
 		
 
-		lobby.Meta.Context.Order = n
+		teststreet.Meta.Context.Order = n
 
 		// generate a new URI
-		uri := lobby.Meta.NewURI()
+		uri := teststreet.Meta.NewURI()
 		println ("URI", uri)
 
 		bucketName := "go-gen-test-uploads"
-		if err := app.writeLobbyFile(bucketName, uri, extractedContent); err != nil {
+		if err := app.writeTeststreetFile(bucketName, uri, extractedContent); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		// reuse document init create code
-		if err := app.CreateDocumentLOBBY(parent, lobby); err != nil {
+		if err := app.CreateDocumentTESTSTREET(parent, teststreet); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return		
 		}
@@ -233,12 +233,12 @@ func (app *App) ArchiveUploadLOBBY(w http.ResponseWriter, r *http.Request, paren
 }
 
 // assert file is an image because of .Object.Options.Image
-func checkImageLOBBY(fileBytes []byte) error {
+func checkImageTESTSTREET(fileBytes []byte) error {
 	_, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	return err
 }
 
-func readZipFileLOBBY(zipFile *zip.File) ([]byte, error) {
+func readZipFileTESTSTREET(zipFile *zip.File) ([]byte, error) {
 	// Open the file from the zip archive
 	zipFileReader, err := zipFile.Open()
 	if err != nil {
@@ -255,7 +255,7 @@ func readZipFileLOBBY(zipFile *zip.File) ([]byte, error) {
 	return extractedContent.Bytes(), nil
 }
 
-func (app *App) writeLobbyFile(bucketName, objectName string, content []byte) error {
+func (app *App) writeTeststreetFile(bucketName, objectName string, content []byte) error {
 	writer := app.GCPClients.GCS().Bucket(bucketName).Object(objectName).NewWriter(app.Context())
 	//writer.ObjectAttrs.CacheControl = "no-store"
 	defer writer.Close()
@@ -264,19 +264,21 @@ func (app *App) writeLobbyFile(bucketName, objectName string, content []byte) er
 	return err
 }
 
-func (app *App) lobbyChatGPT(parent *Internals, prompt string) error {
+func (app *App) teststreetChatGPT(parent *Internals, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
 	prompt = fmt.Sprintf(`
 ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON...
 
-We want to create one or more of these data objects: 
+We want to create one or more of these data objects: A street where people live.
 
 Its schema is:
 {
 // 
-name (string)
+name (string)// 
+start (string)// 
+end (string)
 }
 
 MY PROMPT: %s
@@ -314,11 +316,11 @@ YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON, REPLY ONLY WITH A JS
 	}
 
 	for _, result := range newResults {
-		object := NewLOBBY(parent, FieldsLOBBY{})
+		object := NewTESTSTREET(parent, FieldsTESTSTREET{})
 		if err := object.ValidateObject(result.(map[string]interface{})); err != nil {
 			return err
 		}
-		if err := app.CreateDocumentLOBBY(parent, object); err != nil {
+		if err := app.CreateDocumentTESTSTREET(parent, object); err != nil {
 			return err
 		}
 	}
