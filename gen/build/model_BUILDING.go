@@ -32,11 +32,11 @@ func NewBUILDING(parent *Internals, fields FieldsBUILDING) *BUILDING {
 }
 
 type FieldsBUILDING struct {
-	Name string `json:"name" firestore:"name`
-	Number int `json:"number" firestore:"number`
-	Xunits float64 `json:"xunits" firestore:"xunits`
-	Yunits float64 `json:"yunits" firestore:"yunits`
-	Doors int `json:"doors" firestore:"doors`
+	Name string `json:"name" firestore:"name"`
+	Number int `json:"number" firestore:"number"`
+	Xunits float64 `json:"xunits" firestore:"xunits"`
+	Yunits float64 `json:"yunits" firestore:"yunits"`
+	Doors int `json:"doors" firestore:"doors"`
 	
 }
 

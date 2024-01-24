@@ -31,10 +31,10 @@ func NewTESTSTREET(parent *Internals, fields FieldsTESTSTREET) *TESTSTREET {
 }
 
 type FieldsTESTSTREET struct {
-	Name string `json:"name" firestore:"name`
-	Description string `json:"description" firestore:"description`
-	Start string `json:"start" firestore:"start`
-	End string `json:"end" firestore:"end`
+	Name string `json:"name" firestore:"name"`
+	Description string `json:"description" firestore:"description"`
+	Start string `json:"start" firestore:"start"`
+	End string `json:"end" firestore:"end"`
 	
 }
 

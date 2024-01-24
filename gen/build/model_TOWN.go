@@ -33,7 +33,7 @@ func NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
 }
 
 type FieldsTOWN struct {
-	Name string `json:"name" firestore:"name`
+	Name string `json:"name" firestore:"name"`
 	
 }
 

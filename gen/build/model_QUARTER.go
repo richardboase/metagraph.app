@@ -32,7 +32,7 @@ func NewQUARTER(parent *Internals, fields FieldsQUARTER) *QUARTER {
 }
 
 type FieldsQUARTER struct {
-	Name string `json:"name" firestore:"name`
+	Name string `json:"name" firestore:"name"`
 	
 }
 
