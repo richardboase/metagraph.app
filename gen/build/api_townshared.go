@@ -269,11 +269,9 @@ func (app *App) townChatGPT(user *User, parent *Internals, prompt string) error 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
 	prompt = fmt.Sprintf(`
-ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON...
+ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE A VALID JSON...
 
-We want to create one or more of these data objects: A town where people live.
-
-Its schema is:
+We want to create one or more of these data objects: 
 {
 
 	// 
@@ -281,9 +279,11 @@ Its schema is:
 
 }
 
-MY PROMPT: %s
+The purpose of the object is to represent: A town where people live.
 
-YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON, REPLY ONLY WITH A JSON ENCODED ARRAY OF THE GENERATED OBJECTS.
+USE THIS PROMPT TO GENERATE THE OBJECT OR OBJECT ARRAY: %s
+
+YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON, REPLY ONLY WITH A JSON ENCODED ARRAY OF THE GENERATED OBJECTS (NO NESTED OBJECTS, JUST OBJECTS IN A JSON ARRAY).
 `,
 		prompt,
 	)

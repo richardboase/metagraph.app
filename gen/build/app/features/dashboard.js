@@ -46,7 +46,7 @@ export default function Dashboard(props) {
 						messaging[msg.Test] = []
 					}
 					messaging[msg.Test].push(event.data)
-					setUserdata(user)
+					setMessaging(messaging)
 				});
 
 			})
