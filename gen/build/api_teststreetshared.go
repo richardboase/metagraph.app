@@ -264,7 +264,7 @@ func (app *App) writeTeststreetFile(bucketName, objectName string, content []byt
 	return err
 }
 
-func (app *App) teststreetChatGPT(parent *Internals, prompt string) error {
+func (app *App) teststreetChatGPT(user *User, parent *Internals, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
@@ -332,6 +332,7 @@ YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON, REPLY ONLY WITH A JS
 		if err := app.CreateDocumentTESTSTREET(parent, object); err != nil {
 			return err
 		}
+		app.SendMessageToUser(user, &Message{Type: "async-create", Body: object})
 	}
 
 	return nil

@@ -264,7 +264,7 @@ func (app *App) writeBuildingFile(bucketName, objectName string, content []byte)
 	return err
 }
 
-func (app *App) buildingChatGPT(parent *Internals, prompt string) error {
+func (app *App) buildingChatGPT(user *User, parent *Internals, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
@@ -335,6 +335,7 @@ YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE VALID JSON, REPLY ONLY WITH A JS
 		if err := app.CreateDocumentBUILDING(parent, object); err != nil {
 			return err
 		}
+		app.SendMessageToUser(user, &Message{Type: "async-create", Body: object})
 	}
 
 	return nil

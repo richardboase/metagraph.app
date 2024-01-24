@@ -10,7 +10,6 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
-	"github.com/golangdaddy/leap/utils"
 	"google.golang.org/api/iterator"
 )
 
@@ -21,7 +20,7 @@ func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := utils.GetSessionUser(app.App, r)
+	user, err := GetSessionUser(app.App, r)
 	if err != nil {
 		cloudfunc.HttpError(w, err, http.StatusUnauthorized)
 		return
@@ -66,7 +65,7 @@ func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			if err := app.lobbyChatGPT(parent, prompt); err != nil {
+			if err := app.lobbyChatGPT(user, parent, prompt); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
