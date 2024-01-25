@@ -57,7 +57,7 @@ func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 	if true && !exists {
 		return errors.New("required field 'rooms' not supplied")
 	}
-	if true && exists {
+	if exists {
 		x.Fields.Rooms, err = assertINT(m, "rooms")
 		if err != nil {
 			return errors.New(err.Error())

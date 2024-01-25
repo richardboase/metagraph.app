@@ -59,7 +59,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 	if true && !exists {
 		return errors.New("required field 'name' not supplied")
 	}
-	if true && exists {
+	if exists {
 		x.Fields.Name, err = assertSTRING(m, "name")
 		if err != nil {
 			return errors.New(err.Error())
@@ -71,9 +71,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				}
 			}
 			
-			var min float64
-			min = 1
-			if err := assertRangeMin(min, x.Fields.Name); err != nil {
+			if err := assertRangeMin(1, x.Fields.Name); err != nil {
 				return err
 			}
 			if err := assertRangeMax(60, x.Fields.Name); err != nil {
@@ -88,7 +86,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 	if false && !exists {
 		return errors.New("required field 'description' not supplied")
 	}
-	if false && exists {
+	if exists {
 		x.Fields.Description, err = assertSTRING(m, "description")
 		if err != nil {
 			return errors.New(err.Error())
@@ -100,9 +98,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				}
 			}
 			
-			var min float64
-			
-			if err := assertRangeMin(min, x.Fields.Description); err != nil {
+			if err := assertRangeMin(1, x.Fields.Description); err != nil {
 				return err
 			}
 			if err := assertRangeMax(1000, x.Fields.Description); err != nil {
@@ -117,7 +113,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 	if false && !exists {
 		return errors.New("required field 'start' not supplied")
 	}
-	if false && exists {
+	if exists {
 		x.Fields.Start, err = assertSTRING(m, "start")
 		if err != nil {
 			return errors.New(err.Error())
@@ -129,9 +125,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				}
 			}
 			
-			var min float64
-			
-			if err := assertRangeMin(min, x.Fields.Start); err != nil {
+			if err := assertRangeMin(1, x.Fields.Start); err != nil {
 				return err
 			}
 			if err := assertRangeMax(60, x.Fields.Start); err != nil {
@@ -146,7 +140,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 	if false && !exists {
 		return errors.New("required field 'end' not supplied")
 	}
-	if false && exists {
+	if exists {
 		x.Fields.End, err = assertSTRING(m, "end")
 		if err != nil {
 			return errors.New(err.Error())
@@ -158,9 +152,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				}
 			}
 			
-			var min float64
-			
-			if err := assertRangeMin(min, x.Fields.End); err != nil {
+			if err := assertRangeMin(1, x.Fields.End); err != nil {
 				return err
 			}
 			if err := assertRangeMax(60, x.Fields.End); err != nil {

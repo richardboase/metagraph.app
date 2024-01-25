@@ -56,7 +56,7 @@ func (x *ROOM) ValidateObject(m map[string]interface{}) error {
 	if true && !exists {
 		return errors.New("required field 'name' not supplied")
 	}
-	if true && exists {
+	if exists {
 		x.Fields.Name, err = assertSTRING(m, "name")
 		if err != nil {
 			return errors.New(err.Error())
@@ -68,9 +68,7 @@ func (x *ROOM) ValidateObject(m map[string]interface{}) error {
 				}
 			}
 			
-			var min float64
-			min = 1
-			if err := assertRangeMin(min, x.Fields.Name); err != nil {
+			if err := assertRangeMin(1, x.Fields.Name); err != nil {
 				return err
 			}
 			if err := assertRangeMax(30, x.Fields.Name); err != nil {
