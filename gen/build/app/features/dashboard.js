@@ -46,6 +46,7 @@ export default function Dashboard(props) {
 					console.log('Received message:', msg);
 
 					if (msg.Type == "shout") {
+						console.log("skipping", msg)
 						return
 					}
 
@@ -220,7 +221,7 @@ export default function Dashboard(props) {
 							feed.map(function (item, i) {
 								return (
 									<div key={i}>
-										{item.fields.Meta.Class}
+										New {item.Meta.Class}
 									</div>
 								)
 							})
