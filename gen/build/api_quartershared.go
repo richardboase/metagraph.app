@@ -5,6 +5,7 @@ import (
 	"log"
 	"archive/zip"
 	"bytes"
+	"errors"
 	"image"
 	_ "image/jpeg"
 	_ "image/png"
@@ -320,9 +321,19 @@ RULES:
 		return err
 	}
 
-	for _, result := range newResults {
+	for _, r := range newResults {
+		result, ok := r.(map[string]interface{})
+		if !ok {
+			return errors.New("array item is not a map")
+		}
+		for k, v := range result {
+			vv, ok := v.(string)
+			if ok && vv == "" {
+				delete(result, k)
+			}
+		}
 		object := NewQUARTER(parent, FieldsQUARTER{})
-		if err := object.ValidateObject(result.(map[string]interface{})); err != nil {
+		if err := object.ValidateObject(result); err != nil {
 			return err
 		}
 		if err := app.CreateDocumentQUARTER(parent, object); err != nil {
