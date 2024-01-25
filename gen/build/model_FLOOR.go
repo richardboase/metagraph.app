@@ -2,8 +2,11 @@
 package main
 
 import (
+	"fmt"
 	"errors"
 	"net/http"
+
+	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
 
 type FLOOR struct {
@@ -37,19 +40,10 @@ type FieldsFLOOR struct {
 }
 
 func (x *FLOOR) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
-
-	var exists bool
-	
-	x.Fields.Rooms, exists = AssertINT(w, m, "rooms")
-	if !exists {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
 		return false
 	}
-
-	// ignore this, a mostly redundant artifact
-	
-
-	x.Meta.Modify()
-
 	return true
 }
 
@@ -59,10 +53,18 @@ func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 	
 	x.Fields.Rooms, err = assertINT(m, "rooms")
 	if err != nil {
+		
 		return errors.New(err.Error())
+		
+	} else {
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Rooms)) {
+				return errors.New("failed to regexp")
+			}
+		}
+		
 	}
-
-	// ignore this, a mostly redundant artifact
 	
 
 	x.Meta.Modify()

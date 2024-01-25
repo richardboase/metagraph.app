@@ -2,8 +2,11 @@
 package main
 
 import (
+	"fmt"
 	"errors"
 	"net/http"
+
+	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
 
 type BUILDING struct {
@@ -41,57 +44,10 @@ type FieldsBUILDING struct {
 }
 
 func (x *BUILDING) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
-
-	var exists bool
-	
-	x.Fields.Name, exists = AssertSTRING(w, m, "name")
-	if !exists {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
 		return false
 	}
-
-	// ignore this, a mostly redundant artifact
-	{
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, x.Fields.Name) {
-				return false
-			}
-		}
-	}
-	if !AssertRange(w, 1, 30, x.Fields.Name) {
-		return false
-	}
-	x.Fields.Number, exists = AssertINT(w, m, "number")
-	if !exists {
-		return false
-	}
-
-	// ignore this, a mostly redundant artifact
-	
-	x.Fields.Xunits, exists = AssertFLOAT64(w, m, "xunits")
-	if !exists {
-		return false
-	}
-
-	// ignore this, a mostly redundant artifact
-	
-	x.Fields.Yunits, exists = AssertFLOAT64(w, m, "yunits")
-	if !exists {
-		return false
-	}
-
-	// ignore this, a mostly redundant artifact
-	
-	x.Fields.Doors, exists = AssertINT(w, m, "doors")
-	if !exists {
-		return false
-	}
-
-	// ignore this, a mostly redundant artifact
-	
-
-	x.Meta.Modify()
-
 	return true
 }
 
@@ -101,48 +57,78 @@ func (x *BUILDING) ValidateObject(m map[string]interface{}) error {
 	
 	x.Fields.Name, err = assertSTRING(m, "name")
 	if err != nil {
-		return errors.New(err.Error())
-	}
-
-	// ignore this, a mostly redundant artifact
-	{
+		
+	} else {
 		exp := ""
 		if len(exp) > 0 {
-			if !RegExp(exp, x.Fields.Name) {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
 				return errors.New("failed to regexp")
 			}
 		}
+		
+		if err := assertRange(1, 30, x.Fields.Name); err != nil {
+			return err
+		}
+		
 	}
-	if err := assertRange(1, 30, x.Fields.Name); err != nil {
-		return err
-	}
+	
 	x.Fields.Number, err = assertINT(m, "number")
 	if err != nil {
-		return errors.New(err.Error())
+		
+	} else {
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Number)) {
+				return errors.New("failed to regexp")
+			}
+		}
+		
 	}
-
-	// ignore this, a mostly redundant artifact
 	
 	x.Fields.Xunits, err = assertFLOAT64(m, "xunits")
 	if err != nil {
+		
 		return errors.New(err.Error())
+		
+	} else {
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Xunits)) {
+				return errors.New("failed to regexp")
+			}
+		}
+		
 	}
-
-	// ignore this, a mostly redundant artifact
 	
 	x.Fields.Yunits, err = assertFLOAT64(m, "yunits")
 	if err != nil {
+		
 		return errors.New(err.Error())
+		
+	} else {
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Yunits)) {
+				return errors.New("failed to regexp")
+			}
+		}
+		
 	}
-
-	// ignore this, a mostly redundant artifact
 	
 	x.Fields.Doors, err = assertINT(m, "doors")
 	if err != nil {
+		
 		return errors.New(err.Error())
+		
+	} else {
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Doors)) {
+				return errors.New("failed to regexp")
+			}
+		}
+		
 	}
-
-	// ignore this, a mostly redundant artifact
 	
 
 	x.Meta.Modify()

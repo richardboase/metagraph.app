@@ -49,7 +49,7 @@ export default function Dashboard(props) {
 						return
 					}
 
-					setFeed([...feed, msg]);
+					setFeed([...feed, msg.Body]);
 				});
 
 			})
