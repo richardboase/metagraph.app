@@ -56,7 +56,7 @@ export default function Dashboard(props) {
 			})
 			.catch((e) => {
 				console.log(e)
-				router.push("/otp")
+//				router.push("/login")
 			})
 		}
 	}, [])
