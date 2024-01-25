@@ -33,7 +33,7 @@ func (app *App) SendMessageToUser(user *User, msg *Message) {
 	conn := app.connections[user.Username]
 	app.RUnlock()
 	if conn == nil {
-		log.Println("user has no active websocket coonnection:", user.Username)
+		log.Println("user has no active websocket connection:", user.Username)
 		return
 	}
 	if err := conn.WriteMessage(

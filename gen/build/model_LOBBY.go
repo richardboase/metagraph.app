@@ -52,7 +52,7 @@ func (x *LOBBY) ValidateObject(m map[string]interface{}) error {
 	
 	x.Fields.Name, err = assertSTRING(m, "name")
 	if err != nil {
-		
+		return errors.New(err.Error())
 	} else {
 		exp := ""
 		if len(exp) > 0 {
@@ -61,7 +61,12 @@ func (x *LOBBY) ValidateObject(m map[string]interface{}) error {
 			}
 		}
 		
-		if err := assertRange(1, 30, x.Fields.Name); err != nil {
+		var min float64
+		
+		if err := assertRangeMin(min, x.Fields.Name); err != nil {
+			return err
+		}
+		if err := assertRangeMax(30, x.Fields.Name); err != nil {
 			return err
 		}
 		
@@ -92,9 +97,11 @@ func (x *LOBBY) ValidateByCount(w http.ResponseWriter, m map[string]interface{},
 			}
 		}
 	}
-	if !AssertRange(w, 1, 30, x.Fields.Name) {
+	
+	if !AssertRangeMax(w, 30, x.Fields.Name) {
 		return false
 	}
+	
 
 	x.Meta.Modify()
 

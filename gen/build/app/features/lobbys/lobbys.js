@@ -3,6 +3,8 @@ import { useUserContext } from '@/context/user';
 import { useLocalContext } from '@/context/local';
 import { useState, useEffect } from 'react';
 
+import Loading from '@/app/loading'
+
 import { AI } from './forms/ai';
 import { LobbyList } from './shared/lobbyList';
 
@@ -22,6 +24,9 @@ export function Lobbys(props) {
 	return (
 		<div style={ {padding:"30px 60px 30px 60px"} }>
 			<AI subject={subject} updateList={updateList} collection="lobbys"/>
+			{
+				!promptToggle && <Loading/>
+			}
 			{
 				promptToggle && <LobbyList subject={subject} />
 			}

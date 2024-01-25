@@ -53,9 +53,7 @@ func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 	
 	x.Fields.Rooms, err = assertINT(m, "rooms")
 	if err != nil {
-		
 		return errors.New(err.Error())
-		
 	} else {
 		exp := ""
 		if len(exp) > 0 {
