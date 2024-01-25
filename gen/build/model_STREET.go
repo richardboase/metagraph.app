@@ -50,27 +50,35 @@ func (x *STREET) ValidateInput(w http.ResponseWriter, m map[string]interface{}) 
 func (x *STREET) ValidateObject(m map[string]interface{}) error {
 
 	var err error
+	var exists bool
 	
-	x.Fields.Name, err = assertSTRING(m, "name")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["name"]
+	if false && !exists {
+		return errors.New("required field 'name' not supplied")
+	}
+	if false && exists {
+		x.Fields.Name, err = assertSTRING(m, "name")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
+			var min float64
+			
+			if err := assertRangeMin(min, x.Fields.Name); err != nil {
+				return err
+			}
+			if err := assertRangeMax(30, x.Fields.Name); err != nil {
+				return err
+			}
+			
 		}
-		
-		var min float64
-		
-		if err := assertRangeMin(min, x.Fields.Name); err != nil {
-			return err
-		}
-		if err := assertRangeMax(30, x.Fields.Name); err != nil {
-			return err
-		}
-		
 	}
 	
 

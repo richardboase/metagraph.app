@@ -50,18 +50,26 @@ func (x *FLOOR) ValidateInput(w http.ResponseWriter, m map[string]interface{}) b
 func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 
 	var err error
+	var exists bool
 	
-	x.Fields.Rooms, err = assertINT(m, "rooms")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Rooms)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["rooms"]
+	if true && !exists {
+		return errors.New("required field 'rooms' not supplied")
+	}
+	if true && exists {
+		x.Fields.Rooms, err = assertINT(m, "rooms")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Rooms)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
 		}
-		
 	}
 	
 

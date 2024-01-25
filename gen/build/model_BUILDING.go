@@ -54,79 +54,115 @@ func (x *BUILDING) ValidateInput(w http.ResponseWriter, m map[string]interface{}
 func (x *BUILDING) ValidateObject(m map[string]interface{}) error {
 
 	var err error
+	var exists bool
 	
-	x.Fields.Name, err = assertSTRING(m, "name")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["name"]
+	if false && !exists {
+		return errors.New("required field 'name' not supplied")
+	}
+	if false && exists {
+		x.Fields.Name, err = assertSTRING(m, "name")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
+			var min float64
+			
+			if err := assertRangeMin(min, x.Fields.Name); err != nil {
+				return err
+			}
+			if err := assertRangeMax(30, x.Fields.Name); err != nil {
+				return err
+			}
+			
 		}
-		
-		var min float64
-		
-		if err := assertRangeMin(min, x.Fields.Name); err != nil {
-			return err
-		}
-		if err := assertRangeMax(30, x.Fields.Name); err != nil {
-			return err
-		}
-		
 	}
 	
-	x.Fields.Number, err = assertINT(m, "number")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Number)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["number"]
+	if false && !exists {
+		return errors.New("required field 'number' not supplied")
+	}
+	if false && exists {
+		x.Fields.Number, err = assertINT(m, "number")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Number)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
 		}
-		
 	}
 	
-	x.Fields.Xunits, err = assertFLOAT64(m, "xunits")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Xunits)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["xunits"]
+	if true && !exists {
+		return errors.New("required field 'xunits' not supplied")
+	}
+	if true && exists {
+		x.Fields.Xunits, err = assertFLOAT64(m, "xunits")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Xunits)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
 		}
-		
 	}
 	
-	x.Fields.Yunits, err = assertFLOAT64(m, "yunits")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Yunits)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["yunits"]
+	if true && !exists {
+		return errors.New("required field 'yunits' not supplied")
+	}
+	if true && exists {
+		x.Fields.Yunits, err = assertFLOAT64(m, "yunits")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Yunits)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
 		}
-		
 	}
 	
-	x.Fields.Doors, err = assertINT(m, "doors")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Doors)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["doors"]
+	if true && !exists {
+		return errors.New("required field 'doors' not supplied")
+	}
+	if true && exists {
+		x.Fields.Doors, err = assertINT(m, "doors")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Doors)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
 		}
-		
 	}
 	
 

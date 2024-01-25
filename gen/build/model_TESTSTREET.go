@@ -52,93 +52,122 @@ func (x *TESTSTREET) ValidateInput(w http.ResponseWriter, m map[string]interface
 func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 
 	var err error
+	var exists bool
 	
-	x.Fields.Name, err = assertSTRING(m, "name")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["name"]
+	if true && !exists {
+		return errors.New("required field 'name' not supplied")
+	}
+	if true && exists {
+		x.Fields.Name, err = assertSTRING(m, "name")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
+			var min float64
+			min = 1
+			if err := assertRangeMin(min, x.Fields.Name); err != nil {
+				return err
+			}
+			if err := assertRangeMax(60, x.Fields.Name); err != nil {
+				return err
+			}
+			
 		}
-		
-		var min float64
-		min = 1
-		if err := assertRangeMin(min, x.Fields.Name); err != nil {
-			return err
-		}
-		if err := assertRangeMax(60, x.Fields.Name); err != nil {
-			return err
-		}
-		
 	}
 	
-	x.Fields.Description, err = assertSTRING(m, "description")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Description)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["description"]
+	if false && !exists {
+		return errors.New("required field 'description' not supplied")
+	}
+	if false && exists {
+		x.Fields.Description, err = assertSTRING(m, "description")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Description)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
+			var min float64
+			
+			if err := assertRangeMin(min, x.Fields.Description); err != nil {
+				return err
+			}
+			if err := assertRangeMax(1000, x.Fields.Description); err != nil {
+				return err
+			}
+			
 		}
-		
-		var min float64
-		
-		if err := assertRangeMin(min, x.Fields.Description); err != nil {
-			return err
-		}
-		if err := assertRangeMax(1000, x.Fields.Description); err != nil {
-			return err
-		}
-		
 	}
 	
-	x.Fields.Start, err = assertSTRING(m, "start")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Start)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["start"]
+	if false && !exists {
+		return errors.New("required field 'start' not supplied")
+	}
+	if false && exists {
+		x.Fields.Start, err = assertSTRING(m, "start")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Start)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
+			var min float64
+			
+			if err := assertRangeMin(min, x.Fields.Start); err != nil {
+				return err
+			}
+			if err := assertRangeMax(60, x.Fields.Start); err != nil {
+				return err
+			}
+			
 		}
-		
-		var min float64
-		
-		if err := assertRangeMin(min, x.Fields.Start); err != nil {
-			return err
-		}
-		if err := assertRangeMax(60, x.Fields.Start); err != nil {
-			return err
-		}
-		
 	}
 	
-	x.Fields.End, err = assertSTRING(m, "end")
-	if err != nil {
-		return errors.New(err.Error())
-	} else {
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.End)) {
-				return errors.New("failed to regexp")
+
+	_, exists = m["end"]
+	if false && !exists {
+		return errors.New("required field 'end' not supplied")
+	}
+	if false && exists {
+		x.Fields.End, err = assertSTRING(m, "end")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.End)) {
+					return errors.New("failed to regexp")
+				}
 			}
+			
+			var min float64
+			
+			if err := assertRangeMin(min, x.Fields.End); err != nil {
+				return err
+			}
+			if err := assertRangeMax(60, x.Fields.End); err != nil {
+				return err
+			}
+			
 		}
-		
-		var min float64
-		
-		if err := assertRangeMin(min, x.Fields.End); err != nil {
-			return err
-		}
-		if err := assertRangeMax(60, x.Fields.End); err != nil {
-			return err
-		}
-		
 	}
 	
 
