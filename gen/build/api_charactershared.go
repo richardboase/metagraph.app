@@ -52,7 +52,7 @@ func (app *App) CreateDocumentCHARACTER(parent *Internals, object *CHARACTER) er
 	}
 	*/
 
-	/*
+	
 	// create asset
 	{
 		log.Println("CREATING TOKEN")
@@ -65,7 +65,7 @@ func (app *App) CreateDocumentCHARACTER(parent *Internals, object *CHARACTER) er
 			return err
 		}
 	}
-	*/
+	
 	
 	// write new CHARACTER to the DB
 	if err := object.Meta.SaveToFirestore(app.App, object); err != nil {
