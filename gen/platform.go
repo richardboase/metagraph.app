@@ -23,6 +23,7 @@ func main() {
 		Entrypoints: []string{
 			"town",
 			"game",
+			"book",
 		},
 	}
 
