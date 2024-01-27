@@ -26,6 +26,107 @@ func main() {
 		},
 	}
 
+	book := &models.Object{
+		Mode:    "root",
+		Parents: []string{},
+		Name:    "book",
+		Fields: []*models.Field{
+			{
+				Name:     "name",
+				JSON:     "string_30",
+				Required: true,
+			},
+		},
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{},
+		},
+	}
+
+	bookcharacter := &models.Object{
+		Parents: []string{
+			book.Name,
+		},
+		Name: "bookcharacter",
+		Fields: []*models.Field{
+			{
+				Context:  "the name of the unique character",
+				Name:     "name",
+				JSON:     "string_30",
+				Required: true,
+			},
+			{
+				Context:  "the age in years of the character",
+				Name:     "age",
+				JSON:     "number_int",
+				Required: true,
+			},
+			{
+				Context:  "either male or female",
+				Name:     "gender",
+				JSON:     "string_10",
+				Required: true,
+			},
+			{
+				Context:  "primary job or ocuupation of the character",
+				Name:     "profession",
+				JSON:     "string_100",
+				Required: true,
+			},
+			{
+				Context:  "the social class of the character (upper, middle, working, lower)",
+				Name:     "socialclass",
+				JSON:     "string_30",
+				Required: true,
+			},
+			{
+				Context:  "a short synopis of the full life story of the character",
+				Name:     "backstory",
+				JSON:     "string_10000",
+				Required: true,
+			},
+		},
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{},
+		},
+	}
+
+	chapter := &models.Object{
+		Mode: "many",
+		Parents: []string{
+			book.Name,
+		},
+		Name: "chapter",
+		Fields: []*models.Field{
+			{
+				Name:     "name",
+				JSON:     "string_60",
+				Required: true,
+			},
+		},
+		Options: models.Options{
+			Order:      true,
+			Assetlayer: models.Assetlayer{},
+		},
+	}
+
+	paragraph := &models.Object{
+		Mode: "many",
+		Parents: []string{
+			chapter.Name,
+		},
+		Name: "paragraph",
+		Fields: []*models.Field{
+			{
+				Name:     "content",
+				JSON:     "string_10000",
+				Required: true,
+			},
+		},
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{},
+		},
+	}
+
 	game := &models.Object{
 		Mode:    "root",
 		Parents: []string{},
@@ -285,6 +386,11 @@ func main() {
 	tree.Objects = append(tree.Objects, game)
 	tree.Objects = append(tree.Objects, lobby)
 	tree.Objects = append(tree.Objects, character)
+
+	tree.Objects = append(tree.Objects, book)
+	tree.Objects = append(tree.Objects, bookcharacter)
+	tree.Objects = append(tree.Objects, chapter)
+	tree.Objects = append(tree.Objects, paragraph)
 
 	tree.Objects = append(tree.Objects, town)
 	tree.Objects = append(tree.Objects, teststreet)

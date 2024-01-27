@@ -55,6 +55,34 @@ func main() {
 		os.Setenv("MODEL_CHARACTERS", collectionID)
 	}
 	{
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "books", "description...", "", 1000000, nil)
+		if err != nil {
+			panic(err)
+		}
+		os.Setenv("MODEL_BOOKS", collectionID)
+	}
+	{
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "bookcharacters", "description...", "", 1000000, nil)
+		if err != nil {
+			panic(err)
+		}
+		os.Setenv("MODEL_BOOKCHARACTERS", collectionID)
+	}
+	{
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "chapters", "description...", "", 1000000, nil)
+		if err != nil {
+			panic(err)
+		}
+		os.Setenv("MODEL_CHAPTERS", collectionID)
+	}
+	{
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "paragraphs", "description...", "", 1000000, nil)
+		if err != nil {
+			panic(err)
+		}
+		os.Setenv("MODEL_PARAGRAPHS", collectionID)
+	}
+	{
 		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "towns", "description...", "", 1000000, nil)
 		if err != nil {
 			panic(err)
@@ -122,6 +150,18 @@ func main() {
 	http.HandleFunc("/api/character", app.EntrypointCHARACTER)
 	http.HandleFunc("/api/characters", app.EntrypointCHARACTERS)
 	println("registering handlers for characters")
+	http.HandleFunc("/api/book", app.EntrypointBOOK)
+	http.HandleFunc("/api/books", app.EntrypointBOOKS)
+	println("registering handlers for books")
+	http.HandleFunc("/api/bookcharacter", app.EntrypointBOOKCHARACTER)
+	http.HandleFunc("/api/bookcharacters", app.EntrypointBOOKCHARACTERS)
+	println("registering handlers for bookcharacters")
+	http.HandleFunc("/api/chapter", app.EntrypointCHAPTER)
+	http.HandleFunc("/api/chapters", app.EntrypointCHAPTERS)
+	println("registering handlers for chapters")
+	http.HandleFunc("/api/paragraph", app.EntrypointPARAGRAPH)
+	http.HandleFunc("/api/paragraphs", app.EntrypointPARAGRAPHS)
+	println("registering handlers for paragraphs")
 	http.HandleFunc("/api/town", app.EntrypointTOWN)
 	http.HandleFunc("/api/towns", app.EntrypointTOWNS)
 	println("registering handlers for towns")

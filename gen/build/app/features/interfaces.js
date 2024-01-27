@@ -4,6 +4,10 @@ import * as React from 'react'
 import { GameInterfaces } from '@/features/games/_interfaces'
 import { LobbyInterfaces } from '@/features/lobbys/_interfaces'
 import { CharacterInterfaces } from '@/features/characters/_interfaces'
+import { BookInterfaces } from '@/features/books/_interfaces'
+import { BookcharacterInterfaces } from '@/features/bookcharacters/_interfaces'
+import { ChapterInterfaces } from '@/features/chapters/_interfaces'
+import { ParagraphInterfaces } from '@/features/paragraphs/_interfaces'
 import { TownInterfaces } from '@/features/towns/_interfaces'
 import { TeststreetInterfaces } from '@/features/teststreets/_interfaces'
 import { QuarterInterfaces } from '@/features/quarters/_interfaces'
@@ -44,6 +48,18 @@ export function GetInterfaces() {
 	}// CharacterInterfaces
 	for (const k in CharacterInterfaces) {
 		interfaces[k.toLowerCase()] = CharacterInterfaces[k]
+	}// BookInterfaces
+	for (const k in BookInterfaces) {
+		interfaces[k.toLowerCase()] = BookInterfaces[k]
+	}// BookcharacterInterfaces
+	for (const k in BookcharacterInterfaces) {
+		interfaces[k.toLowerCase()] = BookcharacterInterfaces[k]
+	}// ChapterInterfaces
+	for (const k in ChapterInterfaces) {
+		interfaces[k.toLowerCase()] = ChapterInterfaces[k]
+	}// ParagraphInterfaces
+	for (const k in ParagraphInterfaces) {
+		interfaces[k.toLowerCase()] = ParagraphInterfaces[k]
 	}// TownInterfaces
 	for (const k in TownInterfaces) {
 		interfaces[k.toLowerCase()] = TownInterfaces[k]
