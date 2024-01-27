@@ -60,6 +60,48 @@ func main() {
 		},
 	}
 
+	character := &models.Object{
+		Parents: []string{
+			lobby.Name,
+		},
+		Name: "character",
+		Fields: []*models.Field{
+			{
+				Context: "the name of the character",
+				Name:    "name",
+				JSON:    "string_30",
+			},
+			{
+				Context: "the age in years of the character",
+				Name:    "age",
+				JSON:    "number_int",
+			},
+			{
+				Context: "either male or female",
+				Name:    "gender",
+				JSON:    "string_10",
+			},
+			{
+				Context: "primary job or ocuupation of the character",
+				Name:    "profession",
+				JSON:    "string_10",
+			},
+			{
+				Context: "the social class of the character (upper, middle, working, lower)",
+				Name:    "socialclass",
+				JSON:    "string_30",
+			},
+			{
+				Context: "a short synopis of the full life story of the character",
+				Name:    "backstory",
+				JSON:    "string_10000",
+			},
+		},
+		Options: models.Options{
+			Assetlayer: models.Assetlayer{},
+		},
+	}
+
 	town := &models.Object{
 		Context: "A town where people live.",
 		Mode:    "root",
@@ -236,6 +278,7 @@ func main() {
 
 	tree.Objects = append(tree.Objects, game)
 	tree.Objects = append(tree.Objects, lobby)
+	tree.Objects = append(tree.Objects, character)
 
 	tree.Objects = append(tree.Objects, town)
 	tree.Objects = append(tree.Objects, teststreet)

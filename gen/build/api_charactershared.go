@@ -20,7 +20,7 @@ import (
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
 
-func (app *App) CreateDocumentTOWN(parent *Internals, object *TOWN) error {
+func (app *App) CreateDocumentCHARACTER(parent *Internals, object *CHARACTER) error {
 	log.Println(*object)
 
 	/*
@@ -40,7 +40,7 @@ func (app *App) CreateDocumentTOWN(parent *Internals, object *TOWN) error {
 	object.Meta.Context.Order = order
 	*/
 
-	
+	/*
 	// create app wallet
 	{
 		log.Println("CREATING WALLET")
@@ -50,7 +50,7 @@ func (app *App) CreateDocumentTOWN(parent *Internals, object *TOWN) error {
 		}
 		object.Meta.Wallet = wallerUserID
 	}
-	
+	*/
 
 	/*
 	// create asset
@@ -67,7 +67,7 @@ func (app *App) CreateDocumentTOWN(parent *Internals, object *TOWN) error {
 	}
 	*/
 	
-	// write new TOWN to the DB
+	// write new CHARACTER to the DB
 	if err := object.Meta.SaveToFirestore(app.App, object); err != nil {
 		return err
 	}
@@ -92,7 +92,7 @@ func (app *App) CreateDocumentTOWN(parent *Internals, object *TOWN) error {
 	return nil
 }
 
-func (app *App) UploadTOWN(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) UploadCHARACTER(w http.ResponseWriter, r *http.Request, parent *Internals) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -122,37 +122,37 @@ func (app *App) UploadTOWN(w http.ResponseWriter, r *http.Request, parent *Inter
 	}
 
 	/*
-	if err := checkImageTOWN(buf.Bytes()); err != nil {
+	if err := checkImageCHARACTER(buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 	*/
-	log.Println("creating new town:", handler.Filename)
-	fields := FieldsTOWN{}
-	town := NewTOWN(parent, fields)
+	log.Println("creating new character:", handler.Filename)
+	fields := FieldsCHARACTER{}
+	character := NewCHARACTER(parent, fields)
 
-	// hidden line here if noparent: town.Fields.Filename = zipFile.Name
+	// hidden line here if noparent: character.Fields.Filename = zipFile.Name
 	
 
 	// generate a new URI
-	uri := town.Meta.NewURI()
+	uri := character.Meta.NewURI()
 	println ("URI", uri)
 
 	bucketName := "go-gen-test-uploads"
-	if err := app.writeTownFile(bucketName, uri, buf.Bytes()); err != nil {
+	if err := app.writeCharacterFile(bucketName, uri, buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 
 	// reuse document init create code
-	if err := app.CreateDocumentTOWN(parent, town); err != nil {
+	if err := app.CreateDocumentCHARACTER(parent, character); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return		
 	}
 	return
 }
 
-func (app *App) ArchiveUploadTOWN(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) ArchiveUploadCHARACTER(w http.ResponseWriter, r *http.Request, parent *Internals) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -192,39 +192,39 @@ func (app *App) ArchiveUploadTOWN(w http.ResponseWriter, r *http.Request, parent
 	// Extract each file from the zip archive
 	for n, zipFile := range zipReader.File {
 
-		extractedContent, err := readZipFileTOWN(zipFile)
+		extractedContent, err := readZipFileCHARACTER(zipFile)
 		if err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		/*
-		if err := checkImageTOWN(extractedContent); err != nil {
+		if err := checkImageCHARACTER(extractedContent); err != nil {
 			log.Println("skipping file that cannot be decoded:", zipFile.Name)
 			continue
 		}
 		*/
-		log.Println("creating new town:", zipFile.Name)
-		fields := FieldsTOWN{}
-		town := NewTOWN(parent, fields)
+		log.Println("creating new character:", zipFile.Name)
+		fields := FieldsCHARACTER{}
+		character := NewCHARACTER(parent, fields)
 
-		// hidden line here if noparent: town.Fields.Filename = zipFile.Name
+		// hidden line here if noparent: character.Fields.Filename = zipFile.Name
 		
 
-		town.Meta.Context.Order = n
+		character.Meta.Context.Order = n
 
 		// generate a new URI
-		uri := town.Meta.NewURI()
+		uri := character.Meta.NewURI()
 		println ("URI", uri)
 
 		bucketName := "go-gen-test-uploads"
-		if err := app.writeTownFile(bucketName, uri, extractedContent); err != nil {
+		if err := app.writeCharacterFile(bucketName, uri, extractedContent); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		// reuse document init create code
-		if err := app.CreateDocumentTOWN(parent, town); err != nil {
+		if err := app.CreateDocumentCHARACTER(parent, character); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return		
 		}
@@ -234,12 +234,12 @@ func (app *App) ArchiveUploadTOWN(w http.ResponseWriter, r *http.Request, parent
 }
 
 // assert file is an image because of .Object.Options.Image
-func checkImageTOWN(fileBytes []byte) error {
+func checkImageCHARACTER(fileBytes []byte) error {
 	_, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	return err
 }
 
-func readZipFileTOWN(zipFile *zip.File) ([]byte, error) {
+func readZipFileCHARACTER(zipFile *zip.File) ([]byte, error) {
 	// Open the file from the zip archive
 	zipFileReader, err := zipFile.Open()
 	if err != nil {
@@ -256,7 +256,7 @@ func readZipFileTOWN(zipFile *zip.File) ([]byte, error) {
 	return extractedContent.Bytes(), nil
 }
 
-func (app *App) writeTownFile(bucketName, objectName string, content []byte) error {
+func (app *App) writeCharacterFile(bucketName, objectName string, content []byte) error {
 	writer := app.GCPClients.GCS().Bucket(bucketName).Object(objectName).NewWriter(app.Context())
 	//writer.ObjectAttrs.CacheControl = "no-store"
 	defer writer.Close()
@@ -265,7 +265,7 @@ func (app *App) writeTownFile(bucketName, objectName string, content []byte) err
 	return err
 }
 
-func (app *App) townChatGPTCreate(user *User, parent *Internals, prompt string) error {
+func (app *App) characterChatGPTCreate(user *User, parent *Internals, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
@@ -275,12 +275,27 @@ ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE A VALID JSON...
 We want to create one or more of these data objects: 
 {
 
-	//   (THIS FIELD IS REQUIRED)
+	// the name of the character 
 	name (string)
+
+	// the age in years of the character 
+	age (int)
+
+	// either male or female 
+	gender (string)
+
+	// primary job or ocuupation of the character 
+	profession (string)
+
+	// the social class of the character (upper, middle, working, lower) 
+	socialclass (string)
+
+	// a short synopis of the full life story of the character 
+	backstory (string)
 
 }
 
-The purpose of the object is to represent: A town where people live.
+The purpose of the object is to represent: 
 
 RULES:
 1: USE THIS PROMPT TO GENERATE THE OBJECT OR OBJECT ARRAY: %s
@@ -333,11 +348,11 @@ RULES:
 				delete(result, k)
 			}
 		}
-		object := NewTOWN(parent, FieldsTOWN{})
+		object := NewCHARACTER(parent, FieldsCHARACTER{})
 		if err := object.ValidateObject(result); err != nil {
 			return err
 		}
-		if err := app.CreateDocumentTOWN(parent, object); err != nil {
+		if err := app.CreateDocumentCHARACTER(parent, object); err != nil {
 			return err
 		}
 		app.SendMessageToUser(user, &Message{Type: "async-create", Body: object})
@@ -346,7 +361,7 @@ RULES:
 	return nil
 }
 
-func (app *App) townChatGPTEdit(user *User, parent *Internals, object *TOWN, prompt string) error {
+func (app *App) characterChatGPTEdit(user *User, parent *Internals, object *CHARACTER, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
@@ -360,7 +375,7 @@ func (app *App) townChatGPTEdit(user *User, parent *Internals, object *TOWN, pro
 Here is the object we need to edit:
 %s
 
-The purpose of the object is to represent: A town where people live.
+The purpose of the object is to represent: 
 
 RULES:
 1: USE THIS PROMPT TO GENERATE THE MUTATION: %s
@@ -415,11 +430,11 @@ RULES:
 				delete(result, k)
 			}
 		}
-		object := NewTOWN(parent, FieldsTOWN{})
+		object := NewCHARACTER(parent, FieldsCHARACTER{})
 		if err := object.ValidateObject(result); err != nil {
 			return err
 		}
-		if err := app.CreateDocumentTOWN(parent, object); err != nil {
+		if err := app.CreateDocumentCHARACTER(parent, object); err != nil {
 			return err
 		}
 		app.SendMessageToUser(user, &Message{Type: "async-create", Body: object})

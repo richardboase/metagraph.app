@@ -8,10 +8,14 @@ import { titlecase } from '../_interfaces';
 import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
-import { BuildingListRow } from './buildingListRow';
-import { BuildingDELETE, BuildingsListGET, BuildingMoveUpPOST, BuildingMoveDownPOST } from '../_fetch';
+import { AssetsWallet } from '@/app/fetch'
 
-export function BuildingList(props) {
+import { CharacterAssetsRow } from './characterAssetsRow';
+import { CharacterDELETE, CharactersListGET, CharacterMoveUpPOST, CharacterMoveDownPOST } from '../_fetch';
+
+export function CharacterAssets(props) {
+
+	// set props.limit if you want to limit query results
 
 	const [ userdata, setUserdata] = useUserContext()
 	const [ localdata, setLocaldata] = useLocalContext()
@@ -19,7 +23,7 @@ export function BuildingList(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		BuildingsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		AssetsWallet(userdata, props.subject?.Meta.ID, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -33,23 +37,19 @@ export function BuildingList(props) {
 
 	// update tabs handles the updated context and sends the user to a new interface
 	function selectItem(id) {
-		console.log("SELECT Building", id)
+		console.log("SELECT Character", id)
 		const next = list[parseInt(id)]
 		const context = {
 			"_": next.fields.name,
 			"object": next,
 		}
-		setLocaldata(VisitTab(localdata, "building", context))
-	}
-
-	function selectChild() {
-		setLocaldata(VisitTab(localdata, "buildings", context))
+		setLocaldata(VisitTab(localdata, "character", context))
 	}
 
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		BuildingMoveUpPOST(userdata, object.Meta.ID)
+		CharacterMoveUpPOST(userdata, object.Meta.ID)
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -62,7 +62,7 @@ export function BuildingList(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		BuildingMoveDownPOST(userdata, object.Meta.ID)
+		CharacterMoveDownPOST(userdata, object.Meta.ID)
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -75,7 +75,7 @@ export function BuildingList(props) {
 	function deleteItem(id) {
 		const object = list[parseInt(id)]
 		console.log("DELETING", object)
-		BuildingDELETE(userdata, object.Meta.ID)
+		CharacterDELETE(userdata, object.Meta.ID)
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -88,7 +88,7 @@ export function BuildingList(props) {
 	return (
 	<div className='flex flex-col my-4'>
 	{
-		props.title && <div className='py-4 my-4 text-xl font-bold cursor-pointer' onclick={selectChild}>{props.title}s:</div>
+		props.title && <div className='py-4 my-4 text-xl font-bold'>{props.title}s:</div>
 	}
 	{
 		props.title && <hr/>
@@ -101,7 +101,7 @@ export function BuildingList(props) {
 
 			return (
 				<div key={i}>
-					<BuildingListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					<CharacterAssetsRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
 					<Spacer/>
 				</div>
 			)

@@ -42,6 +42,10 @@ export function StreetList(props) {
 		setLocaldata(VisitTab(localdata, "street", context))
 	}
 
+	function selectChild() {
+		setLocaldata(VisitTab(localdata, "streets", context))
+	}
+
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
@@ -84,7 +88,7 @@ export function StreetList(props) {
 	return (
 	<div className='flex flex-col my-4'>
 	{
-		props.title && <div className='py-4 my-4 text-xl font-bold'>{props.title}s:</div>
+		props.title && <div className='py-4 my-4 text-xl font-bold cursor-pointer' onclick={selectChild}>{props.title}s:</div>
 	}
 	{
 		props.title && <hr/>

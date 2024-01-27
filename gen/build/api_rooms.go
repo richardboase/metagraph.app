@@ -65,7 +65,7 @@ func (app *App) EntrypointROOMS(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			if err := app.roomChatGPT(user, parent, prompt); err != nil {
+			if err := app.roomChatGPTCreate(user, parent, prompt); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}

@@ -13,8 +13,8 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-// api-lobbys
-func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
+// api-characters
+func (app *App) EntrypointCHARACTERS(w http.ResponseWriter, r *http.Request) {
 
 	if cloudfunc.HandleCORS(w, r, "*") {
 		return
@@ -26,7 +26,7 @@ func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// get game metadata
+	// get lobby metadata
 	parentID, err := cloudfunc.QueryParam(r, "parent")
 	if err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
@@ -65,7 +65,7 @@ func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			if err := app.lobbyChatGPTCreate(user, parent, prompt); err != nil {
+			if err := app.characterChatGPTCreate(user, parent, prompt); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
@@ -80,14 +80,14 @@ func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			fields := FieldsLOBBY{}
-			object := NewLOBBY(parent, fields)
+			fields := FieldsCHARACTER{}
+			object := NewCHARACTER(parent, fields)
 			if !object.ValidateInput(w, m) {
 				return
 			}
 
 			// reuse document init create code
-			if err := app.CreateDocumentLOBBY(parent, object); err != nil {
+			if err := app.CreateDocumentCHARACTER(parent, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return				
 			}
@@ -102,14 +102,14 @@ func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
 		/*
 		case "initupload":
 			// reuse code
-			app.UploadLOBBY(w, r, parent)
+			app.UploadCHARACTER(w, r, parent)
 			return
 		*/
 
 		/*
 		case "inituploads":
 			// reuse code
-			app.ArchiveUploadLOBBY(w, r, parent)
+			app.ArchiveUploadCHARACTER(w, r, parent)
 			return
 		*/
 
@@ -123,11 +123,11 @@ func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
 
 		switch function {
 
-		// return the total amount of lobbys
+		// return the total amount of characters
 		case "count":
 
 			data := map[string]int{
-				"count": parent.FirestoreCount(app.App, "lobbys"),
+				"count": parent.FirestoreCount(app.App, "characters"),
 			}
 			if err := cloudfunc.ServeJSON(w, data); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
@@ -135,7 +135,7 @@ func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 
-		// return a list of lobbys in a specific parent
+		// return a list of characters in a specific parent
 		case "list", "altlist":
 
 			var limit int
@@ -144,11 +144,11 @@ func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
 				limit = n
 			}
 
-			list := []*LOBBY{}
+			list := []*CHARACTER{}
 
 			// handle objects that need to be ordered
 			
-			q := parent.Firestore(app.App).Collection("lobbys").OrderBy("Meta.Modified", firestore.Desc)
+			q := parent.Firestore(app.App).Collection("characters").OrderBy("Meta.Modified", firestore.Desc)
 			
 
 			if limit > 0 {
@@ -164,12 +164,12 @@ func (app *App) EntrypointLOBBYS(w http.ResponseWriter, r *http.Request) {
 					log.Println(err)
 					break
 				}
-				lobby := &LOBBY{}
-				if err := doc.DataTo(lobby); err != nil {
+				character := &CHARACTER{}
+				if err := doc.DataTo(character); err != nil {
 					log.Println(err)
 					continue
 				}
-				list = append(list, lobby)
+				list = append(list, character)
 			}
 
 			if err := cloudfunc.ServeJSON(w, list); err != nil {

@@ -28,6 +28,7 @@ func NewLOBBY(parent *Internals, fields FieldsLOBBY) *LOBBY {
 		}
 	}
 	object.Meta.Context.Children = []string{
+		"character",
 		
 	}
 	return object

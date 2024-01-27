@@ -65,7 +65,7 @@ func (app *App) EntrypointQUARTERS(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			if err := app.quarterChatGPT(user, parent, prompt); err != nil {
+			if err := app.quarterChatGPTCreate(user, parent, prompt); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}

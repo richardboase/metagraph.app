@@ -265,7 +265,7 @@ func (app *App) writeLobbyFile(bucketName, objectName string, content []byte) er
 	return err
 }
 
-func (app *App) lobbyChatGPT(user *User, parent *Internals, prompt string) error {
+func (app *App) lobbyChatGPTCreate(user *User, parent *Internals, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
@@ -326,6 +326,89 @@ RULES:
 		if !ok {
 			return errors.New("array item is not a map")
 		}
+		// remove any empty fields
+		for k, v := range result {
+			vv, ok := v.(string)
+			if ok && vv == "" {
+				delete(result, k)
+			}
+		}
+		object := NewLOBBY(parent, FieldsLOBBY{})
+		if err := object.ValidateObject(result); err != nil {
+			return err
+		}
+		if err := app.CreateDocumentLOBBY(parent, object); err != nil {
+			return err
+		}
+		app.SendMessageToUser(user, &Message{Type: "async-create", Body: object})
+	}
+
+	return nil
+}
+
+func (app *App) lobbyChatGPTEdit(user *User, parent *Internals, object *LOBBY, prompt string) error {
+
+	fmt.Println("prompt with parent", parent.ID, prompt)
+
+	objectBytes, err := app.MarshalJSON(object)
+	if err != nil {
+		return err
+	}
+
+	prompt = fmt.Sprintf(`ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE A VALID JSON...
+
+Here is the object we need to edit:
+%s
+
+The purpose of the object is to represent: 
+
+RULES:
+1: USE THIS PROMPT TO GENERATE THE MUTATION: %s
+2: GENERATE DATA FOR REQUIRED FIELDS
+3: UNLESS SPECIFICALLY TOLD NOT TO, GENERATE ALL FIELDS... DON'T BE LAZY.
+4: OMIT ANY NON-REQUIRED FIELDS WHEN NO DATA FOR THE FIELD IS GENERATED.
+5: DON'T INCLUDE FIELDS WITH EMPTY STRINGS.
+6: RESPECT ANY VALIDATION INFORMATION SPECIFIED FOR FIELDS, SUCH AS MIN AND MAX LENGTHS.
+7: REPLY ONLY WITH THE JSON ENCODED MUTATED OBJECT
+`,
+		string(objectBytes),
+		prompt,
+	)
+
+	println(prompt)
+
+
+	resp, err := app.ChatGPT().CreateChatCompletion(
+		app.Context(),
+		openai.ChatCompletionRequest{
+			Model: openai.GPT3Dot5Turbo,
+			Messages: []openai.ChatCompletionMessage{
+				{
+					Role:    openai.ChatMessageRoleUser,
+					Content: prompt,
+				},
+			},
+		},
+	)
+	if err != nil {
+		err = fmt.Errorf("ChatCompletion error: %v\n", err)
+		return err
+	}
+
+	reply := resp.Choices[0].Message.Content
+	log.Println("reply >>", reply)
+
+	newResults := []interface{}{}
+	if err := json.Unmarshal([]byte(reply), &newResults); err != nil {
+		return err
+	}
+
+	for _, r := range newResults {
+		result, ok := r.(map[string]interface{})
+		if !ok {
+			return errors.New("array item is not a map")
+		}
+		// remove any empty fields
 		for k, v := range result {
 			vv, ok := v.(string)
 			if ok && vv == "" {

@@ -8,12 +8,11 @@ import VisitTab from '../interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
 
-import { CharacterList } from '@/features/characters/shared/characterList'
 
 
-import { LobbyObjectGET } from './_fetch'
+import { CharacterObjectGET } from './_fetch'
 
-export function Lobby(props) {  
+export function Character(props) {  
 
     const [userdata, setUserdata] = useUserContext()
     const [localdata, setLocaldata] = useLocalContext() 
@@ -24,11 +23,11 @@ export function Lobby(props) {
 
 	// update tabs handles the updated context and sends the user to a new interface
 	function editData() {
-		setLocaldata(VisitTab(localdata, "editlobby", localdata.tab.context))
+		setLocaldata(VisitTab(localdata, "editcharacter", localdata.tab.context))
 	}
 
 	function getObject() {
-		LobbyObjectGET(userdata, subject.Meta.ID)
+		CharacterObjectGET(userdata, subject.Meta.ID)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -69,6 +68,36 @@ export function Lobby(props) {
 										<td><div className='px-4'></div></td>
 										<td>{ subject.fields["name"] }</td>
 									</tr>
+								
+									<tr>
+										<td className='font-bold'>age</td>
+										<td><div className='px-4'></div></td>
+										<td>{ subject.fields["age"] }</td>
+									</tr>
+								
+									<tr>
+										<td className='font-bold'>gender</td>
+										<td><div className='px-4'></div></td>
+										<td>{ subject.fields["gender"] }</td>
+									</tr>
+								
+									<tr>
+										<td className='font-bold'>profession</td>
+										<td><div className='px-4'></div></td>
+										<td>{ subject.fields["profession"] }</td>
+									</tr>
+								
+									<tr>
+										<td className='font-bold'>socialclass</td>
+										<td><div className='px-4'></div></td>
+										<td>{ subject.fields["socialclass"] }</td>
+									</tr>
+								
+									<tr>
+										<td className='font-bold'>backstory</td>
+										<td><div className='px-4'></div></td>
+										<td>{ subject.fields["backstory"] }</td>
+									</tr>
 								</tbody>
 							</table>
 							<div className='px-4'>
@@ -81,8 +110,6 @@ export function Lobby(props) {
 				</div>
 			}
             
-			<CharacterList title="Character" subject={subject} limit={4} />
-			
         </div>
     )
 

@@ -48,6 +48,13 @@ func main() {
 		os.Setenv("MODEL_LOBBYS", collectionID)
 	}
 	{
+		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "characters", "description...", "", 1000000, nil)
+		if err != nil {
+			panic(err)
+		}
+		os.Setenv("MODEL_CHARACTERS", collectionID)
+	}
+	{
 		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "towns", "description...", "", 1000000, nil)
 		if err != nil {
 			panic(err)
@@ -112,6 +119,9 @@ func main() {
 	http.HandleFunc("/api/lobby", app.EntrypointLOBBY)
 	http.HandleFunc("/api/lobbys", app.EntrypointLOBBYS)
 	println("registering handlers for lobbys")
+	http.HandleFunc("/api/character", app.EntrypointCHARACTER)
+	http.HandleFunc("/api/characters", app.EntrypointCHARACTERS)
+	println("registering handlers for characters")
 	http.HandleFunc("/api/town", app.EntrypointTOWN)
 	http.HandleFunc("/api/towns", app.EntrypointTOWNS)
 	println("registering handlers for towns")

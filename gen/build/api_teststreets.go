@@ -65,7 +65,7 @@ func (app *App) EntrypointTESTSTREETS(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			if err := app.teststreetChatGPT(user, parent, prompt); err != nil {
+			if err := app.teststreetChatGPTCreate(user, parent, prompt); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
