@@ -30,32 +30,32 @@ export function CharacterEdit(props) {
 			id: "name",
 			type: "string",
 			value: subject.fields.name,
-			required: false,
+			required: true,
 		},"age": {
 			id: "age",
 			type: "int",
 			value: subject.fields.age,
-			required: false,
+			required: true,
 		},"gender": {
 			id: "gender",
 			type: "string",
 			value: subject.fields.gender,
-			required: false,
+			required: true,
 		},"profession": {
 			id: "profession",
 			type: "string",
 			value: subject.fields.profession,
-			required: false,
+			required: true,
 		},"socialclass": {
 			id: "socialclass",
 			type: "string",
 			value: subject.fields.socialclass,
-			required: false,
+			required: true,
 		},"backstory": {
 			id: "backstory",
 			type: "string",
 			value: subject.fields.backstory,
-			required: false,
+			required: true,
 		},
 	})
 	function handleInputChange(obj) {
@@ -65,25 +65,25 @@ export function CharacterEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="name" type='text' required={ false } title="character name" placeholder="character name" inputChange={handleInputChange} value={ inputs["name"].value } />
+			<Input id="name" type='text' required={ true } title="character name" placeholder="character name" inputChange={handleInputChange} value={ inputs["name"].value } />
 			<Spacer/>
 			
-			<Input id="age" type='number' required={ false } title="character age" inputChange={handleInputChange} value={ inputs["age"].value } />
+			<Input id="age" type='number' required={ true } title="character age" inputChange={handleInputChange} value={ inputs["age"].value } />
 			<Spacer/>
 			
-			<Input id="gender" type='text' required={ false } title="character gender" placeholder="character gender" inputChange={handleInputChange} value={ inputs["gender"].value } />
+			<Input id="gender" type='text' required={ true } title="character gender" placeholder="character gender" inputChange={handleInputChange} value={ inputs["gender"].value } />
 			<Spacer/>
 			
-			<Input id="profession" type='text' required={ false } title="character profession" placeholder="character profession" inputChange={handleInputChange} value={ inputs["profession"].value } />
+			<Input id="profession" type='text' required={ true } title="character profession" placeholder="character profession" inputChange={handleInputChange} value={ inputs["profession"].value } />
 			<Spacer/>
 			
-			<Input id="socialclass" type='text' required={ false } title="character socialclass" placeholder="character socialclass" inputChange={handleInputChange} value={ inputs["socialclass"].value } />
+			<Input id="socialclass" type='text' required={ true } title="character socialclass" placeholder="character socialclass" inputChange={handleInputChange} value={ inputs["socialclass"].value } />
 			<Spacer/>
 			
-			<Input id="backstory" type='text' required={ false } title="character backstory" placeholder="character backstory" inputChange={handleInputChange} value={ inputs["backstory"].value } />
+			<Input id="backstory" type='text' required={ true } title="character backstory" placeholder="character backstory" inputChange={handleInputChange} value={ inputs["backstory"].value } />
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={[]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","age","gender","profession","socialclass","backstory"]}/>
 			<Spacer/>
 			
 		</div>

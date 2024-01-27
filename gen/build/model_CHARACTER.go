@@ -58,7 +58,7 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 	
 
 	_, exists = m["name"]
-	if false && !exists {
+	if true && !exists {
 		return errors.New("required field 'name' not supplied")
 	}
 	if exists {
@@ -85,7 +85,7 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 	
 
 	_, exists = m["age"]
-	if false && !exists {
+	if true && !exists {
 		return errors.New("required field 'age' not supplied")
 	}
 	if exists {
@@ -105,7 +105,7 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 	
 
 	_, exists = m["gender"]
-	if false && !exists {
+	if true && !exists {
 		return errors.New("required field 'gender' not supplied")
 	}
 	if exists {
@@ -132,7 +132,7 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 	
 
 	_, exists = m["profession"]
-	if false && !exists {
+	if true && !exists {
 		return errors.New("required field 'profession' not supplied")
 	}
 	if exists {
@@ -159,7 +159,7 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 	
 
 	_, exists = m["socialclass"]
-	if false && !exists {
+	if true && !exists {
 		return errors.New("required field 'socialclass' not supplied")
 	}
 	if exists {
@@ -186,7 +186,7 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 	
 
 	_, exists = m["backstory"]
-	if false && !exists {
+	if true && !exists {
 		return errors.New("required field 'backstory' not supplied")
 	}
 	if exists {
@@ -237,6 +237,10 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 		}
 	}
 	
+	if !AssertRangeMin(w, 1, x.Fields.Name) {
+		return false
+	}
+	
 	if !AssertRangeMax(w, 30, x.Fields.Name) {
 		return false
 	}
@@ -263,6 +267,10 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 		}
 	}
 	
+	if !AssertRangeMin(w, 1, x.Fields.Gender) {
+		return false
+	}
+	
 	if !AssertRangeMax(w, 10, x.Fields.Gender) {
 		return false
 	}
@@ -280,6 +288,10 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 				return false
 			}
 		}
+	}
+	
+	if !AssertRangeMin(w, 1, x.Fields.Profession) {
+		return false
 	}
 	
 	if !AssertRangeMax(w, 10, x.Fields.Profession) {
@@ -301,6 +313,10 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 		}
 	}
 	
+	if !AssertRangeMin(w, 1, x.Fields.Socialclass) {
+		return false
+	}
+	
 	if !AssertRangeMax(w, 30, x.Fields.Socialclass) {
 		return false
 	}
@@ -318,6 +334,10 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 				return false
 			}
 		}
+	}
+	
+	if !AssertRangeMin(w, 1, x.Fields.Backstory) {
+		return false
 	}
 	
 	if !AssertRangeMax(w, 10000, x.Fields.Backstory) {

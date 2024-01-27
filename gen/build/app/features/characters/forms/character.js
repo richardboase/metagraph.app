@@ -26,25 +26,25 @@ export function CharacterForm(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="name" type='text' required={ false } title="character name" placeholder="character name" inputChange={handleInputChange}/>
+			<Input id="name" type='text' required={ true } title="character name" placeholder="character name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="age" type='number' required={ false } title="character age" inputChange={handleInputChange}/>
+			<Input id="age" type='number' required={ true } title="character age" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="gender" type='text' required={ false } title="character gender" placeholder="character gender" inputChange={handleInputChange}/>
+			<Input id="gender" type='text' required={ true } title="character gender" placeholder="character gender" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="profession" type='text' required={ false } title="character profession" placeholder="character profession" inputChange={handleInputChange}/>
+			<Input id="profession" type='text' required={ true } title="character profession" placeholder="character profession" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="socialclass" type='text' required={ false } title="character socialclass" placeholder="character socialclass" inputChange={handleInputChange}/>
+			<Input id="socialclass" type='text' required={ true } title="character socialclass" placeholder="character socialclass" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="backstory" type='text' required={ false } title="character backstory" placeholder="character backstory" inputChange={handleInputChange}/>
+			<Input id="backstory" type='text' required={ true } title="character backstory" placeholder="character backstory" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={[]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","age","gender","profession","socialclass","backstory"]}/>
 			<Spacer/>
 			
 		</div>

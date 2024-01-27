@@ -275,22 +275,22 @@ ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE A VALID JSON...
 We want to create one or more of these data objects: 
 {
 
-	// the name of the character 
+	// the name of the character  (THIS FIELD IS REQUIRED)
 	name (string)
 
-	// the age in years of the character 
+	// the age in years of the character  (THIS FIELD IS REQUIRED)
 	age (int)
 
-	// either male or female 
+	// either male or female  (THIS FIELD IS REQUIRED)
 	gender (string)
 
-	// primary job or ocuupation of the character 
+	// primary job or ocuupation of the character  (THIS FIELD IS REQUIRED)
 	profession (string)
 
-	// the social class of the character (upper, middle, working, lower) 
+	// the social class of the character (upper, middle, working, lower)  (THIS FIELD IS REQUIRED)
 	socialclass (string)
 
-	// a short synopis of the full life story of the character 
+	// a short synopis of the full life story of the character  (THIS FIELD IS REQUIRED)
 	backstory (string)
 
 }
