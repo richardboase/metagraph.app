@@ -150,7 +150,7 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 			if err := assertRangeMin(1, x.Fields.Profession); err != nil {
 				return err
 			}
-			if err := assertRangeMax(10, x.Fields.Profession); err != nil {
+			if err := assertRangeMax(100, x.Fields.Profession); err != nil {
 				return err
 			}
 			
@@ -294,7 +294,7 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 		return false
 	}
 	
-	if !AssertRangeMax(w, 10, x.Fields.Profession) {
+	if !AssertRangeMax(w, 100, x.Fields.Profession) {
 		return false
 	}
 	

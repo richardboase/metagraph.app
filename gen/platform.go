@@ -87,7 +87,7 @@ func main() {
 			{
 				Context:  "primary job or ocuupation of the character",
 				Name:     "profession",
-				JSON:     "string_10",
+				JSON:     "string_100",
 				Required: true,
 			},
 			{
