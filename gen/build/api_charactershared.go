@@ -275,7 +275,7 @@ ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE A VALID JSON...
 We want to create one or more of these data objects: 
 {
 
-	// the name of the character  (THIS FIELD IS REQUIRED)
+	// the name of the unique character  (THIS FIELD IS REQUIRED)
 	name (string)
 
 	// the age in years of the character  (THIS FIELD IS REQUIRED)
