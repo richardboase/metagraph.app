@@ -67,7 +67,7 @@ func main() {
 		Name: "character",
 		Fields: []*models.Field{
 			{
-				Context:  "the name of the character",
+				Context:  "the name of the unique character",
 				Name:     "name",
 				JSON:     "string_30",
 				Required: true,
