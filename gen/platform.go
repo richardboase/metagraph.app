@@ -104,9 +104,7 @@ func main() {
 			},
 		},
 		Options: models.Options{
-			Assetlayer: models.Assetlayer{
-				Token: true,
-			},
+			Assetlayer: models.Assetlayer{},
 		},
 	}
 
