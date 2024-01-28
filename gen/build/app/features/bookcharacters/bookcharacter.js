@@ -88,6 +88,12 @@ export function Bookcharacter(props) {
 									</tr>
 								
 									<tr>
+										<td className='font-bold'>diseases</td>
+										<td><div className='px-4'></div></td>
+										<td>{ subject.fields["diseases"] }</td>
+									</tr>
+								
+									<tr>
 										<td className='font-bold'>socialclass</td>
 										<td><div className='px-4'></div></td>
 										<td>{ subject.fields["socialclass"] }</td>

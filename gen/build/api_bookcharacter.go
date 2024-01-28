@@ -160,6 +160,9 @@ func (app *App) EntrypointBOOKCHARACTER(w http.ResponseWriter, r *http.Request) 
 					Path: "fields.profession",
 					Value: object.Fields.Profession,
 				},{
+					Path: "fields.diseases",
+					Value: object.Fields.Diseases,
+				},{
 					Path: "fields.socialclass",
 					Value: object.Fields.Socialclass,
 				},{

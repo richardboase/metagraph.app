@@ -76,6 +76,12 @@ func main() {
 				Required: true,
 			},
 			{
+				Context:  "health issues affecting the character",
+				Name:     "diseases",
+				JSON:     "array_csv",
+				Required: true,
+			},
+			{
 				Context:  "the social class of the character (upper, middle, working, lower)",
 				Name:     "socialclass",
 				JSON:     "string_30",

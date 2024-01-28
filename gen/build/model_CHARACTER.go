@@ -5,9 +5,15 @@ import (
 	"fmt"
 	"errors"
 	"net/http"
+	"encoding/hex"
 
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
+
+func init() {
+	// template race fix
+	hex.DecodeString("FF")
+}
 
 type CHARACTER struct {
 	Meta    Internals
@@ -66,10 +72,21 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		if err != nil {
 			return errors.New(err.Error())
 		} else {
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
-					return errors.New("failed to regexp")
+			{
+				exp := ""
+				if len(exp) > 0 {
+					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+						return errors.New("failed to regexp")
+					}
+				}
+			}
+			{
+				exp := ""
+				if len(exp) > 0 {
+					b, _ := hex.DecodeString(exp)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+						return errors.New("failed to regexpHex")
+					}
 				}
 			}
 			
@@ -93,10 +110,21 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		if err != nil {
 			return errors.New(err.Error())
 		} else {
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Age)) {
-					return errors.New("failed to regexp")
+			{
+				exp := ""
+				if len(exp) > 0 {
+					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Age)) {
+						return errors.New("failed to regexp")
+					}
+				}
+			}
+			{
+				exp := ""
+				if len(exp) > 0 {
+					b, _ := hex.DecodeString(exp)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Age)) {
+						return errors.New("failed to regexpHex")
+					}
 				}
 			}
 			
@@ -113,10 +141,21 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		if err != nil {
 			return errors.New(err.Error())
 		} else {
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Gender)) {
-					return errors.New("failed to regexp")
+			{
+				exp := ""
+				if len(exp) > 0 {
+					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Gender)) {
+						return errors.New("failed to regexp")
+					}
+				}
+			}
+			{
+				exp := ""
+				if len(exp) > 0 {
+					b, _ := hex.DecodeString(exp)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Gender)) {
+						return errors.New("failed to regexpHex")
+					}
 				}
 			}
 			
@@ -140,10 +179,21 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		if err != nil {
 			return errors.New(err.Error())
 		} else {
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Profession)) {
-					return errors.New("failed to regexp")
+			{
+				exp := ""
+				if len(exp) > 0 {
+					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Profession)) {
+						return errors.New("failed to regexp")
+					}
+				}
+			}
+			{
+				exp := ""
+				if len(exp) > 0 {
+					b, _ := hex.DecodeString(exp)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Profession)) {
+						return errors.New("failed to regexpHex")
+					}
 				}
 			}
 			
@@ -167,10 +217,21 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		if err != nil {
 			return errors.New(err.Error())
 		} else {
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Socialclass)) {
-					return errors.New("failed to regexp")
+			{
+				exp := ""
+				if len(exp) > 0 {
+					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Socialclass)) {
+						return errors.New("failed to regexp")
+					}
+				}
+			}
+			{
+				exp := ""
+				if len(exp) > 0 {
+					b, _ := hex.DecodeString(exp)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Socialclass)) {
+						return errors.New("failed to regexpHex")
+					}
 				}
 			}
 			
@@ -194,10 +255,21 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		if err != nil {
 			return errors.New(err.Error())
 		} else {
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Backstory)) {
-					return errors.New("failed to regexp")
+			{
+				exp := ""
+				if len(exp) > 0 {
+					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Backstory)) {
+						return errors.New("failed to regexp")
+					}
+				}
+			}
+			{
+				exp := ""
+				if len(exp) > 0 {
+					b, _ := hex.DecodeString(exp)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Backstory)) {
+						return errors.New("failed to regexpHex")
+					}
 				}
 			}
 			
@@ -227,12 +299,24 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 		counter++
 	}
 
-	// ignore this, a mostly redundant artifact
 	{
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, x.Fields.Name) {
-				return false
+		// handle basic regexp
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, x.Fields.Name) {
+					return false
+				}
+			}
+		}
+		// handle regexp that cannot be encoded as a JSON field
+		{
+			exp := ""
+			if len(exp) > 0 {
+				b, _ := hex.DecodeString(exp)
+				if !RegExp(string(b), x.Fields.Name) {
+					return false
+				}
 			}
 		}
 	}
@@ -250,19 +334,30 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 		counter++
 	}
 
-	// ignore this, a mostly redundant artifact
 	
 	x.Fields.Gender, exists = AssertSTRING(w, m, "gender")
 	if exists {
 		counter++
 	}
 
-	// ignore this, a mostly redundant artifact
 	{
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, x.Fields.Gender) {
-				return false
+		// handle basic regexp
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, x.Fields.Gender) {
+					return false
+				}
+			}
+		}
+		// handle regexp that cannot be encoded as a JSON field
+		{
+			exp := ""
+			if len(exp) > 0 {
+				b, _ := hex.DecodeString(exp)
+				if !RegExp(string(b), x.Fields.Gender) {
+					return false
+				}
 			}
 		}
 	}
@@ -280,12 +375,24 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 		counter++
 	}
 
-	// ignore this, a mostly redundant artifact
 	{
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, x.Fields.Profession) {
-				return false
+		// handle basic regexp
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, x.Fields.Profession) {
+					return false
+				}
+			}
+		}
+		// handle regexp that cannot be encoded as a JSON field
+		{
+			exp := ""
+			if len(exp) > 0 {
+				b, _ := hex.DecodeString(exp)
+				if !RegExp(string(b), x.Fields.Profession) {
+					return false
+				}
 			}
 		}
 	}
@@ -303,12 +410,24 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 		counter++
 	}
 
-	// ignore this, a mostly redundant artifact
 	{
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, x.Fields.Socialclass) {
-				return false
+		// handle basic regexp
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, x.Fields.Socialclass) {
+					return false
+				}
+			}
+		}
+		// handle regexp that cannot be encoded as a JSON field
+		{
+			exp := ""
+			if len(exp) > 0 {
+				b, _ := hex.DecodeString(exp)
+				if !RegExp(string(b), x.Fields.Socialclass) {
+					return false
+				}
 			}
 		}
 	}
@@ -326,12 +445,24 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 		counter++
 	}
 
-	// ignore this, a mostly redundant artifact
 	{
-		exp := ""
-		if len(exp) > 0 {
-			if !RegExp(exp, x.Fields.Backstory) {
-				return false
+		// handle basic regexp
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, x.Fields.Backstory) {
+					return false
+				}
+			}
+		}
+		// handle regexp that cannot be encoded as a JSON field
+		{
+			exp := ""
+			if len(exp) > 0 {
+				b, _ := hex.DecodeString(exp)
+				if !RegExp(string(b), x.Fields.Backstory) {
+					return false
+				}
 			}
 		}
 	}

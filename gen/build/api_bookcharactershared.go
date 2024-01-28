@@ -287,6 +287,9 @@ We want to create one or more of these data objects:
 	// primary job or ocuupation of the character  (THIS FIELD IS REQUIRED)
 	profession (string)
 
+	// health issues affecting the character  (THIS FIELD IS REQUIRED)
+	diseases (string)
+
 	// the social class of the character (upper, middle, working, lower)  (THIS FIELD IS REQUIRED)
 	socialclass (string)
 

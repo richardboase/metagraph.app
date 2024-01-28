@@ -5,9 +5,15 @@ import (
 	"fmt"
 	"errors"
 	"net/http"
+	"encoding/hex"
 
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
+
+func init() {
+	// template race fix
+	hex.DecodeString("FF")
+}
 
 type FLOOR struct {
 	Meta    Internals
@@ -62,10 +68,21 @@ func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 		if err != nil {
 			return errors.New(err.Error())
 		} else {
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Rooms)) {
-					return errors.New("failed to regexp")
+			{
+				exp := ""
+				if len(exp) > 0 {
+					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Rooms)) {
+						return errors.New("failed to regexp")
+					}
+				}
+			}
+			{
+				exp := ""
+				if len(exp) > 0 {
+					b, _ := hex.DecodeString(exp)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Rooms)) {
+						return errors.New("failed to regexpHex")
+					}
 				}
 			}
 			
@@ -88,7 +105,6 @@ func (x *FLOOR) ValidateByCount(w http.ResponseWriter, m map[string]interface{},
 		counter++
 	}
 
-	// ignore this, a mostly redundant artifact
 	
 
 	x.Meta.Modify()

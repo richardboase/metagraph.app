@@ -38,13 +38,16 @@ export function BookcharacterForm(props) {
 			<Input id="profession" type='text' required={ true } title="bookcharacter profession" placeholder="bookcharacter profession" inputChange={handleInputChange}/>
 			<Spacer/>
 			
+			<Input id="diseases" type='text' required={ true } title="bookcharacter diseases" placeholder="bookcharacter diseases" inputChange={handleInputChange}/>
+			<Spacer/>
+			
 			<Input id="socialclass" type='text' required={ true } title="bookcharacter socialclass" placeholder="bookcharacter socialclass" inputChange={handleInputChange}/>
 			<Spacer/>
 			
 			<Input id="backstory" type='text' required={ true } title="bookcharacter backstory" placeholder="bookcharacter backstory" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","age","gender","profession","socialclass","backstory"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","age","gender","profession","diseases","socialclass","backstory"]}/>
 			<Spacer/>
 			
 		</div>
