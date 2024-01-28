@@ -280,7 +280,7 @@ We want to create one or more of these data objects:
 
 }
 
-The purpose of the object is to represent: 
+The purpose of the object is to represent: a paragraph in a chapter
 
 RULES:
 1: USE THIS PROMPT TO GENERATE THE OBJECT OR OBJECT ARRAY: %s
@@ -367,7 +367,7 @@ func (app *App) paragraphChatGPTEdit(user *User, parent *Internals, object *PARA
 Here is the object we need to edit:
 %s
 
-The purpose of the object is to represent: 
+The purpose of the object is to represent: a paragraph in a chapter
 
 RULES:
 1: USE THIS PROMPT TO GENERATE THE MUTATION: %s

@@ -295,7 +295,7 @@ We want to create one or more of these data objects:
 
 }
 
-The purpose of the object is to represent: 
+The purpose of the object is to represent: a character that will be involved with the storyline, or who might impact a central character but be passive in nature
 
 RULES:
 1: USE THIS PROMPT TO GENERATE THE OBJECT OR OBJECT ARRAY: %s
@@ -382,7 +382,7 @@ func (app *App) bookcharacterChatGPTEdit(user *User, parent *Internals, object *
 Here is the object we need to edit:
 %s
 
-The purpose of the object is to represent: 
+The purpose of the object is to represent: a character that will be involved with the storyline, or who might impact a central character but be passive in nature
 
 RULES:
 1: USE THIS PROMPT TO GENERATE THE MUTATION: %s

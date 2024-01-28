@@ -28,6 +28,7 @@ func main() {
 	}
 
 	book := &models.Object{
+		Context: "a creative writing project",
 		Mode:    "root",
 		Parents: []string{},
 		Name:    "book",
@@ -44,6 +45,7 @@ func main() {
 	}
 
 	bookcharacter := &models.Object{
+		Context: "a character that will be involved with the storyline, or who might impact a central character but be passive in nature",
 		Parents: []string{
 			book.Name,
 		},
@@ -92,7 +94,8 @@ func main() {
 	}
 
 	chapter := &models.Object{
-		Mode: "many",
+		Context: "a chapter of the book",
+		Mode:    "many",
 		Parents: []string{
 			book.Name,
 		},
@@ -111,7 +114,8 @@ func main() {
 	}
 
 	paragraph := &models.Object{
-		Mode: "many",
+		Context: "a paragraph in a chapter",
+		Mode:    "many",
 		Parents: []string{
 			chapter.Name,
 		},
