@@ -82,7 +82,7 @@ func main() {
 				Required: true,
 			},
 			{
-				Context:  "a short synopis of the full life story of the character",
+				Context:  "a synopis of the full life story of the character",
 				Name:     "backstory",
 				JSON:     "string_10000",
 				Required: true,

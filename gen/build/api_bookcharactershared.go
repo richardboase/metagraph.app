@@ -290,7 +290,7 @@ We want to create one or more of these data objects:
 	// the social class of the character (upper, middle, working, lower)  (THIS FIELD IS REQUIRED)
 	socialclass (string)
 
-	// a short synopis of the full life story of the character  (THIS FIELD IS REQUIRED)
+	// a synopis of the full life story of the character  (THIS FIELD IS REQUIRED)
 	backstory (string)
 
 }
