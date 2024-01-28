@@ -61,9 +61,7 @@ func (app *App) CreateDocumentBUILDING(parent *Internals, object *BUILDING) erro
 			return err
 		}
 		object.Meta.Asset = assetID
-		if err := app.Assetlayer().SendAsset(assetID, "$"+object.Meta.AssetlayerWalletID()); err != nil {
-			return err
-		}
+		
 	}
 	*/
 	

@@ -61,9 +61,7 @@ func (app *App) CreateDocumentTESTSTREET(parent *Internals, object *TESTSTREET) 
 			return err
 		}
 		object.Meta.Asset = assetID
-		if err := app.Assetlayer().SendAsset(assetID, "$"+object.Meta.AssetlayerWalletID()); err != nil {
-			return err
-		}
+		
 	}
 	*/
 	

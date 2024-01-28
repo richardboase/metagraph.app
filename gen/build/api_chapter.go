@@ -251,7 +251,7 @@ func (app *App) EntrypointCHAPTER(w http.ResponseWriter, r *http.Request) {
 				if updateInfo, err := item.Meta.Firestore(app.App).Update(app.Context(), updates); err != nil {
 					log.Println(err)
 				} else {
-					log.Println(updateInfo)
+					log.Println("info:", updateInfo)
 				}
 			}
 
@@ -292,7 +292,7 @@ func (app *App) EntrypointCHAPTER(w http.ResponseWriter, r *http.Request) {
 				if updateInfo, err := item.Meta.Firestore(app.App).Update(app.Context(), updates); err != nil {
 					log.Println(err)
 				} else {
-					log.Println(updateInfo)
+					log.Println("info:", updateInfo)
 				}
 			}
 

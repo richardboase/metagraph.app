@@ -61,9 +61,7 @@ func (app *App) CreateDocumentFLOOR(parent *Internals, object *FLOOR) error {
 			return err
 		}
 		object.Meta.Asset = assetID
-		if err := app.Assetlayer().SendAsset(assetID, "$"+object.Meta.AssetlayerWalletID()); err != nil {
-			return err
-		}
+		
 	}
 	*/
 	

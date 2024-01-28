@@ -61,9 +61,11 @@ func (app *App) CreateDocumentBOOKCHARACTER(parent *Internals, object *BOOKCHARA
 			return err
 		}
 		object.Meta.Asset = assetID
+		
 		if err := app.Assetlayer().SendAsset(assetID, "$"+object.Meta.AssetlayerWalletID()); err != nil {
 			return err
 		}
+		
 	}
 	*/
 	

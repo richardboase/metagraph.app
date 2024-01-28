@@ -74,7 +74,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				exp := ""
 				if len(exp) > 0 {
 					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
-						return errors.New("failed to regexp")
+						return errors.New("failed to regexp: "+exp)
 					}
 				}
 			}
@@ -83,7 +83,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				if len(exp) > 0 {
 					b, _ := hex.DecodeString(exp)
 					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
-						return errors.New("failed to regexpHex")
+						return errors.New("failed to regexpHex: "+string(b))
 					}
 				}
 			}
@@ -112,7 +112,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				exp := ""
 				if len(exp) > 0 {
 					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Description)) {
-						return errors.New("failed to regexp")
+						return errors.New("failed to regexp: "+exp)
 					}
 				}
 			}
@@ -121,7 +121,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				if len(exp) > 0 {
 					b, _ := hex.DecodeString(exp)
 					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Description)) {
-						return errors.New("failed to regexpHex")
+						return errors.New("failed to regexpHex: "+string(b))
 					}
 				}
 			}
@@ -150,7 +150,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				exp := ""
 				if len(exp) > 0 {
 					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Start)) {
-						return errors.New("failed to regexp")
+						return errors.New("failed to regexp: "+exp)
 					}
 				}
 			}
@@ -159,7 +159,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				if len(exp) > 0 {
 					b, _ := hex.DecodeString(exp)
 					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Start)) {
-						return errors.New("failed to regexpHex")
+						return errors.New("failed to regexpHex: "+string(b))
 					}
 				}
 			}
@@ -188,7 +188,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				exp := ""
 				if len(exp) > 0 {
 					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.End)) {
-						return errors.New("failed to regexp")
+						return errors.New("failed to regexp: "+exp)
 					}
 				}
 			}
@@ -197,7 +197,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 				if len(exp) > 0 {
 					b, _ := hex.DecodeString(exp)
 					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.End)) {
-						return errors.New("failed to regexpHex")
+						return errors.New("failed to regexpHex: "+string(b))
 					}
 				}
 			}

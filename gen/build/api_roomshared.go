@@ -61,9 +61,7 @@ func (app *App) CreateDocumentROOM(parent *Internals, object *ROOM) error {
 			return err
 		}
 		object.Meta.Asset = assetID
-		if err := app.Assetlayer().SendAsset(assetID, "$"+object.Meta.AssetlayerWalletID()); err != nil {
-			return err
-		}
+		
 	}
 	*/
 	
