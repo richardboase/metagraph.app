@@ -157,6 +157,9 @@ func (app *App) EntrypointCHARACTER(w http.ResponseWriter, r *http.Request) {
 					Path: "fields.gender",
 					Value: object.Fields.Gender,
 				},{
+					Path: "fields.diseases",
+					Value: object.Fields.Diseases,
+				},{
 					Path: "fields.profession",
 					Value: object.Fields.Profession,
 				},{

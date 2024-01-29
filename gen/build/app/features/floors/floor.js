@@ -62,12 +62,24 @@ export function Floor(props) {
 							</div>
 						}
 						<div>
-							<table className='m-4'>
+							<table className='m-4 w-full'>
 								<tbody>
-									<tr>
-										<td className='font-bold'>rooms</td>
-										<td><div className='px-4'></div></td>
-										<td>{ subject.fields["rooms"] }</td>
+									<tr className='flex flex-row'>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='font-bold'>rooms</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='px-2'>:</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className=''>{ subject.fields["rooms"] }</div>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>

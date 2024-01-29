@@ -31,6 +31,8 @@ export function CharacterListRow(props) {
 				<div className="px-4"></div>
 				<Spacer/><div className='text-xl font-bold' title="gender">{ props.item.fields["gender"] }</div>
 				<div className="px-4"></div>
+				<Spacer/><div className='text-xl font-bold' title="diseases">{ props.item.fields["diseases"] }</div>
+				<div className="px-4"></div>
 				<Spacer/><div className='text-xl font-bold' title="profession">{ props.item.fields["profession"] }</div>
 				<div className="px-4"></div>
 				<Spacer/><div className='text-xl font-bold' title="socialclass">{ props.item.fields["socialclass"] }</div>

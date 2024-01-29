@@ -41,6 +41,11 @@ export function CharacterEdit(props) {
 			type: "string",
 			value: subject.fields.gender,
 			required: true,
+		},"diseases": {
+			id: "diseases",
+			type: "string",
+			value: subject.fields.diseases,
+			required: true,
 		},"profession": {
 			id: "profession",
 			type: "string",
@@ -74,6 +79,9 @@ export function CharacterEdit(props) {
 			<Input id="gender" type='text' required={ true } title="character gender" placeholder="character gender" inputChange={handleInputChange} value={ inputs["gender"].value } />
 			<Spacer/>
 			
+			<Input id="diseases" type='text' required={ true } title="character diseases" placeholder="character diseases" inputChange={handleInputChange} value={ inputs["diseases"].value } />
+			<Spacer/>
+			
 			<Input id="profession" type='text' required={ true } title="character profession" placeholder="character profession" inputChange={handleInputChange} value={ inputs["profession"].value } />
 			<Spacer/>
 			
@@ -83,7 +91,7 @@ export function CharacterEdit(props) {
 			<Input id="backstory" type='text' required={ true } title="character backstory" placeholder="character backstory" inputChange={handleInputChange} value={ inputs["backstory"].value } />
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","age","gender","profession","socialclass","backstory"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","age","gender","diseases","profession","socialclass","backstory"]}/>
 			<Spacer/>
 			
 		</div>

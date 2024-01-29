@@ -35,6 +35,9 @@ export function CharacterForm(props) {
 			<Input id="gender" type='text' required={ true } title="character gender" placeholder="character gender" inputChange={handleInputChange}/>
 			<Spacer/>
 			
+			<Input id="diseases" type='text' required={ true } title="character diseases" placeholder="character diseases" inputChange={handleInputChange}/>
+			<Spacer/>
+			
 			<Input id="profession" type='text' required={ true } title="character profession" placeholder="character profession" inputChange={handleInputChange}/>
 			<Spacer/>
 			
@@ -44,7 +47,7 @@ export function CharacterForm(props) {
 			<Input id="backstory" type='text' required={ true } title="character backstory" placeholder="character backstory" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","age","gender","profession","socialclass","backstory"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","age","gender","diseases","profession","socialclass","backstory"]}/>
 			<Spacer/>
 			
 		</div>

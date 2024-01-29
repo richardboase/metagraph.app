@@ -43,6 +43,7 @@ type FieldsCHARACTER struct {
 	Name string `json:"name" firestore:"name"`
 	Age int `json:"age" firestore:"age"`
 	Gender string `json:"gender" firestore:"gender"`
+	Diseases string `json:"diseases" firestore:"diseases"`
 	Profession string `json:"profession" firestore:"profession"`
 	Socialclass string `json:"socialclass" firestore:"socialclass"`
 	Backstory string `json:"backstory" firestore:"backstory"`
@@ -163,6 +164,44 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 				return err
 			}
 			if err := assertRangeMax(10, x.Fields.Gender); err != nil {
+				return err
+			}
+			
+		}
+	}
+	
+
+	_, exists = m["diseases"]
+	if true && !exists {
+		return errors.New("required field 'diseases' not supplied")
+	}
+	if exists {
+		x.Fields.Diseases, err = assertSTRING(m, "diseases")
+		if err != nil {
+			return errors.New(err.Error())
+		} else {
+			{
+				exp := ""
+				if len(exp) > 0 {
+					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Diseases)) {
+						return errors.New("failed to regexp: "+exp)
+					}
+				}
+			}
+			{
+				exp := "5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B29240D0A"
+				if len(exp) > 0 {
+					b, _ := hex.DecodeString(exp)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Diseases)) {
+						return errors.New("failed to regexpHex: "+string(b))
+					}
+				}
+			}
+			
+			if err := assertRangeMin(1, x.Fields.Diseases); err != nil {
+				return err
+			}
+			if err := assertRangeMax(1e+06, x.Fields.Diseases); err != nil {
 				return err
 			}
 			
@@ -367,6 +406,41 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 	}
 	
 	if !AssertRangeMax(w, 10, x.Fields.Gender) {
+		return false
+	}
+	
+	x.Fields.Diseases, exists = AssertSTRING(w, m, "diseases")
+	if exists {
+		counter++
+	}
+
+	{
+		// handle basic regexp
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, x.Fields.Diseases) {
+					return false
+				}
+			}
+		}
+		// handle regexp that cannot be encoded as a JSON field
+		{
+			exp := "5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B29240D0A"
+			if len(exp) > 0 {
+				b, _ := hex.DecodeString(exp)
+				if !RegExp(string(b), x.Fields.Diseases) {
+					return false
+				}
+			}
+		}
+	}
+	
+	if !AssertRangeMin(w, 1, x.Fields.Diseases) {
+		return false
+	}
+	
+	if !AssertRangeMax(w, 1e+06, x.Fields.Diseases) {
 		return false
 	}
 	

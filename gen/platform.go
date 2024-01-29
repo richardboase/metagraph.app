@@ -197,6 +197,12 @@ func main() {
 				Required: true,
 			},
 			{
+				Context:  "health issues affecting the character",
+				Name:     "diseases",
+				JSON:     "array_csv",
+				Required: true,
+			},
+			{
 				Context:  "primary job or ocuupation of the character",
 				Name:     "profession",
 				JSON:     "string_100",

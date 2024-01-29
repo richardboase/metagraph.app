@@ -319,10 +319,10 @@ RULES:
 	resp, err := app.ChatGPT().CreateChatCompletion(
 		app.Context(),
 		openai.ChatCompletionRequest{
-			Model: openai.GPT3Dot5Turbo,
+			Model: openai.GPT3Dot5Turbo1106,
 			Messages: []openai.ChatCompletionMessage{
 				{
-					Role:    openai.ChatMessageRoleUser,
+					Role:    openai.ChatMessageRoleSystem,
 					Content: prompt,
 				},
 			},
@@ -408,10 +408,10 @@ RULES:
 	resp, err := app.ChatGPT().CreateChatCompletion(
 		app.Context(),
 		openai.ChatCompletionRequest{
-			Model: openai.GPT3Dot5Turbo,
+			Model: openai.GPT3Dot5Turbo1106,
 			Messages: []openai.ChatCompletionMessage{
 				{
-					Role:    openai.ChatMessageRoleUser,
+					Role:    openai.ChatMessageRoleSystem,
 					Content: prompt,
 				},
 			},

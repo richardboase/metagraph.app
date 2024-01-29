@@ -61,12 +61,24 @@ export function Paragraph(props) {
 							</div>
 						}
 						<div>
-							<table className='m-4'>
+							<table className='m-4 w-full'>
 								<tbody>
-									<tr>
-										<td className='font-bold'>content</td>
-										<td><div className='px-4'></div></td>
-										<td>{ subject.fields["content"] }</td>
+									<tr className='flex flex-row'>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='font-bold'>content</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='px-2'>:</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className=''>{ subject.fields["content"] }</div>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>

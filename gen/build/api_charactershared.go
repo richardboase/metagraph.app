@@ -286,6 +286,9 @@ We want to create one or more of these data objects:
 	// either male or female  (THIS FIELD IS REQUIRED)
 	gender (string)
 
+	// health issues affecting the character  (THIS FIELD IS REQUIRED)
+	diseases (string)
+
 	// primary job or ocuupation of the character  (THIS FIELD IS REQUIRED)
 	profession (string)
 
@@ -316,10 +319,10 @@ RULES:
 	resp, err := app.ChatGPT().CreateChatCompletion(
 		app.Context(),
 		openai.ChatCompletionRequest{
-			Model: openai.GPT3Dot5Turbo,
+			Model: openai.GPT3Dot5Turbo1106,
 			Messages: []openai.ChatCompletionMessage{
 				{
-					Role:    openai.ChatMessageRoleUser,
+					Role:    openai.ChatMessageRoleSystem,
 					Content: prompt,
 				},
 			},
@@ -405,10 +408,10 @@ RULES:
 	resp, err := app.ChatGPT().CreateChatCompletion(
 		app.Context(),
 		openai.ChatCompletionRequest{
-			Model: openai.GPT3Dot5Turbo,
+			Model: openai.GPT3Dot5Turbo1106,
 			Messages: []openai.ChatCompletionMessage{
 				{
-					Role:    openai.ChatMessageRoleUser,
+					Role:    openai.ChatMessageRoleSystem,
 					Content: prompt,
 				},
 			},

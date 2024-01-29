@@ -61,48 +61,132 @@ export function Bookcharacter(props) {
 							</div>
 						}
 						<div>
-							<table className='m-4'>
+							<table className='m-4 w-full'>
 								<tbody>
-									<tr>
-										<td className='font-bold'>name</td>
-										<td><div className='px-4'></div></td>
-										<td>{ subject.fields["name"] }</td>
+									<tr className='flex flex-row'>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='font-bold'>name</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='px-2'>:</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className=''>{ subject.fields["name"] }</div>
+											</div>
+										</td>
 									</tr>
 								
-									<tr>
-										<td className='font-bold'>age</td>
-										<td><div className='px-4'></div></td>
-										<td>{ subject.fields["age"] }</td>
+									<tr className='flex flex-row'>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='font-bold'>age</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='px-2'>:</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className=''>{ subject.fields["age"] }</div>
+											</div>
+										</td>
 									</tr>
 								
-									<tr>
-										<td className='font-bold'>gender</td>
-										<td><div className='px-4'></div></td>
-										<td>{ subject.fields["gender"] }</td>
+									<tr className='flex flex-row'>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='font-bold'>gender</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='px-2'>:</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className=''>{ subject.fields["gender"] }</div>
+											</div>
+										</td>
 									</tr>
 								
-									<tr>
-										<td className='font-bold'>profession</td>
-										<td><div className='px-4'></div></td>
-										<td>{ subject.fields["profession"] }</td>
+									<tr className='flex flex-row'>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='font-bold'>profession</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='px-2'>:</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className=''>{ subject.fields["profession"] }</div>
+											</div>
+										</td>
 									</tr>
 								
-									<tr>
-										<td className='font-bold'>diseases</td>
-										<td><div className='px-4'></div></td>
-										<td>{ subject.fields["diseases"] }</td>
+									<tr className='flex flex-row'>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='font-bold'>diseases</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='px-2'>:</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className=''>{ subject.fields["diseases"] }</div>
+											</div>
+										</td>
 									</tr>
 								
-									<tr>
-										<td className='font-bold'>socialclass</td>
-										<td><div className='px-4'></div></td>
-										<td>{ subject.fields["socialclass"] }</td>
+									<tr className='flex flex-row'>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='font-bold'>socialclass</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='px-2'>:</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className=''>{ subject.fields["socialclass"] }</div>
+											</div>
+										</td>
 									</tr>
 								
-									<tr>
-										<td className='font-bold'>backstory</td>
-										<td><div className='px-4'></div></td>
-										<td>{ subject.fields["backstory"] }</td>
+									<tr className='flex flex-row'>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='font-bold'>backstory</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className='px-2'>:</div>
+											</div>
+										</td>
+										<td className='flex flex-col justify-start'>
+											<div className='w-full flex flex-row justify-end'>
+												<div className=''>{ subject.fields["backstory"] }</div>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
