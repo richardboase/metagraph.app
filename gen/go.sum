@@ -18,6 +18,8 @@ github.com/richardboase/npgpublic v0.0.0-20240118182639-3a07911eafa1 h1:rqYPj8gz
 github.com/richardboase/npgpublic v0.0.0-20240118182639-3a07911eafa1/go.mod h1:Y3RUpPQ/z5XhKKlWbvAXBHRU5IB8D5NrmAxpRQk+w9g=
 github.com/richardboase/npgpublic v0.0.0-20240119231132-7d3bbd8915cb h1:wfp70IdRDjpDIn70IvmGg3FYbzSZMdW8Ab5k5+eO5F0=
 github.com/richardboase/npgpublic v0.0.0-20240119231132-7d3bbd8915cb/go.mod h1:Y3RUpPQ/z5XhKKlWbvAXBHRU5IB8D5NrmAxpRQk+w9g=
+github.com/sashabaranov/go-openai v1.19.2 h1:+dkuCADSnwXV02YVJkdphY8XD9AyHLUWwk6V7LB6EL8=
+github.com/sashabaranov/go-openai v1.19.2/go.mod h1:lj5b/K+zjTSFxVLijLSTDZuP7adOgerWeFyZLUhAKRg=
 golang.org/x/sync v0.3.0 h1:ftCYgMx6zT/asHUrPw8BLLscYtGznsLAnjq5RH9P66E=
 golang.org/x/sync v0.3.0/go.mod h1:FU7BRWz2tNW+3quACPkgCx/L+uEAv1htQ0V83Z9Rj+Y=
 golang.org/x/sync v0.5.0/go.mod h1:Czt+wKu1gCyEFDUtn0jG5QVvpJ6rzVqr5aXyt9drQfk=
