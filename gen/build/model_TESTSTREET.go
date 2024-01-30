@@ -2,6 +2,7 @@
 package main
 
 import (
+	"log"
 	"fmt"
 	"errors"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 
 func init() {
 	// template race fix
+	log.Flags()
 	hex.DecodeString("FF")
 }
 
@@ -242,7 +244,11 @@ func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interfa
 		{
 			exp := ""
 			if len(exp) > 0 {
-				b, _ := hex.DecodeString(exp)
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
 				if !RegExp(string(b), x.Fields.Name) {
 					return false
 				}
@@ -277,7 +283,11 @@ func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interfa
 		{
 			exp := ""
 			if len(exp) > 0 {
-				b, _ := hex.DecodeString(exp)
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
 				if !RegExp(string(b), x.Fields.Description) {
 					return false
 				}
@@ -308,7 +318,11 @@ func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interfa
 		{
 			exp := ""
 			if len(exp) > 0 {
-				b, _ := hex.DecodeString(exp)
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
 				if !RegExp(string(b), x.Fields.Start) {
 					return false
 				}
@@ -339,7 +353,11 @@ func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interfa
 		{
 			exp := ""
 			if len(exp) > 0 {
-				b, _ := hex.DecodeString(exp)
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
 				if !RegExp(string(b), x.Fields.End) {
 					return false
 				}

@@ -2,6 +2,7 @@
 package main
 
 import (
+	"log"
 	"fmt"
 	"errors"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 
 func init() {
 	// template race fix
+	log.Flags()
 	hex.DecodeString("FF")
 }
 
@@ -352,7 +354,11 @@ func (x *BOOKCHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]inte
 		{
 			exp := ""
 			if len(exp) > 0 {
-				b, _ := hex.DecodeString(exp)
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
 				if !RegExp(string(b), x.Fields.Name) {
 					return false
 				}
@@ -393,7 +399,11 @@ func (x *BOOKCHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]inte
 		{
 			exp := ""
 			if len(exp) > 0 {
-				b, _ := hex.DecodeString(exp)
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
 				if !RegExp(string(b), x.Fields.Gender) {
 					return false
 				}
@@ -428,7 +438,11 @@ func (x *BOOKCHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]inte
 		{
 			exp := ""
 			if len(exp) > 0 {
-				b, _ := hex.DecodeString(exp)
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
 				if !RegExp(string(b), x.Fields.Profession) {
 					return false
 				}
@@ -463,7 +477,11 @@ func (x *BOOKCHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]inte
 		{
 			exp := "5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B29240D0A"
 			if len(exp) > 0 {
-				b, _ := hex.DecodeString(exp)
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
 				if !RegExp(string(b), x.Fields.Diseases) {
 					return false
 				}
@@ -498,7 +516,11 @@ func (x *BOOKCHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]inte
 		{
 			exp := ""
 			if len(exp) > 0 {
-				b, _ := hex.DecodeString(exp)
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
 				if !RegExp(string(b), x.Fields.Socialclass) {
 					return false
 				}
@@ -533,7 +555,11 @@ func (x *BOOKCHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]inte
 		{
 			exp := ""
 			if len(exp) > 0 {
-				b, _ := hex.DecodeString(exp)
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
 				if !RegExp(string(b), x.Fields.Backstory) {
 					return false
 				}

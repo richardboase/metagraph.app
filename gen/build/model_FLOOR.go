@@ -2,6 +2,7 @@
 package main
 
 import (
+	"log"
 	"fmt"
 	"errors"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 
 func init() {
 	// template race fix
+	log.Flags()
 	hex.DecodeString("FF")
 }
 
