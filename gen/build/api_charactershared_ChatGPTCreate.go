@@ -88,7 +88,6 @@ RULES:
 			return err
 		}
 		newResults = append(newResults, newResult)
-		return nil
 	}
 
 	for _, r := range newResults {
