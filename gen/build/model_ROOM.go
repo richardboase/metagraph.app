@@ -92,7 +92,9 @@ func (x *ROOM) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			
 			return err
+			
 		}
 		if err := assertRangeMax(30, x.Fields.Name); err != nil {
 			return err

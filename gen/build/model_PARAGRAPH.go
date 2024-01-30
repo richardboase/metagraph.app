@@ -92,7 +92,9 @@ func (x *PARAGRAPH) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.Content); err != nil {
+			
 			return err
+			
 		}
 		if err := assertRangeMax(10000, x.Fields.Content); err != nil {
 			return err

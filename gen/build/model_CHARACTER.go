@@ -98,7 +98,9 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			
 			return err
+			
 		}
 		if err := assertRangeMax(30, x.Fields.Name); err != nil {
 			return err
@@ -173,7 +175,9 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.Gender); err != nil {
+			
 			return err
+			
 		}
 		if err := assertRangeMax(10, x.Fields.Gender); err != nil {
 			return err
@@ -213,8 +217,10 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Diseases); err != nil {
+		if err := assertRangeMin(0, x.Fields.Diseases); err != nil {
+			
 			return err
+			
 		}
 		if err := assertRangeMax(1e+06, x.Fields.Diseases); err != nil {
 			return err
@@ -255,7 +261,9 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.Profession); err != nil {
+			
 			return err
+			
 		}
 		if err := assertRangeMax(100, x.Fields.Profession); err != nil {
 			return err
@@ -296,7 +304,9 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.Socialclass); err != nil {
+			
 			return err
+			
 		}
 		if err := assertRangeMax(30, x.Fields.Socialclass); err != nil {
 			return err
@@ -337,7 +347,9 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.Backstory); err != nil {
+			
 			return err
+			
 		}
 		if err := assertRangeMax(10000, x.Fields.Backstory); err != nil {
 			return err
@@ -487,7 +499,7 @@ func (x *CHARACTER) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 
 	
 	
-	if !AssertRangeMin(w, 1, x.Fields.Diseases) {
+	if !AssertRangeMin(w, 0, x.Fields.Diseases) {
 		return false
 	}
 	

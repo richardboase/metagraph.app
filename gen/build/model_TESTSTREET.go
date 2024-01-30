@@ -95,7 +95,9 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			
 			return err
+			
 		}
 		if err := assertRangeMax(60, x.Fields.Name); err != nil {
 			return err
@@ -136,7 +138,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.Description); err != nil {
-			return err
+			
 		}
 		if err := assertRangeMax(1000, x.Fields.Description); err != nil {
 			return err
@@ -177,7 +179,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.Start); err != nil {
-			return err
+			
 		}
 		if err := assertRangeMax(60, x.Fields.Start); err != nil {
 			return err
@@ -218,7 +220,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 		}
 		
 		if err := assertRangeMin(1, x.Fields.End); err != nil {
-			return err
+			
 		}
 		if err := assertRangeMax(60, x.Fields.End); err != nil {
 			return err
