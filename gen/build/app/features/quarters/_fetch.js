@@ -63,3 +63,7 @@ export function QuarterChatGPTModifyPOST(user, parentID, collectionID, payload) 
 export function QuarterChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/quarters?function=prompt&parent="+parentID, payload)
 }
+
+export function QuarterChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/quarter?function=prompt&id="+id, payload)
+}

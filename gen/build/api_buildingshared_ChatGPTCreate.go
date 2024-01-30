@@ -77,9 +77,10 @@ RULES:
 	newResults := []interface{}{}
 	replyBytes := []byte(reply)
 	if err := json.Unmarshal(replyBytes, &newResults); err != nil {
-		log.Println(err)
+		log.Println("not an array:", err)
 		newResult := map[string]interface{}{}
 		if err := json.Unmarshal(replyBytes, &newResult); err != nil {
+			log.Println("not an object:", string(replyBytes))
 			return err
 		}
 		newResults = append(newResults, newResult)

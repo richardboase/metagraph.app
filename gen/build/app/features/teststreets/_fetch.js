@@ -63,3 +63,7 @@ export function TeststreetChatGPTModifyPOST(user, parentID, collectionID, payloa
 export function TeststreetChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/teststreets?function=prompt&parent="+parentID, payload)
 }
+
+export function TeststreetChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/teststreet?function=prompt&id="+id, payload)
+}

@@ -63,3 +63,7 @@ export function ParagraphChatGPTModifyPOST(user, parentID, collectionID, payload
 export function ParagraphChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/paragraphs?function=prompt&parent="+parentID, payload)
 }
+
+export function ParagraphChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/paragraph?function=prompt&id="+id, payload)
+}

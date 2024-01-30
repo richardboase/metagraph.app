@@ -63,3 +63,7 @@ export function GameChatGPTModifyPOST(user, parentID, collectionID, payload) {
 export function GameChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/games?function=prompt&parent="+parentID, payload)
 }
+
+export function GameChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/game?function=prompt&id="+id, payload)
+}

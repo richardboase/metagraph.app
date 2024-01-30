@@ -63,3 +63,7 @@ export function BuildingChatGPTModifyPOST(user, parentID, collectionID, payload)
 export function BuildingChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/buildings?function=prompt&parent="+parentID, payload)
 }
+
+export function BuildingChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/building?function=prompt&id="+id, payload)
+}

@@ -63,3 +63,7 @@ export function RoomChatGPTModifyPOST(user, parentID, collectionID, payload) {
 export function RoomChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/rooms?function=prompt&parent="+parentID, payload)
 }
+
+export function RoomChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/room?function=prompt&id="+id, payload)
+}

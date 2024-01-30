@@ -63,3 +63,7 @@ export function ChapterChatGPTModifyPOST(user, parentID, collectionID, payload) 
 export function ChapterChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/chapters?function=prompt&parent="+parentID, payload)
 }
+
+export function ChapterChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/chapter?function=prompt&id="+id, payload)
+}

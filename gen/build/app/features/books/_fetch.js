@@ -63,3 +63,7 @@ export function BookChatGPTModifyPOST(user, parentID, collectionID, payload) {
 export function BookChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/books?function=prompt&parent="+parentID, payload)
 }
+
+export function BookChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/book?function=prompt&id="+id, payload)
+}

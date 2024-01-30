@@ -69,7 +69,6 @@ func (app *App) EntrypointCHARACTERS(w http.ResponseWriter, r *http.Request) {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
-
 			return
 
 		case "init":

@@ -63,3 +63,7 @@ export function StreetChatGPTModifyPOST(user, parentID, collectionID, payload) {
 export function StreetChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/streets?function=prompt&parent="+parentID, payload)
 }
+
+export function StreetChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/street?function=prompt&id="+id, payload)
+}

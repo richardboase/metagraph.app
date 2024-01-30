@@ -63,3 +63,7 @@ export function FloorChatGPTModifyPOST(user, parentID, collectionID, payload) {
 export function FloorChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/floors?function=prompt&parent="+parentID, payload)
 }
+
+export function FloorChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/floor?function=prompt&id="+id, payload)
+}

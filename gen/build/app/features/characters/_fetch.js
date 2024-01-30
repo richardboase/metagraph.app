@@ -63,3 +63,7 @@ export function CharacterChatGPTModifyPOST(user, parentID, collectionID, payload
 export function CharacterChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/characters?function=prompt&parent="+parentID, payload)
 }
+
+export function CharacterChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/character?function=prompt&id="+id, payload)
+}

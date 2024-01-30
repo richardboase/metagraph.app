@@ -63,3 +63,7 @@ export function LobbyChatGPTModifyPOST(user, parentID, collectionID, payload) {
 export function LobbyChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/lobbys?function=prompt&parent="+parentID, payload)
 }
+
+export function LobbyChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/lobby?function=prompt&id="+id, payload)
+}

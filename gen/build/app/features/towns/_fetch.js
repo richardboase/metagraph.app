@@ -63,3 +63,7 @@ export function TownChatGPTModifyPOST(user, parentID, collectionID, payload) {
 export function TownChatGPTInitPOST(user, parentID, payload) {
     return SessionFetch(user, "POST", "api/towns?function=prompt&parent="+parentID, payload)
 }
+
+export function TownChatGPTPromptPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/town?function=prompt&id="+id, payload)
+}
