@@ -267,7 +267,7 @@ func (app *App) roomChatGPTCreate(user *User, parent *Internals, prompt string) 
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
-	system := `you are a factory that creates one or more JSON objects and outputs a valid JSON array.
+	system := `you are a factory that follows rules to create one or more JSON objects, ultimately outputting a valid JSON array.
 
 We want to create one or more of these data objects: 
 {
@@ -285,7 +285,8 @@ RULES:
 3: OMIT ANY NON-REQUIRED FIELDS WHEN NO DATA FOR THE FIELD IS GENERATED.
 4: DON'T INCLUDE FIELDS WITH EMPTY STRINGS, AND OMIT FIELDS WITH NULL VALUE.
 5: RESPECT ANY VALIDATION INFORMATION SPECIFIED FOR FIELDS, SUCH AS MIN AND MAX LENGTHS.
-6: REPLY WITH OUTPUT JSON DATA TO THE USER PROMPT WITHOUT DEVIATING FROM THE PREVIOUS RULES
+6: REPLY WITH OUTPUT JSON DATA TO THE USER PROMPT
+7: RECHECK AND FIX ANY INVALID OUTPUT JSON BEFORE FINISHING RESPONDING TO THE PROMPT
 `
 
 	println(prompt)
