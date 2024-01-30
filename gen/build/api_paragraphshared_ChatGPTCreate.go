@@ -72,7 +72,7 @@ RULES:
 			return err
 		}
 		newResults = append(newResults, newResult)
-		return err
+		return nil
 	}
 
 	for _, r := range newResults {
