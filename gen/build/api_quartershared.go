@@ -267,7 +267,7 @@ func (app *App) quarterChatGPTCreate(user *User, parent *Internals, prompt strin
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
-	prompt = fmt.Sprintf(`
+	system := `
 ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE A VALID JSON...
 
 We want to create one or more of these data objects: 
@@ -281,16 +281,13 @@ We want to create one or more of these data objects:
 The purpose of the object is to represent: A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.
 
 RULES:
-1: USE THIS PROMPT TO GENERATE THE OBJECT OR OBJECT ARRAY: %s
-2: GENERATE DATA FOR REQUIRED FIELDS
-3: UNLESS SPECIFICALLY TOLD NOT TO, GENERATE ALL FIELDS... DON'T BE LAZY.
-4: OMIT ANY NON-REQUIRED FIELDS WHEN NO DATA FOR THE FIELD IS GENERATED.
-5: DON'T INCLUDE FIELDS WITH EMPTY STRINGS, AND OMIT FIELDS WITH NULL VALUE.
-6: RESPECT ANY VALIDATION INFORMATION SPECIFIED FOR FIELDS, SUCH AS MIN AND MAX LENGTHS.
-7: REPLY ONLY WITH A JSON ENCODED ARRAY OF THE GENERATED OBJECT(S) WITH NO NESTED OBJECTS, JUST OBJECTS IN A JSON ARRAY.
-`,
-		prompt,
-	)
+1: GENERATE DATA FOR REQUIRED FIELDS
+2: UNLESS SPECIFICALLY TOLD NOT TO, GENERATE ALL FIELDS... DON'T BE LAZY.
+3: OMIT ANY NON-REQUIRED FIELDS WHEN NO DATA FOR THE FIELD IS GENERATED.
+4: DON'T INCLUDE FIELDS WITH EMPTY STRINGS, AND OMIT FIELDS WITH NULL VALUE.
+5: RESPECT ANY VALIDATION INFORMATION SPECIFIED FOR FIELDS, SUCH AS MIN AND MAX LENGTHS.
+6: REPLY TO THE USER PROMPT ONLY WITH A JSON ENCODED ARRAY OF THE GENERATED OBJECT(S) WITH NO NESTED OBJECTS, JUST OBJECTS IN A JSON ARRAY.
+`
 
 	println(prompt)
 
@@ -301,6 +298,10 @@ RULES:
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    openai.ChatMessageRoleSystem,
+					Content: system,
+				},
+				{
+					Role:    openai.ChatMessageRoleUser,
 					Content: prompt,
 				},
 			},
@@ -360,7 +361,7 @@ func (app *App) quarterChatGPTEdit(user *User, parent *Internals, object *QUARTE
 		return err
 	}
 
-	prompt = fmt.Sprintf(`ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE A VALID JSON...
+	system := fmt.Sprintf(`ATTENTION! YOUR ENTIRE RESPONSE TO THIS PROMPT NEEDS TO BE A VALID JSON...
 
 Here is the object we need to edit:
 %s
@@ -368,18 +369,17 @@ Here is the object we need to edit:
 The purpose of the object is to represent: A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.
 
 RULES:
-1: USE THIS PROMPT TO GENERATE THE MUTATION: %s
-2: GENERATE DATA FOR REQUIRED FIELDS
-3: UNLESS SPECIFICALLY TOLD NOT TO, GENERATE ALL FIELDS... DON'T BE LAZY.
-4: OMIT ANY NON-REQUIRED FIELDS WHEN NO DATA FOR THE FIELD IS GENERATED.
-5: DON'T INCLUDE FIELDS WITH EMPTY STRINGS.
-6: RESPECT ANY VALIDATION INFORMATION SPECIFIED FOR FIELDS, SUCH AS MIN AND MAX LENGTHS.
-7: REPLY ONLY WITH THE JSON ENCODED MUTATED OBJECT
+1: GENERATE DATA FOR REQUIRED FIELDS
+2: UNLESS SPECIFICALLY TOLD NOT TO, GENERATE ALL FIELDS... DON'T BE LAZY.
+3: OMIT ANY NON-REQUIRED FIELDS WHEN NO DATA FOR THE FIELD IS GENERATED.
+4: DON'T INCLUDE FIELDS WITH EMPTY STRINGS.
+5: RESPECT ANY VALIDATION INFORMATION SPECIFIED FOR FIELDS, SUCH AS MIN AND MAX LENGTHS.
+6: REPLY TO THE USER PROMPT ONLY WITH THE JSON ENCODED MUTATED OBJECT
 `,
 		string(objectBytes),
-		prompt,
 	)
 
+	println(system)
 	println(prompt)
 
 
@@ -390,6 +390,10 @@ RULES:
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    openai.ChatMessageRoleSystem,
+					Content: system,
+				},
+				{
+					Role:    openai.ChatMessageRoleUser,
 					Content: prompt,
 				},
 			},
