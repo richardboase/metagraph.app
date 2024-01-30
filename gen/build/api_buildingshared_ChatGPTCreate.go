@@ -16,6 +16,7 @@ func (app *App) buildingChatGPTCreate(user *User, parent *Internals, prompt stri
 	system := `Your role is a helpful preprocessor that follows rules to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
 We want to create one or more of these data objects: 
+// A building which exists in a street, could be residential, commercial, or industrial.
 {
 
 	//  
@@ -35,18 +36,7 @@ We want to create one or more of these data objects:
 
 }
 
-The purpose of the object is to represent: A building which exists in a street, could be residential, commercial, or industrial.
-
-RULES:
-1: USER PROMPTS SHOULD GENERATE DATA FOR REQUIRED FIELDS OF ONE OR MORE ABOVE OBJECTS
-2: UNLESS SPECIFICALLY TOLD NOT TO, GENERATE ALL FIELDS... DON'T BE LAZY.
-3: OMIT ANY NON-REQUIRED FIELDS WHEN NO DATA FOR THE FIELD IS GENERATED.
-4: DON'T INCLUDE FIELDS WITH EMPTY STRINGS, AND OMIT FIELDS WITH NULL VALUE.
-5: RESPECT ANY VALIDATION INFORMATION SPECIFIED FOR FIELDS, SUCH AS MIN AND MAX LENGTHS.
-6: REPLY WITH OUTPUT JSON DATA TO THE USER PROMPT
-7: IF THERE IS MORE THAN ONE GENERATED OBJECT,THEY SHOULD BE INSIDE A JSON ARRAY
-8: RECHECK AND FIX ANY INVALID OUTPUT JSON BEFORE FINISHING RESPONDING TO THE PROMPT
-9: MAKE SURE THE RESPONSE IS NON-ENCAPSULATED RAW JSON WHICH IS READY TO BE PARSED BY AN APPLICATION
+The response should be a raw JSON array with one or more objects, based on the user prompt.
 `
 
 	println(prompt)
