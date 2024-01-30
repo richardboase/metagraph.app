@@ -13,7 +13,7 @@ func (app *App) streetChatGPTCreate(user *User, parent *Internals, prompt string
 
 	fmt.Println("prompt with parent", parent.ID, prompt)
 
-	system := `Your role is a helpful preprocessor that follows rules to create one or more JSON objects, ultimately outputting raw valid JSON array.
+	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
 We want to create one or more of these data objects: 
 // A street, part of the transaportation network of a town or city.
@@ -50,7 +50,7 @@ The response should be a raw JSON array with one or more objects, based on the u
 		return err
 	}
 
-	reply := resp.Choices[1].Message.Content
+	reply := resp.Choices[0].Message.Content
 	log.Println("reply >>", reply)
 
 	newResults := []interface{}{}
