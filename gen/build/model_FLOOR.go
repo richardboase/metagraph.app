@@ -69,26 +69,29 @@ func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 		x.Fields.Rooms, err = assertINT(m, "rooms")
 		if err != nil {
 			return errors.New(err.Error())
-		} else {
-			{
-				exp := ""
-				if len(exp) > 0 {
-					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Rooms)) {
-						return errors.New("failed to regexp: "+exp)
-					}
-				}
-			}
-			{
-				exp := ""
-				if len(exp) > 0 {
-					b, _ := hex.DecodeString(exp)
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Rooms)) {
-						return errors.New("failed to regexpHex: "+string(b))
-					}
-				}
-			}
-			
 		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Rooms)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Rooms)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Rooms)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Rooms)
+				}
+			}
+		}
+		
 	}
 	
 
@@ -96,7 +99,7 @@ func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 
 	return nil
 }
-
+/*
 func (x *FLOOR) ValidateByCount(w http.ResponseWriter, m map[string]interface{}, count int) bool {
 
 	var counter int
@@ -107,9 +110,32 @@ func (x *FLOOR) ValidateByCount(w http.ResponseWriter, m map[string]interface{},
 		counter++
 	}
 
+	{
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Rooms)) {
+				return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Rooms)
+			}
+		}
+	}
+	{
+		exp := ""
+		if len(exp) > 0 {
+			log.Println("EXPR", exp)
+			b, err := hex.DecodeString(exp)
+			if err != nil {
+				log.Println(err)
+			}
+			if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Rooms)) {
+				return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Rooms)
+			}
+		}
+	}
+
 	
 
 	x.Meta.Modify()
 
 	return counter == count
 }
+*/

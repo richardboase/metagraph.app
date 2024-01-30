@@ -71,33 +71,36 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 		x.Fields.Name, err = assertSTRING(m, "name")
 		if err != nil {
 			return errors.New(err.Error())
-		} else {
-			{
-				exp := ""
-				if len(exp) > 0 {
-					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
-						return errors.New("failed to regexp: "+exp)
-					}
-				}
-			}
-			{
-				exp := ""
-				if len(exp) > 0 {
-					b, _ := hex.DecodeString(exp)
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
-						return errors.New("failed to regexpHex: "+string(b))
-					}
-				}
-			}
-			
-			if err := assertRangeMin(1, x.Fields.Name); err != nil {
-				return err
-			}
-			if err := assertRangeMax(60, x.Fields.Name); err != nil {
-				return err
-			}
-			
 		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			return err
+		}
+		if err := assertRangeMax(60, x.Fields.Name); err != nil {
+			return err
+		}
+		
 	}
 	
 
@@ -109,33 +112,36 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 		x.Fields.Description, err = assertSTRING(m, "description")
 		if err != nil {
 			return errors.New(err.Error())
-		} else {
-			{
-				exp := ""
-				if len(exp) > 0 {
-					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Description)) {
-						return errors.New("failed to regexp: "+exp)
-					}
-				}
-			}
-			{
-				exp := ""
-				if len(exp) > 0 {
-					b, _ := hex.DecodeString(exp)
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Description)) {
-						return errors.New("failed to regexpHex: "+string(b))
-					}
-				}
-			}
-			
-			if err := assertRangeMin(1, x.Fields.Description); err != nil {
-				return err
-			}
-			if err := assertRangeMax(1000, x.Fields.Description); err != nil {
-				return err
-			}
-			
 		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Description)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Description)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Description)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Description)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Description); err != nil {
+			return err
+		}
+		if err := assertRangeMax(1000, x.Fields.Description); err != nil {
+			return err
+		}
+		
 	}
 	
 
@@ -147,33 +153,36 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 		x.Fields.Start, err = assertSTRING(m, "start")
 		if err != nil {
 			return errors.New(err.Error())
-		} else {
-			{
-				exp := ""
-				if len(exp) > 0 {
-					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Start)) {
-						return errors.New("failed to regexp: "+exp)
-					}
-				}
-			}
-			{
-				exp := ""
-				if len(exp) > 0 {
-					b, _ := hex.DecodeString(exp)
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Start)) {
-						return errors.New("failed to regexpHex: "+string(b))
-					}
-				}
-			}
-			
-			if err := assertRangeMin(1, x.Fields.Start); err != nil {
-				return err
-			}
-			if err := assertRangeMax(60, x.Fields.Start); err != nil {
-				return err
-			}
-			
 		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Start)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Start)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Start)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Start)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Start); err != nil {
+			return err
+		}
+		if err := assertRangeMax(60, x.Fields.Start); err != nil {
+			return err
+		}
+		
 	}
 	
 
@@ -185,33 +194,36 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 		x.Fields.End, err = assertSTRING(m, "end")
 		if err != nil {
 			return errors.New(err.Error())
-		} else {
-			{
-				exp := ""
-				if len(exp) > 0 {
-					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.End)) {
-						return errors.New("failed to regexp: "+exp)
-					}
-				}
-			}
-			{
-				exp := ""
-				if len(exp) > 0 {
-					b, _ := hex.DecodeString(exp)
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.End)) {
-						return errors.New("failed to regexpHex: "+string(b))
-					}
-				}
-			}
-			
-			if err := assertRangeMin(1, x.Fields.End); err != nil {
-				return err
-			}
-			if err := assertRangeMax(60, x.Fields.End); err != nil {
-				return err
-			}
-			
 		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.End)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.End)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.End)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.End)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.End); err != nil {
+			return err
+		}
+		if err := assertRangeMax(60, x.Fields.End); err != nil {
+			return err
+		}
+		
 	}
 	
 
@@ -219,7 +231,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 
 	return nil
 }
-
+/*
 func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interface{}, count int) bool {
 
 	var counter int
@@ -231,30 +243,28 @@ func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interfa
 	}
 
 	{
-		// handle basic regexp
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, x.Fields.Name) {
-					return false
-				}
-			}
-		}
-		// handle regexp that cannot be encoded as a JSON field
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), x.Fields.Name) {
-					return false
-				}
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+				return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
 			}
 		}
 	}
+	{
+		exp := ""
+		if len(exp) > 0 {
+			log.Println("EXPR", exp)
+			b, err := hex.DecodeString(exp)
+			if err != nil {
+				log.Println(err)
+			}
+			if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+				return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+			}
+		}
+	}
+
+	
 	
 	if !AssertRangeMin(w, 1, x.Fields.Name) {
 		return false
@@ -270,30 +280,28 @@ func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interfa
 	}
 
 	{
-		// handle basic regexp
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, x.Fields.Description) {
-					return false
-				}
-			}
-		}
-		// handle regexp that cannot be encoded as a JSON field
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), x.Fields.Description) {
-					return false
-				}
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Description)) {
+				return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Description)
 			}
 		}
 	}
+	{
+		exp := ""
+		if len(exp) > 0 {
+			log.Println("EXPR", exp)
+			b, err := hex.DecodeString(exp)
+			if err != nil {
+				log.Println(err)
+			}
+			if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Description)) {
+				return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Description)
+			}
+		}
+	}
+
+	
 	
 	if !AssertRangeMax(w, 1000, x.Fields.Description) {
 		return false
@@ -305,30 +313,28 @@ func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interfa
 	}
 
 	{
-		// handle basic regexp
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, x.Fields.Start) {
-					return false
-				}
-			}
-		}
-		// handle regexp that cannot be encoded as a JSON field
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), x.Fields.Start) {
-					return false
-				}
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Start)) {
+				return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Start)
 			}
 		}
 	}
+	{
+		exp := ""
+		if len(exp) > 0 {
+			log.Println("EXPR", exp)
+			b, err := hex.DecodeString(exp)
+			if err != nil {
+				log.Println(err)
+			}
+			if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Start)) {
+				return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Start)
+			}
+		}
+	}
+
+	
 	
 	if !AssertRangeMax(w, 60, x.Fields.Start) {
 		return false
@@ -340,30 +346,28 @@ func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interfa
 	}
 
 	{
-		// handle basic regexp
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, x.Fields.End) {
-					return false
-				}
-			}
-		}
-		// handle regexp that cannot be encoded as a JSON field
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), x.Fields.End) {
-					return false
-				}
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.End)) {
+				return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.End)
 			}
 		}
 	}
+	{
+		exp := ""
+		if len(exp) > 0 {
+			log.Println("EXPR", exp)
+			b, err := hex.DecodeString(exp)
+			if err != nil {
+				log.Println(err)
+			}
+			if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.End)) {
+				return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.End)
+			}
+		}
+	}
+
+	
 	
 	if !AssertRangeMax(w, 60, x.Fields.End) {
 		return false
@@ -374,3 +378,4 @@ func (x *TESTSTREET) ValidateByCount(w http.ResponseWriter, m map[string]interfa
 
 	return counter == count
 }
+*/

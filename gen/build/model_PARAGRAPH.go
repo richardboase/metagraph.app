@@ -68,33 +68,36 @@ func (x *PARAGRAPH) ValidateObject(m map[string]interface{}) error {
 		x.Fields.Content, err = assertSTRING(m, "content")
 		if err != nil {
 			return errors.New(err.Error())
-		} else {
-			{
-				exp := ""
-				if len(exp) > 0 {
-					if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Content)) {
-						return errors.New("failed to regexp: "+exp)
-					}
-				}
-			}
-			{
-				exp := ""
-				if len(exp) > 0 {
-					b, _ := hex.DecodeString(exp)
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Content)) {
-						return errors.New("failed to regexpHex: "+string(b))
-					}
-				}
-			}
-			
-			if err := assertRangeMin(1, x.Fields.Content); err != nil {
-				return err
-			}
-			if err := assertRangeMax(10000, x.Fields.Content); err != nil {
-				return err
-			}
-			
 		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Content)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Content)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Content)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Content)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Content); err != nil {
+			return err
+		}
+		if err := assertRangeMax(10000, x.Fields.Content); err != nil {
+			return err
+		}
+		
 	}
 	
 
@@ -102,7 +105,7 @@ func (x *PARAGRAPH) ValidateObject(m map[string]interface{}) error {
 
 	return nil
 }
-
+/*
 func (x *PARAGRAPH) ValidateByCount(w http.ResponseWriter, m map[string]interface{}, count int) bool {
 
 	var counter int
@@ -114,30 +117,28 @@ func (x *PARAGRAPH) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 	}
 
 	{
-		// handle basic regexp
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, x.Fields.Content) {
-					return false
-				}
-			}
-		}
-		// handle regexp that cannot be encoded as a JSON field
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), x.Fields.Content) {
-					return false
-				}
+		exp := ""
+		if len(exp) > 0 {
+			if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Content)) {
+				return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Content)
 			}
 		}
 	}
+	{
+		exp := ""
+		if len(exp) > 0 {
+			log.Println("EXPR", exp)
+			b, err := hex.DecodeString(exp)
+			if err != nil {
+				log.Println(err)
+			}
+			if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Content)) {
+				return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Content)
+			}
+		}
+	}
+
+	
 	
 	if !AssertRangeMin(w, 1, x.Fields.Content) {
 		return false
@@ -152,3 +153,4 @@ func (x *PARAGRAPH) ValidateByCount(w http.ResponseWriter, m map[string]interfac
 
 	return counter == count
 }
+*/
