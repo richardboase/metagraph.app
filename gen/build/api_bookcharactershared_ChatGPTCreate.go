@@ -68,7 +68,7 @@ The response should be a raw JSON array with one or more objects, based on the u
 		return err
 	}
 
-	reply := resp.Choices[0].Message.Content
+	reply := resp.Choices[1].Message.Content
 	log.Println("reply >>", reply)
 
 	newResults := []interface{}{}
