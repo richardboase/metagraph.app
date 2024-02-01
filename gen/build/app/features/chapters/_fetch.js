@@ -40,6 +40,10 @@ export function ChapterFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/chapter?function="+func+"&id="+id)
 }
 
+export function ChapterJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/chapter?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function ChapterUpload(user, id, formData) {

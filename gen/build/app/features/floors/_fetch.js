@@ -40,6 +40,10 @@ export function FloorFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/floor?function="+func+"&id="+id)
 }
 
+export function FloorJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/floor?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function FloorUpload(user, id, formData) {

@@ -40,6 +40,10 @@ export function BuildingFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/building?function="+func+"&id="+id)
 }
 
+export function BuildingJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/building?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function BuildingUpload(user, id, formData) {

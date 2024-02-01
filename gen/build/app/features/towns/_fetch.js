@@ -40,6 +40,10 @@ export function TownFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/town?function="+func+"&id="+id)
 }
 
+export function TownJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/town?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function TownUpload(user, id, formData) {

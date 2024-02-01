@@ -71,7 +71,7 @@ func (app *App) CreateDocumentTESTSTREET(parent *Internals, object *TESTSTREET) 
 	if err != nil {
 		return err
 	}
-	topicID := ""
+	topicID := "<nil>"
 	result := app.PubSub().Topic(topicID).Publish(
 		app.Context(),
 		&pubsub.Message{Data: b},

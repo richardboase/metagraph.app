@@ -40,6 +40,10 @@ export function RoomFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/room?function="+func+"&id="+id)
 }
 
+export function RoomJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/room?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function RoomUpload(user, id, formData) {

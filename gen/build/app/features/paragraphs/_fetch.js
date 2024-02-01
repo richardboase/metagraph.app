@@ -40,6 +40,10 @@ export function ParagraphFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/paragraph?function="+func+"&id="+id)
 }
 
+export function ParagraphJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/paragraph?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function ParagraphUpload(user, id, formData) {

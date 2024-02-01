@@ -40,6 +40,10 @@ export function LobbyFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/lobby?function="+func+"&id="+id)
 }
 
+export function LobbyJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/lobby?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function LobbyUpload(user, id, formData) {

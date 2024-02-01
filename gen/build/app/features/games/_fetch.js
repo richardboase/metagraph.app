@@ -40,6 +40,10 @@ export function GameFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/game?function="+func+"&id="+id)
 }
 
+export function GameJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/game?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function GameUpload(user, id, formData) {

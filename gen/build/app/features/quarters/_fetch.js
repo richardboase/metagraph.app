@@ -40,6 +40,10 @@ export function QuarterFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/quarter?function="+func+"&id="+id)
 }
 
+export function QuarterJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/quarter?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function QuarterUpload(user, id, formData) {

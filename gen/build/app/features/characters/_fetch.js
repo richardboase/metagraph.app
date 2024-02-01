@@ -40,6 +40,10 @@ export function CharacterFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/character?function="+func+"&id="+id)
 }
 
+export function CharacterJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/character?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function CharacterUpload(user, id, formData) {

@@ -40,6 +40,10 @@ export function BookcharacterFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/bookcharacter?function="+func+"&id="+id)
 }
 
+export function BookcharacterJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/bookcharacter?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function BookcharacterUpload(user, id, formData) {

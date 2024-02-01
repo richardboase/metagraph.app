@@ -11,7 +11,7 @@ import Loading from '@/app/loading'
 import { FloorList } from '@/features/floors/shared/floorList'
 
 
-import { BuildingObjectGET } from './_fetch'
+import { BuildingObjectGET, BuildingJobPOST } from './_fetch'
 
 export function Building(props) {  
 
@@ -21,10 +21,22 @@ export function Building(props) {
     const [jdata, setJdata] = useState(localdata.tab.context.object)
     const [subject, setSubject] = useState(localdata.tab.context.object)
     const [image, setImage] = useState()
+	const [topics, setTopics] = useState([])
+	console.log("topics", topics)
 
 	// update tabs handles the updated context and sends the user to a new interface
 	function editData() {
 		setLocaldata(VisitTab(localdata, "editbuilding", localdata.tab.context))
+	}
+
+	function sendToTopic(e) {
+		console.log(e)
+		const job = e.target.id
+		BuildingJobPOST(userdata, subject.Meta.ID, job)
+		.then((res) => console.log(res))
+		.catch((e) => {
+            console.error(e)
+        })
 	}
 
 	function getObject() {
@@ -160,6 +172,21 @@ export function Building(props) {
 									Edit Data
 								</button>
 							</div>
+							{
+								topics.length && <div className='flex flex-row'>
+								{
+									topics.map(function (item, i) {
+										return (
+											<div className='px-4'>
+												<button key={i} id={item.topic} onClick={sendToTopic} className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 rounded-sm text-sm px-4 py-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+												{item.name}
+												</button>
+											</div>
+										)
+									})
+								}
+								</div>
+							}
 						</div>
 					</div>
 				</div>

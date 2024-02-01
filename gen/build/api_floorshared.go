@@ -71,7 +71,7 @@ func (app *App) CreateDocumentFLOOR(parent *Internals, object *FLOOR) error {
 	if err != nil {
 		return err
 	}
-	topicID := ""
+	topicID := "<nil>"
 	result := app.PubSub().Topic(topicID).Publish(
 		app.Context(),
 		&pubsub.Message{Data: b},

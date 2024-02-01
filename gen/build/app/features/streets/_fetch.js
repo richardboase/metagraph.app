@@ -40,6 +40,10 @@ export function StreetFunctionPOST(user, id, func) {
     return SessionFetch(user, "POST", "api/street?function="+func+"&id="+id)
 }
 
+export function StreetJobPOST(user, id, job) {
+    return SessionFetch(user, "POST", "api/street?function=job&job="+job+"&id="+id)
+}
+
 // file handling
 
 export function StreetUpload(user, id, formData) {

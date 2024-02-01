@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 
+	"cloud.google.com/go/pubsub"
 	"cloud.google.com/go/firestore"
 	"google.golang.org/api/iterator"
 
@@ -127,6 +128,34 @@ func (app *App) EntrypointROOM(w http.ResponseWriter, r *http.Request) {
 		}
 
 		switch function {
+
+		case "job":
+
+			// get job id
+			job, err := cloudfunc.QueryParam(r, "job")
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
+
+			println("launching job:", job)
+
+			b, err := app.MarshalJSON(object)
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			}
+			result := app.PubSub().Topic(job).Publish(
+				app.Context(),
+				&pubsub.Message{Data: b},
+			)
+			msgID, err := result.Get(app.Context())
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return 
+			}
+			log.Println("PUBLISHED JOB TO TOPIC", job, msgID)
+			return
 
 		case "prompt":
 
