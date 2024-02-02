@@ -3,6 +3,8 @@ import * as React from 'react'
 import { CharactersMatrix } from './charactersMatrix'
 import { Characters } from './characters'
 import { Character } from './character'
+import { CharacterAdmin } from './characterAdmin'
+import { CharacterAdmins } from './characterAdmins'
 import { Assets } from './assets'
 import { NewCharacter } from './newCharacter'
 import { EditCharacter } from './editCharacter'
@@ -48,10 +50,20 @@ export var CharacterInterfaces = {
 		level: 4+2,
 		name: "Character",
 		sublinks: [],
-		subsublinks: [""],
+		subsublinks: [],
 		component: (<Character />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"characteradmin": {
+		level: 4+2,
+		name: "Character",
+		component: (<CharacterAdmin />),
+	},
+	"characteradmins": {
+		level: 4+2,
+		name: "Character",
+		component: (<CharacterAdmins />),
 	},
 	"characterassets": {
 		level: 4+2,

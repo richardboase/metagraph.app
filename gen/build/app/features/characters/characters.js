@@ -28,7 +28,7 @@ export function Characters(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <CharacterList subject={subject} />
+				promptToggle && <CharacterList subject={subject} native={true} />
 			}
 		</div>
 	)

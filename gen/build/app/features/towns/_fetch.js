@@ -16,8 +16,8 @@ export function TownObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/town?function=object&id="+id)
 }
 
-export function TownsListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/towns?function=list&parent="+parentID+"&limit="+limit)
+export function TownsListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/towns?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function TownsCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function TownChatGPTInitPOST(user, parentID, payload) {
 
 export function TownChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/town?function=prompt&id="+id, payload)
+}
+
+export function TownAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/town?function=addadmin&id="+id, payload)
+}
+
+export function TownAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/town?function=removeadmin&id="+id, payload)
 }

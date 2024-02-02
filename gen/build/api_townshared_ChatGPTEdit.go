@@ -9,11 +9,11 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
-func (app *App) townChatGPTEdit(user *User, parent *Internals, object *TOWN, prompt string) error {
+func (app *App) townChatGPTEdit(user *User, parent *TOWN, prompt string) error {
 
-	fmt.Println("prompt with parent", parent.ID, prompt)
+	fmt.Println("prompt with parent", parent.Meta.ID, prompt)
 
-	objectBytes, err := app.MarshalJSON(object)
+	objectBytes, err := app.MarshalJSON(parent)
 	if err != nil {
 		return err
 	}
@@ -78,11 +78,11 @@ PROMPT: `,
 				delete(result, k)
 			}
 		}
-		object := NewTOWN(parent, FieldsTOWN{})
+		object := user.NewTOWN(&parent.Meta, FieldsTOWN{})
 		if err := object.ValidateObject(result); err != nil {
 			return err
 		}
-		if err := app.CreateDocumentTOWN(parent, object); err != nil {
+		if err := app.CreateDocumentTOWN(&parent.Meta, object); err != nil {
 			return err
 		}
 		app.SendMessageToUser(user, &Message{Type: "async-create", Body: object})

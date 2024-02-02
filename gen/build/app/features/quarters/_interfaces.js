@@ -3,6 +3,8 @@ import * as React from 'react'
 import { QuartersMatrix } from './quartersMatrix'
 import { Quarters } from './quarters'
 import { Quarter } from './quarter'
+import { QuarterAdmin } from './quarterAdmin'
+import { QuarterAdmins } from './quarterAdmins'
 import { Assets } from './assets'
 import { NewQuarter } from './newQuarter'
 import { EditQuarter } from './editQuarter'
@@ -48,10 +50,20 @@ export var QuarterInterfaces = {
 		level: 2+2,
 		name: "Quarter",
 		sublinks: [],
-		subsublinks: ["streets",""],
+		subsublinks: ["streets",],
 		component: (<Quarter />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"quarteradmin": {
+		level: 2+2,
+		name: "Quarter",
+		component: (<QuarterAdmin />),
+	},
+	"quarteradmins": {
+		level: 2+2,
+		name: "Quarter",
+		component: (<QuarterAdmins />),
 	},
 	"quarterassets": {
 		level: 2+2,

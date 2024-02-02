@@ -16,8 +16,8 @@ export function CharacterObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/character?function=object&id="+id)
 }
 
-export function CharactersListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/characters?function=list&parent="+parentID+"&limit="+limit)
+export function CharactersListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/characters?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function CharactersCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function CharacterChatGPTInitPOST(user, parentID, payload) {
 
 export function CharacterChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/character?function=prompt&id="+id, payload)
+}
+
+export function CharacterAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/character?function=addadmin&id="+id, payload)
+}
+
+export function CharacterAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/character?function=removeadmin&id="+id, payload)
 }

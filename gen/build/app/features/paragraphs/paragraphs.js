@@ -28,7 +28,7 @@ export function Paragraphs(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <ParagraphList subject={subject} />
+				promptToggle && <ParagraphList subject={subject} native={true} />
 			}
 		</div>
 	)

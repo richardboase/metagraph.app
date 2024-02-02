@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 	"archive/zip"
 	"bytes"
 	"image"
@@ -86,7 +87,7 @@ func (app *App) CreateDocumentBUILDING(parent *Internals, object *BUILDING) erro
 	return nil
 }
 
-func (app *App) UploadBUILDING(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) UploadBUILDING(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -123,7 +124,7 @@ func (app *App) UploadBUILDING(w http.ResponseWriter, r *http.Request, parent *I
 	*/
 	log.Println("creating new building:", handler.Filename)
 	fields := FieldsBUILDING{}
-	building := NewBUILDING(parent, fields)
+	building := user.NewBUILDING(parent, fields)
 
 	// hidden line here if noparent: building.Fields.Filename = zipFile.Name
 	
@@ -146,7 +147,7 @@ func (app *App) UploadBUILDING(w http.ResponseWriter, r *http.Request, parent *I
 	return
 }
 
-func (app *App) ArchiveUploadBUILDING(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) ArchiveUploadBUILDING(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -200,7 +201,7 @@ func (app *App) ArchiveUploadBUILDING(w http.ResponseWriter, r *http.Request, pa
 		*/
 		log.Println("creating new building:", zipFile.Name)
 		fields := FieldsBUILDING{}
-		building := NewBUILDING(parent, fields)
+		building := user.NewBUILDING(parent, fields)
 
 		// hidden line here if noparent: building.Fields.Filename = zipFile.Name
 		
@@ -257,4 +258,61 @@ func (app *App) writeBuildingFile(bucketName, objectName string, content []byte)
 	n, err := writer.Write(content)
 	fmt.Printf("wrote %s %d bytes to bucket: %s \n", objectName, n, bucketName)
 	return err
+}
+
+func (app *App) addBuildingAdmin(object *BUILDING, admin string) error {
+
+	filter := map[string]bool{}
+	for _, username := range strings.Split(admin, ",") {
+		newAdmin, err := app.GetUserByUsername(username)
+		if err != nil {
+			log.Println("could not get username:", username)
+			return err
+		}
+		filter[newAdmin.Meta.ID] = true
+	}
+	for _, admin := range object.Meta.Moderation.Admins {
+		if len(admin) == 0 {
+			continue
+		}
+		filter[admin] = true
+	}
+	object.Meta.Moderation.Admins = make([]string, len(filter))
+	var x int
+	for k, _ := range filter {
+		object.Meta.Moderation.Admins[x] = k
+		x++
+	}
+
+	object.Meta.Modify()
+
+	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
+
+	return object.Meta.SaveToFirestore(app.App, object)
+}
+
+func (app *App) removeBuildingAdmin(object *BUILDING, admin string) error {
+
+	filter := map[string]bool{}
+	for _, a := range object.Meta.Moderation.Admins {
+		if a == admin {
+			continue
+		}
+		if len(a) == 0 {
+			continue
+		}
+		filter[a] = true
+	}
+	object.Meta.Moderation.Admins = make([]string, len(filter))
+	var x int
+	for k, _ := range filter {
+		object.Meta.Moderation.Admins[x] = k
+		x++
+	}
+
+	object.Meta.Modify()
+
+	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
+
+	return object.Meta.SaveToFirestore(app.App, object)
 }

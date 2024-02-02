@@ -138,7 +138,6 @@ func main() {
 	http.HandleFunc("/api/users", app.UsersEntrypoint)
 	http.HandleFunc("/api/auth", app.AuthEntrypoint)
 	http.HandleFunc("/api/assetlayer", app.EntrypointASSETLAYER)
-	http.HandleFunc("/api/openai", app.EntrypointOPENAI)
 	
 	http.HandleFunc("/api/game", app.EntrypointGAME)
 	http.HandleFunc("/api/games", app.EntrypointGAMES)

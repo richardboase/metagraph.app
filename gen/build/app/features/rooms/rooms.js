@@ -28,7 +28,7 @@ export function Rooms(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <RoomList subject={subject} />
+				promptToggle && <RoomList subject={subject} native={true} />
 			}
 		</div>
 	)

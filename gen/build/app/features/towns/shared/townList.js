@@ -9,6 +9,7 @@ import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
 import { TownListRow } from './townListRow';
+import { TownListRowJob } from './townListRowJob';
 import { TownDELETE, TownsListGET, TownMoveUpPOST, TownMoveDownPOST } from '../_fetch';
 
 export function TownList(props) {
@@ -18,8 +19,12 @@ export function TownList(props) {
 
 	const [ list, setList ] = useState(null)
 
+	var mode = "modified"
+	
+	
+
 	function updateList() {
-		TownsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		TownsListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -88,7 +93,7 @@ export function TownList(props) {
 	return (
 	<div className='flex flex-col my-4'>
 	{
-		props.title && <div className='py-4 my-4 text-xl font-bold cursor-pointer' onclick={selectChild}>{props.title}s:</div>
+		props.title && <div className='py-4 my-4 text-xl font-bold cursor-pointer' onClick={selectChild}>{props.title}s:</div>
 	}
 	{
 		props.title && <hr/>
@@ -101,7 +106,10 @@ export function TownList(props) {
 
 			return (
 				<div key={i}>
+					
 					<TownListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					
+					
 					<Spacer/>
 				</div>
 			)

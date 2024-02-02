@@ -28,7 +28,7 @@ export function Games(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <GameList subject={subject} />
+				promptToggle && <GameList subject={subject} native={true} />
 			}
 		</div>
 	)

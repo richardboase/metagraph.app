@@ -16,8 +16,8 @@ export function BuildingObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/building?function=object&id="+id)
 }
 
-export function BuildingsListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/buildings?function=list&parent="+parentID+"&limit="+limit)
+export function BuildingsListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/buildings?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function BuildingsCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function BuildingChatGPTInitPOST(user, parentID, payload) {
 
 export function BuildingChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/building?function=prompt&id="+id, payload)
+}
+
+export function BuildingAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/building?function=addadmin&id="+id, payload)
+}
+
+export function BuildingAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/building?function=removeadmin&id="+id, payload)
 }

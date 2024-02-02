@@ -3,6 +3,8 @@ import * as React from 'react'
 import { ChaptersMatrix } from './chaptersMatrix'
 import { Chapters } from './chapters'
 import { Chapter } from './chapter'
+import { ChapterAdmin } from './chapterAdmin'
+import { ChapterAdmins } from './chapterAdmins'
 import { Assets } from './assets'
 import { NewChapter } from './newChapter'
 import { EditChapter } from './editChapter'
@@ -48,10 +50,20 @@ export var ChapterInterfaces = {
 		level: 2+2,
 		name: "Chapter",
 		sublinks: [],
-		subsublinks: ["paragraphs",""],
+		subsublinks: ["paragraphs",],
 		component: (<Chapter />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"chapteradmin": {
+		level: 2+2,
+		name: "Chapter",
+		component: (<ChapterAdmin />),
+	},
+	"chapteradmins": {
+		level: 2+2,
+		name: "Chapter",
+		component: (<ChapterAdmins />),
 	},
 	"chapterassets": {
 		level: 2+2,

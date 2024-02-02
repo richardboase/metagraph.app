@@ -28,7 +28,7 @@ export function Buildings(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <BuildingList subject={subject} />
+				promptToggle && <BuildingList subject={subject} native={true} />
 			}
 		</div>
 	)

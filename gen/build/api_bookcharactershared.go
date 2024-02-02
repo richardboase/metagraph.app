@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 	"archive/zip"
 	"bytes"
 	"image"
@@ -90,7 +91,7 @@ func (app *App) CreateDocumentBOOKCHARACTER(parent *Internals, object *BOOKCHARA
 	return nil
 }
 
-func (app *App) UploadBOOKCHARACTER(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) UploadBOOKCHARACTER(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -127,7 +128,7 @@ func (app *App) UploadBOOKCHARACTER(w http.ResponseWriter, r *http.Request, pare
 	*/
 	log.Println("creating new bookcharacter:", handler.Filename)
 	fields := FieldsBOOKCHARACTER{}
-	bookcharacter := NewBOOKCHARACTER(parent, fields)
+	bookcharacter := user.NewBOOKCHARACTER(parent, fields)
 
 	// hidden line here if noparent: bookcharacter.Fields.Filename = zipFile.Name
 	
@@ -150,7 +151,7 @@ func (app *App) UploadBOOKCHARACTER(w http.ResponseWriter, r *http.Request, pare
 	return
 }
 
-func (app *App) ArchiveUploadBOOKCHARACTER(w http.ResponseWriter, r *http.Request, parent *Internals) {
+func (app *App) ArchiveUploadBOOKCHARACTER(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -204,7 +205,7 @@ func (app *App) ArchiveUploadBOOKCHARACTER(w http.ResponseWriter, r *http.Reques
 		*/
 		log.Println("creating new bookcharacter:", zipFile.Name)
 		fields := FieldsBOOKCHARACTER{}
-		bookcharacter := NewBOOKCHARACTER(parent, fields)
+		bookcharacter := user.NewBOOKCHARACTER(parent, fields)
 
 		// hidden line here if noparent: bookcharacter.Fields.Filename = zipFile.Name
 		
@@ -261,4 +262,61 @@ func (app *App) writeBookcharacterFile(bucketName, objectName string, content []
 	n, err := writer.Write(content)
 	fmt.Printf("wrote %s %d bytes to bucket: %s \n", objectName, n, bucketName)
 	return err
+}
+
+func (app *App) addBookcharacterAdmin(object *BOOKCHARACTER, admin string) error {
+
+	filter := map[string]bool{}
+	for _, username := range strings.Split(admin, ",") {
+		newAdmin, err := app.GetUserByUsername(username)
+		if err != nil {
+			log.Println("could not get username:", username)
+			return err
+		}
+		filter[newAdmin.Meta.ID] = true
+	}
+	for _, admin := range object.Meta.Moderation.Admins {
+		if len(admin) == 0 {
+			continue
+		}
+		filter[admin] = true
+	}
+	object.Meta.Moderation.Admins = make([]string, len(filter))
+	var x int
+	for k, _ := range filter {
+		object.Meta.Moderation.Admins[x] = k
+		x++
+	}
+
+	object.Meta.Modify()
+
+	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
+
+	return object.Meta.SaveToFirestore(app.App, object)
+}
+
+func (app *App) removeBookcharacterAdmin(object *BOOKCHARACTER, admin string) error {
+
+	filter := map[string]bool{}
+	for _, a := range object.Meta.Moderation.Admins {
+		if a == admin {
+			continue
+		}
+		if len(a) == 0 {
+			continue
+		}
+		filter[a] = true
+	}
+	object.Meta.Moderation.Admins = make([]string, len(filter))
+	var x int
+	for k, _ := range filter {
+		object.Meta.Moderation.Admins[x] = k
+		x++
+	}
+
+	object.Meta.Modify()
+
+	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
+
+	return object.Meta.SaveToFirestore(app.App, object)
 }

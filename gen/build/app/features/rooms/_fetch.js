@@ -16,8 +16,8 @@ export function RoomObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/room?function=object&id="+id)
 }
 
-export function RoomsListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/rooms?function=list&parent="+parentID+"&limit="+limit)
+export function RoomsListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/rooms?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function RoomsCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function RoomChatGPTInitPOST(user, parentID, payload) {
 
 export function RoomChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/room?function=prompt&id="+id, payload)
+}
+
+export function RoomAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/room?function=addadmin&id="+id, payload)
+}
+
+export function RoomAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/room?function=removeadmin&id="+id, payload)
 }

@@ -3,6 +3,8 @@ import * as React from 'react'
 import { TeststreetsMatrix } from './teststreetsMatrix'
 import { Teststreets } from './teststreets'
 import { Teststreet } from './teststreet'
+import { TeststreetAdmin } from './teststreetAdmin'
+import { TeststreetAdmins } from './teststreetAdmins'
 import { Assets } from './assets'
 import { NewTeststreet } from './newTeststreet'
 import { EditTeststreet } from './editTeststreet'
@@ -48,10 +50,20 @@ export var TeststreetInterfaces = {
 		level: 2+2,
 		name: "Teststreet",
 		sublinks: [],
-		subsublinks: [""],
+		subsublinks: [],
 		component: (<Teststreet />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"teststreetadmin": {
+		level: 2+2,
+		name: "Teststreet",
+		component: (<TeststreetAdmin />),
+	},
+	"teststreetadmins": {
+		level: 2+2,
+		name: "Teststreet",
+		component: (<TeststreetAdmins />),
 	},
 	"teststreetassets": {
 		level: 2+2,

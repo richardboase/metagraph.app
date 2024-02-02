@@ -28,7 +28,7 @@ export function Chapters(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <ChapterList subject={subject} />
+				promptToggle && <ChapterList subject={subject} native={true} />
 			}
 		</div>
 	)

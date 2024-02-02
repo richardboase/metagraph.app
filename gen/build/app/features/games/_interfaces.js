@@ -3,6 +3,8 @@ import * as React from 'react'
 import { GamesMatrix } from './gamesMatrix'
 import { Games } from './games'
 import { Game } from './game'
+import { GameAdmin } from './gameAdmin'
+import { GameAdmins } from './gameAdmins'
 import { Assets } from './assets'
 import { NewGame } from './newGame'
 import { EditGame } from './editGame'
@@ -48,10 +50,20 @@ export var GameInterfaces = {
 		level: 0+2,
 		name: "Game",
 		sublinks: [],
-		subsublinks: ["lobbys",""],
+		subsublinks: ["lobbys",],
 		component: (<Game />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"gameadmin": {
+		level: 0+2,
+		name: "Game",
+		component: (<GameAdmin />),
+	},
+	"gameadmins": {
+		level: 0+2,
+		name: "Game",
+		component: (<GameAdmins />),
 	},
 	"gameassets": {
 		level: 0+2,

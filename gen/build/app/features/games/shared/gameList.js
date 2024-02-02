@@ -9,6 +9,7 @@ import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 
 import { GameListRow } from './gameListRow';
+import { GameListRowJob } from './gameListRowJob';
 import { GameDELETE, GamesListGET, GameMoveUpPOST, GameMoveDownPOST } from '../_fetch';
 
 export function GameList(props) {
@@ -18,8 +19,12 @@ export function GameList(props) {
 
 	const [ list, setList ] = useState(null)
 
+	var mode = "modified"
+	
+	
+
 	function updateList() {
-		GamesListGET(userdata, props.subject?.Meta.ID, props.limit)
+		GamesListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -88,7 +93,7 @@ export function GameList(props) {
 	return (
 	<div className='flex flex-col my-4'>
 	{
-		props.title && <div className='py-4 my-4 text-xl font-bold cursor-pointer' onclick={selectChild}>{props.title}s:</div>
+		props.title && <div className='py-4 my-4 text-xl font-bold cursor-pointer' onClick={selectChild}>{props.title}s:</div>
 	}
 	{
 		props.title && <hr/>
@@ -101,7 +106,10 @@ export function GameList(props) {
 
 			return (
 				<div key={i}>
+					
 					<GameListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+					
+					
 					<Spacer/>
 				</div>
 			)

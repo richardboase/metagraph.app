@@ -28,7 +28,7 @@ export function Lobbys(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <LobbyList subject={subject} />
+				promptToggle && <LobbyList subject={subject} native={true} />
 			}
 		</div>
 	)

@@ -8,9 +8,7 @@ import (
 	"strconv"
 	"log"
 
-	"cloud.google.com/go/firestore"
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
-	"google.golang.org/api/iterator"
 )
 
 // api-teststreets
@@ -20,7 +18,7 @@ func (app *App) EntrypointTESTSTREETS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := GetSessionUser(app.App, r)
+	user, err := app.GetSessionUser(r)
 	if err != nil {
 		cloudfunc.HttpError(w, err, http.StatusUnauthorized)
 		return
@@ -32,9 +30,16 @@ func (app *App) EntrypointTESTSTREETS(w http.ResponseWriter, r *http.Request) {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
 		return
 	}
-	parent, err := GetMetadata(app.App, parentID)
+	parent, err := app.GetMetadata(parentID)
 	if err != nil {
 		cloudfunc.HttpError(w, err, http.StatusNotFound)
+		return
+	}
+
+	// security
+	if !app.IsAdmin(parent, user) {
+		err := fmt.Errorf("USER %s IS NOT AN ADMIN", user.Username)
+		cloudfunc.HttpError(w, err, http.StatusUnauthorized)
 		return
 	}
 
@@ -52,23 +57,64 @@ func (app *App) EntrypointTESTSTREETS(w http.ResponseWriter, r *http.Request) {
 
 		switch function {
 
-		case "prompt":
+		case "openai":
+
+			// get openai command
+			mode, err := cloudfunc.QueryParam(r, "mode")
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
 
 			m := map[string]interface{}{}
 			if err := cloudfunc.ParseJSON(r, &m); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusBadRequest)
 				return
 			}
-
 			prompt, ok := AssertSTRING(w, m, "prompt")
 			if !ok {
 				return
 			}
 
-			if err := app.teststreetChatGPTCreate(user, parent, prompt); err != nil {
+			object := &TESTSTREET{}
+			if err := app.GetDocument(parent.ID, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
+
+			switch mode {
+			case "prompt":
+
+				reply, err := app.teststreetChatGPTPrompt(user, object, prompt)
+				if err != nil {
+					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+					return
+				}
+
+				if err := cloudfunc.ServeJSON(w, reply); err != nil {
+					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+					return
+				}
+
+			case "create":
+
+				if err := app.teststreetChatGPTCreate(user, object, prompt); err != nil {
+					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+					return
+				}
+
+			case "modify":
+
+				if err := app.teststreetChatGPTModify(user, object, prompt); err != nil {
+					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+					return
+				}
+
+			default:
+				
+				panic("openai")
+			}
+
 			return
 
 		case "init":
@@ -80,7 +126,7 @@ func (app *App) EntrypointTESTSTREETS(w http.ResponseWriter, r *http.Request) {
 			}
 
 			fields := FieldsTESTSTREET{}
-			object := NewTESTSTREET(parent, fields)
+			object := user.NewTESTSTREET(parent, fields)
 			if !object.ValidateInput(w, m) {
 				return
 			}
@@ -101,14 +147,14 @@ func (app *App) EntrypointTESTSTREETS(w http.ResponseWriter, r *http.Request) {
 		/*
 		case "initupload":
 			// reuse code
-			app.UploadTESTSTREET(w, r, parent)
+			app.UploadTESTSTREET(w, r, parent, user)
 			return
 		*/
 
 		/*
 		case "inituploads":
 			// reuse code
-			app.ArchiveUploadTESTSTREET(w, r, parent)
+			app.ArchiveUploadTESTSTREET(w, r, parent, user)
 			return
 		*/
 
@@ -134,8 +180,14 @@ func (app *App) EntrypointTESTSTREETS(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 
-		// return a list of teststreets in a specific parent
-		case "list", "altlist":
+		case "list":
+
+			// get function
+			mode, err := cloudfunc.QueryParam(r, "mode")
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
 
 			var limit int
 			limitString, _ := cloudfunc.QueryParam(r, "limit")
@@ -143,38 +195,7 @@ func (app *App) EntrypointTESTSTREETS(w http.ResponseWriter, r *http.Request) {
 				limit = n
 			}
 
-			list := []*TESTSTREET{}
-
-			// handle objects that need to be ordered
-			
-			q := parent.Firestore(app.App).Collection("teststreets").OrderBy("Meta.Modified", firestore.Desc)
-			
-
-			if limit > 0 {
-				q = q.Limit(limit)
-			}
-			iter := q.Documents(app.Context())
-			for {
-				doc, err := iter.Next()
-				if err == iterator.Done {
-					break
-				}
-				if err != nil {
-					log.Println(err)
-					break
-				}
-				teststreet := &TESTSTREET{}
-				if err := doc.DataTo(teststreet); err != nil {
-					log.Println(err)
-					continue
-				}
-				list = append(list, teststreet)
-			}
-
-			if err := cloudfunc.ServeJSON(w, list); err != nil {
-				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-				return
-			}
+			app.teststreetLists(w, user, parent, mode, limit)
 
 			return
 

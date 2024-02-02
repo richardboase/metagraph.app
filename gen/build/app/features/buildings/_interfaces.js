@@ -3,6 +3,8 @@ import * as React from 'react'
 import { BuildingsMatrix } from './buildingsMatrix'
 import { Buildings } from './buildings'
 import { Building } from './building'
+import { BuildingAdmin } from './buildingAdmin'
+import { BuildingAdmins } from './buildingAdmins'
 import { Assets } from './assets'
 import { NewBuilding } from './newBuilding'
 import { EditBuilding } from './editBuilding'
@@ -48,10 +50,20 @@ export var BuildingInterfaces = {
 		level: 6+2,
 		name: "Building",
 		sublinks: [],
-		subsublinks: ["floors",""],
+		subsublinks: ["floors",],
 		component: (<Building />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"buildingadmin": {
+		level: 6+2,
+		name: "Building",
+		component: (<BuildingAdmin />),
+	},
+	"buildingadmins": {
+		level: 6+2,
+		name: "Building",
+		component: (<BuildingAdmins />),
 	},
 	"buildingassets": {
 		level: 6+2,

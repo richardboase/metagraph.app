@@ -16,8 +16,8 @@ export function LobbyObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/lobby?function=object&id="+id)
 }
 
-export function LobbysListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/lobbys?function=list&parent="+parentID+"&limit="+limit)
+export function LobbysListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/lobbys?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function LobbysCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function LobbyChatGPTInitPOST(user, parentID, payload) {
 
 export function LobbyChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/lobby?function=prompt&id="+id, payload)
+}
+
+export function LobbyAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/lobby?function=addadmin&id="+id, payload)
+}
+
+export function LobbyAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/lobby?function=removeadmin&id="+id, payload)
 }

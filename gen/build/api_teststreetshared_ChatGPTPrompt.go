@@ -7,7 +7,7 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
-func (app *App) teststreetChatGPTPrompt(object *TESTSTREET, prompt string) (string, error) {
+func (app *App) teststreetChatGPTPrompt(user *User, object *TESTSTREET, prompt string) (string, error) {
 
 	system := `Your role is a helpful preprocessor that follows rules to create one or more JSON objects, ultimately outputting raw valid JSON array.
 

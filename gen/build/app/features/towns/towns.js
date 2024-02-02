@@ -28,7 +28,7 @@ export function Towns(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <TownList subject={subject} />
+				promptToggle && <TownList subject={subject} native={true} />
 			}
 		</div>
 	)

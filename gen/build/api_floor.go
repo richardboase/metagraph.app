@@ -23,7 +23,7 @@ func (app *App) EntrypointFLOOR(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := GetSessionUser(app.App, r)
+	user, err := app.GetSessionUser(r)
 	if err != nil {
 		cloudfunc.HttpError(w, err, http.StatusUnauthorized)
 		return
@@ -36,8 +36,15 @@ func (app *App) EntrypointFLOOR(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	object := &FLOOR{}
-	if err := GetDocument(app.App, id, object); err != nil {
+	if err := app.GetDocument(id, object); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	// security
+	if !app.IsAdmin(&object.Meta, user) {
+		err := fmt.Errorf("USER %s IS NOT AN ADMIN", user.Username)
+		cloudfunc.HttpError(w, err, http.StatusUnauthorized)
 		return
 	}
 
@@ -129,6 +136,34 @@ func (app *App) EntrypointFLOOR(w http.ResponseWriter, r *http.Request) {
 
 		switch function {
 
+		case "addadmin":
+
+			admin, err := cloudfunc.QueryParam(r, "admin")
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
+
+			if err := app.addFloorAdmin(object, admin); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			}
+			return
+
+		case "removeadmin":
+
+			admin, err := cloudfunc.QueryParam(r, "admin")
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
+
+			if err := app.removeFloorAdmin(object, admin); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			}
+			return
+
 		case "job":
 
 			// get job id
@@ -170,7 +205,7 @@ func (app *App) EntrypointFLOOR(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			reply, err := app.floorChatGPTPrompt(object, prompt)
+			reply, err := app.floorChatGPTPrompt(user, object, prompt)
 			if err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return

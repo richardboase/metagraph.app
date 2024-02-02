@@ -3,6 +3,8 @@ import * as React from 'react'
 import { TownsMatrix } from './townsMatrix'
 import { Towns } from './towns'
 import { Town } from './town'
+import { TownAdmin } from './townAdmin'
+import { TownAdmins } from './townAdmins'
 import { Assets } from './assets'
 import { NewTown } from './newTown'
 import { EditTown } from './editTown'
@@ -48,10 +50,20 @@ export var TownInterfaces = {
 		level: 0+2,
 		name: "Town",
 		sublinks: [],
-		subsublinks: ["teststreets","quarters",""],
+		subsublinks: ["teststreets","quarters",],
 		component: (<Town />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"townadmin": {
+		level: 0+2,
+		name: "Town",
+		component: (<TownAdmin />),
+	},
+	"townadmins": {
+		level: 0+2,
+		name: "Town",
+		component: (<TownAdmins />),
 	},
 	"townassets": {
 		level: 0+2,

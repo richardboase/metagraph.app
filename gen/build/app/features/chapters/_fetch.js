@@ -16,8 +16,8 @@ export function ChapterObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/chapter?function=object&id="+id)
 }
 
-export function ChaptersListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/chapters?function=list&parent="+parentID+"&limit="+limit)
+export function ChaptersListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/chapters?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function ChaptersCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function ChapterChatGPTInitPOST(user, parentID, payload) {
 
 export function ChapterChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/chapter?function=prompt&id="+id, payload)
+}
+
+export function ChapterAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/chapter?function=addadmin&id="+id, payload)
+}
+
+export function ChapterAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/chapter?function=removeadmin&id="+id, payload)
 }

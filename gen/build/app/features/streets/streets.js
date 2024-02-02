@@ -28,7 +28,7 @@ export function Streets(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <StreetList subject={subject} />
+				promptToggle && <StreetList subject={subject} native={true} />
 			}
 		</div>
 	)

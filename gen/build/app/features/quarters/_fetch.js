@@ -16,8 +16,8 @@ export function QuarterObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/quarter?function=object&id="+id)
 }
 
-export function QuartersListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/quarters?function=list&parent="+parentID+"&limit="+limit)
+export function QuartersListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/quarters?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function QuartersCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function QuarterChatGPTInitPOST(user, parentID, payload) {
 
 export function QuarterChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/quarter?function=prompt&id="+id, payload)
+}
+
+export function QuarterAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/quarter?function=addadmin&id="+id, payload)
+}
+
+export function QuarterAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/quarter?function=removeadmin&id="+id, payload)
 }

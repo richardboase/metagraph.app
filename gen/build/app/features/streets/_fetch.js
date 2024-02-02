@@ -16,8 +16,8 @@ export function StreetObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/street?function=object&id="+id)
 }
 
-export function StreetsListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/streets?function=list&parent="+parentID+"&limit="+limit)
+export function StreetsListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/streets?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function StreetsCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function StreetChatGPTInitPOST(user, parentID, payload) {
 
 export function StreetChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/street?function=prompt&id="+id, payload)
+}
+
+export function StreetAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/street?function=addadmin&id="+id, payload)
+}
+
+export function StreetAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/street?function=removeadmin&id="+id, payload)
 }

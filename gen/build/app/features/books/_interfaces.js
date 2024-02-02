@@ -3,6 +3,8 @@ import * as React from 'react'
 import { BooksMatrix } from './booksMatrix'
 import { Books } from './books'
 import { Book } from './book'
+import { BookAdmin } from './bookAdmin'
+import { BookAdmins } from './bookAdmins'
 import { Assets } from './assets'
 import { NewBook } from './newBook'
 import { EditBook } from './editBook'
@@ -48,10 +50,20 @@ export var BookInterfaces = {
 		level: 0+2,
 		name: "Book",
 		sublinks: [],
-		subsublinks: ["bookcharacters","chapters",""],
+		subsublinks: ["bookcharacters","chapters",],
 		component: (<Book />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"bookadmin": {
+		level: 0+2,
+		name: "Book",
+		component: (<BookAdmin />),
+	},
+	"bookadmins": {
+		level: 0+2,
+		name: "Book",
+		component: (<BookAdmins />),
 	},
 	"bookassets": {
 		level: 0+2,

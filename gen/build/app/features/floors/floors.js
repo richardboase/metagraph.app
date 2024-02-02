@@ -28,7 +28,7 @@ export function Floors(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <FloorList subject={subject} />
+				promptToggle && <FloorList subject={subject} native={true} />
 			}
 		</div>
 	)

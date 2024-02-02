@@ -16,8 +16,8 @@ export function FloorObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/floor?function=object&id="+id)
 }
 
-export function FloorsListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/floors?function=list&parent="+parentID+"&limit="+limit)
+export function FloorsListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/floors?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function FloorsCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function FloorChatGPTInitPOST(user, parentID, payload) {
 
 export function FloorChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/floor?function=prompt&id="+id, payload)
+}
+
+export function FloorAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/floor?function=addadmin&id="+id, payload)
+}
+
+export function FloorAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/floor?function=removeadmin&id="+id, payload)
 }

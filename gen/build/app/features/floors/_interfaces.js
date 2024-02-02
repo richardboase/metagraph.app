@@ -3,6 +3,8 @@ import * as React from 'react'
 import { FloorsMatrix } from './floorsMatrix'
 import { Floors } from './floors'
 import { Floor } from './floor'
+import { FloorAdmin } from './floorAdmin'
+import { FloorAdmins } from './floorAdmins'
 import { Assets } from './assets'
 import { NewFloor } from './newFloor'
 import { EditFloor } from './editFloor'
@@ -48,10 +50,20 @@ export var FloorInterfaces = {
 		level: 8+2,
 		name: "Floor",
 		sublinks: [],
-		subsublinks: ["rooms",""],
+		subsublinks: ["rooms",],
 		component: (<Floor />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"flooradmin": {
+		level: 8+2,
+		name: "Floor",
+		component: (<FloorAdmin />),
+	},
+	"flooradmins": {
+		level: 8+2,
+		name: "Floor",
+		component: (<FloorAdmins />),
 	},
 	"floorassets": {
 		level: 8+2,

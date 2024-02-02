@@ -16,8 +16,8 @@ export function ParagraphObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/paragraph?function=object&id="+id)
 }
 
-export function ParagraphsListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/paragraphs?function=list&parent="+parentID+"&limit="+limit)
+export function ParagraphsListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/paragraphs?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function ParagraphsCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function ParagraphChatGPTInitPOST(user, parentID, payload) {
 
 export function ParagraphChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/paragraph?function=prompt&id="+id, payload)
+}
+
+export function ParagraphAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/paragraph?function=addadmin&id="+id, payload)
+}
+
+export function ParagraphAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/paragraph?function=removeadmin&id="+id, payload)
 }

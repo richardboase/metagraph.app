@@ -16,8 +16,8 @@ export function BookcharacterObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/bookcharacter?function=object&id="+id)
 }
 
-export function BookcharactersListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/bookcharacters?function=list&parent="+parentID+"&limit="+limit)
+export function BookcharactersListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/bookcharacters?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function BookcharactersCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function BookcharacterChatGPTInitPOST(user, parentID, payload) {
 
 export function BookcharacterChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/bookcharacter?function=prompt&id="+id, payload)
+}
+
+export function BookcharacterAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/bookcharacter?function=addadmin&id="+id, payload)
+}
+
+export function BookcharacterAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/bookcharacter?function=removeadmin&id="+id, payload)
 }

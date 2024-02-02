@@ -3,6 +3,8 @@ import * as React from 'react'
 import { RoomsMatrix } from './roomsMatrix'
 import { Rooms } from './rooms'
 import { Room } from './room'
+import { RoomAdmin } from './roomAdmin'
+import { RoomAdmins } from './roomAdmins'
 import { Assets } from './assets'
 import { NewRoom } from './newRoom'
 import { EditRoom } from './editRoom'
@@ -48,10 +50,20 @@ export var RoomInterfaces = {
 		level: 10+2,
 		name: "Room",
 		sublinks: [],
-		subsublinks: [""],
+		subsublinks: [],
 		component: (<Room />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"roomadmin": {
+		level: 10+2,
+		name: "Room",
+		component: (<RoomAdmin />),
+	},
+	"roomadmins": {
+		level: 10+2,
+		name: "Room",
+		component: (<RoomAdmins />),
 	},
 	"roomassets": {
 		level: 10+2,

@@ -3,6 +3,8 @@ import * as React from 'react'
 import { LobbysMatrix } from './lobbysMatrix'
 import { Lobbys } from './lobbys'
 import { Lobby } from './lobby'
+import { LobbyAdmin } from './lobbyAdmin'
+import { LobbyAdmins } from './lobbyAdmins'
 import { Assets } from './assets'
 import { NewLobby } from './newLobby'
 import { EditLobby } from './editLobby'
@@ -48,10 +50,20 @@ export var LobbyInterfaces = {
 		level: 2+2,
 		name: "Lobby",
 		sublinks: [],
-		subsublinks: ["characters",""],
+		subsublinks: ["characters",],
 		component: (<Lobby />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"lobbyadmin": {
+		level: 2+2,
+		name: "Lobby",
+		component: (<LobbyAdmin />),
+	},
+	"lobbyadmins": {
+		level: 2+2,
+		name: "Lobby",
+		component: (<LobbyAdmins />),
 	},
 	"lobbyassets": {
 		level: 2+2,

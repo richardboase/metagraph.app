@@ -16,8 +16,8 @@ export function TeststreetObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/teststreet?function=object&id="+id)
 }
 
-export function TeststreetsListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/teststreets?function=list&parent="+parentID+"&limit="+limit)
+export function TeststreetsListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/teststreets?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function TeststreetsCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function TeststreetChatGPTInitPOST(user, parentID, payload) {
 
 export function TeststreetChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/teststreet?function=prompt&id="+id, payload)
+}
+
+export function TeststreetAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/teststreet?function=addadmin&id="+id, payload)
+}
+
+export function TeststreetAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/teststreet?function=removeadmin&id="+id, payload)
 }

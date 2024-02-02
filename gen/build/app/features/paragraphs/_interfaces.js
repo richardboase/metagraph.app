@@ -3,6 +3,8 @@ import * as React from 'react'
 import { ParagraphsMatrix } from './paragraphsMatrix'
 import { Paragraphs } from './paragraphs'
 import { Paragraph } from './paragraph'
+import { ParagraphAdmin } from './paragraphAdmin'
+import { ParagraphAdmins } from './paragraphAdmins'
 import { Assets } from './assets'
 import { NewParagraph } from './newParagraph'
 import { EditParagraph } from './editParagraph'
@@ -48,10 +50,20 @@ export var ParagraphInterfaces = {
 		level: 4+2,
 		name: "Paragraph",
 		sublinks: [],
-		subsublinks: [""],
+		subsublinks: [],
 		component: (<Paragraph />),
 		hasDeleteButton: true,
 		hasEditButton: true,
+	},
+	"paragraphadmin": {
+		level: 4+2,
+		name: "Paragraph",
+		component: (<ParagraphAdmin />),
+	},
+	"paragraphadmins": {
+		level: 4+2,
+		name: "Paragraph",
+		component: (<ParagraphAdmins />),
 	},
 	"paragraphassets": {
 		level: 4+2,

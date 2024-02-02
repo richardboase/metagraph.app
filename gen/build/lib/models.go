@@ -5,6 +5,7 @@ import (
 	"os"
 	"fmt"
 	"log"
+	"sync"
 	"time"
 	"errors"
 	"context"
@@ -23,8 +24,32 @@ import (
 
 	"github.com/golangdaddy/leap/sdk/assetlayer"
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
+
+	"github.com/gorilla/websocket"
 )
 
+const (
+	CONST_PROJECT_ID   = "npg-generic"
+	CONST_FIRESTORE_DB = "go-gen-test"
+
+	CONST_BUCKET_UPLOADS = "npg-generic-uploads"
+	CONST_BUCKET_JOBS    = "npg-generic-jobs"
+)
+type App struct {
+	*common.App
+	connections map[string]*websocket.Conn
+	sync.RWMutex
+}
+
+func NewApp() *App {
+	app := &App{
+		App:         common.NewApp(),
+		connections: map[string]*websocket.Conn{},
+	}
+	app.UseGCP(CONST_PROJECT_ID)
+	app.UseGCPFirestore(CONST_FIRESTORE_DB)
+	return app
+}
 
 type Generic struct {
 	Meta Internals
@@ -56,6 +81,7 @@ type Internals struct {
 	ID         string
 	Class      string
 	URIs       []string
+	Name       string `json:",omitempty"`
 	Asset      string `json:",omitempty"`
 	Wallet     string `json:",omitempty"`
 	Context    Context
@@ -125,7 +151,8 @@ func (i *Internals) SaveToFirestore(app *common.App, src interface{}) error {
 }
 
 func (i *Internals) Firestore(app *common.App) *firestore.DocumentRef {
-	return app.Firestore().Doc(i.DocPath())
+	path := i.DocPath()
+	return app.Firestore().Doc(path)
 }
 
 func (i *Internals) FirestoreDoc(app *common.App, ii Internals) *firestore.DocumentRef {
@@ -231,6 +258,9 @@ type Context struct {
 }
 
 type Moderation struct {
+	// used for an object id too inherit admins for
+	Object string `json:",omitempty"`
+	// list of admin usernames
 	Admins       []string `json:",omitempty"`
 	Blocked      bool     `json:",omitempty"`
 	BlockedTime  int64    `json:",omitempty"`
@@ -239,8 +269,255 @@ type Moderation struct {
 	ApprovedTime int64    `json:",omitempty"`
 	ApprovedBy   string   `json:",omitempty"`
 }
+type Users []*User
 
-func GetMetadata(app *common.App, id string) (*Internals, error) {
+type UserRef struct {
+	Account  int
+	ID       string
+	Username string
+}
+
+func DemoUser() *User {
+	return NewUser(0, "john@doe.com", "john doe")
+}
+
+func NewUser(accountType int, email, username string) *User {
+	user := &User{
+		Meta:     (Internals{}).NewInternals("users"),
+		Account:  accountType,
+		Email:    strings.ToLower(strings.TrimSpace(email)),
+		Username: strings.ToLower(strings.TrimSpace(username)),
+	}
+	return user
+}
+
+type User struct {
+	Meta     Internals
+	Account  int    `json:"account" firestore:"account"`
+	Email    string `json:"email" firestore:"email"`
+	Username string `json:"username" firestore:"username"`
+}
+
+func (user *User) Ref() UserRef {
+	return UserRef{
+		Account:  user.Account,
+		ID:       user.Meta.ID,
+		Username: user.Username,
+	}
+}
+
+func (users Users) Refs() []UserRef {
+	refs := []UserRef{}
+	for _, user := range users {
+		refs = append(refs, user.Ref())
+	}
+	return refs
+}
+
+func (user *User) IsValid() bool {
+	log.Println(user.Username)
+
+	if len(user.Username) < 6 {
+		return false
+	}
+	if len(user.Username) > 24 {
+		return false
+	}
+	if strings.Contains(user.Username, " ") {
+		return false
+	}
+	if !isAlphanumeric(strings.Replace(user.Username, "_", "", -1)) {
+		return false
+	}
+	return true
+}
+
+func isAlphanumeric(word string) bool {
+	return regexp.MustCompile(`^[a-zA-Z0-9]*$`).MatchString(word)
+}
+
+const (
+	CONST_COL_SESSION = "sessions"
+	CONST_COL_OTP     = "otp"
+	CONST_COL_USER    = "users"
+)
+
+// GetOTP gets OTP record from firestore
+func GetOTP(app *common.App, r *http.Request) (*OTP, error) {
+
+	otp, err := cloudfunc.QueryParam(r, "otp")
+	if err != nil {
+		return nil, err
+	}
+	id := app.SeedDigest(otp)
+
+	// fetch the OTP record
+	doc, err := app.Firestore().Collection(CONST_COL_OTP).Doc(id).Get(app.Context())
+	if err != nil {
+		return nil, err
+	}
+
+	otpRecord := &OTP{}
+	if err := doc.DataTo(&otpRecord); err != nil {
+		return nil, err
+	}
+
+	// delete the OTP record
+	if _, err := app.Firestore().Collection(CONST_COL_OTP).Doc(id).Delete(app.Context()); err != nil {
+		return nil, err
+	}
+
+	return otpRecord, nil
+}
+
+// GetOTP gets OTP record from firestore
+func (app *App) DebugGetOTP(r *http.Request) (*OTP, error) {
+
+	otp, err := cloudfunc.QueryParam(r, "otp")
+	if err != nil {
+		return nil, err
+	}
+	id := app.SeedDigest(otp)
+
+	// fetch the OTP record
+	doc, err := app.Firestore().Collection(CONST_COL_OTP).Doc(id).Get(app.Context())
+	if err != nil {
+		return nil, err
+	}
+
+	otpRecord := &OTP{}
+	if err := doc.DataTo(&otpRecord); err != nil {
+		return nil, err
+	}
+
+	return otpRecord, nil
+}
+
+func (app *App) CreateSessionSecret(otp *OTP) (string, int64, error) {
+
+	secret := app.Token256()
+	hashedSecret := app.SeedDigest(secret)
+
+	user, err := otp.GetUser(app.App)
+	if err != nil {
+		return "", 0, err
+	}
+
+	session := user.NewSession()
+
+	// create the firestore session record
+	if _, err := app.Firestore().Collection(CONST_COL_SESSION).Doc(hashedSecret).Set(app.Context(), session); err != nil {
+		return "", 0, err
+	}
+
+	return secret, session.Expires, nil
+}
+
+func (app *App) GetSessionUser(r *http.Request) (*User, error) {
+
+	apiKey := r.Header.Get("Authorization")
+	if len(apiKey) == 0 {
+		err := errors.New("missing apikey in Authorization header")
+		return nil, err
+	}
+	id := app.SeedDigest(apiKey)
+
+	// fetch the Session record
+	doc, err := app.Firestore().Collection(CONST_COL_SESSION).Doc(id).Get(app.Context())
+	if err != nil {
+		return nil, err
+	}
+	session := &Session{}
+	if err := doc.DataTo(&session); err != nil {
+		return nil, err
+	}
+
+	// fetch the user record
+	doc, err = app.Firestore().Collection(CONST_COL_USER).Doc(session.UserID).Get(app.Context())
+	if err != nil {
+		return nil, err
+	}
+	user := &User{}
+	if err := doc.DataTo(&user); err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+// UserCollection abstracts the handling of subdata to within the user object
+func (app *App) UserCollection(user *User, collectionID string) *firestore.CollectionRef {
+	return app.UserRefCollection(user.Ref(), collectionID)
+}
+
+func (app *App) UserRefCollection(userRef UserRef, collectionID string) *firestore.CollectionRef {
+	return app.Firestore().Collection("users").Doc(userRef.ID).Collection(collectionID)
+}
+
+// RegionCollection abstracts the handling of subdata to within the country/region
+func (app *App) RegionCollection(user *User, collectionID string) *firestore.CollectionRef {
+	return app.Firestore().Collection("countries").Doc(user.Meta.Context.Country).Collection("regions").Doc(user.Meta.Context.Region).Collection(collectionID)
+}
+
+func (app *App) GetUserByUsername(username string) (*User, error) {
+	doc, err := app.Firestore().Collection("usernames").Doc(username).Get(app.Context())
+	if err != nil {
+		return nil, err
+	}
+	record := &Username{}
+	if err := doc.DataTo(record); err != nil {
+		return nil, err
+	}
+	return app.GetUserByID(record.User.ID)
+}
+
+func (app *App) GetUser(ref UserRef) (*User, error) {
+	return app.GetUserByID(ref.ID)
+}
+
+func (app *App) GetUserByID(id string) (*User, error) {
+	doc, err := app.Firestore().Collection("users").Doc(id).Get(context.Background())
+	if err != nil {
+		return nil, err
+	}
+	user := &User{}
+	return user, doc.DataTo(user)
+}
+
+func (app *App) GetUserByEmail(email string) (*User, error) {
+
+	iter := app.Firestore().Collection("users").Where("email", "==", email).Documents(context.Background())
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+		user := &User{}
+		return user, doc.DataTo(user)
+	}
+
+	return nil, fmt.Errorf("no user forund via email: %s", email)
+}
+func (app *App) IsAdmin(parent *Internals, user *User) bool {
+	if len(parent.Moderation.Object) > 0 {
+		var err error
+		parent, err = app.GetMetadata(parent.Moderation.Object)
+		if err != nil {
+			log.Println(err)
+			return false
+		}
+	}
+	for _, userID := range parent.Moderation.Admins {
+		if user.Meta.ID == userID {
+			return true
+		}
+	}
+	return false
+}
+func (app *App) GetMetadata(id string) (*Internals, error) {
 
 	dst := &Generic{}
 
@@ -256,7 +533,7 @@ func GetMetadata(app *common.App, id string) (*Internals, error) {
 	return &dst.Meta, doc.DataTo(dst)
 }
 
-func GetDocument(app *common.App, id string, dst interface{}) error {
+func (app *App) GetDocument(id string, dst interface{}) error {
 
 	i := Internal(id)
 	path := i.DocPath()
@@ -269,7 +546,6 @@ func GetDocument(app *common.App, id string, dst interface{}) error {
 	}
 	return doc.DataTo(dst)
 }
-
 func getTime() int64 {
 	return time.Now().UTC().Unix()
 }
@@ -447,183 +723,6 @@ func assertINT(m map[string]interface{}, key string) (int, error) {
 	}
 	return int(v), nil
 }
-
-type Users []*User
-
-type UserRef struct {
-	Account  int
-	ID       string
-	Username string
-}
-
-func DemoUser() *User {
-	return NewUser("john@doe.com", "john doe")
-}
-
-func NewUser(email, username string) *User {
-	user := &User{
-		Meta:     (Internals{}).NewInternals("users"),
-		Email:    strings.ToLower(strings.TrimSpace(email)),
-		Username: strings.ToLower(strings.TrimSpace(username)),
-	}
-	return user
-}
-
-type User struct {
-	Meta Internals
-	// user (0) or practitioner (1) or business (2)
-	Account  int    `json:"account" firestore:"account"`
-	Email    string `json:"email" firestore:"email"`
-	Username string `json:"username" firestore:"username"`
-}
-
-func (user *User) Ref() UserRef {
-	return UserRef{
-		Account:  user.Account,
-		ID:       user.Meta.ID,
-		Username: user.Username,
-	}
-}
-
-func (users Users) Refs() []UserRef {
-	refs := []UserRef{}
-	for _, user := range users {
-		refs = append(refs, user.Ref())
-	}
-	return refs
-}
-
-func (user *User) IsValid() bool {
-	log.Println(user.Username)
-
-	if len(user.Username) < 6 {
-		return false
-	}
-	if len(user.Username) > 24 {
-		return false
-	}
-	if strings.Contains(user.Username, " ") {
-		return false
-	}
-	if !isAlphanumeric(strings.Replace(user.Username, "_", "", -1)) {
-		return false
-	}
-	return true
-}
-
-func isAlphanumeric(word string) bool {
-	return regexp.MustCompile(`^[a-zA-Z0-9]*$`).MatchString(word)
-}
-
-const (
-	CONST_COL_SESSION = "sessions"
-	CONST_COL_OTP     = "otp"
-	CONST_COL_USER    = "users"
-)
-
-// GetOTP gets OTP record from firestore
-func GetOTP(app *common.App, r *http.Request) (*OTP, error) {
-
-	otp, err := cloudfunc.QueryParam(r, "otp")
-	if err != nil {
-		return nil, err
-	}
-	id := app.SeedDigest(otp)
-
-	// fetch the OTP record
-	doc, err := app.Firestore().Collection(CONST_COL_OTP).Doc(id).Get(app.Context())
-	if err != nil {
-		return nil, err
-	}
-
-	otpRecord := &OTP{}
-	if err := doc.DataTo(&otpRecord); err != nil {
-		return nil, err
-	}
-
-	// delete the OTP record
-	if _, err := app.Firestore().Collection(CONST_COL_OTP).Doc(id).Delete(app.Context()); err != nil {
-		return nil, err
-	}
-
-	return otpRecord, nil
-}
-
-// GetOTP gets OTP record from firestore
-func DebugGetOTP(app *common.App, r *http.Request) (*OTP, error) {
-
-	otp, err := cloudfunc.QueryParam(r, "otp")
-	if err != nil {
-		return nil, err
-	}
-	id := app.SeedDigest(otp)
-
-	// fetch the OTP record
-	doc, err := app.Firestore().Collection(CONST_COL_OTP).Doc(id).Get(app.Context())
-	if err != nil {
-		return nil, err
-	}
-
-	otpRecord := &OTP{}
-	if err := doc.DataTo(&otpRecord); err != nil {
-		return nil, err
-	}
-
-	return otpRecord, nil
-}
-
-func CreateSessionSecret(app *common.App, otp *OTP) (string, int64, error) {
-
-	secret := app.Token256()
-	hashedSecret := app.SeedDigest(secret)
-
-	user, err := otp.GetUser(app)
-	if err != nil {
-		return "", 0, err
-	}
-
-	session := user.NewSession()
-
-	// create the firestore session record
-	if _, err := app.Firestore().Collection(CONST_COL_SESSION).Doc(hashedSecret).Set(app.Context(), session); err != nil {
-		return "", 0, err
-	}
-
-	return secret, session.Expires, nil
-}
-
-func GetSessionUser(app *common.App, r *http.Request) (*User, error) {
-
-	apiKey := r.Header.Get("Authorization")
-	if len(apiKey) == 0 {
-		err := errors.New("missing apikey in Authorization header")
-		return nil, err
-	}
-	id := app.SeedDigest(apiKey)
-
-	// fetch the Session record
-	doc, err := app.Firestore().Collection(CONST_COL_SESSION).Doc(id).Get(app.Context())
-	if err != nil {
-		return nil, err
-	}
-	session := &Session{}
-	if err := doc.DataTo(&session); err != nil {
-		return nil, err
-	}
-
-	// fetch the user record
-	doc, err = app.Firestore().Collection(CONST_COL_USER).Doc(session.UserID).Get(app.Context())
-	if err != nil {
-		return nil, err
-	}
-	user := &User{}
-	if err := doc.DataTo(&user); err != nil {
-		return nil, err
-	}
-
-	return user, nil
-}
-
 type OTP struct {
 	Email     string `json:"email" firestore:"email"`
 	User      string `json:"user" firestore:"user"`
@@ -646,7 +745,6 @@ func (otp *OTP) GetUser(app *common.App) (*User, error) {
 	user := &User{}
 	return user, doc.DataTo(user)
 }
-
 type Session struct {
 	UserID  string
 	Expires int64
@@ -678,7 +776,6 @@ type Username struct {
 	User  UserRef
 	Index map[string][]string `json:"-"`
 }
-
 type ASYNCJOB struct {
 	Meta Internals
 	// pending:started:completed:failed
@@ -755,7 +852,7 @@ type GAME struct {
 	Fields FieldsGAME `json:"fields" firestore:"fields"`
 }
 
-func NewGAME(parent *Internals, fields FieldsGAME) *GAME {
+func (user *User) NewGAME(parent *Internals, fields FieldsGAME) *GAME {
 	var object *GAME
 	if parent == nil {
 		object = &GAME{
@@ -768,9 +865,19 @@ func NewGAME(parent *Internals, fields FieldsGAME) *GAME {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		"lobby",
-		
 	}
 	return object
 }
@@ -837,6 +944,12 @@ func (x *GAME) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -849,7 +962,7 @@ type LOBBY struct {
 	Fields FieldsLOBBY `json:"fields" firestore:"fields"`
 }
 
-func NewLOBBY(parent *Internals, fields FieldsLOBBY) *LOBBY {
+func (user *User) NewLOBBY(parent *Internals, fields FieldsLOBBY) *LOBBY {
 	var object *LOBBY
 	if parent == nil {
 		object = &LOBBY{
@@ -862,9 +975,19 @@ func NewLOBBY(parent *Internals, fields FieldsLOBBY) *LOBBY {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		"character",
-		
 	}
 	return object
 }
@@ -929,6 +1052,12 @@ func (x *LOBBY) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -941,7 +1070,7 @@ type CHARACTER struct {
 	Fields FieldsCHARACTER `json:"fields" firestore:"fields"`
 }
 
-func NewCHARACTER(parent *Internals, fields FieldsCHARACTER) *CHARACTER {
+func (user *User) NewCHARACTER(parent *Internals, fields FieldsCHARACTER) *CHARACTER {
 	var object *CHARACTER
 	if parent == nil {
 		object = &CHARACTER{
@@ -954,6 +1083,17 @@ func NewCHARACTER(parent *Internals, fields FieldsCHARACTER) *CHARACTER {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		
 	}
@@ -1277,6 +1417,12 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -1289,7 +1435,7 @@ type BOOK struct {
 	Fields FieldsBOOK `json:"fields" firestore:"fields"`
 }
 
-func NewBOOK(parent *Internals, fields FieldsBOOK) *BOOK {
+func (user *User) NewBOOK(parent *Internals, fields FieldsBOOK) *BOOK {
 	var object *BOOK
 	if parent == nil {
 		object = &BOOK{
@@ -1302,10 +1448,19 @@ func NewBOOK(parent *Internals, fields FieldsBOOK) *BOOK {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
-		"bookcharacter",
-		"chapter",
-		
+		"bookcharacter","chapter",
 	}
 	return object
 }
@@ -1372,6 +1527,12 @@ func (x *BOOK) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -1384,7 +1545,7 @@ type BOOKCHARACTER struct {
 	Fields FieldsBOOKCHARACTER `json:"fields" firestore:"fields"`
 }
 
-func NewBOOKCHARACTER(parent *Internals, fields FieldsBOOKCHARACTER) *BOOKCHARACTER {
+func (user *User) NewBOOKCHARACTER(parent *Internals, fields FieldsBOOKCHARACTER) *BOOKCHARACTER {
 	var object *BOOKCHARACTER
 	if parent == nil {
 		object = &BOOKCHARACTER{
@@ -1397,6 +1558,17 @@ func NewBOOKCHARACTER(parent *Internals, fields FieldsBOOKCHARACTER) *BOOKCHARAC
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		
 	}
@@ -1720,6 +1892,12 @@ func (x *BOOKCHARACTER) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -1732,7 +1910,7 @@ type CHAPTER struct {
 	Fields FieldsCHAPTER `json:"fields" firestore:"fields"`
 }
 
-func NewCHAPTER(parent *Internals, fields FieldsCHAPTER) *CHAPTER {
+func (user *User) NewCHAPTER(parent *Internals, fields FieldsCHAPTER) *CHAPTER {
 	var object *CHAPTER
 	if parent == nil {
 		object = &CHAPTER{
@@ -1745,9 +1923,19 @@ func NewCHAPTER(parent *Internals, fields FieldsCHAPTER) *CHAPTER {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		"paragraph",
-		
 	}
 	return object
 }
@@ -1814,6 +2002,12 @@ func (x *CHAPTER) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -1826,7 +2020,7 @@ type PARAGRAPH struct {
 	Fields FieldsPARAGRAPH `json:"fields" firestore:"fields"`
 }
 
-func NewPARAGRAPH(parent *Internals, fields FieldsPARAGRAPH) *PARAGRAPH {
+func (user *User) NewPARAGRAPH(parent *Internals, fields FieldsPARAGRAPH) *PARAGRAPH {
 	var object *PARAGRAPH
 	if parent == nil {
 		object = &PARAGRAPH{
@@ -1839,6 +2033,17 @@ func NewPARAGRAPH(parent *Internals, fields FieldsPARAGRAPH) *PARAGRAPH {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		
 	}
@@ -1907,6 +2112,12 @@ func (x *PARAGRAPH) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -1919,7 +2130,7 @@ type TOWN struct {
 	Fields FieldsTOWN `json:"fields" firestore:"fields"`
 }
 
-func NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
+func (user *User) NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
 	var object *TOWN
 	if parent == nil {
 		object = &TOWN{
@@ -1932,10 +2143,19 @@ func NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
-		"teststreet",
-		"quarter",
-		
+		"teststreet","quarter",
 	}
 	return object
 }
@@ -2002,6 +2222,12 @@ func (x *TOWN) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -2014,7 +2240,7 @@ type TESTSTREET struct {
 	Fields FieldsTESTSTREET `json:"fields" firestore:"fields"`
 }
 
-func NewTESTSTREET(parent *Internals, fields FieldsTESTSTREET) *TESTSTREET {
+func (user *User) NewTESTSTREET(parent *Internals, fields FieldsTESTSTREET) *TESTSTREET {
 	var object *TESTSTREET
 	if parent == nil {
 		object = &TESTSTREET{
@@ -2027,6 +2253,17 @@ func NewTESTSTREET(parent *Internals, fields FieldsTESTSTREET) *TESTSTREET {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		
 	}
@@ -2221,6 +2458,12 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -2233,7 +2476,7 @@ type QUARTER struct {
 	Fields FieldsQUARTER `json:"fields" firestore:"fields"`
 }
 
-func NewQUARTER(parent *Internals, fields FieldsQUARTER) *QUARTER {
+func (user *User) NewQUARTER(parent *Internals, fields FieldsQUARTER) *QUARTER {
 	var object *QUARTER
 	if parent == nil {
 		object = &QUARTER{
@@ -2246,9 +2489,19 @@ func NewQUARTER(parent *Internals, fields FieldsQUARTER) *QUARTER {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		"street",
-		
 	}
 	return object
 }
@@ -2313,6 +2566,12 @@ func (x *QUARTER) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -2325,7 +2584,7 @@ type STREET struct {
 	Fields FieldsSTREET `json:"fields" firestore:"fields"`
 }
 
-func NewSTREET(parent *Internals, fields FieldsSTREET) *STREET {
+func (user *User) NewSTREET(parent *Internals, fields FieldsSTREET) *STREET {
 	var object *STREET
 	if parent == nil {
 		object = &STREET{
@@ -2338,9 +2597,19 @@ func NewSTREET(parent *Internals, fields FieldsSTREET) *STREET {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		"building",
-		
 	}
 	return object
 }
@@ -2405,6 +2674,12 @@ func (x *STREET) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -2417,7 +2692,7 @@ type BUILDING struct {
 	Fields FieldsBUILDING `json:"fields" firestore:"fields"`
 }
 
-func NewBUILDING(parent *Internals, fields FieldsBUILDING) *BUILDING {
+func (user *User) NewBUILDING(parent *Internals, fields FieldsBUILDING) *BUILDING {
 	var object *BUILDING
 	if parent == nil {
 		object = &BUILDING{
@@ -2430,9 +2705,19 @@ func NewBUILDING(parent *Internals, fields FieldsBUILDING) *BUILDING {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		"floor",
-		
 	}
 	return object
 }
@@ -2637,6 +2922,12 @@ func (x *BUILDING) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -2649,7 +2940,7 @@ type FLOOR struct {
 	Fields FieldsFLOOR `json:"fields" firestore:"fields"`
 }
 
-func NewFLOOR(parent *Internals, fields FieldsFLOOR) *FLOOR {
+func (user *User) NewFLOOR(parent *Internals, fields FieldsFLOOR) *FLOOR {
 	var object *FLOOR
 	if parent == nil {
 		object = &FLOOR{
@@ -2662,9 +2953,19 @@ func NewFLOOR(parent *Internals, fields FieldsFLOOR) *FLOOR {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		"room",
-		
 	}
 	return object
 }
@@ -2722,6 +3023,12 @@ func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
+
 	x.Meta.Modify()
 
 	return nil
@@ -2734,7 +3041,7 @@ type ROOM struct {
 	Fields FieldsROOM `json:"fields" firestore:"fields"`
 }
 
-func NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
+func (user *User) NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
 	var object *ROOM
 	if parent == nil {
 		object = &ROOM{
@@ -2747,6 +3054,17 @@ func NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
 			Fields: fields,
 		}
 	}
+	// this object inherits its admin permissions
+	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+	if len(parent.Moderation.Object) == 0 {
+		log.Println("USING PARENT ID AS MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.ID
+	} else {
+		log.Println("USING PARENT'S MODERATION OBJECT")
+		object.Meta.Moderation.Object = parent.Moderation.Object
+	}
+	
+	// add children to context
 	object.Meta.Context.Children = []string{
 		
 	}
@@ -2814,6 +3132,12 @@ func (x *ROOM) ValidateObject(m map[string]interface{}) error {
 		
 	}
 	
+
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	}
 
 	x.Meta.Modify()
 

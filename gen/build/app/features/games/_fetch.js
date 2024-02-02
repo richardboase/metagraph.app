@@ -16,8 +16,8 @@ export function GameObjectGET(user, id) {
     return SessionFetch(user, "GET", "api/game?function=object&id="+id)
 }
 
-export function GamesListGET(user, parentID, limit) {
-    return SessionFetch(user, "GET", "api/games?function=list&parent="+parentID+"&limit="+limit)
+export function GamesListGET(user, parentID, mode, limit) {
+    return SessionFetch(user, "GET", "api/games?function=list&parent="+parentID+"&mode="+mode+"&limit="+limit)
 }
 
 export function GamesCountGET(user, parentID) {
@@ -70,4 +70,12 @@ export function GameChatGPTInitPOST(user, parentID, payload) {
 
 export function GameChatGPTPromptPOST(user, id, payload) {
     return SessionFetch(user, "POST", "api/game?function=prompt&id="+id, payload)
+}
+
+export function GameAdminAddPOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/game?function=addadmin&id="+id, payload)
+}
+
+export function GameAdminRemovePOST(user, id, payload) {
+    return SessionFetch(user, "POST", "api/game?function=removeadmin&id="+id, payload)
 }

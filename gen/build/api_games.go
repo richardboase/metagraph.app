@@ -8,9 +8,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"cloud.google.com/go/firestore"
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
-	"google.golang.org/api/iterator"
 )
 
 // api-games
@@ -20,7 +18,7 @@ func (app *App) EntrypointGAMES(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := GetSessionUser(app.App, r)
+	user, err := app.GetSessionUser(r)
 	if err != nil {
 		cloudfunc.HttpError(w, err, http.StatusUnauthorized)
 		return
@@ -49,7 +47,7 @@ func (app *App) EntrypointGAMES(w http.ResponseWriter, r *http.Request) {
 		case "init":
 
 			fields := FieldsGAME{}
-			object := NewGAME(nil, fields)
+			object := user.NewGAME(nil, fields)
 			if !object.ValidateInput(w, m) {
 				return
 			}
@@ -81,7 +79,6 @@ func (app *App) EntrypointGAMES(w http.ResponseWriter, r *http.Request) {
 			return
 		*/
 
-
 		default:
 			err := fmt.Errorf("function not found: %s", function)
 			cloudfunc.HttpError(w, err, http.StatusBadRequest)
@@ -104,8 +101,14 @@ func (app *App) EntrypointGAMES(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 
-		// return a list of games in a specific parent
-		case "list", "altlist":
+		case "list":
+
+			// get function
+			mode, err := cloudfunc.QueryParam(r, "mode")
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
 
 			var limit int
 			limitString, _ := cloudfunc.QueryParam(r, "limit")
@@ -113,37 +116,7 @@ func (app *App) EntrypointGAMES(w http.ResponseWriter, r *http.Request) {
 				limit = n
 			}
 
-			list := []*GAME{}
-
-			// handle objects that need to be ordered
-			
-			q := app.Firestore().Collection("games").OrderBy("Meta.Modified", firestore.Desc)
-			
-			if limit > 0 {
-				q = q.Limit(limit)
-			}
-			iter := q.Documents(app.Context())
-			for {
-				doc, err := iter.Next()
-				if err == iterator.Done {
-					break
-				}
-				if err != nil {
-					log.Println(err)
-					break
-				}
-				object := &GAME{}
-				if err := doc.DataTo(object); err != nil {
-					log.Println(err)
-					continue
-				}
-				list = append(list, object)
-			}
-
-			if err := cloudfunc.ServeJSON(w, list); err != nil {
-				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-				return
-			}
+			app.gameLists(w, user, nil, mode, limit)
 
 			return
 

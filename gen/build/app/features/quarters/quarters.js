@@ -28,7 +28,7 @@ export function Quarters(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <QuarterList subject={subject} />
+				promptToggle && <QuarterList subject={subject} native={true} />
 			}
 		</div>
 	)
