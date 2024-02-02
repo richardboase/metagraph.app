@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { FloorAssetsRow } from './floorAssetsRow';
-import { FloorDELETE, FloorsListGET, FloorMoveUpPOST, FloorMoveDownPOST } from '../_fetch';
+import { FloorDELETE, FloorMoveUpPOST, FloorMoveDownPOST } from '../_fetch';
 
 export function FloorAssets(props) {
 

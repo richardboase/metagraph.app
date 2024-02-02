@@ -29,7 +29,7 @@ export function CharacterMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		CharactersListGET(userdata, props.subject?.Meta.ID, props.limit)
+		CharactersListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

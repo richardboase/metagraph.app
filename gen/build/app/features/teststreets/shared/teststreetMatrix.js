@@ -29,7 +29,7 @@ export function TeststreetMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		TeststreetsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		TeststreetsListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

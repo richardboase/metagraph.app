@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { GameAssetsRow } from './gameAssetsRow';
-import { GameDELETE, GamesListGET, GameMoveUpPOST, GameMoveDownPOST } from '../_fetch';
+import { GameDELETE, GameMoveUpPOST, GameMoveDownPOST } from '../_fetch';
 
 export function GameAssets(props) {
 

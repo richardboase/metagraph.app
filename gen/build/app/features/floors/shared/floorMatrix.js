@@ -29,7 +29,7 @@ export function FloorMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		FloorsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		FloorsListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

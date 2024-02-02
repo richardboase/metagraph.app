@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { QuarterAssetsRow } from './quarterAssetsRow';
-import { QuarterDELETE, QuartersListGET, QuarterMoveUpPOST, QuarterMoveDownPOST } from '../_fetch';
+import { QuarterDELETE, QuarterMoveUpPOST, QuarterMoveDownPOST } from '../_fetch';
 
 export function QuarterAssets(props) {
 

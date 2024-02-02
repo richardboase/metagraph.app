@@ -29,7 +29,7 @@ export function TownMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		TownsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		TownsListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

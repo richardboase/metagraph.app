@@ -29,7 +29,7 @@ export function RoomMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		RoomsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		RoomsListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

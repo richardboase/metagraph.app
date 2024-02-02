@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { LobbyAssetsRow } from './lobbyAssetsRow';
-import { LobbyDELETE, LobbysListGET, LobbyMoveUpPOST, LobbyMoveDownPOST } from '../_fetch';
+import { LobbyDELETE, LobbyMoveUpPOST, LobbyMoveDownPOST } from '../_fetch';
 
 export function LobbyAssets(props) {
 

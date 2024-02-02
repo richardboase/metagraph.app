@@ -29,7 +29,7 @@ export function ChapterMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		ChaptersListGET(userdata, props.subject?.Meta.ID, props.limit)
+		ChaptersListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

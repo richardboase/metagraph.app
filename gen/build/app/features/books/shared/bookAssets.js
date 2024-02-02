@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { BookAssetsRow } from './bookAssetsRow';
-import { BookDELETE, BooksListGET, BookMoveUpPOST, BookMoveDownPOST } from '../_fetch';
+import { BookDELETE, BookMoveUpPOST, BookMoveDownPOST } from '../_fetch';
 
 export function BookAssets(props) {
 

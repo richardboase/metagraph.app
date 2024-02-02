@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { TownAssetsRow } from './townAssetsRow';
-import { TownDELETE, TownsListGET, TownMoveUpPOST, TownMoveDownPOST } from '../_fetch';
+import { TownDELETE, TownMoveUpPOST, TownMoveDownPOST } from '../_fetch';
 
 export function TownAssets(props) {
 

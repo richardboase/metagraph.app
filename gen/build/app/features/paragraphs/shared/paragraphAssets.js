@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { ParagraphAssetsRow } from './paragraphAssetsRow';
-import { ParagraphDELETE, ParagraphsListGET, ParagraphMoveUpPOST, ParagraphMoveDownPOST } from '../_fetch';
+import { ParagraphDELETE, ParagraphMoveUpPOST, ParagraphMoveDownPOST } from '../_fetch';
 
 export function ParagraphAssets(props) {
 

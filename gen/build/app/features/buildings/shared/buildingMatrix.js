@@ -29,7 +29,7 @@ export function BuildingMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		BuildingsListGET(userdata, props.subject?.Meta.ID, props.limit)
+		BuildingsListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { ChapterAssetsRow } from './chapterAssetsRow';
-import { ChapterDELETE, ChaptersListGET, ChapterMoveUpPOST, ChapterMoveDownPOST } from '../_fetch';
+import { ChapterDELETE, ChapterMoveUpPOST, ChapterMoveDownPOST } from '../_fetch';
 
 export function ChapterAssets(props) {
 

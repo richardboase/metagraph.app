@@ -29,7 +29,7 @@ export function QuarterMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		QuartersListGET(userdata, props.subject?.Meta.ID, props.limit)
+		QuartersListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
