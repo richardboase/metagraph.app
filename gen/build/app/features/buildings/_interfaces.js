@@ -49,7 +49,6 @@ export var BuildingInterfaces = {
 	"building": {
 		level: 6+2,
 		name: "Building",
-		sublinks: [],
 		subsublinks: ["floors",],
 		component: (<Building />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var BuildingInterfaces = {
 	},
 	"buildingadmin": {
 		level: 6+2,
-		name: "Building",
+		name: "Admin",
 		component: (<BuildingAdmin />),
 	},
 	"buildingadmins": {
 		level: 6+2,
-		name: "Building",
+		name: "Admins",
 		component: (<BuildingAdmins />),
 	},
 	"buildingassets": {

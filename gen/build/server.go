@@ -17,15 +17,13 @@ func main() {
 	}
 
 	app := NewApp()
-	app.UseGCP("npg-generic")
-	app.UseGCPFirestore("go-gen-test")
 	app.UseAssetlayer(
 		os.Getenv("ASSETLAYERAPPID"),
 		os.Getenv("ASSETLAYERSECRET"),
 		os.Getenv("DIDTOKEN"),
 	)
 	app.UseChatGPT(os.Getenv("OPENAI_KEY"))
-
+	
 	slotID, err := app.Assetlayer().EnsureSlotExists("go-gen-test-models", "description...", "")
 	if err != nil {
 		panic(err)
@@ -181,8 +179,6 @@ func main() {
 	http.HandleFunc("/api/room", app.EntrypointROOM)
 	http.HandleFunc("/api/rooms", app.EntrypointROOMS)
 	println("registering handlers for rooms")
-
-	http.HandleFunc("/ws", app.HandleConnections)
 
 	port, err := strconv.Atoi(os.Getenv("PORT"))
 	if err != nil {

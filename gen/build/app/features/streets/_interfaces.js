@@ -49,7 +49,6 @@ export var StreetInterfaces = {
 	"street": {
 		level: 4+2,
 		name: "Street",
-		sublinks: [],
 		subsublinks: ["buildings",],
 		component: (<Street />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var StreetInterfaces = {
 	},
 	"streetadmin": {
 		level: 4+2,
-		name: "Street",
+		name: "Admin",
 		component: (<StreetAdmin />),
 	},
 	"streetadmins": {
 		level: 4+2,
-		name: "Street",
+		name: "Admins",
 		component: (<StreetAdmins />),
 	},
 	"streetassets": {

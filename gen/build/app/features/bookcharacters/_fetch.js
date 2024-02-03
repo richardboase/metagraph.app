@@ -24,12 +24,8 @@ export function BookcharactersCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/bookcharacters?function=count&parent="+parentID)
 }
 
-export function BookcharacterMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/bookcharacter?function=up&id="+id)
-}
-
-export function BookcharacterMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/bookcharacter?function=down&id="+id)
+export function BookcharacterOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/bookcharacter?function=order&mode="+mode+"&id="+id)
 }
 
 export function BookcharacterDELETE(user, id) {
@@ -46,36 +42,20 @@ export function BookcharacterJobPOST(user, id, job) {
 
 // file handling
 
-export function BookcharacterUpload(user, id, formData) {
-    return AxiosPOST(user, "api/bookcharacter?function=upload&id="+id, formData)
+export function BookcharacterUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/bookcharacter?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function BookcharacterInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/bookcharacters?function=initupload&parent="+parentID, formData)
-}
-
-export function BookcharacterInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/bookcharacters?function=inituploads&parent="+parentID, formData)
+export function BookcharactersUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/bookcharacters?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function BookcharacterChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function BookcharactersChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/bookcharacters?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function BookcharacterChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/bookcharacters?function=prompt&parent="+parentID, payload)
-}
-
-export function BookcharacterChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/bookcharacter?function=prompt&id="+id, payload)
-}
-
-export function BookcharacterAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/bookcharacter?function=addadmin&id="+id, payload)
-}
-
-export function BookcharacterAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/bookcharacter?function=removeadmin&id="+id, payload)
+export function BookcharacterAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/bookcharacter?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

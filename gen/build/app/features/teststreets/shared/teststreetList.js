@@ -10,7 +10,7 @@ import Spacer from '@/inputs/spacer';
 
 import { TeststreetListRow } from './teststreetListRow';
 import { TeststreetListRowJob } from './teststreetListRowJob';
-import { TeststreetDELETE, TeststreetsListGET, TeststreetMoveUpPOST, TeststreetMoveDownPOST } from '../_fetch';
+import { TeststreetDELETE, TeststreetsListGET, TeststreetOrderPOST } from '../_fetch';
 
 export function TeststreetList(props) {
 
@@ -54,7 +54,7 @@ export function TeststreetList(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		TeststreetMoveUpPOST(userdata, object.Meta.ID)
+		TeststreetOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -67,7 +67,7 @@ export function TeststreetList(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		TeststreetMoveDownPOST(userdata, object.Meta.ID)
+		TeststreetOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

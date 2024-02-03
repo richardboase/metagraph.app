@@ -10,7 +10,7 @@ import Spacer from '@/inputs/spacer';
 
 import { TownListRow } from './townListRow';
 import { TownListRowJob } from './townListRowJob';
-import { TownDELETE, TownsListGET, TownMoveUpPOST, TownMoveDownPOST } from '../_fetch';
+import { TownDELETE, TownsListGET, TownOrderPOST } from '../_fetch';
 
 export function TownList(props) {
 
@@ -54,7 +54,7 @@ export function TownList(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		TownMoveUpPOST(userdata, object.Meta.ID)
+		TownOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -67,7 +67,7 @@ export function TownList(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		TownMoveDownPOST(userdata, object.Meta.ID)
+		TownOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

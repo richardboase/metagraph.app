@@ -24,12 +24,8 @@ export function RoomsCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/rooms?function=count&parent="+parentID)
 }
 
-export function RoomMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/room?function=up&id="+id)
-}
-
-export function RoomMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/room?function=down&id="+id)
+export function RoomOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/room?function=order&mode="+mode+"&id="+id)
 }
 
 export function RoomDELETE(user, id) {
@@ -46,36 +42,20 @@ export function RoomJobPOST(user, id, job) {
 
 // file handling
 
-export function RoomUpload(user, id, formData) {
-    return AxiosPOST(user, "api/room?function=upload&id="+id, formData)
+export function RoomUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/room?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function RoomInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/rooms?function=initupload&parent="+parentID, formData)
-}
-
-export function RoomInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/rooms?function=inituploads&parent="+parentID, formData)
+export function RoomsUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/rooms?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function RoomChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function RoomsChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/rooms?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function RoomChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/rooms?function=prompt&parent="+parentID, payload)
-}
-
-export function RoomChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/room?function=prompt&id="+id, payload)
-}
-
-export function RoomAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/room?function=addadmin&id="+id, payload)
-}
-
-export function RoomAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/room?function=removeadmin&id="+id, payload)
+export function RoomAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/room?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

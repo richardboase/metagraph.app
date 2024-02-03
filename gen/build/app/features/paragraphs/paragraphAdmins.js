@@ -3,9 +3,11 @@ import { useUserContext } from '@/context/user';
 import { useLocalContext } from '@/context/local';
 import { useState, useEffect } from 'react';
 
+import AutocompleteUsername from '@/inputs/autocompleteUsername'
+import Spacer from '@/inputs/spacer'
 import VisitTab from '@/features/interfaces'
 
-import { ParagraphObjectGET, ParagraphAdminAddPOST, ParagraphAdminRemovePOST } from './_fetch'
+import { ParagraphObjectGET, ParagraphAdminPOST } from './_fetch'
 
 import { ParagraphAdmin } from './paragraphAdmin';
 
@@ -46,7 +48,7 @@ export function ParagraphAdmins(props) {
 
 	function deleteAdmin(id) {
 		const adminID = project.Meta.Moderation.Admins[id]
-		ProjectAdminRemovePOST(userdata, project.Meta.ID, adminID)
+		ParagraphAdminPOST(userdata, project.Meta.ID, "remove", adminID)
 		.then(updateProject)
 	}
 
@@ -57,14 +59,14 @@ export function ParagraphAdmins(props) {
 
 	function addAdmins() {
 		newAdmins.forEach(function (admin, i) {
-			ProjectAdminAddPOST(userdata, project.Meta.ID, admin)
+			ParagraphAdminPOST(userdata, project.Meta.ID, "add", admin)
+			.then(updateProject)
 		})
-		updateProject()
 	}
 
     return (
-		<div className='flex flex-col'>
-			<div className='text-2xl'>Add Admin</div>
+		<div style={ {padding:"30px 60px 30px 60px"} } className='flex flex-col'>
+			<div className='text-xl'>Add Admin</div>
 			<AutocompleteUsername inputChange={inputChange} />
 			<Spacer/>
 			<div>
@@ -90,7 +92,7 @@ export function ParagraphAdmins(props) {
 				{
 					project.Meta.Moderation.Admins.map(function (adminID, i) {
 						return (
-							<Admin key={adminID} id={i} admin={adminID} delete={deleteAdmin}/>
+							<ParagraphAdmin key={adminID} id={i} admin={adminID} delete={deleteAdmin}/>
 						)
 					})
 				}

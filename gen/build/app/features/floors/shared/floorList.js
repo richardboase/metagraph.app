@@ -10,7 +10,7 @@ import Spacer from '@/inputs/spacer';
 
 import { FloorListRow } from './floorListRow';
 import { FloorListRowJob } from './floorListRowJob';
-import { FloorDELETE, FloorsListGET, FloorMoveUpPOST, FloorMoveDownPOST } from '../_fetch';
+import { FloorDELETE, FloorsListGET, FloorOrderPOST } from '../_fetch';
 
 export function FloorList(props) {
 
@@ -54,7 +54,7 @@ export function FloorList(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		FloorMoveUpPOST(userdata, object.Meta.ID)
+		FloorOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -67,7 +67,7 @@ export function FloorList(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		FloorMoveDownPOST(userdata, object.Meta.ID)
+		FloorOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

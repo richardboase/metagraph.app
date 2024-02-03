@@ -24,12 +24,8 @@ export function StreetsCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/streets?function=count&parent="+parentID)
 }
 
-export function StreetMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/street?function=up&id="+id)
-}
-
-export function StreetMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/street?function=down&id="+id)
+export function StreetOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/street?function=order&mode="+mode+"&id="+id)
 }
 
 export function StreetDELETE(user, id) {
@@ -46,36 +42,20 @@ export function StreetJobPOST(user, id, job) {
 
 // file handling
 
-export function StreetUpload(user, id, formData) {
-    return AxiosPOST(user, "api/street?function=upload&id="+id, formData)
+export function StreetUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/street?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function StreetInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/streets?function=initupload&parent="+parentID, formData)
-}
-
-export function StreetInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/streets?function=inituploads&parent="+parentID, formData)
+export function StreetsUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/streets?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function StreetChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function StreetsChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/streets?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function StreetChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/streets?function=prompt&parent="+parentID, payload)
-}
-
-export function StreetChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/street?function=prompt&id="+id, payload)
-}
-
-export function StreetAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/street?function=addadmin&id="+id, payload)
-}
-
-export function StreetAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/street?function=removeadmin&id="+id, payload)
+export function StreetAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/street?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

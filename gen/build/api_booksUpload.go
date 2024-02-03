@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strings"
 	"archive/zip"
 	"bytes"
 	"image"
@@ -15,7 +14,7 @@ import (
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
 
-func (app *App) UploadBUILDING(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
+func (app *App) UploadBOOK(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -45,37 +44,37 @@ func (app *App) UploadBUILDING(w http.ResponseWriter, r *http.Request, parent *I
 	}
 
 	/*
-	if err := checkImageBUILDING(buf.Bytes()); err != nil {
+	if err := checkImageBOOK(buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 	*/
-	log.Println("creating new building:", handler.Filename)
-	fields := FieldsBUILDING{}
-	building := user.NewBUILDING(parent, fields)
+	log.Println("creating new book:", handler.Filename)
+	fields := FieldsBOOK{}
+	book := user.NewBOOK(parent, fields)
 
-	// hidden line here if noparent: building.Fields.Filename = zipFile.Name
-	
+	// hidden line here if noparent: book.Fields.Filename = zipFile.Name
+	book.Meta.Name = handler.Filename
 
 	// generate a new URI
-	uri := building.Meta.NewURI()
+	uri := book.Meta.NewURI()
 	println ("URI", uri)
 
 	bucketName := "go-gen-test-uploads"
-	if err := app.writeBuildingFile(bucketName, uri, buf.Bytes()); err != nil {
+	if err := app.writeBookFile(bucketName, uri, buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 
 	// reuse document init create code
-	if err := app.CreateDocumentBUILDING(parent, building); err != nil {
+	if err := app.CreateDocumentBOOK(parent, book); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return		
 	}
 	return
 }
 
-func (app *App) ArchiveUploadBUILDING(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
+func (app *App) ArchiveUploadBOOK(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -115,39 +114,38 @@ func (app *App) ArchiveUploadBUILDING(w http.ResponseWriter, r *http.Request, pa
 	// Extract each file from the zip archive
 	for n, zipFile := range zipReader.File {
 
-		extractedContent, err := readZipFileBUILDING(zipFile)
+		extractedContent, err := readZipFileBOOK(zipFile)
 		if err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		/*
-		if err := checkImageBUILDING(extractedContent); err != nil {
+		if err := checkImageBOOK(extractedContent); err != nil {
 			log.Println("skipping file that cannot be decoded:", zipFile.Name)
 			continue
 		}
 		*/
-		log.Println("creating new building:", zipFile.Name)
-		fields := FieldsBUILDING{}
-		building := user.NewBUILDING(parent, fields)
+		log.Println("creating new book:", zipFile.Name)
+		fields := FieldsBOOK{}
+		book := user.NewBOOK(parent, fields)
 
-		// hidden line here if noparent: building.Fields.Filename = zipFile.Name
-		
+		book.Meta.Name = zipFile.Name
 
-		building.Meta.Context.Order = n
+		book.Meta.Context.Order = n
 
 		// generate a new URI
-		uri := building.Meta.NewURI()
+		uri := book.Meta.NewURI()
 		println ("URI", uri)
 
 		bucketName := "go-gen-test-uploads"
-		if err := app.writeBuildingFile(bucketName, uri, extractedContent); err != nil {
+		if err := app.writeBookFile(bucketName, uri, extractedContent); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		// reuse document init create code
-		if err := app.CreateDocumentBUILDING(parent, building); err != nil {
+		if err := app.CreateDocumentBOOK(parent, book); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return		
 		}
@@ -157,12 +155,12 @@ func (app *App) ArchiveUploadBUILDING(w http.ResponseWriter, r *http.Request, pa
 }
 
 // assert file is an image because of .Object.Options.Image
-func checkImageBUILDING(fileBytes []byte) error {
+func checkImageBOOK(fileBytes []byte) error {
 	_, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	return err
 }
 
-func readZipFileBUILDING(zipFile *zip.File) ([]byte, error) {
+func readZipFileBOOK(zipFile *zip.File) ([]byte, error) {
 	// Open the file from the zip archive
 	zipFileReader, err := zipFile.Open()
 	if err != nil {
@@ -179,68 +177,11 @@ func readZipFileBUILDING(zipFile *zip.File) ([]byte, error) {
 	return extractedContent.Bytes(), nil
 }
 
-func (app *App) writeBuildingFile(bucketName, objectName string, content []byte) error {
+func (app *App) writeBookFile(bucketName, objectName string, content []byte) error {
 	writer := app.GCPClients.GCS().Bucket(bucketName).Object(objectName).NewWriter(app.Context())
 	//writer.ObjectAttrs.CacheControl = "no-store"
 	defer writer.Close()
 	n, err := writer.Write(content)
 	fmt.Printf("wrote %s %d bytes to bucket: %s \n", objectName, n, bucketName)
 	return err
-}
-
-func (app *App) addBuildingAdmin(object *BUILDING, admin string) error {
-
-	filter := map[string]bool{}
-	for _, username := range strings.Split(admin, ",") {
-		newAdmin, err := app.GetUserByUsername(username)
-		if err != nil {
-			log.Println("could not get username:", username)
-			return err
-		}
-		filter[newAdmin.Meta.ID] = true
-	}
-	for _, admin := range object.Meta.Moderation.Admins {
-		if len(admin) == 0 {
-			continue
-		}
-		filter[admin] = true
-	}
-	object.Meta.Moderation.Admins = make([]string, len(filter))
-	var x int
-	for k, _ := range filter {
-		object.Meta.Moderation.Admins[x] = k
-		x++
-	}
-
-	object.Meta.Modify()
-
-	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
-
-	return object.Meta.SaveToFirestore(app.App, object)
-}
-
-func (app *App) removeBuildingAdmin(object *BUILDING, admin string) error {
-
-	filter := map[string]bool{}
-	for _, a := range object.Meta.Moderation.Admins {
-		if a == admin {
-			continue
-		}
-		if len(a) == 0 {
-			continue
-		}
-		filter[a] = true
-	}
-	object.Meta.Moderation.Admins = make([]string, len(filter))
-	var x int
-	for k, _ := range filter {
-		object.Meta.Moderation.Admins[x] = k
-		x++
-	}
-
-	object.Meta.Modify()
-
-	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
-
-	return object.Meta.SaveToFirestore(app.App, object)
 }

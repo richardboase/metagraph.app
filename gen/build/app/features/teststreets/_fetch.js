@@ -24,12 +24,8 @@ export function TeststreetsCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/teststreets?function=count&parent="+parentID)
 }
 
-export function TeststreetMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/teststreet?function=up&id="+id)
-}
-
-export function TeststreetMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/teststreet?function=down&id="+id)
+export function TeststreetOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/teststreet?function=order&mode="+mode+"&id="+id)
 }
 
 export function TeststreetDELETE(user, id) {
@@ -46,36 +42,20 @@ export function TeststreetJobPOST(user, id, job) {
 
 // file handling
 
-export function TeststreetUpload(user, id, formData) {
-    return AxiosPOST(user, "api/teststreet?function=upload&id="+id, formData)
+export function TeststreetUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/teststreet?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function TeststreetInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/teststreets?function=initupload&parent="+parentID, formData)
-}
-
-export function TeststreetInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/teststreets?function=inituploads&parent="+parentID, formData)
+export function TeststreetsUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/teststreets?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function TeststreetChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function TeststreetsChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/teststreets?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function TeststreetChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/teststreets?function=prompt&parent="+parentID, payload)
-}
-
-export function TeststreetChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/teststreet?function=prompt&id="+id, payload)
-}
-
-export function TeststreetAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/teststreet?function=addadmin&id="+id, payload)
-}
-
-export function TeststreetAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/teststreet?function=removeadmin&id="+id, payload)
+export function TeststreetAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/teststreet?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

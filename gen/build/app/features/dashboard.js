@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
+import Pusher from 'pusher-js';
 import { useRouter } from 'next/router'
 
 import { useUserContext } from "@/context/user"
@@ -36,23 +37,21 @@ export default function Dashboard(props) {
 				user.headers = {"Authorization": data.secret}
 				setUserdata(user)
 				// init websocket
-				messaging.socket = new WebSocket('ws://server-go-gen-test-da7z6jf32a-nw.a.run.app/ws?key='+data.secret);
-				messaging.socket.addEventListener('open', (event) => {
-					console.log('Connected to WebSocket server');
+				messaging.pusher = new Pusher('818e55ca022763d940aa', {
+					cluster: 'eu',
+					encrypted: true
 				});
-				messaging.socket.addEventListener('message', (event) => {
-
-					var msg = JSON.parse(event.data)
-					console.log('Received message:', msg);
-
-					if (msg.Type == "shout") {
-						console.log("skipping", msg)
-						return
-					}
-
-					setFeed([...feed, msg.Body]);
+				const c = user.Meta.ID;
+				console.log("CONNECTING TO PUSHER", c)
+				messaging.channel = messaging.pusher.subscribe(c);
+				messaging.channel.bind('create', data => {
+					console.log("create MESSAGE !!!!!!!!!!!!")
+					setFeed([...feed, data]);
 				});
-
+				messaging.channel.bind('update', data => {
+					console.log("update MESSAGE !!!!!!!!!!!!")
+					setFeed([...feed, data]);
+				});
 			})
 			.catch((e) => {
 				console.log(e)

@@ -49,7 +49,6 @@ export var ChapterInterfaces = {
 	"chapter": {
 		level: 2+2,
 		name: "Chapter",
-		sublinks: [],
 		subsublinks: ["paragraphs",],
 		component: (<Chapter />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var ChapterInterfaces = {
 	},
 	"chapteradmin": {
 		level: 2+2,
-		name: "Chapter",
+		name: "Admin",
 		component: (<ChapterAdmin />),
 	},
 	"chapteradmins": {
 		level: 2+2,
-		name: "Chapter",
+		name: "Admins",
 		component: (<ChapterAdmins />),
 	},
 	"chapterassets": {

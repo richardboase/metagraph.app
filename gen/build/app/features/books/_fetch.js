@@ -24,12 +24,8 @@ export function BooksCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/books?function=count&parent="+parentID)
 }
 
-export function BookMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/book?function=up&id="+id)
-}
-
-export function BookMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/book?function=down&id="+id)
+export function BookOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/book?function=order&mode="+mode+"&id="+id)
 }
 
 export function BookDELETE(user, id) {
@@ -46,36 +42,20 @@ export function BookJobPOST(user, id, job) {
 
 // file handling
 
-export function BookUpload(user, id, formData) {
-    return AxiosPOST(user, "api/book?function=upload&id="+id, formData)
+export function BookUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/book?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function BookInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/books?function=initupload&parent="+parentID, formData)
-}
-
-export function BookInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/books?function=inituploads&parent="+parentID, formData)
+export function BooksUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/books?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function BookChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function BooksChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/books?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function BookChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/books?function=prompt&parent="+parentID, payload)
-}
-
-export function BookChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/book?function=prompt&id="+id, payload)
-}
-
-export function BookAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/book?function=addadmin&id="+id, payload)
-}
-
-export function BookAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/book?function=removeadmin&id="+id, payload)
+export function BookAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/book?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

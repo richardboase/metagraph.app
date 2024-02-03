@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strings"
 	"archive/zip"
 	"bytes"
 	"image"
@@ -15,7 +14,7 @@ import (
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
 
-func (app *App) UploadQUARTER(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
+func (app *App) UploadROOM(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -45,37 +44,37 @@ func (app *App) UploadQUARTER(w http.ResponseWriter, r *http.Request, parent *In
 	}
 
 	/*
-	if err := checkImageQUARTER(buf.Bytes()); err != nil {
+	if err := checkImageROOM(buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 	*/
-	log.Println("creating new quarter:", handler.Filename)
-	fields := FieldsQUARTER{}
-	quarter := user.NewQUARTER(parent, fields)
+	log.Println("creating new room:", handler.Filename)
+	fields := FieldsROOM{}
+	room := user.NewROOM(parent, fields)
 
-	// hidden line here if noparent: quarter.Fields.Filename = zipFile.Name
-	
+	// hidden line here if noparent: room.Fields.Filename = zipFile.Name
+	room.Meta.Name = handler.Filename
 
 	// generate a new URI
-	uri := quarter.Meta.NewURI()
+	uri := room.Meta.NewURI()
 	println ("URI", uri)
 
 	bucketName := "go-gen-test-uploads"
-	if err := app.writeQuarterFile(bucketName, uri, buf.Bytes()); err != nil {
+	if err := app.writeRoomFile(bucketName, uri, buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 
 	// reuse document init create code
-	if err := app.CreateDocumentQUARTER(parent, quarter); err != nil {
+	if err := app.CreateDocumentROOM(parent, room); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return		
 	}
 	return
 }
 
-func (app *App) ArchiveUploadQUARTER(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
+func (app *App) ArchiveUploadROOM(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -115,39 +114,38 @@ func (app *App) ArchiveUploadQUARTER(w http.ResponseWriter, r *http.Request, par
 	// Extract each file from the zip archive
 	for n, zipFile := range zipReader.File {
 
-		extractedContent, err := readZipFileQUARTER(zipFile)
+		extractedContent, err := readZipFileROOM(zipFile)
 		if err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		/*
-		if err := checkImageQUARTER(extractedContent); err != nil {
+		if err := checkImageROOM(extractedContent); err != nil {
 			log.Println("skipping file that cannot be decoded:", zipFile.Name)
 			continue
 		}
 		*/
-		log.Println("creating new quarter:", zipFile.Name)
-		fields := FieldsQUARTER{}
-		quarter := user.NewQUARTER(parent, fields)
+		log.Println("creating new room:", zipFile.Name)
+		fields := FieldsROOM{}
+		room := user.NewROOM(parent, fields)
 
-		// hidden line here if noparent: quarter.Fields.Filename = zipFile.Name
-		
+		room.Meta.Name = zipFile.Name
 
-		quarter.Meta.Context.Order = n
+		room.Meta.Context.Order = n
 
 		// generate a new URI
-		uri := quarter.Meta.NewURI()
+		uri := room.Meta.NewURI()
 		println ("URI", uri)
 
 		bucketName := "go-gen-test-uploads"
-		if err := app.writeQuarterFile(bucketName, uri, extractedContent); err != nil {
+		if err := app.writeRoomFile(bucketName, uri, extractedContent); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		// reuse document init create code
-		if err := app.CreateDocumentQUARTER(parent, quarter); err != nil {
+		if err := app.CreateDocumentROOM(parent, room); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return		
 		}
@@ -157,12 +155,12 @@ func (app *App) ArchiveUploadQUARTER(w http.ResponseWriter, r *http.Request, par
 }
 
 // assert file is an image because of .Object.Options.Image
-func checkImageQUARTER(fileBytes []byte) error {
+func checkImageROOM(fileBytes []byte) error {
 	_, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	return err
 }
 
-func readZipFileQUARTER(zipFile *zip.File) ([]byte, error) {
+func readZipFileROOM(zipFile *zip.File) ([]byte, error) {
 	// Open the file from the zip archive
 	zipFileReader, err := zipFile.Open()
 	if err != nil {
@@ -179,68 +177,11 @@ func readZipFileQUARTER(zipFile *zip.File) ([]byte, error) {
 	return extractedContent.Bytes(), nil
 }
 
-func (app *App) writeQuarterFile(bucketName, objectName string, content []byte) error {
+func (app *App) writeRoomFile(bucketName, objectName string, content []byte) error {
 	writer := app.GCPClients.GCS().Bucket(bucketName).Object(objectName).NewWriter(app.Context())
 	//writer.ObjectAttrs.CacheControl = "no-store"
 	defer writer.Close()
 	n, err := writer.Write(content)
 	fmt.Printf("wrote %s %d bytes to bucket: %s \n", objectName, n, bucketName)
 	return err
-}
-
-func (app *App) addQuarterAdmin(object *QUARTER, admin string) error {
-
-	filter := map[string]bool{}
-	for _, username := range strings.Split(admin, ",") {
-		newAdmin, err := app.GetUserByUsername(username)
-		if err != nil {
-			log.Println("could not get username:", username)
-			return err
-		}
-		filter[newAdmin.Meta.ID] = true
-	}
-	for _, admin := range object.Meta.Moderation.Admins {
-		if len(admin) == 0 {
-			continue
-		}
-		filter[admin] = true
-	}
-	object.Meta.Moderation.Admins = make([]string, len(filter))
-	var x int
-	for k, _ := range filter {
-		object.Meta.Moderation.Admins[x] = k
-		x++
-	}
-
-	object.Meta.Modify()
-
-	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
-
-	return object.Meta.SaveToFirestore(app.App, object)
-}
-
-func (app *App) removeQuarterAdmin(object *QUARTER, admin string) error {
-
-	filter := map[string]bool{}
-	for _, a := range object.Meta.Moderation.Admins {
-		if a == admin {
-			continue
-		}
-		if len(a) == 0 {
-			continue
-		}
-		filter[a] = true
-	}
-	object.Meta.Moderation.Admins = make([]string, len(filter))
-	var x int
-	for k, _ := range filter {
-		object.Meta.Moderation.Admins[x] = k
-		x++
-	}
-
-	object.Meta.Modify()
-
-	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
-
-	return object.Meta.SaveToFirestore(app.App, object)
 }

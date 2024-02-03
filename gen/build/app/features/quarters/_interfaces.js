@@ -49,7 +49,6 @@ export var QuarterInterfaces = {
 	"quarter": {
 		level: 2+2,
 		name: "Quarter",
-		sublinks: [],
 		subsublinks: ["streets",],
 		component: (<Quarter />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var QuarterInterfaces = {
 	},
 	"quarteradmin": {
 		level: 2+2,
-		name: "Quarter",
+		name: "Admin",
 		component: (<QuarterAdmin />),
 	},
 	"quarteradmins": {
 		level: 2+2,
-		name: "Quarter",
+		name: "Admins",
 		component: (<QuarterAdmins />),
 	},
 	"quarterassets": {

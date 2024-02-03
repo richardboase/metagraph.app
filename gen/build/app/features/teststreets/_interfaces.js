@@ -49,7 +49,6 @@ export var TeststreetInterfaces = {
 	"teststreet": {
 		level: 2+2,
 		name: "Teststreet",
-		sublinks: [],
 		subsublinks: [],
 		component: (<Teststreet />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var TeststreetInterfaces = {
 	},
 	"teststreetadmin": {
 		level: 2+2,
-		name: "Teststreet",
+		name: "Admin",
 		component: (<TeststreetAdmin />),
 	},
 	"teststreetadmins": {
 		level: 2+2,
-		name: "Teststreet",
+		name: "Admins",
 		component: (<TeststreetAdmins />),
 	},
 	"teststreetassets": {

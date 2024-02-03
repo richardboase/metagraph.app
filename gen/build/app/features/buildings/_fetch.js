@@ -24,12 +24,8 @@ export function BuildingsCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/buildings?function=count&parent="+parentID)
 }
 
-export function BuildingMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/building?function=up&id="+id)
-}
-
-export function BuildingMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/building?function=down&id="+id)
+export function BuildingOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/building?function=order&mode="+mode+"&id="+id)
 }
 
 export function BuildingDELETE(user, id) {
@@ -46,36 +42,20 @@ export function BuildingJobPOST(user, id, job) {
 
 // file handling
 
-export function BuildingUpload(user, id, formData) {
-    return AxiosPOST(user, "api/building?function=upload&id="+id, formData)
+export function BuildingUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/building?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function BuildingInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/buildings?function=initupload&parent="+parentID, formData)
-}
-
-export function BuildingInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/buildings?function=inituploads&parent="+parentID, formData)
+export function BuildingsUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/buildings?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function BuildingChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function BuildingsChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/buildings?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function BuildingChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/buildings?function=prompt&parent="+parentID, payload)
-}
-
-export function BuildingChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/building?function=prompt&id="+id, payload)
-}
-
-export function BuildingAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/building?function=addadmin&id="+id, payload)
-}
-
-export function BuildingAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/building?function=removeadmin&id="+id, payload)
+export function BuildingAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/building?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

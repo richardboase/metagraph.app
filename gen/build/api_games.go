@@ -65,20 +65,6 @@ func (app *App) EntrypointGAMES(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 
-		/*
-		case "initupload":
-			// reuse code
-			app.UploadGAME(w, r, parent)
-			return
-		*/
-
-		/*
-		case "initarchiveupload":
-			// reuse code
-			app.ArchiveUploadGAME(w, r, parent)
-			return
-		*/
-
 		default:
 			err := fmt.Errorf("function not found: %s", function)
 			cloudfunc.HttpError(w, err, http.StatusBadRequest)

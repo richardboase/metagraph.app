@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strings"
 	"archive/zip"
 	"bytes"
 	"image"
@@ -15,7 +14,7 @@ import (
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
 
-func (app *App) UploadLOBBY(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
+func (app *App) UploadTESTSTREET(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -45,37 +44,37 @@ func (app *App) UploadLOBBY(w http.ResponseWriter, r *http.Request, parent *Inte
 	}
 
 	/*
-	if err := checkImageLOBBY(buf.Bytes()); err != nil {
+	if err := checkImageTESTSTREET(buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 	*/
-	log.Println("creating new lobby:", handler.Filename)
-	fields := FieldsLOBBY{}
-	lobby := user.NewLOBBY(parent, fields)
+	log.Println("creating new teststreet:", handler.Filename)
+	fields := FieldsTESTSTREET{}
+	teststreet := user.NewTESTSTREET(parent, fields)
 
-	// hidden line here if noparent: lobby.Fields.Filename = zipFile.Name
-	
+	// hidden line here if noparent: teststreet.Fields.Filename = zipFile.Name
+	teststreet.Meta.Name = handler.Filename
 
 	// generate a new URI
-	uri := lobby.Meta.NewURI()
+	uri := teststreet.Meta.NewURI()
 	println ("URI", uri)
 
 	bucketName := "go-gen-test-uploads"
-	if err := app.writeLobbyFile(bucketName, uri, buf.Bytes()); err != nil {
+	if err := app.writeTeststreetFile(bucketName, uri, buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 
 	// reuse document init create code
-	if err := app.CreateDocumentLOBBY(parent, lobby); err != nil {
+	if err := app.CreateDocumentTESTSTREET(parent, teststreet); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return		
 	}
 	return
 }
 
-func (app *App) ArchiveUploadLOBBY(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
+func (app *App) ArchiveUploadTESTSTREET(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -115,39 +114,38 @@ func (app *App) ArchiveUploadLOBBY(w http.ResponseWriter, r *http.Request, paren
 	// Extract each file from the zip archive
 	for n, zipFile := range zipReader.File {
 
-		extractedContent, err := readZipFileLOBBY(zipFile)
+		extractedContent, err := readZipFileTESTSTREET(zipFile)
 		if err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		/*
-		if err := checkImageLOBBY(extractedContent); err != nil {
+		if err := checkImageTESTSTREET(extractedContent); err != nil {
 			log.Println("skipping file that cannot be decoded:", zipFile.Name)
 			continue
 		}
 		*/
-		log.Println("creating new lobby:", zipFile.Name)
-		fields := FieldsLOBBY{}
-		lobby := user.NewLOBBY(parent, fields)
+		log.Println("creating new teststreet:", zipFile.Name)
+		fields := FieldsTESTSTREET{}
+		teststreet := user.NewTESTSTREET(parent, fields)
 
-		// hidden line here if noparent: lobby.Fields.Filename = zipFile.Name
-		
+		teststreet.Meta.Name = zipFile.Name
 
-		lobby.Meta.Context.Order = n
+		teststreet.Meta.Context.Order = n
 
 		// generate a new URI
-		uri := lobby.Meta.NewURI()
+		uri := teststreet.Meta.NewURI()
 		println ("URI", uri)
 
 		bucketName := "go-gen-test-uploads"
-		if err := app.writeLobbyFile(bucketName, uri, extractedContent); err != nil {
+		if err := app.writeTeststreetFile(bucketName, uri, extractedContent); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		// reuse document init create code
-		if err := app.CreateDocumentLOBBY(parent, lobby); err != nil {
+		if err := app.CreateDocumentTESTSTREET(parent, teststreet); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return		
 		}
@@ -157,12 +155,12 @@ func (app *App) ArchiveUploadLOBBY(w http.ResponseWriter, r *http.Request, paren
 }
 
 // assert file is an image because of .Object.Options.Image
-func checkImageLOBBY(fileBytes []byte) error {
+func checkImageTESTSTREET(fileBytes []byte) error {
 	_, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	return err
 }
 
-func readZipFileLOBBY(zipFile *zip.File) ([]byte, error) {
+func readZipFileTESTSTREET(zipFile *zip.File) ([]byte, error) {
 	// Open the file from the zip archive
 	zipFileReader, err := zipFile.Open()
 	if err != nil {
@@ -179,68 +177,11 @@ func readZipFileLOBBY(zipFile *zip.File) ([]byte, error) {
 	return extractedContent.Bytes(), nil
 }
 
-func (app *App) writeLobbyFile(bucketName, objectName string, content []byte) error {
+func (app *App) writeTeststreetFile(bucketName, objectName string, content []byte) error {
 	writer := app.GCPClients.GCS().Bucket(bucketName).Object(objectName).NewWriter(app.Context())
 	//writer.ObjectAttrs.CacheControl = "no-store"
 	defer writer.Close()
 	n, err := writer.Write(content)
 	fmt.Printf("wrote %s %d bytes to bucket: %s \n", objectName, n, bucketName)
 	return err
-}
-
-func (app *App) addLobbyAdmin(object *LOBBY, admin string) error {
-
-	filter := map[string]bool{}
-	for _, username := range strings.Split(admin, ",") {
-		newAdmin, err := app.GetUserByUsername(username)
-		if err != nil {
-			log.Println("could not get username:", username)
-			return err
-		}
-		filter[newAdmin.Meta.ID] = true
-	}
-	for _, admin := range object.Meta.Moderation.Admins {
-		if len(admin) == 0 {
-			continue
-		}
-		filter[admin] = true
-	}
-	object.Meta.Moderation.Admins = make([]string, len(filter))
-	var x int
-	for k, _ := range filter {
-		object.Meta.Moderation.Admins[x] = k
-		x++
-	}
-
-	object.Meta.Modify()
-
-	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
-
-	return object.Meta.SaveToFirestore(app.App, object)
-}
-
-func (app *App) removeLobbyAdmin(object *LOBBY, admin string) error {
-
-	filter := map[string]bool{}
-	for _, a := range object.Meta.Moderation.Admins {
-		if a == admin {
-			continue
-		}
-		if len(a) == 0 {
-			continue
-		}
-		filter[a] = true
-	}
-	object.Meta.Moderation.Admins = make([]string, len(filter))
-	var x int
-	for k, _ := range filter {
-		object.Meta.Moderation.Admins[x] = k
-		x++
-	}
-
-	object.Meta.Modify()
-
-	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
-
-	return object.Meta.SaveToFirestore(app.App, object)
 }

@@ -49,7 +49,6 @@ export var FloorInterfaces = {
 	"floor": {
 		level: 8+2,
 		name: "Floor",
-		sublinks: [],
 		subsublinks: ["rooms",],
 		component: (<Floor />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var FloorInterfaces = {
 	},
 	"flooradmin": {
 		level: 8+2,
-		name: "Floor",
+		name: "Admin",
 		component: (<FloorAdmin />),
 	},
 	"flooradmins": {
 		level: 8+2,
-		name: "Floor",
+		name: "Admins",
 		component: (<FloorAdmins />),
 	},
 	"floorassets": {

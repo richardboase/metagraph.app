@@ -24,12 +24,8 @@ export function LobbysCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/lobbys?function=count&parent="+parentID)
 }
 
-export function LobbyMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/lobby?function=up&id="+id)
-}
-
-export function LobbyMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/lobby?function=down&id="+id)
+export function LobbyOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/lobby?function=order&mode="+mode+"&id="+id)
 }
 
 export function LobbyDELETE(user, id) {
@@ -46,36 +42,20 @@ export function LobbyJobPOST(user, id, job) {
 
 // file handling
 
-export function LobbyUpload(user, id, formData) {
-    return AxiosPOST(user, "api/lobby?function=upload&id="+id, formData)
+export function LobbyUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/lobby?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function LobbyInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/lobbys?function=initupload&parent="+parentID, formData)
-}
-
-export function LobbyInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/lobbys?function=inituploads&parent="+parentID, formData)
+export function LobbysUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/lobbys?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function LobbyChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function LobbysChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/lobbys?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function LobbyChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/lobbys?function=prompt&parent="+parentID, payload)
-}
-
-export function LobbyChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/lobby?function=prompt&id="+id, payload)
-}
-
-export function LobbyAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/lobby?function=addadmin&id="+id, payload)
-}
-
-export function LobbyAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/lobby?function=removeadmin&id="+id, payload)
+export function LobbyAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/lobby?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

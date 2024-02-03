@@ -24,12 +24,8 @@ export function ChaptersCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/chapters?function=count&parent="+parentID)
 }
 
-export function ChapterMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/chapter?function=up&id="+id)
-}
-
-export function ChapterMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/chapter?function=down&id="+id)
+export function ChapterOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/chapter?function=order&mode="+mode+"&id="+id)
 }
 
 export function ChapterDELETE(user, id) {
@@ -46,36 +42,20 @@ export function ChapterJobPOST(user, id, job) {
 
 // file handling
 
-export function ChapterUpload(user, id, formData) {
-    return AxiosPOST(user, "api/chapter?function=upload&id="+id, formData)
+export function ChapterUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/chapter?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function ChapterInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/chapters?function=initupload&parent="+parentID, formData)
-}
-
-export function ChapterInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/chapters?function=inituploads&parent="+parentID, formData)
+export function ChaptersUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/chapters?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function ChapterChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function ChaptersChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/chapters?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function ChapterChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/chapters?function=prompt&parent="+parentID, payload)
-}
-
-export function ChapterChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/chapter?function=prompt&id="+id, payload)
-}
-
-export function ChapterAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/chapter?function=addadmin&id="+id, payload)
-}
-
-export function ChapterAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/chapter?function=removeadmin&id="+id, payload)
+export function ChapterAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/chapter?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

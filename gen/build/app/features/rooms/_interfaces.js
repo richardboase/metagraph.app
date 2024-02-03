@@ -49,7 +49,6 @@ export var RoomInterfaces = {
 	"room": {
 		level: 10+2,
 		name: "Room",
-		sublinks: [],
 		subsublinks: [],
 		component: (<Room />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var RoomInterfaces = {
 	},
 	"roomadmin": {
 		level: 10+2,
-		name: "Room",
+		name: "Admin",
 		component: (<RoomAdmin />),
 	},
 	"roomadmins": {
 		level: 10+2,
-		name: "Room",
+		name: "Admins",
 		component: (<RoomAdmins />),
 	},
 	"roomassets": {

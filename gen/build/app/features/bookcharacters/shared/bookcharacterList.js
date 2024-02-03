@@ -10,7 +10,7 @@ import Spacer from '@/inputs/spacer';
 
 import { BookcharacterListRow } from './bookcharacterListRow';
 import { BookcharacterListRowJob } from './bookcharacterListRowJob';
-import { BookcharacterDELETE, BookcharactersListGET, BookcharacterMoveUpPOST, BookcharacterMoveDownPOST } from '../_fetch';
+import { BookcharacterDELETE, BookcharactersListGET, BookcharacterOrderPOST } from '../_fetch';
 
 export function BookcharacterList(props) {
 
@@ -54,7 +54,7 @@ export function BookcharacterList(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		BookcharacterMoveUpPOST(userdata, object.Meta.ID)
+		BookcharacterOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -67,7 +67,7 @@ export function BookcharacterList(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		BookcharacterMoveDownPOST(userdata, object.Meta.ID)
+		BookcharacterOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

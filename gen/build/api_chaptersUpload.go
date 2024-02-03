@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strings"
 	"archive/zip"
 	"bytes"
 	"image"
@@ -15,7 +14,7 @@ import (
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
 
-func (app *App) UploadCHARACTER(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
+func (app *App) UploadCHAPTER(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -45,37 +44,37 @@ func (app *App) UploadCHARACTER(w http.ResponseWriter, r *http.Request, parent *
 	}
 
 	/*
-	if err := checkImageCHARACTER(buf.Bytes()); err != nil {
+	if err := checkImageCHAPTER(buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 	*/
-	log.Println("creating new character:", handler.Filename)
-	fields := FieldsCHARACTER{}
-	character := user.NewCHARACTER(parent, fields)
+	log.Println("creating new chapter:", handler.Filename)
+	fields := FieldsCHAPTER{}
+	chapter := user.NewCHAPTER(parent, fields)
 
-	// hidden line here if noparent: character.Fields.Filename = zipFile.Name
-	
+	// hidden line here if noparent: chapter.Fields.Filename = zipFile.Name
+	chapter.Meta.Name = handler.Filename
 
 	// generate a new URI
-	uri := character.Meta.NewURI()
+	uri := chapter.Meta.NewURI()
 	println ("URI", uri)
 
 	bucketName := "go-gen-test-uploads"
-	if err := app.writeCharacterFile(bucketName, uri, buf.Bytes()); err != nil {
+	if err := app.writeChapterFile(bucketName, uri, buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 
 	// reuse document init create code
-	if err := app.CreateDocumentCHARACTER(parent, character); err != nil {
+	if err := app.CreateDocumentCHAPTER(parent, chapter); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return		
 	}
 	return
 }
 
-func (app *App) ArchiveUploadCHARACTER(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
+func (app *App) ArchiveUploadCHAPTER(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -115,39 +114,38 @@ func (app *App) ArchiveUploadCHARACTER(w http.ResponseWriter, r *http.Request, p
 	// Extract each file from the zip archive
 	for n, zipFile := range zipReader.File {
 
-		extractedContent, err := readZipFileCHARACTER(zipFile)
+		extractedContent, err := readZipFileCHAPTER(zipFile)
 		if err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		/*
-		if err := checkImageCHARACTER(extractedContent); err != nil {
+		if err := checkImageCHAPTER(extractedContent); err != nil {
 			log.Println("skipping file that cannot be decoded:", zipFile.Name)
 			continue
 		}
 		*/
-		log.Println("creating new character:", zipFile.Name)
-		fields := FieldsCHARACTER{}
-		character := user.NewCHARACTER(parent, fields)
+		log.Println("creating new chapter:", zipFile.Name)
+		fields := FieldsCHAPTER{}
+		chapter := user.NewCHAPTER(parent, fields)
 
-		// hidden line here if noparent: character.Fields.Filename = zipFile.Name
-		
+		chapter.Meta.Name = zipFile.Name
 
-		character.Meta.Context.Order = n
+		chapter.Meta.Context.Order = n
 
 		// generate a new URI
-		uri := character.Meta.NewURI()
+		uri := chapter.Meta.NewURI()
 		println ("URI", uri)
 
 		bucketName := "go-gen-test-uploads"
-		if err := app.writeCharacterFile(bucketName, uri, extractedContent); err != nil {
+		if err := app.writeChapterFile(bucketName, uri, extractedContent); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		// reuse document init create code
-		if err := app.CreateDocumentCHARACTER(parent, character); err != nil {
+		if err := app.CreateDocumentCHAPTER(parent, chapter); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return		
 		}
@@ -157,12 +155,12 @@ func (app *App) ArchiveUploadCHARACTER(w http.ResponseWriter, r *http.Request, p
 }
 
 // assert file is an image because of .Object.Options.Image
-func checkImageCHARACTER(fileBytes []byte) error {
+func checkImageCHAPTER(fileBytes []byte) error {
 	_, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	return err
 }
 
-func readZipFileCHARACTER(zipFile *zip.File) ([]byte, error) {
+func readZipFileCHAPTER(zipFile *zip.File) ([]byte, error) {
 	// Open the file from the zip archive
 	zipFileReader, err := zipFile.Open()
 	if err != nil {
@@ -179,68 +177,11 @@ func readZipFileCHARACTER(zipFile *zip.File) ([]byte, error) {
 	return extractedContent.Bytes(), nil
 }
 
-func (app *App) writeCharacterFile(bucketName, objectName string, content []byte) error {
+func (app *App) writeChapterFile(bucketName, objectName string, content []byte) error {
 	writer := app.GCPClients.GCS().Bucket(bucketName).Object(objectName).NewWriter(app.Context())
 	//writer.ObjectAttrs.CacheControl = "no-store"
 	defer writer.Close()
 	n, err := writer.Write(content)
 	fmt.Printf("wrote %s %d bytes to bucket: %s \n", objectName, n, bucketName)
 	return err
-}
-
-func (app *App) addCharacterAdmin(object *CHARACTER, admin string) error {
-
-	filter := map[string]bool{}
-	for _, username := range strings.Split(admin, ",") {
-		newAdmin, err := app.GetUserByUsername(username)
-		if err != nil {
-			log.Println("could not get username:", username)
-			return err
-		}
-		filter[newAdmin.Meta.ID] = true
-	}
-	for _, admin := range object.Meta.Moderation.Admins {
-		if len(admin) == 0 {
-			continue
-		}
-		filter[admin] = true
-	}
-	object.Meta.Moderation.Admins = make([]string, len(filter))
-	var x int
-	for k, _ := range filter {
-		object.Meta.Moderation.Admins[x] = k
-		x++
-	}
-
-	object.Meta.Modify()
-
-	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
-
-	return object.Meta.SaveToFirestore(app.App, object)
-}
-
-func (app *App) removeCharacterAdmin(object *CHARACTER, admin string) error {
-
-	filter := map[string]bool{}
-	for _, a := range object.Meta.Moderation.Admins {
-		if a == admin {
-			continue
-		}
-		if len(a) == 0 {
-			continue
-		}
-		filter[a] = true
-	}
-	object.Meta.Moderation.Admins = make([]string, len(filter))
-	var x int
-	for k, _ := range filter {
-		object.Meta.Moderation.Admins[x] = k
-		x++
-	}
-
-	object.Meta.Modify()
-
-	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
-
-	return object.Meta.SaveToFirestore(app.App, object)
 }

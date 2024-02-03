@@ -10,7 +10,7 @@ import Spacer from '@/inputs/spacer';
 
 import { BuildingListRow } from './buildingListRow';
 import { BuildingListRowJob } from './buildingListRowJob';
-import { BuildingDELETE, BuildingsListGET, BuildingMoveUpPOST, BuildingMoveDownPOST } from '../_fetch';
+import { BuildingDELETE, BuildingsListGET, BuildingOrderPOST } from '../_fetch';
 
 export function BuildingList(props) {
 
@@ -54,7 +54,7 @@ export function BuildingList(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		BuildingMoveUpPOST(userdata, object.Meta.ID)
+		BuildingOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -67,7 +67,7 @@ export function BuildingList(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		BuildingMoveDownPOST(userdata, object.Meta.ID)
+		BuildingOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

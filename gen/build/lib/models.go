@@ -50,7 +50,6 @@ func NewApp() *App {
 	app.UseGCPFirestore(CONST_FIRESTORE_DB)
 	return app
 }
-
 type Generic struct {
 	Meta Internals
 }
@@ -253,8 +252,8 @@ type Context struct {
 	Parents  []string `json:",omitempty"`
 	Country  string   `json:",omitempty"`
 	Region   string   `json:",omitempty"`
-	Order    int      `json:",omitempty"`
-	Status   string   `json:",omitempty"`
+	Order    int
+	Status   string `json:",omitempty"`
 }
 
 type Moderation struct {
@@ -268,6 +267,13 @@ type Moderation struct {
 	Approved     bool     `json:",omitempty"`
 	ApprovedTime int64    `json:",omitempty"`
 	ApprovedBy   string   `json:",omitempty"`
+}
+func (app *App) SendMessageToUser(user *User, msgType string, data interface{}) {
+	log.Printf("SENDING %s MESSAGE TO PUSHER USER %s (%s)", msgType, user.Username, user.Meta.ID)
+	err := app.Pusher().Trigger(user.Meta.ID, msgType, data)
+	if err != nil {
+		log.Println(err.Error())
+	}
 }
 type Users []*User
 
@@ -775,6 +781,57 @@ func (user *User) GetUsernameRef() *Username {
 type Username struct {
 	User  UserRef
 	Index map[string][]string `json:"-"`
+}
+type Mail struct {
+	Meta       Internals
+	Sender     UserRef   `json:"sender" firestore:"sender"`
+	Recipients []UserRef `json:"recipients" firestore:"recipients"`
+	Subject    string    `json:"subject" firestore:"subject"`
+	Body       string    `json:"body" firestore:"body"`
+}
+
+func (user *User) NewMail(subject, body string, recipients ...*User) *Mail {
+	return &Mail{
+		Meta:       user.Meta.NewInternals("mail"),
+		Sender:     user.Ref(),
+		Recipients: Users(recipients).Refs(),
+		Subject:    subject,
+		Body:       body,
+	}
+}
+
+type MailReply struct {
+	Meta       Internals
+	ID         string    `json:"id" firestore:"id"`
+	Sender     UserRef   `json:"sender" firestore:"sender"`
+	Recipients []UserRef `json:"recipients" firestore:"recipients"`
+	Subject    string    `json:"subject" firestore:"subject"`
+	Body       string    `json:"body" firestore:"body"`
+}
+
+func (user *User) NewMailReply(op *Mail, body string, additionalRecipients ...UserRef) *MailReply {
+	mail := &MailReply{
+		Meta:       user.Meta.NewInternals("mailreply"),
+		ID:         uuid.NewString(),
+		Sender:     user.Ref(),
+		Recipients: append(op.Recipients, op.Sender),
+		Subject:    op.Subject,
+		Body:       body,
+	}
+	mail.Meta.Context.Parent = op.Meta.ID
+	// ensure no duplicate recipients
+	filter := map[string]UserRef{}
+	// merge existing recipients with additional ones
+	for _, r := range append(mail.Recipients, additionalRecipients...) {
+		filter[r.ID] = r
+	}
+	mail.Recipients = make([]UserRef, len(filter))
+	var n int
+	for _, recipient := range filter {
+		mail.Recipients[n] = recipient
+		n++
+	}
+	return mail
 }
 type ASYNCJOB struct {
 	Meta Internals

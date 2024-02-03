@@ -24,12 +24,8 @@ export function ParagraphsCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/paragraphs?function=count&parent="+parentID)
 }
 
-export function ParagraphMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/paragraph?function=up&id="+id)
-}
-
-export function ParagraphMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/paragraph?function=down&id="+id)
+export function ParagraphOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/paragraph?function=order&mode="+mode+"&id="+id)
 }
 
 export function ParagraphDELETE(user, id) {
@@ -46,36 +42,20 @@ export function ParagraphJobPOST(user, id, job) {
 
 // file handling
 
-export function ParagraphUpload(user, id, formData) {
-    return AxiosPOST(user, "api/paragraph?function=upload&id="+id, formData)
+export function ParagraphUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/paragraph?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function ParagraphInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/paragraphs?function=initupload&parent="+parentID, formData)
-}
-
-export function ParagraphInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/paragraphs?function=inituploads&parent="+parentID, formData)
+export function ParagraphsUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/paragraphs?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function ParagraphChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function ParagraphsChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/paragraphs?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function ParagraphChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/paragraphs?function=prompt&parent="+parentID, payload)
-}
-
-export function ParagraphChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/paragraph?function=prompt&id="+id, payload)
-}
-
-export function ParagraphAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/paragraph?function=addadmin&id="+id, payload)
-}
-
-export function ParagraphAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/paragraph?function=removeadmin&id="+id, payload)
+export function ParagraphAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/paragraph?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

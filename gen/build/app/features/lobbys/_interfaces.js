@@ -49,7 +49,6 @@ export var LobbyInterfaces = {
 	"lobby": {
 		level: 2+2,
 		name: "Lobby",
-		sublinks: [],
 		subsublinks: ["characters",],
 		component: (<Lobby />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var LobbyInterfaces = {
 	},
 	"lobbyadmin": {
 		level: 2+2,
-		name: "Lobby",
+		name: "Admin",
 		component: (<LobbyAdmin />),
 	},
 	"lobbyadmins": {
 		level: 2+2,
-		name: "Lobby",
+		name: "Admins",
 		component: (<LobbyAdmins />),
 	},
 	"lobbyassets": {

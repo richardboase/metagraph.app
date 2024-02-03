@@ -24,12 +24,8 @@ export function TownsCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/towns?function=count&parent="+parentID)
 }
 
-export function TownMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/town?function=up&id="+id)
-}
-
-export function TownMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/town?function=down&id="+id)
+export function TownOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/town?function=order&mode="+mode+"&id="+id)
 }
 
 export function TownDELETE(user, id) {
@@ -46,36 +42,20 @@ export function TownJobPOST(user, id, job) {
 
 // file handling
 
-export function TownUpload(user, id, formData) {
-    return AxiosPOST(user, "api/town?function=upload&id="+id, formData)
+export function TownUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/town?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function TownInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/towns?function=initupload&parent="+parentID, formData)
-}
-
-export function TownInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/towns?function=inituploads&parent="+parentID, formData)
+export function TownsUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/towns?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function TownChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function TownsChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/towns?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function TownChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/towns?function=prompt&parent="+parentID, payload)
-}
-
-export function TownChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/town?function=prompt&id="+id, payload)
-}
-
-export function TownAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/town?function=addadmin&id="+id, payload)
-}
-
-export function TownAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/town?function=removeadmin&id="+id, payload)
+export function TownAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/town?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

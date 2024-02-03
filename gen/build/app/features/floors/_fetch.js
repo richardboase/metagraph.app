@@ -24,12 +24,8 @@ export function FloorsCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/floors?function=count&parent="+parentID)
 }
 
-export function FloorMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/floor?function=up&id="+id)
-}
-
-export function FloorMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/floor?function=down&id="+id)
+export function FloorOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/floor?function=order&mode="+mode+"&id="+id)
 }
 
 export function FloorDELETE(user, id) {
@@ -46,36 +42,20 @@ export function FloorJobPOST(user, id, job) {
 
 // file handling
 
-export function FloorUpload(user, id, formData) {
-    return AxiosPOST(user, "api/floor?function=upload&id="+id, formData)
+export function FloorUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/floor?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function FloorInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/floors?function=initupload&parent="+parentID, formData)
-}
-
-export function FloorInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/floors?function=inituploads&parent="+parentID, formData)
+export function FloorsUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/floors?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function FloorChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function FloorsChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/floors?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function FloorChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/floors?function=prompt&parent="+parentID, payload)
-}
-
-export function FloorChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/floor?function=prompt&id="+id, payload)
-}
-
-export function FloorAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/floor?function=addadmin&id="+id, payload)
-}
-
-export function FloorAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/floor?function=removeadmin&id="+id, payload)
+export function FloorAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/floor?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

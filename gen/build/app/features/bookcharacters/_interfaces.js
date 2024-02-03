@@ -49,7 +49,6 @@ export var BookcharacterInterfaces = {
 	"bookcharacter": {
 		level: 2+2,
 		name: "Bookcharacter",
-		sublinks: [],
 		subsublinks: [],
 		component: (<Bookcharacter />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var BookcharacterInterfaces = {
 	},
 	"bookcharacteradmin": {
 		level: 2+2,
-		name: "Bookcharacter",
+		name: "Admin",
 		component: (<BookcharacterAdmin />),
 	},
 	"bookcharacteradmins": {
 		level: 2+2,
-		name: "Bookcharacter",
+		name: "Admins",
 		component: (<BookcharacterAdmins />),
 	},
 	"bookcharacterassets": {

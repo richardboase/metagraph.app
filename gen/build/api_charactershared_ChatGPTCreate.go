@@ -95,7 +95,7 @@ The response should be a raw JSON array with one or more objects, based on the u
 		if err := app.CreateDocumentCHARACTER(&parent.Meta, object); err != nil {
 			return err
 		}
-		app.SendMessageToUser(user, &Message{Type: "async-create", Body: object})
+		app.SendMessageToUser(user, "create", object)
 	}
 
 	return nil

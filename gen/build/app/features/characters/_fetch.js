@@ -24,12 +24,8 @@ export function CharactersCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/characters?function=count&parent="+parentID)
 }
 
-export function CharacterMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/character?function=up&id="+id)
-}
-
-export function CharacterMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/character?function=down&id="+id)
+export function CharacterOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/character?function=order&mode="+mode+"&id="+id)
 }
 
 export function CharacterDELETE(user, id) {
@@ -46,36 +42,20 @@ export function CharacterJobPOST(user, id, job) {
 
 // file handling
 
-export function CharacterUpload(user, id, formData) {
-    return AxiosPOST(user, "api/character?function=upload&id="+id, formData)
+export function CharacterUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/character?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function CharacterInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/characters?function=initupload&parent="+parentID, formData)
-}
-
-export function CharacterInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/characters?function=inituploads&parent="+parentID, formData)
+export function CharactersUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/characters?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function CharacterChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function CharactersChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/characters?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function CharacterChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/characters?function=prompt&parent="+parentID, payload)
-}
-
-export function CharacterChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/character?function=prompt&id="+id, payload)
-}
-
-export function CharacterAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/character?function=addadmin&id="+id, payload)
-}
-
-export function CharacterAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/character?function=removeadmin&id="+id, payload)
+export function CharacterAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/character?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strings"
 	"archive/zip"
 	"bytes"
 	"image"
@@ -15,7 +14,7 @@ import (
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
 
-func (app *App) UploadTESTSTREET(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
+func (app *App) UploadCHARACTER(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -45,37 +44,37 @@ func (app *App) UploadTESTSTREET(w http.ResponseWriter, r *http.Request, parent 
 	}
 
 	/*
-	if err := checkImageTESTSTREET(buf.Bytes()); err != nil {
+	if err := checkImageCHARACTER(buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 	*/
-	log.Println("creating new teststreet:", handler.Filename)
-	fields := FieldsTESTSTREET{}
-	teststreet := user.NewTESTSTREET(parent, fields)
+	log.Println("creating new character:", handler.Filename)
+	fields := FieldsCHARACTER{}
+	character := user.NewCHARACTER(parent, fields)
 
-	// hidden line here if noparent: teststreet.Fields.Filename = zipFile.Name
-	
+	// hidden line here if noparent: character.Fields.Filename = zipFile.Name
+	character.Meta.Name = handler.Filename
 
 	// generate a new URI
-	uri := teststreet.Meta.NewURI()
+	uri := character.Meta.NewURI()
 	println ("URI", uri)
 
 	bucketName := "go-gen-test-uploads"
-	if err := app.writeTeststreetFile(bucketName, uri, buf.Bytes()); err != nil {
+	if err := app.writeCharacterFile(bucketName, uri, buf.Bytes()); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
 	}
 
 	// reuse document init create code
-	if err := app.CreateDocumentTESTSTREET(parent, teststreet); err != nil {
+	if err := app.CreateDocumentCHARACTER(parent, character); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return		
 	}
 	return
 }
 
-func (app *App) ArchiveUploadTESTSTREET(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
+func (app *App) ArchiveUploadCHARACTER(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
 
 	log.Println("PARSING FORM")
 	if err := r.ParseMultipartForm(300 << 20); err != nil {
@@ -115,39 +114,38 @@ func (app *App) ArchiveUploadTESTSTREET(w http.ResponseWriter, r *http.Request, 
 	// Extract each file from the zip archive
 	for n, zipFile := range zipReader.File {
 
-		extractedContent, err := readZipFileTESTSTREET(zipFile)
+		extractedContent, err := readZipFileCHARACTER(zipFile)
 		if err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		/*
-		if err := checkImageTESTSTREET(extractedContent); err != nil {
+		if err := checkImageCHARACTER(extractedContent); err != nil {
 			log.Println("skipping file that cannot be decoded:", zipFile.Name)
 			continue
 		}
 		*/
-		log.Println("creating new teststreet:", zipFile.Name)
-		fields := FieldsTESTSTREET{}
-		teststreet := user.NewTESTSTREET(parent, fields)
+		log.Println("creating new character:", zipFile.Name)
+		fields := FieldsCHARACTER{}
+		character := user.NewCHARACTER(parent, fields)
 
-		// hidden line here if noparent: teststreet.Fields.Filename = zipFile.Name
-		
+		character.Meta.Name = zipFile.Name
 
-		teststreet.Meta.Context.Order = n
+		character.Meta.Context.Order = n
 
 		// generate a new URI
-		uri := teststreet.Meta.NewURI()
+		uri := character.Meta.NewURI()
 		println ("URI", uri)
 
 		bucketName := "go-gen-test-uploads"
-		if err := app.writeTeststreetFile(bucketName, uri, extractedContent); err != nil {
+		if err := app.writeCharacterFile(bucketName, uri, extractedContent); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
 		}
 
 		// reuse document init create code
-		if err := app.CreateDocumentTESTSTREET(parent, teststreet); err != nil {
+		if err := app.CreateDocumentCHARACTER(parent, character); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return		
 		}
@@ -157,12 +155,12 @@ func (app *App) ArchiveUploadTESTSTREET(w http.ResponseWriter, r *http.Request, 
 }
 
 // assert file is an image because of .Object.Options.Image
-func checkImageTESTSTREET(fileBytes []byte) error {
+func checkImageCHARACTER(fileBytes []byte) error {
 	_, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	return err
 }
 
-func readZipFileTESTSTREET(zipFile *zip.File) ([]byte, error) {
+func readZipFileCHARACTER(zipFile *zip.File) ([]byte, error) {
 	// Open the file from the zip archive
 	zipFileReader, err := zipFile.Open()
 	if err != nil {
@@ -179,68 +177,11 @@ func readZipFileTESTSTREET(zipFile *zip.File) ([]byte, error) {
 	return extractedContent.Bytes(), nil
 }
 
-func (app *App) writeTeststreetFile(bucketName, objectName string, content []byte) error {
+func (app *App) writeCharacterFile(bucketName, objectName string, content []byte) error {
 	writer := app.GCPClients.GCS().Bucket(bucketName).Object(objectName).NewWriter(app.Context())
 	//writer.ObjectAttrs.CacheControl = "no-store"
 	defer writer.Close()
 	n, err := writer.Write(content)
 	fmt.Printf("wrote %s %d bytes to bucket: %s \n", objectName, n, bucketName)
 	return err
-}
-
-func (app *App) addTeststreetAdmin(object *TESTSTREET, admin string) error {
-
-	filter := map[string]bool{}
-	for _, username := range strings.Split(admin, ",") {
-		newAdmin, err := app.GetUserByUsername(username)
-		if err != nil {
-			log.Println("could not get username:", username)
-			return err
-		}
-		filter[newAdmin.Meta.ID] = true
-	}
-	for _, admin := range object.Meta.Moderation.Admins {
-		if len(admin) == 0 {
-			continue
-		}
-		filter[admin] = true
-	}
-	object.Meta.Moderation.Admins = make([]string, len(filter))
-	var x int
-	for k, _ := range filter {
-		object.Meta.Moderation.Admins[x] = k
-		x++
-	}
-
-	object.Meta.Modify()
-
-	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
-
-	return object.Meta.SaveToFirestore(app.App, object)
-}
-
-func (app *App) removeTeststreetAdmin(object *TESTSTREET, admin string) error {
-
-	filter := map[string]bool{}
-	for _, a := range object.Meta.Moderation.Admins {
-		if a == admin {
-			continue
-		}
-		if len(a) == 0 {
-			continue
-		}
-		filter[a] = true
-	}
-	object.Meta.Moderation.Admins = make([]string, len(filter))
-	var x int
-	for k, _ := range filter {
-		object.Meta.Moderation.Admins[x] = k
-		x++
-	}
-
-	object.Meta.Modify()
-
-	log.Println("ADMINS", strings.Join(object.Meta.Moderation.Admins, " "))
-
-	return object.Meta.SaveToFirestore(app.App, object)
 }

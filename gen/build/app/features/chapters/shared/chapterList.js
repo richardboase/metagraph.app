@@ -10,7 +10,7 @@ import Spacer from '@/inputs/spacer';
 
 import { ChapterListRow } from './chapterListRow';
 import { ChapterListRowJob } from './chapterListRowJob';
-import { ChapterDELETE, ChaptersListGET, ChapterMoveUpPOST, ChapterMoveDownPOST } from '../_fetch';
+import { ChapterDELETE, ChaptersListGET, ChapterOrderPOST } from '../_fetch';
 
 export function ChapterList(props) {
 
@@ -54,7 +54,7 @@ export function ChapterList(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		ChapterMoveUpPOST(userdata, object.Meta.ID)
+		ChapterOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -67,7 +67,7 @@ export function ChapterList(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		ChapterMoveDownPOST(userdata, object.Meta.ID)
+		ChapterOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

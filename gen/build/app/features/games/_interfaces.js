@@ -49,7 +49,6 @@ export var GameInterfaces = {
 	"game": {
 		level: 0+2,
 		name: "Game",
-		sublinks: [],
 		subsublinks: ["lobbys",],
 		component: (<Game />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var GameInterfaces = {
 	},
 	"gameadmin": {
 		level: 0+2,
-		name: "Game",
+		name: "Admin",
 		component: (<GameAdmin />),
 	},
 	"gameadmins": {
 		level: 0+2,
-		name: "Game",
+		name: "Admins",
 		component: (<GameAdmins />),
 	},
 	"gameassets": {

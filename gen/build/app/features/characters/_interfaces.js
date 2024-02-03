@@ -49,7 +49,6 @@ export var CharacterInterfaces = {
 	"character": {
 		level: 4+2,
 		name: "Character",
-		sublinks: [],
 		subsublinks: [],
 		component: (<Character />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var CharacterInterfaces = {
 	},
 	"characteradmin": {
 		level: 4+2,
-		name: "Character",
+		name: "Admin",
 		component: (<CharacterAdmin />),
 	},
 	"characteradmins": {
 		level: 4+2,
-		name: "Character",
+		name: "Admins",
 		component: (<CharacterAdmins />),
 	},
 	"characterassets": {

@@ -65,20 +65,6 @@ func (app *App) EntrypointBOOKS(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 
-		/*
-		case "initupload":
-			// reuse code
-			app.UploadBOOK(w, r, parent)
-			return
-		*/
-
-		/*
-		case "initarchiveupload":
-			// reuse code
-			app.ArchiveUploadBOOK(w, r, parent)
-			return
-		*/
-
 		default:
 			err := fmt.Errorf("function not found: %s", function)
 			cloudfunc.HttpError(w, err, http.StatusBadRequest)

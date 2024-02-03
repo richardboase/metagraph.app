@@ -10,7 +10,7 @@ import Spacer from '@/inputs/spacer';
 
 import { LobbyListRow } from './lobbyListRow';
 import { LobbyListRowJob } from './lobbyListRowJob';
-import { LobbyDELETE, LobbysListGET, LobbyMoveUpPOST, LobbyMoveDownPOST } from '../_fetch';
+import { LobbyDELETE, LobbysListGET, LobbyOrderPOST } from '../_fetch';
 
 export function LobbyList(props) {
 
@@ -54,7 +54,7 @@ export function LobbyList(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		LobbyMoveUpPOST(userdata, object.Meta.ID)
+		LobbyOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -67,7 +67,7 @@ export function LobbyList(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		LobbyMoveDownPOST(userdata, object.Meta.ID)
+		LobbyOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

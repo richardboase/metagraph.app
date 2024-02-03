@@ -24,12 +24,8 @@ export function GamesCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/games?function=count&parent="+parentID)
 }
 
-export function GameMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/game?function=up&id="+id)
-}
-
-export function GameMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/game?function=down&id="+id)
+export function GameOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/game?function=order&mode="+mode+"&id="+id)
 }
 
 export function GameDELETE(user, id) {
@@ -46,36 +42,20 @@ export function GameJobPOST(user, id, job) {
 
 // file handling
 
-export function GameUpload(user, id, formData) {
-    return AxiosPOST(user, "api/game?function=upload&id="+id, formData)
+export function GameUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/game?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function GameInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/games?function=initupload&parent="+parentID, formData)
-}
-
-export function GameInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/games?function=inituploads&parent="+parentID, formData)
+export function GamesUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/games?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function GameChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function GamesChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/games?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function GameChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/games?function=prompt&parent="+parentID, payload)
-}
-
-export function GameChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/game?function=prompt&id="+id, payload)
-}
-
-export function GameAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/game?function=addadmin&id="+id, payload)
-}
-
-export function GameAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/game?function=removeadmin&id="+id, payload)
+export function GameAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/game?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

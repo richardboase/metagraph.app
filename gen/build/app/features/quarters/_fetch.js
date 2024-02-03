@@ -24,12 +24,8 @@ export function QuartersCountGET(user, parentID) {
     return SessionFetch(user, "GET", "api/quarters?function=count&parent="+parentID)
 }
 
-export function QuarterMoveUpPOST(user, id) {
-    return SessionFetch(user, "POST", "api/quarter?function=up&id="+id)
-}
-
-export function QuarterMoveDownPOST(user, id) {
-    return SessionFetch(user, "POST", "api/quarter?function=down&id="+id)
+export function QuarterOrderPOST(user, id, mode) {
+    return SessionFetch(user, "POST", "api/quarter?function=order&mode="+mode+"&id="+id)
 }
 
 export function QuarterDELETE(user, id) {
@@ -46,36 +42,20 @@ export function QuarterJobPOST(user, id, job) {
 
 // file handling
 
-export function QuarterUpload(user, id, formData) {
-    return AxiosPOST(user, "api/quarter?function=upload&id="+id, formData)
+export function QuarterUpload(user, id, mode, formData) {
+    return AxiosPOST(user, "api/quarter?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function QuarterInitUpload(user, parentID, formData) {
-    return AxiosPOST(user, "api/quarters?function=initupload&parent="+parentID, formData)
-}
-
-export function QuarterInitUploads(user, parentID, formData) {
-    return AxiosPOST(user, "api/quarters?function=inituploads&parent="+parentID, formData)
+export function QuartersUpload(user, parentID, mode, formData) {
+    return AxiosPOST(user, "api/quarters?function=upload&parent="+parentID+"&mode="+mode, formData)
 }
 
 // misc
 
-export function QuarterChatGPTModifyPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/openai?function=collectionprompt&collection="+collectionID+"&parent="+parentID, payload)
+export function QuartersChatGPTPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/quarters?function=prompt&mode="+mode+"&parent="+parentID, payload)
 }
 
-export function QuarterChatGPTInitPOST(user, parentID, payload) {
-    return SessionFetch(user, "POST", "api/quarters?function=prompt&parent="+parentID, payload)
-}
-
-export function QuarterChatGPTPromptPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/quarter?function=prompt&id="+id, payload)
-}
-
-export function QuarterAdminAddPOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/quarter?function=addadmin&id="+id, payload)
-}
-
-export function QuarterAdminRemovePOST(user, id, payload) {
-    return SessionFetch(user, "POST", "api/quarter?function=removeadmin&id="+id, payload)
+export function QuarterAdminPOST(user, id, mode, admin) {
+    return SessionFetch(user, "POST", "api/quarter?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
 }

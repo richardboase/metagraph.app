@@ -10,7 +10,7 @@ import Spacer from '@/inputs/spacer';
 
 import { ParagraphListRow } from './paragraphListRow';
 import { ParagraphListRowJob } from './paragraphListRowJob';
-import { ParagraphDELETE, ParagraphsListGET, ParagraphMoveUpPOST, ParagraphMoveDownPOST } from '../_fetch';
+import { ParagraphDELETE, ParagraphsListGET, ParagraphOrderPOST } from '../_fetch';
 
 export function ParagraphList(props) {
 
@@ -54,7 +54,7 @@ export function ParagraphList(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		ParagraphMoveUpPOST(userdata, object.Meta.ID)
+		ParagraphOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -67,7 +67,7 @@ export function ParagraphList(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		ParagraphMoveDownPOST(userdata, object.Meta.ID)
+		ParagraphOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

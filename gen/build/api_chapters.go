@@ -137,6 +137,8 @@ func (app *App) EntrypointCHAPTERS(w http.ResponseWriter, r *http.Request) {
 				return				
 			}
 
+			app.SendMessageToUser(user, "create", object)
+
 			// finish the request
 			if err := cloudfunc.ServeJSON(w, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
@@ -144,19 +146,28 @@ func (app *App) EntrypointCHAPTERS(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 
-		/*
-		case "initupload":
-			// reuse code
-			app.UploadCHAPTER(w, r, parent, user)
-			return
-		*/
 
-		/*
-		case "inituploads":
-			// reuse code
-			app.ArchiveUploadCHAPTER(w, r, parent, user)
-			return
-		*/
+		case "upload":
+			
+			mode, err := cloudfunc.QueryParam(r, "mode")
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
+
+			switch mode {
+			case "file":
+				app.UploadCHAPTER(w, r, parent, user)
+				return
+
+			case "archive":
+				app.ArchiveUploadCHAPTER(w, r, parent, user)
+				return
+			default:
+				err := fmt.Errorf("mode not found: %s", mode)
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return		
+			}
 
 		default:
 			err := fmt.Errorf("function not found: %s", function)
@@ -182,7 +193,6 @@ func (app *App) EntrypointCHAPTERS(w http.ResponseWriter, r *http.Request) {
 
 		case "list":
 
-			// get function
 			mode, err := cloudfunc.QueryParam(r, "mode")
 			if err != nil {
 				cloudfunc.HttpError(w, err, http.StatusBadRequest)

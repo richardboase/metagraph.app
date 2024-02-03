@@ -49,7 +49,6 @@ export var ParagraphInterfaces = {
 	"paragraph": {
 		level: 4+2,
 		name: "Paragraph",
-		sublinks: [],
 		subsublinks: [],
 		component: (<Paragraph />),
 		hasDeleteButton: true,
@@ -57,12 +56,12 @@ export var ParagraphInterfaces = {
 	},
 	"paragraphadmin": {
 		level: 4+2,
-		name: "Paragraph",
+		name: "Admin",
 		component: (<ParagraphAdmin />),
 	},
 	"paragraphadmins": {
 		level: 4+2,
-		name: "Paragraph",
+		name: "Admins",
 		component: (<ParagraphAdmins />),
 	},
 	"paragraphassets": {

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"strings"
 	"net/http"
 
 	"cloud.google.com/go/pubsub"
@@ -136,7 +137,13 @@ func (app *App) EntrypointTESTSTREET(w http.ResponseWriter, r *http.Request) {
 
 		switch function {
 
-		case "addadmin":
+		case "admin":
+
+			mode, err := cloudfunc.QueryParam(r, "mode")
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
 
 			admin, err := cloudfunc.QueryParam(r, "admin")
 			if err != nil {
@@ -144,22 +151,27 @@ func (app *App) EntrypointTESTSTREET(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			if err := app.addTeststreetAdmin(object, admin); err != nil {
-				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-				return
-			}
-			return
-
-		case "removeadmin":
-
-			admin, err := cloudfunc.QueryParam(r, "admin")
-			if err != nil {
+			// prevent self-deletion
+			if strings.Contains(admin, user.Username) {
+				errors.New("you cannot add or remove yourself as ad admin")
 				cloudfunc.HttpError(w, err, http.StatusBadRequest)
 				return
 			}
 
-			if err := app.removeTeststreetAdmin(object, admin); err != nil {
-				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+			switch mode {
+			case "add":
+				if err := app.addTeststreetAdmin(object, admin); err != nil {
+					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+					return
+				}
+			case "remove":
+				if err := app.removeTeststreetAdmin(object, admin); err != nil {
+					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+					return
+				}
+			default:
+				err := fmt.Errorf("mode not found: %s", mode)
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
 				return
 			}
 			return
@@ -263,6 +275,8 @@ func (app *App) EntrypointTESTSTREET(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			app.SendMessageToUser(user, "update", object)
+
 			if err := cloudfunc.ServeJSON(w, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
@@ -314,6 +328,7 @@ func (app *App) EntrypointTESTSTREET(w http.ResponseWriter, r *http.Request) {
 			}
 
 			return
+
 		
 
 		default:
@@ -387,6 +402,5 @@ func (app *App) getTeststreetList(subject *TESTSTREET) []*TESTSTREET {
 		}
 		list = append(list, object)
 	}
-	log.Println(len(list))
 	return list
 }
