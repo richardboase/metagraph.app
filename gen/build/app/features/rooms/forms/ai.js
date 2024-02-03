@@ -12,8 +12,7 @@ import Select from '@/inputs/select';
 import CollectionSelect from '@/inputs/collectionSelect';
 import Color from '@/inputs/color';
 
-import { RoomChatGPTModifyPOST } from '../_fetch'
-import { RoomChatGPTInitPOST } from '../_fetch'
+import { RoomChatGPTPOST } from '../_fetch'
 
 export function AI(props) {
 
@@ -38,8 +37,9 @@ export function AI(props) {
 		const payload = {
 			"prompt": document.getElementById("prompt").value,
 		}
-		if (select == "create") {
-			RoomChatGPTInitPOST(userdata, props.subject.Meta.ID, payload)
+		switch (select) {
+		case "prompt":
+			RoomChatGPTPOST(userdata, props.subject.Meta.ID, "create", payload)
 			.then((res) => {
 				console.log(res)
 				props.updateList(true)
@@ -48,8 +48,9 @@ export function AI(props) {
 				console.error(e)
 				props.updateList(true)
 			})
-		} else {
-			RoomChatGPTModifyPOST(userdata, props.subject.Meta.ID, props.collection, payload)
+			break
+		case "create":
+			RoomChatGPTPOST(userdata, props.subject.Meta.ID, "create", payload)
 			.then((res) => {
 				console.log(res)
 				props.updateList(true)
@@ -58,6 +59,18 @@ export function AI(props) {
 				console.error(e)
 				props.updateList(true)
 			})
+			break
+		case "modify":
+			RoomChatGPTPOST(userdata, props.subject.Meta.ID, props.collection, "modify", payload)
+			.then((res) => {
+				console.log(res)
+				props.updateList(true)
+			}) 
+			.catch((e) => {
+				console.error(e)
+				props.updateList(true)
+			})
+			break
 		}
 	}
 
