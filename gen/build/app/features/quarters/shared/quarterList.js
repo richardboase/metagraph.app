@@ -37,7 +37,7 @@ export function QuarterList(props) {
 	}
 
 	function updateList() {
-		QuartersListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
+		QuartersListGET(userdata, props.subject?.Meta.ID, listMode, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

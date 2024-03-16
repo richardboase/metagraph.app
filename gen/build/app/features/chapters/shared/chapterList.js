@@ -37,7 +37,7 @@ export function ChapterList(props) {
 	}
 
 	function updateList() {
-		ChaptersListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
+		ChaptersListGET(userdata, props.subject?.Meta.ID, listMode, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

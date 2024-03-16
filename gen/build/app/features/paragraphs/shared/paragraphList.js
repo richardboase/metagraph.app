@@ -37,7 +37,7 @@ export function ParagraphList(props) {
 	}
 
 	function updateList() {
-		ParagraphsListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
+		ParagraphsListGET(userdata, props.subject?.Meta.ID, listMode, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

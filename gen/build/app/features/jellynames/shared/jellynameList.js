@@ -37,7 +37,7 @@ export function JellynameList(props) {
 	}
 
 	function updateList() {
-		JellynamesListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
+		JellynamesListGET(userdata, props.subject?.Meta.ID, listMode, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

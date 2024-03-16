@@ -35,7 +35,7 @@ export function BookList(props) {
 	}
 
 	function updateList() {
-		BooksListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
+		BooksListGET(userdata, props.subject?.Meta.ID, listMode, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

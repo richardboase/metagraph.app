@@ -35,7 +35,7 @@ export function ArthurList(props) {
 	}
 
 	function updateList() {
-		ArthursListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
+		ArthursListGET(userdata, props.subject?.Meta.ID, listMode, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

@@ -35,7 +35,7 @@ export function GameList(props) {
 	}
 
 	function updateList() {
-		GamesListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
+		GamesListGET(userdata, props.subject?.Meta.ID, listMode, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)

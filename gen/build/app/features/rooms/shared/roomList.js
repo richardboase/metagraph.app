@@ -37,7 +37,7 @@ export function RoomList(props) {
 	}
 
 	function updateList() {
-		RoomsListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
+		RoomsListGET(userdata, props.subject?.Meta.ID, listMode, props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
