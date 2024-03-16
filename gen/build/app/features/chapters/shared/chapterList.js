@@ -26,9 +26,6 @@ export function ChapterList(props) {
 
 	const [ list, setList ] = useState(null)
 	const [ listMode, setListMode ] = useState("modified")
-	setListMode("ordered")
-	
-	
 
 	function updateListMode(e) {
 		const mode = e.target.value
@@ -60,6 +57,9 @@ export function ChapterList(props) {
 	}
 
 	useEffect(() => {
+		setListMode("ordered")
+		
+		
 		updateList()
 	}, [])
 

@@ -26,9 +26,6 @@ export function BookcharacterList(props) {
 
 	const [ list, setList ] = useState(null)
 	const [ listMode, setListMode ] = useState("modified")
-	
-	
-	
 
 	function updateListMode(e) {
 		const mode = e.target.value
@@ -60,6 +57,9 @@ export function BookcharacterList(props) {
 	}
 
 	useEffect(() => {
+		
+		
+		
 		updateList()
 	}, [])
 

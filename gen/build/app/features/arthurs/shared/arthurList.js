@@ -24,9 +24,6 @@ export function ArthurList(props) {
 
 	const [ list, setList ] = useState(null)
 	const [ listMode, setListMode ] = useState("modified")
-	
-	setListMode("admin")
-	
 
 	function updateListMode(e) {
 		const mode = e.target.value
@@ -52,6 +49,9 @@ export function ArthurList(props) {
 	}
 
 	useEffect(() => {
+		
+		setListMode("admin")
+		
 		updateList()
 	}, [])
 
