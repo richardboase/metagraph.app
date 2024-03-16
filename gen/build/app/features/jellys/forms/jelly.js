@@ -31,10 +31,10 @@ export function JellyForm(props) {
 			<Input id="name" type='text' required={ true } title="jelly name" placeholder="jelly name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="gender" type='text' required={ true } title="jelly gender" placeholder="jelly gender" inputChange={handleInputChange}/>
+			<Select id="gender" type='text' required={ true } reference={ "" } referenceParent={ subject } title="jelly gender" options={ ["male","female"] } placeholder="jelly gender" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Select id="element" type='text' required={ false } reference={ "jellyname" } referenceParent={ subject } title="jelly element" options={ null } placeholder="jelly element" inputChange={handleInputChange}/>
+			<Select id="element" type='text' required={ false } reference={ "jellynames" } referenceParent={ subject } title="jelly element" options={ null } placeholder="jelly element" inputChange={handleInputChange}/>
 			<Spacer/>
 			
 			<Input id="hp" type='number' required={ true } title="jelly hp" inputChange={handleInputChange}/>

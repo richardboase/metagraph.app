@@ -75,10 +75,10 @@ export function JellyEdit(props) {
 			<Input id="name" type='text' required={ true } title="jelly name" placeholder="jelly name" inputChange={handleInputChange} value={ inputs["name"].value } />
 			<Spacer/>
 			
-			<Input id="gender" type='text' required={ true } title="jelly gender" placeholder="jelly gender" inputChange={handleInputChange} value={ inputs["gender"].value } />
+			<Select id="gender" type='text' required={ true } reference={ "" } referenceParent={ subject } title="jelly gender" options={ ["male","female"] } placeholder="jelly gender" inputChange={handleInputChange} value={ inputs["gender"].value } />
 			<Spacer/>
 			
-			<Select id="element" type='text' required={ false } reference={ "jellyname" } referenceParent={ subject } title="jelly element" options={ null } placeholder="jelly element" inputChange={handleInputChange} value={ inputs["element"].value } />
+			<Select id="element" type='text' required={ false } reference={ "jellynames" } referenceParent={ subject } title="jelly element" options={ null } placeholder="jelly element" inputChange={handleInputChange} value={ inputs["element"].value } />
 			<Spacer/>
 			
 			<Input id="hp" type='number' required={ true } title="jelly hp" inputChange={handleInputChange} value={ inputs["hp"].value } />

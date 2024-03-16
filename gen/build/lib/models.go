@@ -1198,15 +1198,6 @@ func (x *JELLY) ValidateObject(m map[string]interface{}) error {
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Gender); err != nil {
-			
-			return err
-			
-		}
-		if err := assertRangeMax(10, x.Fields.Gender); err != nil {
-			return err
-		}
-		
 	}
 	
 

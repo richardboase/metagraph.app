@@ -55,14 +55,14 @@ func main() {
 			{
 				Context:  "either male or female",
 				Name:     "gender",
-				JSON:     "string_10",
+				JSON:     "gender",
 				Required: true,
 			},
 			{
 				Name:           "element",
 				Type:           "string",
 				Input:          "select",
-				InputReference: "jellyname",
+				InputReference: "jellynames",
 				Filter:         true,
 			},
 			{
