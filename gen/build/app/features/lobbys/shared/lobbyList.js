@@ -28,6 +28,7 @@ export function LobbyList(props) {
 	function updateListMode(e) {
 		const mode = e.target.value
 		setListMode(mode)
+		updateList()
 		console.log("NEW MODE", mode)
 	}
 
