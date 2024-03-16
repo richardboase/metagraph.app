@@ -25,7 +25,7 @@ export function ArthurList(props) {
 	const [ list, setList ] = useState(null)
 	const [ listMode, setListMode ] = useState("modified")
 	
-	
+	setListMode("admin")
 	
 
 	function updateListMode(e) {

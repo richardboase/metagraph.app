@@ -25,7 +25,6 @@ func main() {
 	arthur := &models.Object{
 		Context: "arthurs space",
 		Mode:    "root",
-		Parents: []string{},
 		Name:    "arthur",
 		Fields: []*models.Field{
 			{
@@ -34,7 +33,9 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{},
+		Options: models.Options{
+			Admin: true,
+		},
 	}
 
 	jelly := &models.Object{

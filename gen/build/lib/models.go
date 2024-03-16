@@ -917,19 +917,14 @@ func (user *User) NewARTHUR(parent *Internals, fields FieldsARTHUR) *ARTHUR {
 		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
 
-	// this object inherits its admin permissions
-	if parent != nil {
-		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-		if len(parent.Moderation.Object) == 0 {
-			log.Println("USING PARENT ID AS MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.ID
-		} else {
-			log.Println("USING PARENT'S MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.Moderation.Object
-		}
-	}
-
 	
+
+	// this object is owned by the user that created it
+	log.Println("OPTIONS ADMIN IS ON:", user.Meta.ID)
+	object.Meta.Moderation.Admins = append(
+		object.Meta.Moderation.Admins,
+		user.Meta.ID,
+	)
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"jelly","jellyname","lobby",

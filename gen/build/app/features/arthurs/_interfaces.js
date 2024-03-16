@@ -48,7 +48,7 @@ export var ArthurInterfaces = {
 	"arthur": {
 		level: 0+2,
 		name: "Arthur",
-		subsublinks: ["jellys","jellynames","lobbys",],
+		subsublinks: ["jellys","jellynames","lobbys","arthuradmins"],
 		component: (<Arthur />),
 		hasDeleteButton: true,
 		hasEditButton: true,
