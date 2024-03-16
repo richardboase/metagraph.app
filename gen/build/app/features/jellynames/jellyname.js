@@ -79,7 +79,7 @@ export function Jellyname(props) {
 					subject?.Meta.Media.Image && <RowThumbnail source={'https://storage.googleapis.com/go-gen-test-uploads/'+subject.Meta.Media.URIs[subject.Meta.Media.URIs.length-1]}/>
 				}
 				<div className='flex flex-wrap w-full'>
-					<div className='flex flex-row justify-between items-center w-full py-4 my-4'>
+					<div className='flex flex-wrap w-full py-4 my-4'>
 						<div className='flex flex-row text-base'>
 							<span className='uppercase text-base'>{ subject.Meta.ClassName }</span>
 							<div className='px-2'>/</div>

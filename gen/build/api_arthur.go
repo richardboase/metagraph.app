@@ -243,6 +243,7 @@ func (app *App) EntrypointARTHUR(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if !object.ValidateInput(w, m) {
+				log.Println("cant validate")
 				return
 			}
 
