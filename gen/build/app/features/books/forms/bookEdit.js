@@ -27,12 +27,16 @@ export function BookEdit(props) {
 	}
 
 	const [inputs, setInputs] = useState({
+		
 		"name": {
 			id: "name",
 			type: "string",
-			value: subject.fields.name,
+			
+			value: subject.Meta.Name,
+			
 			required: true,
 		},
+		
 	})
 	function handleInputChange(obj) {
 		InputChange(inputs, setInputs, obj)

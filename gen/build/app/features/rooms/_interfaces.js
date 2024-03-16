@@ -10,7 +10,6 @@ import { NewRoom } from './newRoom'
 import { EditRoom } from './editRoom'
 import { DeleteRoom } from './deleteRoom'
 import { InitUploadRoom } from './initUploadRoom'
-import { InitUploadRooms } from './initUploadRooms'
 import { UploadRoom } from './uploadRoom'
 
 export var RoomInterfaces = {

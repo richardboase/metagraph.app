@@ -46,14 +46,18 @@ export function LobbyUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/lobby?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function LobbysUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/lobbys?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function LobbyInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/lobbys?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function LobbysChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/lobbys?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function LobbysChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/lobbys?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function LobbyAdminPOST(user, id, mode, admin) {

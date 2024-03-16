@@ -8,12 +8,13 @@ export default function PageLogin({ data }) {
 
 	console.log("data", data)
 	const router = useRouter();
-	const [email, setEmail] = useState(data.email)
+	const [input, setInput] = useState(data.email)
 
 	const [emailState, setEmailState] = useState(0);
 
 	function checkEmail() {
 		const email = document.getElementById("otp_email").value
+		setInput(email)
 		if (email.length < 5) {
 			return
 		}
@@ -40,7 +41,7 @@ export default function PageLogin({ data }) {
 
   return (
 	<Layout>
-		<div className="flex flex-col m-10 p-5 bg-gray-200">
+		<div className="flex flex-col m-10 p-5 bg-gray-200 text-black">
 			<div className='font-xl'>
 				Get a 1 time password delivered to your email.
 			</div>
@@ -49,13 +50,18 @@ export default function PageLogin({ data }) {
 			</div>
 			<div className='flex flex-col items-center'>
 				<div className='m-5'>
-				<input onChange={checkEmail} placeholder="Email Address" defaultValue={email} className="p-5 rounded-lg" id="otp_email" type="email"/>
+				<input onChange={checkEmail} placeholder="Email Address" defaultValue={input} className="p-5 rounded-lg" id="otp_email" type="email"/>
 				</div>
 				<div className='m-5'>
 				{
 					(emailState == 1) && <button onClick={sendOTPRequest} className='text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700'>
 					Get login link via inbox
 					</button>
+				}
+				{
+					input && (emailState != 1) && (input.length >= 5) && <div className='font-lg font-bold'>
+						Did you forget to register? We can't find your email...
+					</div>
 				}
 				</div>
 			</div>

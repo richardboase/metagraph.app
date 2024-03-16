@@ -148,26 +148,9 @@ func (app *App) EntrypointCHARACTERS(w http.ResponseWriter, r *http.Request) {
 
 
 		case "upload":
-			
-			mode, err := cloudfunc.QueryParam(r, "mode")
-			if err != nil {
-				cloudfunc.HttpError(w, err, http.StatusBadRequest)
-				return
-			}
 
-			switch mode {
-			case "file":
-				app.UploadCHARACTER(w, r, parent, user)
-				return
-
-			case "archive":
-				app.ArchiveUploadCHARACTER(w, r, parent, user)
-				return
-			default:
-				err := fmt.Errorf("mode not found: %s", mode)
-				cloudfunc.HttpError(w, err, http.StatusBadRequest)
-				return		
-			}
+			app.UploadCHARACTER(w, r, parent, user)
+			return
 
 		default:
 			err := fmt.Errorf("function not found: %s", function)

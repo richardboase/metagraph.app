@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { RoomAssetsRow } from './roomAssetsRow';
-import { RoomDELETE, RoomMoveUpPOST, RoomMoveDownPOST } from '../_fetch';
+import { RoomDELETE, RoomOrderPOST } from '../_fetch';
 
 export function RoomAssets(props) {
 
@@ -49,7 +49,7 @@ export function RoomAssets(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		RoomMoveUpPOST(userdata, object.Meta.ID)
+		RoomOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -62,7 +62,7 @@ export function RoomAssets(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		RoomMoveDownPOST(userdata, object.Meta.ID)
+		RoomOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

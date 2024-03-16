@@ -10,7 +10,6 @@ import { NewGame } from './newGame'
 import { EditGame } from './editGame'
 import { DeleteGame } from './deleteGame'
 import { InitUploadGame } from './initUploadGame'
-import { InitUploadGames } from './initUploadGames'
 import { UploadGame } from './uploadGame'
 
 export var GameInterfaces = {

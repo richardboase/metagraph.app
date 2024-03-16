@@ -10,7 +10,6 @@ import { NewTown } from './newTown'
 import { EditTown } from './editTown'
 import { DeleteTown } from './deleteTown'
 import { InitUploadTown } from './initUploadTown'
-import { InitUploadTowns } from './initUploadTowns'
 import { UploadTown } from './uploadTown'
 
 export var TownInterfaces = {

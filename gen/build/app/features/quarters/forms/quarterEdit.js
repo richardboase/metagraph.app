@@ -27,12 +27,16 @@ export function QuarterEdit(props) {
 	}
 
 	const [inputs, setInputs] = useState({
+		
 		"name": {
 			id: "name",
 			type: "string",
-			value: subject.fields.name,
+			
+			value: subject.Meta.Name,
+			
 			required: false,
 		},
+		
 	})
 	function handleInputChange(obj) {
 		InputChange(inputs, setInputs, obj)

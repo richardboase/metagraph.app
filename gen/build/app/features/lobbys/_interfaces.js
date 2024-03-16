@@ -10,7 +10,6 @@ import { NewLobby } from './newLobby'
 import { EditLobby } from './editLobby'
 import { DeleteLobby } from './deleteLobby'
 import { InitUploadLobby } from './initUploadLobby'
-import { InitUploadLobbys } from './initUploadLobbys'
 import { UploadLobby } from './uploadLobby'
 
 export var LobbyInterfaces = {

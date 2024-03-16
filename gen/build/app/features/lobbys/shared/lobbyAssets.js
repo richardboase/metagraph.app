@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { LobbyAssetsRow } from './lobbyAssetsRow';
-import { LobbyDELETE, LobbyMoveUpPOST, LobbyMoveDownPOST } from '../_fetch';
+import { LobbyDELETE, LobbyOrderPOST } from '../_fetch';
 
 export function LobbyAssets(props) {
 
@@ -49,7 +49,7 @@ export function LobbyAssets(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		LobbyMoveUpPOST(userdata, object.Meta.ID)
+		LobbyOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -62,7 +62,7 @@ export function LobbyAssets(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		LobbyMoveDownPOST(userdata, object.Meta.ID)
+		LobbyOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

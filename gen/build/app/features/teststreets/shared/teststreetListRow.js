@@ -22,18 +22,44 @@ export function TeststreetListRow(props) {
 	}
 
 	return (
-		<div className='flex flex-row justify-between items-center w-full my-2'>
+		<div className='flex flex-row justify-between py-2 items-center w-full'>
 			
-			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer m-4'>
-				<div className='text-xl font-bold' title="name">{ props.item.fields["name"] }</div>
+			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer px-4'>
+				{
+					props.item.Meta.Name?.length && <>
+						<div className='text-lg font-bold' title="Name">{ props.item.Meta.Name }</div>
+					</>
+				}
 				<div className="px-4"></div>
-				<Spacer/><div className='text-xl font-bold' title="description">{ props.item.fields["description"] }</div>
-				<div className="px-4"></div>
-				<Spacer/><div className='text-xl font-bold' title="start">{ props.item.fields["start"] }</div>
-				<div className="px-4"></div>
-				<Spacer/><div className='text-xl font-bold' title="end">{ props.item.fields["end"] }</div>
-				<div className="px-4"></div>
-				<Spacer/>
+				{
+					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && <>
+						<div className='text-sm font-bold' title="name">
+							{ props.item.fields["name"] }
+						</div>
+						<div className="px-4"></div>
+					</>
+				}{
+					("description" != "name") && !Array.isArray(props.item.fields["description"]) &&  !(typeof props.item.fields["description"] === 'object')  && <>
+						<div className='text-sm font-bold' title="description">
+							{ props.item.fields["description"] }
+						</div>
+						<div className="px-4"></div>
+					</>
+				}{
+					("start" != "name") && !Array.isArray(props.item.fields["start"]) &&  !(typeof props.item.fields["start"] === 'object')  && <>
+						<div className='text-sm font-bold' title="start">
+							{ props.item.fields["start"] }
+						</div>
+						<div className="px-4"></div>
+					</>
+				}{
+					("end" != "name") && !Array.isArray(props.item.fields["end"]) &&  !(typeof props.item.fields["end"] === 'object')  && <>
+						<div className='text-sm font-bold' title="end">
+							{ props.item.fields["end"] }
+						</div>
+						<div className="px-4"></div>
+					</>
+				}
 			</div>
 			
 			<RowEdit object={props.item} editInterface="editteststreet"/>

@@ -13,8 +13,7 @@ import { FloorMatrixRow } from './floorMatrixRow';
 import {
 	FloorDELETE,
 	FloorsListGET,
-	FloorMoveUpPOST,
-	FloorMoveDownPOST,
+	FloorOrderPOST,
 } from '../_fetch';
 import { ObjectPATCH } from '@/app/fetch'
 
@@ -29,7 +28,7 @@ export function FloorMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		FloorsListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
+		FloorsListGET(userdata, props.subject?.Meta.ID, "admin", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -70,7 +69,7 @@ export function FloorMatrix(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		FloorMoveUpPOST(userdata, object.Meta.ID)
+		FloorOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -83,7 +82,7 @@ export function FloorMatrix(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		FloorMoveDownPOST(userdata, object.Meta.ID)
+		FloorOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

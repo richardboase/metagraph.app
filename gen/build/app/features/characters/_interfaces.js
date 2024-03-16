@@ -10,7 +10,6 @@ import { NewCharacter } from './newCharacter'
 import { EditCharacter } from './editCharacter'
 import { DeleteCharacter } from './deleteCharacter'
 import { InitUploadCharacter } from './initUploadCharacter'
-import { InitUploadCharacters } from './initUploadCharacters'
 import { UploadCharacter } from './uploadCharacter'
 
 export var CharacterInterfaces = {

@@ -1,6 +1,9 @@
 import * as React from 'react'
 
 
+import { ArthurInterfaces } from '@/features/arthurs/_interfaces'
+import { JellyInterfaces } from '@/features/jellys/_interfaces'
+import { JellynameInterfaces } from '@/features/jellynames/_interfaces'
 import { GameInterfaces } from '@/features/games/_interfaces'
 import { LobbyInterfaces } from '@/features/lobbys/_interfaces'
 import { CharacterInterfaces } from '@/features/characters/_interfaces'
@@ -17,7 +20,9 @@ import { FloorInterfaces } from '@/features/floors/_interfaces'
 import { RoomInterfaces } from '@/features/rooms/_interfaces'
 
 import Home from '@/features/home'
-import EditProfile from '@/features/editProfile'
+import Account from '@/features/account/account'
+import AccountInbox from '@/features/account/accountInbox'
+import AccountInboxMessages from '@/features/account/accountInboxMessages'
 
 export var Interfaces = {
 	"home": {
@@ -25,11 +30,21 @@ export var Interfaces = {
 		name: "Home",
 		component: (<Home/>),
 	},
-	"editprofile": {
-		level: 0,
-		name: "Edit Profile",
-		component: (<EditProfile/>),
+	"account": {
+		level: 1,
+		name: "Your Account",
+		component: (<Account/>),
 	},
+	"accountinbox": {
+		level: 2,
+		name: "Your Inbox",
+		component: (<AccountInbox/>),
+	},
+	"accountinboxmessages": {
+		level: 3,
+		name: "Conversation",
+		component: (<AccountInboxMessages/>),
+	}
 }
 
 export function GetInterfaces() {
@@ -39,7 +54,16 @@ export function GetInterfaces() {
 	}
 	// custom features
 
-	// GameInterfaces
+	// ArthurInterfaces
+	for (const k in ArthurInterfaces) {
+		interfaces[k.toLowerCase()] = ArthurInterfaces[k]
+	}// JellyInterfaces
+	for (const k in JellyInterfaces) {
+		interfaces[k.toLowerCase()] = JellyInterfaces[k]
+	}// JellynameInterfaces
+	for (const k in JellynameInterfaces) {
+		interfaces[k.toLowerCase()] = JellynameInterfaces[k]
+	}// GameInterfaces
 	for (const k in GameInterfaces) {
 		interfaces[k.toLowerCase()] = GameInterfaces[k]
 	}// LobbyInterfaces
@@ -170,6 +194,15 @@ export default function VisitTab(localdata, tabname, context) {
 		break
 	case 9:
 		crumbs = [localdata.breadcrumbs[0], localdata.breadcrumbs[1], localdata.breadcrumbs[2], localdata.breadcrumbs[3], localdata.breadcrumbs[4], localdata.breadcrumbs[5], localdata.breadcrumbs[6], localdata.breadcrumbs[7], localdata.breadcrumbs[8], tab]
+		break
+	case 10:
+		crumbs = [localdata.breadcrumbs[0], localdata.breadcrumbs[1], localdata.breadcrumbs[2], localdata.breadcrumbs[3], localdata.breadcrumbs[4], localdata.breadcrumbs[5], localdata.breadcrumbs[6], localdata.breadcrumbs[7], localdata.breadcrumbs[8], localdata.breadcrumbs[9], tab]
+		break
+	case 11:
+		crumbs = [localdata.breadcrumbs[0], localdata.breadcrumbs[1], localdata.breadcrumbs[2], localdata.breadcrumbs[3], localdata.breadcrumbs[4], localdata.breadcrumbs[5], localdata.breadcrumbs[6], localdata.breadcrumbs[7], localdata.breadcrumbs[8], localdata.breadcrumbs[9], localdata.breadcrumbs[10], tab]
+		break
+	case 12:
+		crumbs = [localdata.breadcrumbs[0], localdata.breadcrumbs[1], localdata.breadcrumbs[2], localdata.breadcrumbs[3], localdata.breadcrumbs[4], localdata.breadcrumbs[5], localdata.breadcrumbs[6], localdata.breadcrumbs[7], localdata.breadcrumbs[8], localdata.breadcrumbs[9], localdata.breadcrumbs[10], localdata.breadcrumbs[11], tab]
 		break
 	case -1:
 		localdata.breadcrumbs.map(function(crumb, i) {

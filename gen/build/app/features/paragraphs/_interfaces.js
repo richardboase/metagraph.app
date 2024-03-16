@@ -10,7 +10,6 @@ import { NewParagraph } from './newParagraph'
 import { EditParagraph } from './editParagraph'
 import { DeleteParagraph } from './deleteParagraph'
 import { InitUploadParagraph } from './initUploadParagraph'
-import { InitUploadParagraphs } from './initUploadParagraphs'
 import { UploadParagraph } from './uploadParagraph'
 
 export var ParagraphInterfaces = {

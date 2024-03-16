@@ -46,14 +46,18 @@ export function RoomUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/room?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function RoomsUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/rooms?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function RoomInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/rooms?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function RoomsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/rooms?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function RoomsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/rooms?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function RoomAdminPOST(user, id, mode, admin) {

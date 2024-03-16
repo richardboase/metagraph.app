@@ -10,7 +10,6 @@ import { NewBook } from './newBook'
 import { EditBook } from './editBook'
 import { DeleteBook } from './deleteBook'
 import { InitUploadBook } from './initUploadBook'
-import { InitUploadBooks } from './initUploadBooks'
 import { UploadBook } from './uploadBook'
 
 export var BookInterfaces = {

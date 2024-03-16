@@ -148,26 +148,9 @@ func (app *App) EntrypointFLOORS(w http.ResponseWriter, r *http.Request) {
 
 
 		case "upload":
-			
-			mode, err := cloudfunc.QueryParam(r, "mode")
-			if err != nil {
-				cloudfunc.HttpError(w, err, http.StatusBadRequest)
-				return
-			}
 
-			switch mode {
-			case "file":
-				app.UploadFLOOR(w, r, parent, user)
-				return
-
-			case "archive":
-				app.ArchiveUploadFLOOR(w, r, parent, user)
-				return
-			default:
-				err := fmt.Errorf("mode not found: %s", mode)
-				cloudfunc.HttpError(w, err, http.StatusBadRequest)
-				return		
-			}
+			app.UploadFLOOR(w, r, parent, user)
+			return
 
 		default:
 			err := fmt.Errorf("function not found: %s", function)

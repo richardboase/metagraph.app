@@ -39,6 +39,10 @@ func (app *App) roomLists(w http.ResponseWriter, user *User, parent *Internals, 
 
 		q = collection.OrderBy("Meta.Modified", firestore.Desc)
 
+	case "exif":
+
+		q = collection.OrderBy("Meta.Media.EXIF.taken", firestore.Desc)
+
 	default:
 
 		err := fmt.Errorf("mode not found: %s", mode)

@@ -27,12 +27,16 @@ export function FloorEdit(props) {
 	}
 
 	const [inputs, setInputs] = useState({
+		
 		"rooms": {
 			id: "rooms",
 			type: "int",
+			
 			value: subject.fields.rooms,
+			
 			required: true,
 		},
+		
 	})
 	function handleInputChange(obj) {
 		InputChange(inputs, setInputs, obj)

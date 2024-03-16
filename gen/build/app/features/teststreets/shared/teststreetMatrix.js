@@ -13,8 +13,7 @@ import { TeststreetMatrixRow } from './teststreetMatrixRow';
 import {
 	TeststreetDELETE,
 	TeststreetsListGET,
-	TeststreetMoveUpPOST,
-	TeststreetMoveDownPOST,
+	TeststreetOrderPOST,
 } from '../_fetch';
 import { ObjectPATCH } from '@/app/fetch'
 
@@ -29,7 +28,7 @@ export function TeststreetMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		TeststreetsListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
+		TeststreetsListGET(userdata, props.subject?.Meta.ID, "admin", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -70,7 +69,7 @@ export function TeststreetMatrix(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		TeststreetMoveUpPOST(userdata, object.Meta.ID)
+		TeststreetOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -83,7 +82,7 @@ export function TeststreetMatrix(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		TeststreetMoveDownPOST(userdata, object.Meta.ID)
+		TeststreetOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

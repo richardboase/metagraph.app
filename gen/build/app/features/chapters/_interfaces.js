@@ -10,7 +10,6 @@ import { NewChapter } from './newChapter'
 import { EditChapter } from './editChapter'
 import { DeleteChapter } from './deleteChapter'
 import { InitUploadChapter } from './initUploadChapter'
-import { InitUploadChapters } from './initUploadChapters'
 import { UploadChapter } from './uploadChapter'
 
 export var ChapterInterfaces = {

@@ -29,7 +29,7 @@ export function GameAdmin(props) {
 
             <div className='flex flex-row justify-between w-full'>
                 {
-                    admin && <div className='flex flex-col justify-center text-2xl uppercase m-4'>
+                    admin && <div className='flex flex-col justify-center text-lg uppercase m-4'>
                         { admin.username }
                     </div>
                 }

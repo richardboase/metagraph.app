@@ -1,15 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"archive/zip"
 	"bytes"
-	"image"
-	_ "image/jpeg"
+	"fmt"
+	"image/jpeg"
 	_ "image/png"
 	"io"
+	"log"
 	"net/http"
+	"strings"
+
+	"github.com/nfnt/resize"
 
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
@@ -22,142 +24,127 @@ func (app *App) UploadTOWN(w http.ResponseWriter, r *http.Request, parent *Inter
 		return
 	}
 
-	// Get handler for filename, size and headers
-	file, handler, err := r.FormFile("file")
-	if err != nil {
-		cloudfunc.HttpError(w, err, http.StatusBadRequest)
-		return
-	}
+	files := r.MultipartForm.File["files"]
 
-	defer file.Close()
-	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
-	fmt.Printf("File Size: %+v\n", handler.Size)
-	fmt.Printf("MIME Header: %+v\n", handler.Header)
+	newFileObjects := []*TOWN{}
 
-	buf := bytes.NewBuffer(nil)
-	// Copy the uploaded file to the created file on the filesystem
-	if n, err := io.Copy(buf, file); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return
-	} else {
-		log.Println("copy: wrote", n, "bytes")
-	}
+	for n, fileHeader := range files{
 
-	/*
-	if err := checkImageTOWN(buf.Bytes()); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return
-	}
-	*/
-	log.Println("creating new town:", handler.Filename)
-	fields := FieldsTOWN{}
-	town := user.NewTOWN(parent, fields)
+		log.Println("HANDLING FILE", n)
 
-	// hidden line here if noparent: town.Fields.Filename = zipFile.Name
-	town.Meta.Name = handler.Filename
-
-	// generate a new URI
-	uri := town.Meta.NewURI()
-	println ("URI", uri)
-
-	bucketName := "go-gen-test-uploads"
-	if err := app.writeTownFile(bucketName, uri, buf.Bytes()); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return
-	}
-
-	// reuse document init create code
-	if err := app.CreateDocumentTOWN(parent, town); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return		
-	}
-	return
-}
-
-func (app *App) ArchiveUploadTOWN(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
-
-	log.Println("PARSING FORM")
-	if err := r.ParseMultipartForm(300 << 20); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusBadRequest)
-		return
-	}
-
-	// Get handler for filename, size and headers
-	file, handler, err := r.FormFile("file")
-	if err != nil {
-		cloudfunc.HttpError(w, err, http.StatusBadRequest)
-		return
-	}
-
-	defer file.Close()
-	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
-	fmt.Printf("File Size: %+v\n", handler.Size)
-	fmt.Printf("MIME Header: %+v\n", handler.Header)
-
-	buf := bytes.NewBuffer(nil)
-	// Copy the uploaded file to the created file on the filesystem
-	if n, err := io.Copy(buf, file); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return
-	} else {
-		log.Println("copy: wrote", n, "bytes")
-	}
-
-	// Open the zip archive from the buffer
-	zipReader, err := zip.NewReader(bytes.NewReader(buf.Bytes()), int64(buf.Len()))
-	if err != nil {
-		err = fmt.Errorf("Error opening zip archive: %v", err)
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return 
-	}
-
-	// Extract each file from the zip archive
-	for n, zipFile := range zipReader.File {
-
-		extractedContent, err := readZipFileTOWN(zipFile)
+		file, err := fileHeader.Open()
 		if err != nil {
-			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+			http.Error(w, fmt.Sprintf("Unable to open file: %s", fileHeader.Filename), http.StatusInternalServerError)
 			return
 		}
+		defer file.Close()
 
-		/*
-		if err := checkImageTOWN(extractedContent); err != nil {
-			log.Println("skipping file that cannot be decoded:", zipFile.Name)
-			continue
-		}
-		*/
-		log.Println("creating new town:", zipFile.Name)
-		fields := FieldsTOWN{}
-		town := user.NewTOWN(parent, fields)
-
-		town.Meta.Name = zipFile.Name
-
-		town.Meta.Context.Order = n
-
-		// generate a new URI
-		uri := town.Meta.NewURI()
-		println ("URI", uri)
-
-		bucketName := "go-gen-test-uploads"
-		if err := app.writeTownFile(bucketName, uri, extractedContent); err != nil {
+		buf := bytes.NewBuffer(nil)
+		// Copy the uploaded file to the created file on the filesystem
+		if n, err := io.Copy(buf, file); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
+		} else {
+			log.Println("copy: wrote", n, "bytes")
 		}
 
-		// reuse document init create code
-		if err := app.CreateDocumentTOWN(parent, town); err != nil {
+		if !strings.Contains(strings.ToLower(fileHeader.Filename), "zip") {
+
+			obj, err := app.newUploadObjectTOWN(parent, user, 0, fileHeader.Filename, buf.Bytes())
+			if err != nil {
+				log.Println(err)
+				return
+			}
+
+			newFileObjects = append(newFileObjects, obj)
+
+		} else {
+
+			log.Println("HANDLING ZIP")
+
+			buf := bytes.NewBuffer(nil)
+			// Copy the uploaded file to the created file on the filesystem
+			if n, err := io.Copy(buf, file); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			} else {
+				log.Println("copy: wrote", n, "bytes")
+			}
+
+			// Open the zip archive from the buffer
+			zipReader, err := zip.NewReader(bytes.NewReader(buf.Bytes()), int64(buf.Len()))
+			if err != nil {
+				err = fmt.Errorf("Error opening zip archive: %v", err)
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return 
+			}
+
+			// Extract each file from the zip archive
+			for n, zipFile := range zipReader.File {
+		
+				extractedContent, err := readZipFileTOWN(zipFile)
+				if err != nil {
+					log.Println(err)
+					continue
+				}
+		
+				obj, err := app.newUploadObjectTOWN(parent, user, n, zipFile.Name, extractedContent)
+				if err != nil {
+					log.Println(err)
+					continue
+				}
+
+				newFileObjects = append(newFileObjects, obj)
+			}
+		}
+	}
+	// make the documents proper
+	for _, obj := range newFileObjects {
+		if err := app.CreateDocumentTOWN(parent, obj); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return		
 		}
-
 	}
+
 	return
 }
 
-// assert file is an image because of .Object.Options.Image
-func checkImageTOWN(fileBytes []byte) error {
-	_, _, err := image.Decode(bytes.NewBuffer(fileBytes))
-	return err
+func (app *App) newUploadObjectTOWN(parent *Internals, user *User, n int, name string, b []byte) (*TOWN, error) {
+	fields := FieldsTOWN{}
+	object := user.NewTOWN(parent, fields)
+	object.Meta.Name = name
+	object.Meta.Context.Order = n
+	// generate a new URI
+	uri := object.Meta.NewURI()
+	log.Println(name, "URI", uri)
+
+	// check if it is an image
+	img, err := object.ValidateImageTOWN(b)
+	if err != nil {
+		fmt.Errorf("skipping file that cannot be decoded: %s", name)
+		return nil, err
+	}
+
+	if err := app.writeTownFile(CONST_BUCKET_UPLOADS, uri, b); err != nil {
+		return nil, err
+	}
+
+	buf := bytes.NewBuffer(b)
+	// write new image to file
+	if err := jpeg.Encode(buf, resize.Resize(1000, 0, img, resize.Lanczos3), nil); err != nil {
+		return nil, err
+	}
+
+	// update uri
+	uri += "/preview"
+
+	if err := app.writeTownFile(CONST_BUCKET_UPLOADS, uri, buf.Bytes()); err != nil {
+		return nil, err
+	}
+
+	object.Meta.Media.Preview = "https://storage.googleapis.com/go-gen-test-uploads/" + uri
+
+	return object, nil
 }
 
 func readZipFileTOWN(zipFile *zip.File) ([]byte, error) {

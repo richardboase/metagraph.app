@@ -46,14 +46,18 @@ export function BookcharacterUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/bookcharacter?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function BookcharactersUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/bookcharacters?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function BookcharacterInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/bookcharacters?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function BookcharactersChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/bookcharacters?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function BookcharactersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/bookcharacters?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function BookcharacterAdminPOST(user, id, mode, admin) {

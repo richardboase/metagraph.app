@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { BuildingAssetsRow } from './buildingAssetsRow';
-import { BuildingDELETE, BuildingMoveUpPOST, BuildingMoveDownPOST } from '../_fetch';
+import { BuildingDELETE, BuildingOrderPOST } from '../_fetch';
 
 export function BuildingAssets(props) {
 
@@ -49,7 +49,7 @@ export function BuildingAssets(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		BuildingMoveUpPOST(userdata, object.Meta.ID)
+		BuildingOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -62,7 +62,7 @@ export function BuildingAssets(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		BuildingMoveDownPOST(userdata, object.Meta.ID)
+		BuildingOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

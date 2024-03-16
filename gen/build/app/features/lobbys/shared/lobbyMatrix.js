@@ -13,8 +13,7 @@ import { LobbyMatrixRow } from './lobbyMatrixRow';
 import {
 	LobbyDELETE,
 	LobbysListGET,
-	LobbyMoveUpPOST,
-	LobbyMoveDownPOST,
+	LobbyOrderPOST,
 } from '../_fetch';
 import { ObjectPATCH } from '@/app/fetch'
 
@@ -29,7 +28,7 @@ export function LobbyMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		LobbysListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
+		LobbysListGET(userdata, props.subject?.Meta.ID, "admin", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -70,7 +69,7 @@ export function LobbyMatrix(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		LobbyMoveUpPOST(userdata, object.Meta.ID)
+		LobbyOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -83,7 +82,7 @@ export function LobbyMatrix(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		LobbyMoveDownPOST(userdata, object.Meta.ID)
+		LobbyOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

@@ -46,14 +46,18 @@ export function BuildingUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/building?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function BuildingsUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/buildings?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function BuildingInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/buildings?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function BuildingsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/buildings?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function BuildingsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/buildings?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function BuildingAdminPOST(user, id, mode, admin) {

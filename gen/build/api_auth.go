@@ -92,10 +92,10 @@ func (app *App) AuthEntrypoint(w http.ResponseWriter, r *http.Request) {
 			htmlContent := fmt.Sprintf(
 				`<h2>One-time-password link:</h2>
 				<br/>
-				<a href='http://localhost:3000/home?otp=%s'>Debug</a>
+				<a href='http://localhost:3000/home?p=NewTown&otp=%s'>Debug</a>
 				<br/>
 				<br/>
-				<a href='https://newtown.vercel.app/home?otp=%s'>Click here to Login</a>
+				<a href='https://newtown.vercel.app/home?p=NewTown&otp=%s'>Click here to Login</a>
 				`,
 				secret,
 				secret,

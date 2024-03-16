@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { QuarterAssetsRow } from './quarterAssetsRow';
-import { QuarterDELETE, QuarterMoveUpPOST, QuarterMoveDownPOST } from '../_fetch';
+import { QuarterDELETE, QuarterOrderPOST } from '../_fetch';
 
 export function QuarterAssets(props) {
 
@@ -49,7 +49,7 @@ export function QuarterAssets(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		QuarterMoveUpPOST(userdata, object.Meta.ID)
+		QuarterOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -62,7 +62,7 @@ export function QuarterAssets(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		QuarterMoveDownPOST(userdata, object.Meta.ID)
+		QuarterOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

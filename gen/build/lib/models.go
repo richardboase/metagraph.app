@@ -7,6 +7,10 @@ import (
 	"log"
 	"sync"
 	"time"
+	"image"
+	_ "image/jpeg"
+	_ "image/png"
+	"bytes"
 	"errors"
 	"context"
 	"regexp"
@@ -26,14 +30,19 @@ import (
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 
 	"github.com/gorilla/websocket"
+	"github.com/muesli/gamut"
+
+	"github.com/rwcarlsen/goexif/exif"
+	"github.com/dsoprea/go-jpeg-image-structure"
+	"github.com/dsoprea/go-png-image-structure"
 )
 
 const (
 	CONST_PROJECT_ID   = "npg-generic"
 	CONST_FIRESTORE_DB = "go-gen-test"
 
-	CONST_BUCKET_UPLOADS = "npg-generic-uploads"
-	CONST_BUCKET_JOBS    = "npg-generic-jobs"
+	CONST_BUCKET_UPLOADS = "go-gen-test-uploads"
+	CONST_BUCKET_JOBS    = "go-gen-test-jobs"
 )
 type App struct {
 	*common.App
@@ -79,14 +88,16 @@ func (n Internals) NewInternals(class string) Internals {
 type Internals struct {
 	ID         string
 	Class      string
-	URIs       []string
+	ClassName  string
 	Name       string `json:",omitempty"`
 	Asset      string `json:",omitempty"`
 	Wallet     string `json:",omitempty"`
 	Context    Context
 	Moderation Moderation
+	Media      Media
 	Updated    bool
 	Created    int64
+	Deleted    int64 `json:",omitempty"`
 	Modified   int64
 	Stats      map[string]float64 `json:",omitempty"`
 }
@@ -113,16 +124,16 @@ func (i *Internals) AssetlayerCollectionID() string {
 }
 
 func (i *Internals) URI() (string, error) {
-	if len(i.URIs) == 0 {
+	if len(i.Media.URIs) == 0 {
 		return "", errors.New("this object has no assigned URI")
 	}
-	return i.URIs[len(i.URIs)-1], nil
+	return i.Media.URIs[len(i.Media.URIs)-1], nil
 }
 
 func (i *Internals) NewURI() string {
-	i.URIs = append(i.URIs, uuid.NewString())
+	i.Media.URIs = append(i.Media.URIs, uuid.NewString())
 	i.Modify()
-	return i.URIs[len(i.URIs)-1]
+	return i.Media.URIs[len(i.Media.URIs)-1]
 }
 
 func (i *Internals) DocPath() string {
@@ -246,6 +257,15 @@ func (i *Internals) Update() {
 	i.Modify()
 }
 
+type Media struct {
+	Color   string                 `json:",omitempty"`
+	Preview string                 `json:",omitempty"`
+	URIs    []string               `json:",omitempty"`
+	Image   bool                   `json:",omitempty"`
+	EXIF    map[string]interface{} `json:",omitempty"`
+	Format  string                 `json:",omitempty"`
+}
+
 type Context struct {
 	Children []string `json:",omitempty"`
 	Parent   string   `json:",omitempty"`
@@ -269,11 +289,7 @@ type Moderation struct {
 	ApprovedBy   string   `json:",omitempty"`
 }
 func (app *App) SendMessageToUser(user *User, msgType string, data interface{}) {
-	log.Printf("SENDING %s MESSAGE TO PUSHER USER %s (%s)", msgType, user.Username, user.Meta.ID)
-	err := app.Pusher().Trigger(user.Meta.ID, msgType, data)
-	if err != nil {
-		log.Println(err.Error())
-	}
+	
 }
 type Users []*User
 
@@ -522,6 +538,17 @@ func (app *App) IsAdmin(parent *Internals, user *User) bool {
 		}
 	}
 	return false
+}
+
+func (app *App) GetAdmins(parent *Internals) ([]string, error) {
+	if len(parent.Moderation.Object) > 0 {
+		var err error
+		parent, err = app.GetMetadata(parent.Moderation.Object)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return parent.Moderation.Admins, nil
 }
 func (app *App) GetMetadata(id string) (*Internals, error) {
 
@@ -772,7 +799,7 @@ func (user *User) GetUsernameRef() *Username {
 	if max > 14 {
 		max = 14
 	}
-	for x := 3; x < max; x++ {
+	for x := 3; x <= max; x++ {
 		ref.Index[strconv.Itoa(x)] = []string{user.Username[:x]}
 	}
 	return ref
@@ -786,60 +813,16 @@ type Mail struct {
 	Meta       Internals
 	Sender     UserRef   `json:"sender" firestore:"sender"`
 	Recipients []UserRef `json:"recipients" firestore:"recipients"`
-	Subject    string    `json:"subject" firestore:"subject"`
 	Body       string    `json:"body" firestore:"body"`
-}
-
-func (user *User) NewMail(subject, body string, recipients ...*User) *Mail {
-	return &Mail{
-		Meta:       user.Meta.NewInternals("mail"),
-		Sender:     user.Ref(),
-		Recipients: Users(recipients).Refs(),
-		Subject:    subject,
-		Body:       body,
-	}
-}
-
-type MailReply struct {
-	Meta       Internals
-	ID         string    `json:"id" firestore:"id"`
-	Sender     UserRef   `json:"sender" firestore:"sender"`
-	Recipients []UserRef `json:"recipients" firestore:"recipients"`
-	Subject    string    `json:"subject" firestore:"subject"`
-	Body       string    `json:"body" firestore:"body"`
-}
-
-func (user *User) NewMailReply(op *Mail, body string, additionalRecipients ...UserRef) *MailReply {
-	mail := &MailReply{
-		Meta:       user.Meta.NewInternals("mailreply"),
-		ID:         uuid.NewString(),
-		Sender:     user.Ref(),
-		Recipients: append(op.Recipients, op.Sender),
-		Subject:    op.Subject,
-		Body:       body,
-	}
-	mail.Meta.Context.Parent = op.Meta.ID
-	// ensure no duplicate recipients
-	filter := map[string]UserRef{}
-	// merge existing recipients with additional ones
-	for _, r := range append(mail.Recipients, additionalRecipients...) {
-		filter[r.ID] = r
-	}
-	mail.Recipients = make([]UserRef, len(filter))
-	var n int
-	for _, recipient := range filter {
-		mail.Recipients[n] = recipient
-		n++
-	}
-	return mail
 }
 type ASYNCJOB struct {
 	Meta Internals
 	// pending:started:completed:failed
-	Status string
-	Stage  int
-	Stages []ASYNCJOBSTAGE
-	Data   interface{}
+	Status  string
+	Stage   int
+	Stages  []ASYNCJOBSTAGE
+	Data    interface{}
+	Counter int
 }
 
 type ASYNCJOBSTAGE struct {
@@ -872,11 +855,13 @@ func (job *ASYNCJOB) DataTo(dst interface{}) error {
 	return json.Unmarshal(b, dst)
 }
 
-func (job *ASYNCJOB) AddNote(note string) {
-	job.Stages[job.Stage].Notes = append(
-		job.Stages[job.Stage].Notes,
-		note,
-	)
+func (job *ASYNCJOB) AddNote(notes ...string) {
+	if len(notes) > 0 {
+		job.Stages[job.Stage].Notes = append(
+			job.Stages[job.Stage].Notes,
+			strings.Join(notes, " "),
+		)
+	}
 }
 
 func (job *ASYNCJOB) StartStage() {
@@ -904,6 +889,727 @@ func (job *ASYNCJOB) CompleteStage() {
 }
 
 
+type ARTHUR struct {
+	Meta    Internals
+	Fields FieldsARTHUR `json:"fields" firestore:"fields"`
+}
+
+func (user *User) NewARTHUR(parent *Internals, fields FieldsARTHUR) *ARTHUR {
+	var object *ARTHUR
+	if parent == nil {
+		object = &ARTHUR{
+			Meta: (Internals{}).NewInternals("arthurs"),
+			Fields: fields,
+		}
+	} else {
+		object = &ARTHUR{
+			Meta: parent.NewInternals("arthurs"),
+			Fields: fields,
+		}
+	}
+
+	object.Meta.ClassName = "arthurs"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
+	} else {
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
+	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
+	
+	// add children to context
+	object.Meta.Context.Children = []string{
+		"jelly","jellyname","lobby",
+	}
+	return object
+}
+
+type FieldsARTHUR struct {
+	Name string `json:"name" firestore:"name"`
+	
+}
+
+func (x *ARTHUR) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return false
+	}
+	return true
+}
+
+func (x *ARTHUR) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	var exists bool
+	
+
+	_, exists = m["name"]
+	if true && !exists {
+		return errors.New("required field 'name' not supplied")
+	}
+	if exists {
+		x.Fields.Name, err = assertSTRING(m, "name")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(30, x.Fields.Name); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
+	}
+
+	x.Meta.Modify()
+
+	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *ARTHUR) ValidateImageARTHUR(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
+}
+
+
+
+type JELLY struct {
+	Meta    Internals
+	Fields FieldsJELLY `json:"fields" firestore:"fields"`
+}
+
+func (user *User) NewJELLY(parent *Internals, fields FieldsJELLY) *JELLY {
+	var object *JELLY
+	if parent == nil {
+		object = &JELLY{
+			Meta: (Internals{}).NewInternals("jellys"),
+			Fields: fields,
+		}
+	} else {
+		object = &JELLY{
+			Meta: parent.NewInternals("jellys"),
+			Fields: fields,
+		}
+	}
+
+	object.Meta.ClassName = "jellies"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
+	} else {
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
+	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
+	
+	// add children to context
+	object.Meta.Context.Children = []string{
+		
+	}
+	return object
+}
+
+type FieldsJELLY struct {
+	Name string `json:"name" firestore:"name"`
+	Gender string `json:"gender" firestore:"gender"`
+	Element string `json:"element" firestore:"element"`
+	Hp int `json:"hp" firestore:"hp"`
+	Socialclass string `json:"socialclass" firestore:"socialclass"`
+	Backstory string `json:"backstory" firestore:"backstory"`
+	
+}
+
+func (x *JELLY) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return false
+	}
+	return true
+}
+
+func (x *JELLY) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	var exists bool
+	
+
+	_, exists = m["name"]
+	if true && !exists {
+		return errors.New("required field 'name' not supplied")
+	}
+	if exists {
+		x.Fields.Name, err = assertSTRING(m, "name")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(30, x.Fields.Name); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["gender"]
+	if true && !exists {
+		return errors.New("required field 'gender' not supplied")
+	}
+	if exists {
+		x.Fields.Gender, err = assertSTRING(m, "gender")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Gender)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Gender)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Gender)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Gender)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Gender); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(10, x.Fields.Gender); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["element"]
+	if true && !exists {
+		return errors.New("required field 'element' not supplied")
+	}
+	if exists {
+		x.Fields.Element, err = assertSTRING(m, "element")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Element)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Element)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Element)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Element)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Element); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(100, x.Fields.Element); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["hp"]
+	if true && !exists {
+		return errors.New("required field 'hp' not supplied")
+	}
+	if exists {
+		x.Fields.Hp, err = assertINT(m, "hp")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Hp)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Hp)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Hp)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Hp)
+				}
+			}
+		}
+		
+	}
+	
+
+	_, exists = m["socialclass"]
+	if true && !exists {
+		return errors.New("required field 'socialclass' not supplied")
+	}
+	if exists {
+		x.Fields.Socialclass, err = assertSTRING(m, "socialclass")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Socialclass)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Socialclass)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Socialclass)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Socialclass)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Socialclass); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(30, x.Fields.Socialclass); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["backstory"]
+	if true && !exists {
+		return errors.New("required field 'backstory' not supplied")
+	}
+	if exists {
+		x.Fields.Backstory, err = assertSTRING(m, "backstory")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Backstory)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Backstory)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Backstory)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Backstory)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Backstory); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(10000, x.Fields.Backstory); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
+	}
+
+	x.Meta.Modify()
+
+	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *JELLY) ValidateImageJELLY(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
+}
+
+
+
+type JELLYNAME struct {
+	Meta    Internals
+	Fields FieldsJELLYNAME `json:"fields" firestore:"fields"`
+}
+
+func (user *User) NewJELLYNAME(parent *Internals, fields FieldsJELLYNAME) *JELLYNAME {
+	var object *JELLYNAME
+	if parent == nil {
+		object = &JELLYNAME{
+			Meta: (Internals{}).NewInternals("jellynames"),
+			Fields: fields,
+		}
+	} else {
+		object = &JELLYNAME{
+			Meta: parent.NewInternals("jellynames"),
+			Fields: fields,
+		}
+	}
+
+	object.Meta.ClassName = "jellynames"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
+	} else {
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
+	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
+	
+	// add children to context
+	object.Meta.Context.Children = []string{
+		
+	}
+	return object
+}
+
+type FieldsJELLYNAME struct {
+	Name string `json:"name" firestore:"name"`
+	
+}
+
+func (x *JELLYNAME) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return false
+	}
+	return true
+}
+
+func (x *JELLYNAME) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	var exists bool
+	
+
+	_, exists = m["name"]
+	if true && !exists {
+		return errors.New("required field 'name' not supplied")
+	}
+	if exists {
+		x.Fields.Name, err = assertSTRING(m, "name")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(30, x.Fields.Name); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
+	}
+
+	x.Meta.Modify()
+
+	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *JELLYNAME) ValidateImageJELLYNAME(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
+}
+
+
+
 type GAME struct {
 	Meta    Internals
 	Fields FieldsGAME `json:"fields" firestore:"fields"`
@@ -922,15 +1628,28 @@ func (user *User) NewGAME(parent *Internals, fields FieldsGAME) *GAME {
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "games"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -1005,11 +1724,58 @@ func (x *GAME) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *GAME) ValidateImageGAME(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -1032,15 +1798,28 @@ func (user *User) NewLOBBY(parent *Internals, fields FieldsLOBBY) *LOBBY {
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "lobbys"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -1113,11 +1892,58 @@ func (x *LOBBY) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *LOBBY) ValidateImageLOBBY(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -1140,15 +1966,28 @@ func (user *User) NewCHARACTER(parent *Internals, fields FieldsCHARACTER) *CHARA
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "characters"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -1478,11 +2317,58 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *CHARACTER) ValidateImageCHARACTER(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -1505,15 +2391,28 @@ func (user *User) NewBOOK(parent *Internals, fields FieldsBOOK) *BOOK {
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "books"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -1588,11 +2487,58 @@ func (x *BOOK) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *BOOK) ValidateImageBOOK(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -1615,15 +2561,28 @@ func (user *User) NewBOOKCHARACTER(parent *Internals, fields FieldsBOOKCHARACTER
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "bookcharacters"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -1953,11 +2912,58 @@ func (x *BOOKCHARACTER) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *BOOKCHARACTER) ValidateImageBOOKCHARACTER(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -1980,15 +2986,28 @@ func (user *User) NewCHAPTER(parent *Internals, fields FieldsCHAPTER) *CHAPTER {
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "chapters"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -2063,11 +3082,58 @@ func (x *CHAPTER) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *CHAPTER) ValidateImageCHAPTER(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -2090,15 +3156,28 @@ func (user *User) NewPARAGRAPH(parent *Internals, fields FieldsPARAGRAPH) *PARAG
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "paragraphs"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -2173,11 +3252,58 @@ func (x *PARAGRAPH) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *PARAGRAPH) ValidateImagePARAGRAPH(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -2200,15 +3326,28 @@ func (user *User) NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "towns"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -2283,11 +3422,58 @@ func (x *TOWN) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *TOWN) ValidateImageTOWN(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -2310,15 +3496,28 @@ func (user *User) NewTESTSTREET(parent *Internals, fields FieldsTESTSTREET) *TES
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "teststreets"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -2519,11 +3718,58 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *TESTSTREET) ValidateImageTESTSTREET(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -2546,15 +3792,28 @@ func (user *User) NewQUARTER(parent *Internals, fields FieldsQUARTER) *QUARTER {
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "quarters"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -2627,11 +3886,58 @@ func (x *QUARTER) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *QUARTER) ValidateImageQUARTER(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -2654,15 +3960,28 @@ func (user *User) NewSTREET(parent *Internals, fields FieldsSTREET) *STREET {
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "streets"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -2735,11 +4054,58 @@ func (x *STREET) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *STREET) ValidateImageSTREET(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -2762,15 +4128,28 @@ func (user *User) NewBUILDING(parent *Internals, fields FieldsBUILDING) *BUILDIN
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "buildings"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -2983,11 +4362,58 @@ func (x *BUILDING) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *BUILDING) ValidateImageBUILDING(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -3010,15 +4436,28 @@ func (user *User) NewFLOOR(parent *Internals, fields FieldsFLOOR) *FLOOR {
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "floors"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -3084,11 +4523,58 @@ func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *FLOOR) ValidateImageFLOOR(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 
@@ -3111,15 +4597,28 @@ func (user *User) NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
 			Fields: fields,
 		}
 	}
-	// this object inherits its admin permissions
-	log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-	if len(parent.Moderation.Object) == 0 {
-		log.Println("USING PARENT ID AS MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.ID
+
+	object.Meta.ClassName = "rooms"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
 	} else {
-		log.Println("USING PARENT'S MODERATION OBJECT")
-		object.Meta.Moderation.Object = parent.Moderation.Object
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -3194,11 +4693,58 @@ func (x *ROOM) ValidateObject(m map[string]interface{}) error {
 	name, ok := m["name"].(string)
 	if ok {
 		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
 
 	x.Meta.Modify()
 
 	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *ROOM) ValidateImageROOM(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
 }
 
 

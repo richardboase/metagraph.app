@@ -22,121 +22,24 @@ func main() {
 		os.Getenv("ASSETLAYERSECRET"),
 		os.Getenv("DIDTOKEN"),
 	)
-	app.UseChatGPT(os.Getenv("OPENAI_KEY"))
 	
-	slotID, err := app.Assetlayer().EnsureSlotExists("go-gen-test-models", "description...", "")
-	if err != nil {
-		panic(err)
-	}
-	os.Setenv("SLOTID", slotID)
-
 	
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "games", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_GAMES", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "lobbys", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_LOBBYS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "characters", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_CHARACTERS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "books", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_BOOKS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "bookcharacters", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_BOOKCHARACTERS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "chapters", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_CHAPTERS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "paragraphs", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_PARAGRAPHS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "towns", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_TOWNS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "teststreets", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_TESTSTREETS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "quarters", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_QUARTERS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "streets", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_STREETS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "buildings", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_BUILDINGS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "floors", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_FLOORS", collectionID)
-	}
-	{
-		collectionID, err := app.Assetlayer().EnsureCollectionExists(slotID, "Unique", "rooms", "description...", "", 1000000, nil)
-		if err != nil {
-			panic(err)
-		}
-		os.Setenv("MODEL_ROOMS", collectionID)
-	}
-
 	
-
 	http.HandleFunc("/api/user", app.UserEntrypoint)
 	http.HandleFunc("/api/users", app.UsersEntrypoint)
 	http.HandleFunc("/api/auth", app.AuthEntrypoint)
+	http.HandleFunc("/api/mail", app.MailEntrypoint)
 	http.HandleFunc("/api/assetlayer", app.EntrypointASSETLAYER)
 	
+	http.HandleFunc("/api/arthur", app.EntrypointARTHUR)
+	http.HandleFunc("/api/arthurs", app.EntrypointARTHURS)
+	println("registering handlers for arthurs")
+	http.HandleFunc("/api/jelly", app.EntrypointJELLY)
+	http.HandleFunc("/api/jellys", app.EntrypointJELLYS)
+	println("registering handlers for jellys")
+	http.HandleFunc("/api/jellyname", app.EntrypointJELLYNAME)
+	http.HandleFunc("/api/jellynames", app.EntrypointJELLYNAMES)
+	println("registering handlers for jellynames")
 	http.HandleFunc("/api/game", app.EntrypointGAME)
 	http.HandleFunc("/api/games", app.EntrypointGAMES)
 	println("registering handlers for games")

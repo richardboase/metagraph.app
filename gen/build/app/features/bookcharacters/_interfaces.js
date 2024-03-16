@@ -10,7 +10,6 @@ import { NewBookcharacter } from './newBookcharacter'
 import { EditBookcharacter } from './editBookcharacter'
 import { DeleteBookcharacter } from './deleteBookcharacter'
 import { InitUploadBookcharacter } from './initUploadBookcharacter'
-import { InitUploadBookcharacters } from './initUploadBookcharacters'
 import { UploadBookcharacter } from './uploadBookcharacter'
 
 export var BookcharacterInterfaces = {

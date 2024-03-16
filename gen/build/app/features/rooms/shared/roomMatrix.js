@@ -13,8 +13,7 @@ import { RoomMatrixRow } from './roomMatrixRow';
 import {
 	RoomDELETE,
 	RoomsListGET,
-	RoomMoveUpPOST,
-	RoomMoveDownPOST,
+	RoomOrderPOST,
 } from '../_fetch';
 import { ObjectPATCH } from '@/app/fetch'
 
@@ -29,7 +28,7 @@ export function RoomMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		RoomsListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
+		RoomsListGET(userdata, props.subject?.Meta.ID, "admin", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -70,7 +69,7 @@ export function RoomMatrix(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		RoomMoveUpPOST(userdata, object.Meta.ID)
+		RoomOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -83,7 +82,7 @@ export function RoomMatrix(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		RoomMoveDownPOST(userdata, object.Meta.ID)
+		RoomOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

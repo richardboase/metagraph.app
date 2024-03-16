@@ -20,10 +20,87 @@ func main() {
 		SiteName:      "NewTown",
 		ProjectID:     "npg-generic",
 		DatabaseID:    "go-gen-test",
-		Entrypoints: []string{
-			"town",
-			"game",
-			"book",
+	}
+
+	arthur := &models.Object{
+		Context: "arthurs space",
+		Mode:    "root",
+		Parents: []string{},
+		Name:    "arthur",
+		Fields: []*models.Field{
+			{
+				Name:     "name",
+				JSON:     "string_30",
+				Required: true,
+			},
+		},
+		Options: models.Options{},
+	}
+
+	jelly := &models.Object{
+		Context: "arthurs ",
+		Parents: []string{
+			arthur.Name,
+		},
+		Name:   "jelly",
+		Plural: "jellies",
+		Fields: []*models.Field{
+			{
+				Context:  "the name of the unique character",
+				Name:     "name",
+				JSON:     "string_30",
+				Required: true,
+			},
+			{
+				Context:  "either male or female",
+				Name:     "gender",
+				JSON:     "string_10",
+				Required: true,
+			},
+			{
+				Context:  "what elemental type it is",
+				Name:     "element",
+				JSON:     "string_100",
+				Required: true,
+			},
+			{
+				Context:  "health points",
+				Name:     "hp",
+				JSON:     "number_int",
+				Required: true,
+			},
+			{
+				Context:  "the social class of the character (upper, middle, working, lower)",
+				Name:     "socialclass",
+				JSON:     "string_30",
+				Required: true,
+			},
+			{
+				Context:  "a synopis of the full life story of the character",
+				Name:     "backstory",
+				JSON:     "string_10000",
+				Required: true,
+			},
+		},
+		Options: models.Options{
+			File:  true,
+			Image: true,
+		},
+	}
+
+	jellyname := &models.Object{
+		Context: "arthurs ",
+		Parents: []string{
+			arthur.Name,
+		},
+		Name: "jellyname",
+		Fields: []*models.Field{
+			{
+				Context:  "the elemental name of the jelly",
+				Name:     "name",
+				JSON:     "string_30",
+				Required: true,
+			},
 		},
 	}
 
@@ -39,9 +116,7 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{},
-		},
+		Options: models.Options{},
 	}
 
 	bookcharacter := &models.Object{
@@ -94,9 +169,7 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{},
-		},
+		Options: models.Options{},
 	}
 
 	chapter := &models.Object{
@@ -114,8 +187,7 @@ func main() {
 			},
 		},
 		Options: models.Options{
-			Order:      true,
-			Assetlayer: models.Assetlayer{},
+			Order: true,
 		},
 	}
 
@@ -133,9 +205,7 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{},
-		},
+		Options: models.Options{},
 	}
 
 	game := &models.Object{
@@ -149,14 +219,13 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{},
-		},
+		Options: models.Options{},
 	}
 
 	lobby := &models.Object{
 		Parents: []string{
 			game.Name,
+			arthur.Name,
 		},
 		Name: "lobby",
 		Fields: []*models.Field{
@@ -165,11 +234,7 @@ func main() {
 				JSON: "string_30",
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{
-				Wallet: true,
-			},
-		},
+		Options: models.Options{},
 	}
 
 	character := &models.Object{
@@ -221,9 +286,7 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{},
-		},
+		Options: models.Options{},
 	}
 
 	town := &models.Object{
@@ -238,11 +301,7 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{
-				Wallet: true,
-			},
-		},
+		Options: models.Options{},
 	}
 
 	teststreet := &models.Object{
@@ -276,11 +335,7 @@ func main() {
 				Required: false,
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{
-				Wallet: true,
-			},
-		},
+		Options: models.Options{},
 	}
 
 	quarter := &models.Object{
@@ -295,11 +350,7 @@ func main() {
 				JSON: "string_30",
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{
-				Wallet: true,
-			},
-		},
+		Options: models.Options{},
 	}
 
 	street := &models.Object{
@@ -314,12 +365,7 @@ func main() {
 				JSON: "string_30",
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{
-				Wallet: true,
-				Token:  true,
-			},
-		},
+		Options: models.Options{},
 	}
 
 	building := &models.Object{
@@ -353,11 +399,7 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{
-				Wallet: true,
-			},
-		},
+		Options: models.Options{},
 	}
 
 	floor := &models.Object{
@@ -374,11 +416,7 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{
-				Wallet: true,
-			},
-		},
+		Options: models.Options{},
 	}
 
 	room := &models.Object{
@@ -393,12 +431,12 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{
-			Assetlayer: models.Assetlayer{
-				Wallet: true,
-			},
-		},
+		Options: models.Options{},
 	}
+
+	tree.Objects = append(tree.Objects, arthur)
+	tree.Objects = append(tree.Objects, jelly)
+	tree.Objects = append(tree.Objects, jellyname)
 
 	tree.Objects = append(tree.Objects, game)
 	tree.Objects = append(tree.Objects, lobby)

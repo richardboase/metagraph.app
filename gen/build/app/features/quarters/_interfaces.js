@@ -10,7 +10,6 @@ import { NewQuarter } from './newQuarter'
 import { EditQuarter } from './editQuarter'
 import { DeleteQuarter } from './deleteQuarter'
 import { InitUploadQuarter } from './initUploadQuarter'
-import { InitUploadQuarters } from './initUploadQuarters'
 import { UploadQuarter } from './uploadQuarter'
 
 export var QuarterInterfaces = {

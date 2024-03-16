@@ -10,16 +10,23 @@ import Spacer from '@/inputs/spacer';
 
 import { StreetListRow } from './streetListRow';
 import { StreetListRowJob } from './streetListRowJob';
-import { StreetDELETE, StreetsListGET, StreetOrderPOST } from '../_fetch';
+import { StreetListRowImage } from './streetListRowImage';
+import { StreetDELETE, StreetsListGET, StreetOrderPOST, StreetJobPOST } from '../_fetch';
+
+
+import { QuarterJobPOST } from '@/features/quarters/_fetch'
+
 
 export function StreetList(props) {
 
 	const [ userdata, setUserdata] = useUserContext()
 	const [ localdata, setLocaldata] = useLocalContext()
 
-	const [ list, setList ] = useState(null)
+	const [topics, setTopics] = useState([])
 
-	var mode = "modified"
+	const [ list, setList ] = useState(null)
+	const [ listMode, setListMode ] = useState("modified")
+	
 	
 	
 
@@ -29,7 +36,21 @@ export function StreetList(props) {
 		.then((data) => {
 			console.log(data)
 			setList(data)
+		}).catch((e) => {
+			console.error("subjetList.updateList:", e)
 		})
+	}
+
+	function sendToTopic(e) {
+		console.log(e)
+		const job = e.target.id
+		
+		QuarterJobPOST(userdata, props.subject?.Meta.ID, job)
+		.then((res) => console.log(res))
+		.catch((e) => {
+            console.error(e)
+        })
+		
 	}
 
 	useEffect(() => {
@@ -41,7 +62,7 @@ export function StreetList(props) {
 		console.log("SELECT Street", id)
 		const next = list[parseInt(id)]
 		const context = {
-			"_": next.fields.name,
+			"_": (next.Meta.Name ? next.fields.name : next.fields.name),
 			"object": next,
 		}
 		setLocaldata(VisitTab(localdata, "street", context))
@@ -90,31 +111,67 @@ export function StreetList(props) {
 		})
 	}
 
-	return (
-	<div className='flex flex-col my-4'>
-	{
-		props.title && <div className='py-4 my-4 text-xl font-bold cursor-pointer' onClick={selectChild}>{props.title}s:</div>
+	const jobButtonStyle = {
+		borderRadius: "20px",
+		backgroundColor: "rgb(96, 165, 250)",
+		border: "solid 0px",
+		color: "white",
+		padding: "6px 10px"
 	}
-	{
-		props.title && <hr/>
-	}
-	{
-		!list && <Loading/>
-	}
-	{
-		list && list.map(function (item, i) {
 
-			return (
-				<div key={i}>
-					
-					<StreetListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
-					
-					
-					<Spacer/>
+	return (
+	<div className='flex flex-col w-full'>
+		{
+			props.title && <div className="flex flex-row justify-between items-center">
+				<div className="flex flex-row">
+					<div className='py-4 my-4 text-xl font-bold'>{props.title}:</div>
+					<select onClick={updateListMode}>
+						<option value="created">Created</option>
+						<option value="modified">Modified</option>
+						<option value="order">Ordered</option>
+						<option value="exif">EXIF</option>
+					</select>
 				</div>
-			)
-		})
-	}
+				{
+					(topics.length > 0) && <div className='flex flex-row'>
+					{
+						topics.map(function (item, i) {
+							return (
+								<div key={i} className='flex flex-col justify-center'>
+									<button key={i} className='text-sm' id={item.topic} onClick={sendToTopic} style={jobButtonStyle}>
+									{item.name}
+									</button>
+								</div>
+							)
+						})
+					}
+					</div>
+				}
+				
+			</div>
+		}
+		{
+			props.title && <hr/>
+		}
+		{
+			!list && <Loading/>
+		}
+		
+		
+		{
+			list && list.map(function (item, i) {
+
+				return (
+					<div className=' py-2 px-4' key={i}>
+						
+							<StreetListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+						
+						
+					</div>
+				)
+			})
+		}
+		
 	</div>
 	)
 

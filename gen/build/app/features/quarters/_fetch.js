@@ -46,14 +46,18 @@ export function QuarterUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/quarter?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function QuartersUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/quarters?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function QuarterInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/quarters?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function QuartersChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/quarters?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function QuartersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/quarters?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function QuarterAdminPOST(user, id, mode, admin) {

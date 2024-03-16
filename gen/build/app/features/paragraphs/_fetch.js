@@ -46,14 +46,18 @@ export function ParagraphUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/paragraph?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function ParagraphsUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/paragraphs?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function ParagraphInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/paragraphs?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function ParagraphsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/paragraphs?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function ParagraphsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/paragraphs?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function ParagraphAdminPOST(user, id, mode, admin) {

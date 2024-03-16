@@ -27,42 +27,70 @@ export function CharacterEdit(props) {
 	}
 
 	const [inputs, setInputs] = useState({
+		
 		"name": {
 			id: "name",
 			type: "string",
-			value: subject.fields.name,
-			required: true,
-		},"age": {
-			id: "age",
-			type: "int",
-			value: subject.fields.age,
-			required: true,
-		},"gender": {
-			id: "gender",
-			type: "string",
-			value: subject.fields.gender,
-			required: true,
-		},"diseases": {
-			id: "diseases",
-			type: "string",
-			value: subject.fields.diseases,
-			required: true,
-		},"profession": {
-			id: "profession",
-			type: "string",
-			value: subject.fields.profession,
-			required: true,
-		},"socialclass": {
-			id: "socialclass",
-			type: "string",
-			value: subject.fields.socialclass,
-			required: true,
-		},"backstory": {
-			id: "backstory",
-			type: "string",
-			value: subject.fields.backstory,
+			
+			value: subject.Meta.Name,
+			
 			required: true,
 		},
+		
+		"age": {
+			id: "age",
+			type: "int",
+			
+			value: subject.fields.age,
+			
+			required: true,
+		},
+		
+		"gender": {
+			id: "gender",
+			type: "string",
+			
+			value: subject.fields.gender,
+			
+			required: true,
+		},
+		
+		"diseases": {
+			id: "diseases",
+			type: "string",
+			
+			value: subject.fields.diseases,
+			
+			required: true,
+		},
+		
+		"profession": {
+			id: "profession",
+			type: "string",
+			
+			value: subject.fields.profession,
+			
+			required: true,
+		},
+		
+		"socialclass": {
+			id: "socialclass",
+			type: "string",
+			
+			value: subject.fields.socialclass,
+			
+			required: true,
+		},
+		
+		"backstory": {
+			id: "backstory",
+			type: "string",
+			
+			value: subject.fields.backstory,
+			
+			required: true,
+		},
+		
 	})
 	function handleInputChange(obj) {
 		InputChange(inputs, setInputs, obj)

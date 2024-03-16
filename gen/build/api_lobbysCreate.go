@@ -6,7 +6,8 @@ import (
 )
 
 func (app *App) CreateDocumentLOBBY(parent *Internals, object *LOBBY) error {
-	log.Println(*object)
+	
+	log.Println("CREATING DOCUMENT", object.Meta.Class, object.Meta.ID)
 
 	/*
 	var order int
@@ -26,29 +27,6 @@ func (app *App) CreateDocumentLOBBY(parent *Internals, object *LOBBY) error {
 	*/
 
 	
-	// create app wallet
-	{
-		log.Println("CREATING WALLET")
-		wallerUserID, err := app.Assetlayer().NewAppWallet(object.Meta.AssetlayerWalletID())
-		if err != nil {
-			return err
-		}
-		object.Meta.Wallet = wallerUserID
-	}
-	
-
-	/*
-	// create asset
-	{
-		log.Println("CREATING TOKEN")
-		assetID, err := app.Assetlayer().MintAssetWithProperties(object.Meta.AssetlayerCollectionID(), object)
-		if err != nil {
-			return err
-		}
-		object.Meta.Asset = assetID
-		
-	}
-	*/
 	
 	// write new LOBBY to the DB
 	if err := object.Meta.SaveToFirestore(app.App, object); err != nil {

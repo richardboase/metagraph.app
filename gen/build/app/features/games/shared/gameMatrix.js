@@ -13,8 +13,7 @@ import { GameMatrixRow } from './gameMatrixRow';
 import {
 	GameDELETE,
 	GamesListGET,
-	GameMoveUpPOST,
-	GameMoveDownPOST,
+	GameOrderPOST,
 } from '../_fetch';
 import { ObjectPATCH } from '@/app/fetch'
 
@@ -29,7 +28,7 @@ export function GameMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		GamesListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
+		GamesListGET(userdata, props.subject?.Meta.ID, "admin", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -70,7 +69,7 @@ export function GameMatrix(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		GameMoveUpPOST(userdata, object.Meta.ID)
+		GameOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -83,7 +82,7 @@ export function GameMatrix(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		GameMoveDownPOST(userdata, object.Meta.ID)
+		GameOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

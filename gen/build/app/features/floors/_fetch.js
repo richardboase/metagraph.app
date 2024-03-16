@@ -46,14 +46,18 @@ export function FloorUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/floor?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function FloorsUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/floors?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function FloorInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/floors?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function FloorsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/floors?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function FloorsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/floors?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function FloorAdminPOST(user, id, mode, admin) {

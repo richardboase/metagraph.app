@@ -1,0 +1,86 @@
+package main
+
+import (
+	"fmt"
+//	"log"
+//	"errors"
+//	"encoding/json"
+
+//	"github.com/sashabaranov/go-openai"
+
+	"github.com/kr/pretty"
+)
+
+func (app *App) teststreetVertexCreate(user *User, parent *TESTSTREET, prompt string) error {
+
+	fmt.Println("prompt with parent", parent.Meta.ID, prompt)
+
+	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
+
+We want to create one or more of these data objects: 
+// A street where people live.
+{
+
+	// the name of the street  (THIS FIELD IS REQUIRED)
+	name (string)
+
+	// a description of the street 
+	description (string)
+
+	// the junction at the START of the road, if any 
+	start (string)
+
+	// the junction at the END of the road, if any 
+	end (string)
+
+}
+
+The response should be a raw JSON array with one or more objects, based on the user prompt: `
+
+	println(prompt)
+
+	_, resp, err := app.GCPClients.GenerateContent(system+prompt, 0.9)
+	if err != nil {
+		err = fmt.Errorf("ChatCompletion error: %v\n", err)
+		return err
+	}
+
+	pretty.Println(resp)
+/*
+	reply := resp.Choices[0].Message.Content
+	log.Println("reply >>", reply)
+
+	newResults := []interface{}{}
+	replyBytes := []byte(reply)
+	if err := json.Unmarshal(replyBytes, &newResults); err != nil {
+		newResult := map[string]interface{}{}
+		if err := json.Unmarshal(replyBytes, &newResult); err != nil {
+			return err
+		}
+		newResults = append(newResults, newResult)
+	}
+
+	for _, r := range newResults {
+		result, ok := r.(map[string]interface{})
+		if !ok {
+			return errors.New("array item is not a map")
+		}
+		// remove any empty fields
+		for k, v := range result {
+			vv, ok := v.(string)
+			if ok && vv == "" {
+				delete(result, k)
+			}
+		}
+		object := user.NewTESTSTREET(&parent.Meta, FieldsTESTSTREET{})
+		if err := object.ValidateObject(result); err != nil {
+			return err
+		}
+		if err := app.CreateDocumentTESTSTREET(&parent.Meta, object); err != nil {
+			return err
+		}
+		app.SendMessageToUser(user, "create", object)
+	}
+*/
+	return nil
+}

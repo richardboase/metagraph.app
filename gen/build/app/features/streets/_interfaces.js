@@ -10,7 +10,6 @@ import { NewStreet } from './newStreet'
 import { EditStreet } from './editStreet'
 import { DeleteStreet } from './deleteStreet'
 import { InitUploadStreet } from './initUploadStreet'
-import { InitUploadStreets } from './initUploadStreets'
 import { UploadStreet } from './uploadStreet'
 
 export var StreetInterfaces = {

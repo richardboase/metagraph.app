@@ -27,27 +27,43 @@ export function TeststreetEdit(props) {
 	}
 
 	const [inputs, setInputs] = useState({
+		
 		"name": {
 			id: "name",
 			type: "string",
-			value: subject.fields.name,
+			
+			value: subject.Meta.Name,
+			
 			required: true,
-		},"description": {
+		},
+		
+		"description": {
 			id: "description",
 			type: "string",
+			
 			value: subject.fields.description,
-			required: false,
-		},"start": {
-			id: "start",
-			type: "string",
-			value: subject.fields.start,
-			required: false,
-		},"end": {
-			id: "end",
-			type: "string",
-			value: subject.fields.end,
+			
 			required: false,
 		},
+		
+		"start": {
+			id: "start",
+			type: "string",
+			
+			value: subject.fields.start,
+			
+			required: false,
+		},
+		
+		"end": {
+			id: "end",
+			type: "string",
+			
+			value: subject.fields.end,
+			
+			required: false,
+		},
+		
 	})
 	function handleInputChange(obj) {
 		InputChange(inputs, setInputs, obj)

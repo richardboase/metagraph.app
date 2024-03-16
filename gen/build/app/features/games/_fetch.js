@@ -46,14 +46,18 @@ export function GameUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/game?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function GamesUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/games?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function GameInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/games?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function GamesChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/games?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function GamesChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/games?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function GameAdminPOST(user, id, mode, admin) {

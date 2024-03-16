@@ -46,14 +46,18 @@ export function TownUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/town?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function TownsUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/towns?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function TownInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/towns?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function TownsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/towns?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function TownsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/towns?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function TownAdminPOST(user, id, mode, admin) {

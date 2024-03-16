@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useUserContext } from "@/context/user"
+import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 import Spacer from "@/inputs/spacer"
 
@@ -21,11 +22,20 @@ export function CharacterListRowJob(props) {
 		props.delete(props.id)
 	}
 
+	var date = new Date(props.item.Meta.Created * 1000);
+	const dateTime = formatRelative(date, new Date())
+
+	// Create a new Date object using the timestamp
+
 	return (
-		<div className='flex flex-row justify-between items-center w-full my-2'>
-			<div onClick={selectItem} className='flex flex-row justify-between w-full items-center cursor-pointer m-4'>
-				<div className='text-xl font-bold' title="">{ props.item.Meta.Context.Status }</div>
-				<div className='text-xl font-bold' title="">{ props.item.Meta.Name }</div>
+		<div className='flex flex-row justify-between items-center w-full'>
+			<div onClick={selectItem} className='flex flex-row justify-between w-full items-center cursor-pointer'>
+				<div className="flex flex-row items-center">
+					<div className='text-lg' title="">{ props.item.Meta.Name }</div>
+					<div className="text-lg p-2 flex flex-col items-center justify-center"><div>:</div></div>
+					<div className='text-lg' title="">{ props.item.Meta.Context.Status }</div>
+				</div>
+				<div className='text-sm' title="">{ dateTime }</div>
 			</div>
 		</div>
 	)

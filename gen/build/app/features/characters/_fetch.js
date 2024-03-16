@@ -46,14 +46,18 @@ export function CharacterUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/character?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function CharactersUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/characters?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function CharacterInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/characters?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function CharactersChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/characters?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function CharactersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/characters?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function CharacterAdminPOST(user, id, mode, admin) {

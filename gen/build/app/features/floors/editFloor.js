@@ -13,11 +13,11 @@ export function EditFloor(props) {
 	const [userdata, _] = useUserContext()
 	const [localdata, setLocaldata] = useLocalContext()
 
-    // make sure the object is current
-    const [subject, setSubject] = useState(localdata.tab.context.object)
-    useEffect(() => {
-        FloorObjectGET(userdata, subject?.Meta.ID)
-        .then((res) => res.json())
+	// make sure the object is current
+	const [subject, setSubject] = useState(localdata.tab.context.object)
+	useEffect(() => {
+		FloorObjectGET(userdata, subject?.Meta.ID)
+		.then((res) => res.json())
 		.then((data) => {
 			console.log("UPDATED OBJECT",data)
 			setSubject(data)

@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { CharacterAssetsRow } from './characterAssetsRow';
-import { CharacterDELETE, CharacterMoveUpPOST, CharacterMoveDownPOST } from '../_fetch';
+import { CharacterDELETE, CharacterOrderPOST } from '../_fetch';
 
 export function CharacterAssets(props) {
 
@@ -49,7 +49,7 @@ export function CharacterAssets(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		CharacterMoveUpPOST(userdata, object.Meta.ID)
+		CharacterOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -62,7 +62,7 @@ export function CharacterAssets(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		CharacterMoveDownPOST(userdata, object.Meta.ID)
+		CharacterOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

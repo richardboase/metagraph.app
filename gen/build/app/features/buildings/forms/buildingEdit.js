@@ -27,32 +27,52 @@ export function BuildingEdit(props) {
 	}
 
 	const [inputs, setInputs] = useState({
+		
 		"name": {
 			id: "name",
 			type: "string",
-			value: subject.fields.name,
+			
+			value: subject.Meta.Name,
+			
 			required: false,
-		},"number": {
+		},
+		
+		"number": {
 			id: "number",
 			type: "int",
+			
 			value: subject.fields.number,
+			
 			required: false,
-		},"xunits": {
+		},
+		
+		"xunits": {
 			id: "xunits",
 			type: "float64",
+			
 			value: subject.fields.xunits,
-			required: true,
-		},"yunits": {
-			id: "yunits",
-			type: "float64",
-			value: subject.fields.yunits,
-			required: true,
-		},"doors": {
-			id: "doors",
-			type: "int",
-			value: subject.fields.doors,
+			
 			required: true,
 		},
+		
+		"yunits": {
+			id: "yunits",
+			type: "float64",
+			
+			value: subject.fields.yunits,
+			
+			required: true,
+		},
+		
+		"doors": {
+			id: "doors",
+			type: "int",
+			
+			value: subject.fields.doors,
+			
+			required: true,
+		},
+		
 	})
 	function handleInputChange(obj) {
 		InputChange(inputs, setInputs, obj)

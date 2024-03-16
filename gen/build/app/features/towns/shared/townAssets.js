@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { TownAssetsRow } from './townAssetsRow';
-import { TownDELETE, TownMoveUpPOST, TownMoveDownPOST } from '../_fetch';
+import { TownDELETE, TownOrderPOST } from '../_fetch';
 
 export function TownAssets(props) {
 
@@ -49,7 +49,7 @@ export function TownAssets(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		TownMoveUpPOST(userdata, object.Meta.ID)
+		TownOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -62,7 +62,7 @@ export function TownAssets(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		TownMoveDownPOST(userdata, object.Meta.ID)
+		TownOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

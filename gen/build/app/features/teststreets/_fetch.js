@@ -46,14 +46,18 @@ export function TeststreetUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/teststreet?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function TeststreetsUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/teststreets?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function TeststreetInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/teststreets?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function TeststreetsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/teststreets?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function TeststreetsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/teststreets?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function TeststreetAdminPOST(user, id, mode, admin) {

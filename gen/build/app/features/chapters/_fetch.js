@@ -46,14 +46,18 @@ export function ChapterUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/chapter?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function ChaptersUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/chapters?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function ChapterInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/chapters?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function ChaptersChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/chapters?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function ChaptersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/chapters?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function ChapterAdminPOST(user, id, mode, admin) {

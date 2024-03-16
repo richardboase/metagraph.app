@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { TeststreetAssetsRow } from './teststreetAssetsRow';
-import { TeststreetDELETE, TeststreetMoveUpPOST, TeststreetMoveDownPOST } from '../_fetch';
+import { TeststreetDELETE, TeststreetOrderPOST } from '../_fetch';
 
 export function TeststreetAssets(props) {
 
@@ -49,7 +49,7 @@ export function TeststreetAssets(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		TeststreetMoveUpPOST(userdata, object.Meta.ID)
+		TeststreetOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -62,7 +62,7 @@ export function TeststreetAssets(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		TeststreetMoveDownPOST(userdata, object.Meta.ID)
+		TeststreetOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

@@ -46,14 +46,18 @@ export function BookUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/book?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function BooksUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/books?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function BookInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/books?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function BooksChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/books?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function BooksChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/books?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function BookAdminPOST(user, id, mode, admin) {

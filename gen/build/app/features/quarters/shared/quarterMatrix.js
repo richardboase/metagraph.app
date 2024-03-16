@@ -13,8 +13,7 @@ import { QuarterMatrixRow } from './quarterMatrixRow';
 import {
 	QuarterDELETE,
 	QuartersListGET,
-	QuarterMoveUpPOST,
-	QuarterMoveDownPOST,
+	QuarterOrderPOST,
 } from '../_fetch';
 import { ObjectPATCH } from '@/app/fetch'
 
@@ -29,7 +28,7 @@ export function QuarterMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		QuartersListGET(userdata, props.subject?.Meta.ID, "created", props.limit)
+		QuartersListGET(userdata, props.subject?.Meta.ID, "admin", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -70,7 +69,7 @@ export function QuarterMatrix(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		QuarterMoveUpPOST(userdata, object.Meta.ID)
+		QuarterOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -83,7 +82,7 @@ export function QuarterMatrix(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		QuarterMoveDownPOST(userdata, object.Meta.ID)
+		QuarterOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

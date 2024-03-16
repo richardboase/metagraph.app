@@ -10,7 +10,6 @@ import { NewFloor } from './newFloor'
 import { EditFloor } from './editFloor'
 import { DeleteFloor } from './deleteFloor'
 import { InitUploadFloor } from './initUploadFloor'
-import { InitUploadFloors } from './initUploadFloors'
 import { UploadFloor } from './uploadFloor'
 
 export var FloorInterfaces = {

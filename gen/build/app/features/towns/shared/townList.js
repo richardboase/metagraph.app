@@ -10,16 +10,21 @@ import Spacer from '@/inputs/spacer';
 
 import { TownListRow } from './townListRow';
 import { TownListRowJob } from './townListRowJob';
-import { TownDELETE, TownsListGET, TownOrderPOST } from '../_fetch';
+import { TownListRowImage } from './townListRowImage';
+import { TownDELETE, TownsListGET, TownOrderPOST, TownJobPOST } from '../_fetch';
+
+
 
 export function TownList(props) {
 
 	const [ userdata, setUserdata] = useUserContext()
 	const [ localdata, setLocaldata] = useLocalContext()
 
-	const [ list, setList ] = useState(null)
+	const [topics, setTopics] = useState([])
 
-	var mode = "modified"
+	const [ list, setList ] = useState(null)
+	const [ listMode, setListMode ] = useState("modified")
+	
 	
 	
 
@@ -29,7 +34,15 @@ export function TownList(props) {
 		.then((data) => {
 			console.log(data)
 			setList(data)
+		}).catch((e) => {
+			console.error("subjetList.updateList:", e)
 		})
+	}
+
+	function sendToTopic(e) {
+		console.log(e)
+		const job = e.target.id
+		
 	}
 
 	useEffect(() => {
@@ -41,7 +54,7 @@ export function TownList(props) {
 		console.log("SELECT Town", id)
 		const next = list[parseInt(id)]
 		const context = {
-			"_": next.fields.name,
+			"_": (next.Meta.Name ? next.fields.name : next.fields.name),
 			"object": next,
 		}
 		setLocaldata(VisitTab(localdata, "town", context))
@@ -90,31 +103,67 @@ export function TownList(props) {
 		})
 	}
 
-	return (
-	<div className='flex flex-col my-4'>
-	{
-		props.title && <div className='py-4 my-4 text-xl font-bold cursor-pointer' onClick={selectChild}>{props.title}s:</div>
+	const jobButtonStyle = {
+		borderRadius: "20px",
+		backgroundColor: "rgb(96, 165, 250)",
+		border: "solid 0px",
+		color: "white",
+		padding: "6px 10px"
 	}
-	{
-		props.title && <hr/>
-	}
-	{
-		!list && <Loading/>
-	}
-	{
-		list && list.map(function (item, i) {
 
-			return (
-				<div key={i}>
-					
-					<TownListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
-					
-					
-					<Spacer/>
+	return (
+	<div className='flex flex-col w-full'>
+		{
+			props.title && <div className="flex flex-row justify-between items-center">
+				<div className="flex flex-row">
+					<div className='py-4 my-4 text-xl font-bold'>{props.title}:</div>
+					<select onClick={updateListMode}>
+						<option value="created">Created</option>
+						<option value="modified">Modified</option>
+						<option value="order">Ordered</option>
+						<option value="exif">EXIF</option>
+					</select>
 				</div>
-			)
-		})
-	}
+				{
+					(topics.length > 0) && <div className='flex flex-row'>
+					{
+						topics.map(function (item, i) {
+							return (
+								<div key={i} className='flex flex-col justify-center'>
+									<button key={i} className='text-sm' id={item.topic} onClick={sendToTopic} style={jobButtonStyle}>
+									{item.name}
+									</button>
+								</div>
+							)
+						})
+					}
+					</div>
+				}
+				
+			</div>
+		}
+		{
+			props.title && <hr/>
+		}
+		{
+			!list && <Loading/>
+		}
+		
+		
+		{
+			list && list.map(function (item, i) {
+
+				return (
+					<div className=' py-2 px-4' key={i}>
+						
+							<TownListRow id={i} listLength={list.length} item={item} select={selectItem} moveUp={moveUp} moveDown={moveDown} delete={deleteItem}/>
+						
+						
+					</div>
+				)
+			})
+		}
+		
 	</div>
 	)
 

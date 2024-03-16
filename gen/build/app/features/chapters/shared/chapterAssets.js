@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { ChapterAssetsRow } from './chapterAssetsRow';
-import { ChapterDELETE, ChapterMoveUpPOST, ChapterMoveDownPOST } from '../_fetch';
+import { ChapterDELETE, ChapterOrderPOST } from '../_fetch';
 
 export function ChapterAssets(props) {
 
@@ -49,7 +49,7 @@ export function ChapterAssets(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		ChapterMoveUpPOST(userdata, object.Meta.ID)
+		ChapterOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -62,7 +62,7 @@ export function ChapterAssets(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		ChapterMoveDownPOST(userdata, object.Meta.ID)
+		ChapterOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

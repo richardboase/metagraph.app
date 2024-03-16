@@ -10,7 +10,6 @@ import { NewTeststreet } from './newTeststreet'
 import { EditTeststreet } from './editTeststreet'
 import { DeleteTeststreet } from './deleteTeststreet'
 import { InitUploadTeststreet } from './initUploadTeststreet'
-import { InitUploadTeststreets } from './initUploadTeststreets'
 import { UploadTeststreet } from './uploadTeststreet'
 
 export var TeststreetInterfaces = {

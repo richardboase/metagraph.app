@@ -11,7 +11,7 @@ import Spacer from '@/inputs/spacer';
 import { AssetsWallet } from '@/app/fetch'
 
 import { GameAssetsRow } from './gameAssetsRow';
-import { GameDELETE, GameMoveUpPOST, GameMoveDownPOST } from '../_fetch';
+import { GameDELETE, GameOrderPOST } from '../_fetch';
 
 export function GameAssets(props) {
 
@@ -49,7 +49,7 @@ export function GameAssets(props) {
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		GameMoveUpPOST(userdata, object.Meta.ID)
+		GameOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -62,7 +62,7 @@ export function GameAssets(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		GameMoveDownPOST(userdata, object.Meta.ID)
+		GameOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()

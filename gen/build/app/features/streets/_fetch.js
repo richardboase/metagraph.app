@@ -46,14 +46,18 @@ export function StreetUpload(user, id, mode, formData) {
     return AxiosPOST(user, "api/street?function=upload&id="+id+"&mode="+mode, formData)
 }
 
-export function StreetsUpload(user, parentID, mode, formData) {
-    return AxiosPOST(user, "api/streets?function=upload&parent="+parentID+"&mode="+mode, formData)
+export function StreetInitUpload(user, parentID, formData) {
+    return AxiosPOST(user, "api/streets?function=upload&parent="+parentID, formData)
 }
 
 // misc
 
 export function StreetsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/streets?function=prompt&mode="+mode+"&parent="+parentID, payload)
+}
+
+export function StreetsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
+    return SessionFetch(user, "POST", "api/streets?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 export function StreetAdminPOST(user, id, mode, admin) {

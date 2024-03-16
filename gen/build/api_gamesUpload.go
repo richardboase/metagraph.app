@@ -1,15 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"archive/zip"
 	"bytes"
-	"image"
-	_ "image/jpeg"
+	"fmt"
+	"image/jpeg"
 	_ "image/png"
 	"io"
+	"log"
 	"net/http"
+	"strings"
+
+	"github.com/nfnt/resize"
 
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 )
@@ -22,142 +24,127 @@ func (app *App) UploadGAME(w http.ResponseWriter, r *http.Request, parent *Inter
 		return
 	}
 
-	// Get handler for filename, size and headers
-	file, handler, err := r.FormFile("file")
-	if err != nil {
-		cloudfunc.HttpError(w, err, http.StatusBadRequest)
-		return
-	}
+	files := r.MultipartForm.File["files"]
 
-	defer file.Close()
-	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
-	fmt.Printf("File Size: %+v\n", handler.Size)
-	fmt.Printf("MIME Header: %+v\n", handler.Header)
+	newFileObjects := []*GAME{}
 
-	buf := bytes.NewBuffer(nil)
-	// Copy the uploaded file to the created file on the filesystem
-	if n, err := io.Copy(buf, file); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return
-	} else {
-		log.Println("copy: wrote", n, "bytes")
-	}
+	for n, fileHeader := range files{
 
-	/*
-	if err := checkImageGAME(buf.Bytes()); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return
-	}
-	*/
-	log.Println("creating new game:", handler.Filename)
-	fields := FieldsGAME{}
-	game := user.NewGAME(parent, fields)
+		log.Println("HANDLING FILE", n)
 
-	// hidden line here if noparent: game.Fields.Filename = zipFile.Name
-	game.Meta.Name = handler.Filename
-
-	// generate a new URI
-	uri := game.Meta.NewURI()
-	println ("URI", uri)
-
-	bucketName := "go-gen-test-uploads"
-	if err := app.writeGameFile(bucketName, uri, buf.Bytes()); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return
-	}
-
-	// reuse document init create code
-	if err := app.CreateDocumentGAME(parent, game); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return		
-	}
-	return
-}
-
-func (app *App) ArchiveUploadGAME(w http.ResponseWriter, r *http.Request, parent *Internals, user *User) {
-
-	log.Println("PARSING FORM")
-	if err := r.ParseMultipartForm(300 << 20); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusBadRequest)
-		return
-	}
-
-	// Get handler for filename, size and headers
-	file, handler, err := r.FormFile("file")
-	if err != nil {
-		cloudfunc.HttpError(w, err, http.StatusBadRequest)
-		return
-	}
-
-	defer file.Close()
-	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
-	fmt.Printf("File Size: %+v\n", handler.Size)
-	fmt.Printf("MIME Header: %+v\n", handler.Header)
-
-	buf := bytes.NewBuffer(nil)
-	// Copy the uploaded file to the created file on the filesystem
-	if n, err := io.Copy(buf, file); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return
-	} else {
-		log.Println("copy: wrote", n, "bytes")
-	}
-
-	// Open the zip archive from the buffer
-	zipReader, err := zip.NewReader(bytes.NewReader(buf.Bytes()), int64(buf.Len()))
-	if err != nil {
-		err = fmt.Errorf("Error opening zip archive: %v", err)
-		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-		return 
-	}
-
-	// Extract each file from the zip archive
-	for n, zipFile := range zipReader.File {
-
-		extractedContent, err := readZipFileGAME(zipFile)
+		file, err := fileHeader.Open()
 		if err != nil {
-			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+			http.Error(w, fmt.Sprintf("Unable to open file: %s", fileHeader.Filename), http.StatusInternalServerError)
 			return
 		}
+		defer file.Close()
 
-		/*
-		if err := checkImageGAME(extractedContent); err != nil {
-			log.Println("skipping file that cannot be decoded:", zipFile.Name)
-			continue
-		}
-		*/
-		log.Println("creating new game:", zipFile.Name)
-		fields := FieldsGAME{}
-		game := user.NewGAME(parent, fields)
-
-		game.Meta.Name = zipFile.Name
-
-		game.Meta.Context.Order = n
-
-		// generate a new URI
-		uri := game.Meta.NewURI()
-		println ("URI", uri)
-
-		bucketName := "go-gen-test-uploads"
-		if err := app.writeGameFile(bucketName, uri, extractedContent); err != nil {
+		buf := bytes.NewBuffer(nil)
+		// Copy the uploaded file to the created file on the filesystem
+		if n, err := io.Copy(buf, file); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return
+		} else {
+			log.Println("copy: wrote", n, "bytes")
 		}
 
-		// reuse document init create code
-		if err := app.CreateDocumentGAME(parent, game); err != nil {
+		if !strings.Contains(strings.ToLower(fileHeader.Filename), "zip") {
+
+			obj, err := app.newUploadObjectGAME(parent, user, 0, fileHeader.Filename, buf.Bytes())
+			if err != nil {
+				log.Println(err)
+				return
+			}
+
+			newFileObjects = append(newFileObjects, obj)
+
+		} else {
+
+			log.Println("HANDLING ZIP")
+
+			buf := bytes.NewBuffer(nil)
+			// Copy the uploaded file to the created file on the filesystem
+			if n, err := io.Copy(buf, file); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			} else {
+				log.Println("copy: wrote", n, "bytes")
+			}
+
+			// Open the zip archive from the buffer
+			zipReader, err := zip.NewReader(bytes.NewReader(buf.Bytes()), int64(buf.Len()))
+			if err != nil {
+				err = fmt.Errorf("Error opening zip archive: %v", err)
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return 
+			}
+
+			// Extract each file from the zip archive
+			for n, zipFile := range zipReader.File {
+		
+				extractedContent, err := readZipFileGAME(zipFile)
+				if err != nil {
+					log.Println(err)
+					continue
+				}
+		
+				obj, err := app.newUploadObjectGAME(parent, user, n, zipFile.Name, extractedContent)
+				if err != nil {
+					log.Println(err)
+					continue
+				}
+
+				newFileObjects = append(newFileObjects, obj)
+			}
+		}
+	}
+	// make the documents proper
+	for _, obj := range newFileObjects {
+		if err := app.CreateDocumentGAME(parent, obj); err != nil {
 			cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 			return		
 		}
-
 	}
+
 	return
 }
 
-// assert file is an image because of .Object.Options.Image
-func checkImageGAME(fileBytes []byte) error {
-	_, _, err := image.Decode(bytes.NewBuffer(fileBytes))
-	return err
+func (app *App) newUploadObjectGAME(parent *Internals, user *User, n int, name string, b []byte) (*GAME, error) {
+	fields := FieldsGAME{}
+	object := user.NewGAME(parent, fields)
+	object.Meta.Name = name
+	object.Meta.Context.Order = n
+	// generate a new URI
+	uri := object.Meta.NewURI()
+	log.Println(name, "URI", uri)
+
+	// check if it is an image
+	img, err := object.ValidateImageGAME(b)
+	if err != nil {
+		fmt.Errorf("skipping file that cannot be decoded: %s", name)
+		return nil, err
+	}
+
+	if err := app.writeGameFile(CONST_BUCKET_UPLOADS, uri, b); err != nil {
+		return nil, err
+	}
+
+	buf := bytes.NewBuffer(b)
+	// write new image to file
+	if err := jpeg.Encode(buf, resize.Resize(1000, 0, img, resize.Lanczos3), nil); err != nil {
+		return nil, err
+	}
+
+	// update uri
+	uri += "/preview"
+
+	if err := app.writeGameFile(CONST_BUCKET_UPLOADS, uri, buf.Bytes()); err != nil {
+		return nil, err
+	}
+
+	object.Meta.Media.Preview = "https://storage.googleapis.com/go-gen-test-uploads/" + uri
+
+	return object, nil
 }
 
 func readZipFileGAME(zipFile *zip.File) ([]byte, error) {

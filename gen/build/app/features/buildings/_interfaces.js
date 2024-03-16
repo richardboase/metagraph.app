@@ -10,7 +10,6 @@ import { NewBuilding } from './newBuilding'
 import { EditBuilding } from './editBuilding'
 import { DeleteBuilding } from './deleteBuilding'
 import { InitUploadBuilding } from './initUploadBuilding'
-import { InitUploadBuildings } from './initUploadBuildings'
 import { UploadBuilding } from './uploadBuilding'
 
 export var BuildingInterfaces = {

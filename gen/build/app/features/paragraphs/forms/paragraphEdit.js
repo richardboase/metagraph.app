@@ -27,12 +27,16 @@ export function ParagraphEdit(props) {
 	}
 
 	const [inputs, setInputs] = useState({
+		
 		"content": {
 			id: "content",
 			type: "string",
+			
 			value: subject.fields.content,
+			
 			required: true,
 		},
+		
 	})
 	function handleInputChange(obj) {
 		InputChange(inputs, setInputs, obj)

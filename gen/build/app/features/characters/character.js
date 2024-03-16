@@ -2,11 +2,14 @@ import * as React from 'react'
 import { useUserContext } from '@/context/user'
 import { useLocalContext } from '@/context/local'
 import { useState, useEffect } from 'react'
+import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 import VisitTab from '../interfaces'
-
+import { GetInterfaces } from '@/features/interfaces'
 import { GoBack } from '../interfaces'
 import Loading from '@/app/loading'
+import Spacer from '@/inputs/spacer';
+import { RowThumbnail } from '@/components/rowThumbnail'
 
 
 
@@ -20,22 +23,15 @@ export function Character(props) {
     const [jdata, setJdata] = useState(localdata.tab.context.object)
     const [subject, setSubject] = useState(localdata.tab.context.object)
     const [image, setImage] = useState()
-	const [topics, setTopics] = useState([])
-	console.log("topics", topics)
+
+	const interfaces = GetInterfaces()
+
+	var date = new Date(subject.Meta.Modified * 1000);
+	const dateTime = formatRelative(date, new Date())
 
 	// update tabs handles the updated context and sends the user to a new interface
 	function editData() {
 		setLocaldata(VisitTab(localdata, "editcharacter", localdata.tab.context))
-	}
-
-	function sendToTopic(e) {
-		console.log(e)
-		const job = e.target.id
-		CharacterJobPOST(userdata, subject.Meta.ID, job)
-		.then((res) => console.log(res))
-		.catch((e) => {
-            console.error(e)
-        })
 	}
 
 	function getObject() {
@@ -45,9 +41,7 @@ export function Character(props) {
 			console.log(data)
 			setSubject(data)
 			setJdata(JSON.stringify(data.fields))
-			if (data.Meta.URIs?.length > 0) {
-				setImage("https://storage.googleapis.com/go-gen-test-uploads/" + data.Meta.URIs[data.Meta.URIs.length - 1])
-			}
+			
 			console.log("IMAGE? src:", image)
 		}) 
 		.catch((e) => {
@@ -56,178 +50,442 @@ export function Character(props) {
         })
 	}
 
+	// update tabs handles the updated context and sends the user to a new interface
+	function updateTabEvent(e) {
+		console.log("UPDATE TAB EVENT:", e.target.id)
+		updateTab(e.target.id)
+	}
+	function updateTab(tabname) {
+		setLocaldata(VisitTab(localdata, tabname, localdata?.tab?.context))
+	}
+
 	useEffect(() => {
 		getObject()
 	}, [])
 
+	const editButtonStyle = {
+		borderRadius: "20px",
+		backgroundColor: "rgb(52, 211, 153)",
+		border: "solid 0px",
+		color: "white",
+		padding: "6px 10px"
+	}
+
     return (
-        <div style={ {padding:"30px 60px 30px 60px"} }>
+		<div className='flex flex-col w-full' style={ {padding:"30px 60px 30px 60px"} }>
 			{ !subject && <Loading/> }
-			{
-				subject && <div>
-					<div className='text-2xl'>{ subject.Meta.Class } / { subject.fields.name }</div>
-					<div className='flex flex-row'>
-						{
-							image && <div className="m-4" style={ {maxWidth:"40vw"} }>
-								<img className='w-full' src={image}/>
-							</div>
-						}
-						<div>
-							<table className='m-4 w-full'>
-								<tbody>
-									<tr className='flex flex-row'>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='font-bold'>name</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='px-2'>:</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className=''>{ subject.fields["name"] }</div>
-											</div>
-										</td>
-									</tr>
-								
-									<tr className='flex flex-row'>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='font-bold'>age</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='px-2'>:</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className=''>{ subject.fields["age"] }</div>
-											</div>
-										</td>
-									</tr>
-								
-									<tr className='flex flex-row'>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='font-bold'>gender</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='px-2'>:</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className=''>{ subject.fields["gender"] }</div>
-											</div>
-										</td>
-									</tr>
-								
-									<tr className='flex flex-row'>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='font-bold'>diseases</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='px-2'>:</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className=''>{ subject.fields["diseases"] }</div>
-											</div>
-										</td>
-									</tr>
-								
-									<tr className='flex flex-row'>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='font-bold'>profession</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='px-2'>:</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className=''>{ subject.fields["profession"] }</div>
-											</div>
-										</td>
-									</tr>
-								
-									<tr className='flex flex-row'>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='font-bold'>socialclass</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='px-2'>:</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className=''>{ subject.fields["socialclass"] }</div>
-											</div>
-										</td>
-									</tr>
-								
-									<tr className='flex flex-row'>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='font-bold'>backstory</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className='px-2'>:</div>
-											</div>
-										</td>
-										<td className='flex flex-col justify-start'>
-											<div className='w-full flex flex-row justify-end'>
-												<div className=''>{ subject.fields["backstory"] }</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-							<div className='px-4'>
-								<button onClick={editData} className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 rounded-sm text-sm px-4 py-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-									Edit Data
+			<div className="flex flex-row w-full">
+				{
+					subject?.Meta.Media.Image && <RowThumbnail source={'https://storage.googleapis.com/go-gen-test-uploads/'+subject.Meta.Media.URIs[subject.Meta.Media.URIs.length-1]}/>
+				}
+				<div className='flex flex-col w-full'>
+					<div className='flex flex-row justify-between items-center w-full py-4 my-4'>
+						<div className='flex flex-row text-base'>
+							<span className='uppercase text-base'>{ subject.Meta.ClassName }</span>
+							<div className='px-2'>/</div>
+							<span className='font-bold'>{ subject.fields.name }</span>
+						</div>
+						<div className='flex flex-row'>
+							{
+								localdata.tab.subsublinks.map(function (tabname, i) {
+									if (tabname.length == 0) { return }
+									const tab = interfaces[tabname]
+									return (
+										<div key={i} className='flex flex-row rounded-md border py-1 px-2 mx-2 bg-white'>
+											<div id={tab.id} className='cursor-pointer text-gray-800' onClick={updateTabEvent}>{tab.name}</div>
+										</div>
+									)
+								})
+							}
+							
+							<div className='flex flex-row justify-center items-center'>
+								<button className='text-sm' onClick={editData} style={editButtonStyle}>
+								Edit Character
 								</button>
 							</div>
-							{
-								topics.length && <div className='flex flex-row'>
-								{
-									topics.map(function (item, i) {
-										return (
-											<div className='px-4'>
-												<button key={i} id={item.topic} onClick={sendToTopic} className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 rounded-sm text-sm px-4 py-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-												{item.name}
-												</button>
-											</div>
-										)
-									})
-								}
-								</div>
-							}
+							
 						</div>
 					</div>
 				</div>
-			}
-            
-        </div>
-    )
+			</div>
+			<hr/>
+			<div className="flex flex-col w-full">
+				<div className='flex flex-row'>
+				{
+					image && <div className="m-4" style={ {maxWidth:"40vw"} }>
+						<img className='w-full' src={image}/>
+					</div>
+				}
+					<table className='m-4 w-full'>
+						<tbody>
+							<tr className='flex flex-row text-sm'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className=''>Updated</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className=''>{ dateTime }</div>
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>name</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["name"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["name"]).forEach(function(k, i) {
+														const v = subject.fields["name"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["name"]) && subject.fields["name"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["name"]) && !(typeof subject.fields["name"] === 'object') && <>
+												
+												{ subject.Meta.Name }
+												
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>age</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["age"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["age"]).forEach(function(k, i) {
+														const v = subject.fields["age"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["age"]) && subject.fields["age"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["age"]) && !(typeof subject.fields["age"] === 'object') && <>
+												
+												
+												{ subject.fields["age"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>gender</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["gender"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["gender"]).forEach(function(k, i) {
+														const v = subject.fields["gender"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["gender"]) && subject.fields["gender"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["gender"]) && !(typeof subject.fields["gender"] === 'object') && <>
+												
+												
+												{ subject.fields["gender"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>diseases</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["diseases"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["diseases"]).forEach(function(k, i) {
+														const v = subject.fields["diseases"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["diseases"]) && subject.fields["diseases"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["diseases"]) && !(typeof subject.fields["diseases"] === 'object') && <>
+												
+												
+												{ subject.fields["diseases"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>profession</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["profession"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["profession"]).forEach(function(k, i) {
+														const v = subject.fields["profession"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["profession"]) && subject.fields["profession"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["profession"]) && !(typeof subject.fields["profession"] === 'object') && <>
+												
+												
+												{ subject.fields["profession"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>socialclass</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["socialclass"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["socialclass"]).forEach(function(k, i) {
+														const v = subject.fields["socialclass"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["socialclass"]) && subject.fields["socialclass"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["socialclass"]) && !(typeof subject.fields["socialclass"] === 'object') && <>
+												
+												
+												{ subject.fields["socialclass"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>backstory</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["backstory"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["backstory"]).forEach(function(k, i) {
+														const v = subject.fields["backstory"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["backstory"]) && subject.fields["backstory"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["backstory"]) && !(typeof subject.fields["backstory"] === 'object') && <>
+												
+												
+												{ subject.fields["backstory"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div className='flex flex-col'>
+				
 
+				
+			</div>
+		</div>
+    )
 }
