@@ -30,6 +30,12 @@ export function QuarterList(props) {
 	
 	
 
+	function updateListMode(e) {
+		const mode = e.target.value
+		setListMode(mode)
+		console.log("NEW MODE", mode)
+	}
+
 	function updateList() {
 		QuartersListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
 		.then((res) => res.json())

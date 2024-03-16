@@ -30,6 +30,12 @@ export function RoomList(props) {
 	
 	
 
+	function updateListMode(e) {
+		const mode = e.target.value
+		setListMode(mode)
+		console.log("NEW MODE", mode)
+	}
+
 	function updateList() {
 		RoomsListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
 		.then((res) => res.json())

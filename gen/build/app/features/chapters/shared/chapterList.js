@@ -30,6 +30,12 @@ export function ChapterList(props) {
 	
 	
 
+	function updateListMode(e) {
+		const mode = e.target.value
+		setListMode(mode)
+		console.log("NEW MODE", mode)
+	}
+
 	function updateList() {
 		ChaptersListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
 		.then((res) => res.json())

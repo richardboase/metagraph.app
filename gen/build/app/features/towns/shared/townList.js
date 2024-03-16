@@ -28,6 +28,12 @@ export function TownList(props) {
 	
 	
 
+	function updateListMode(e) {
+		const mode = e.target.value
+		setListMode(mode)
+		console.log("NEW MODE", mode)
+	}
+
 	function updateList() {
 		TownsListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
 		.then((res) => res.json())

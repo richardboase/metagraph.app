@@ -28,6 +28,12 @@ export function GameList(props) {
 	
 	
 
+	function updateListMode(e) {
+		const mode = e.target.value
+		setListMode(mode)
+		console.log("NEW MODE", mode)
+	}
+
 	function updateList() {
 		GamesListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
 		.then((res) => res.json())

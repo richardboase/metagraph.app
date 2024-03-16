@@ -28,6 +28,12 @@ export function LobbyList(props) {
 	
 	
 
+	function updateListMode(e) {
+		const mode = e.target.value
+		setListMode(mode)
+		console.log("NEW MODE", mode)
+	}
+
 	function updateList() {
 		LobbysListGET(userdata, props.subject?.Meta.ID, mode, props.limit)
 		.then((res) => res.json())
