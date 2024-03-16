@@ -25,17 +25,11 @@ We want to create one or more of these data objects:
 	// either male or female  (THIS FIELD IS REQUIRED)
 	gender (string)
 
-	// what elemental type it is  (THIS FIELD IS REQUIRED)
+	//  
 	element (string)
 
 	// health points  (THIS FIELD IS REQUIRED)
 	hp (int)
-
-	// the social class of the character (upper, middle, working, lower)  (THIS FIELD IS REQUIRED)
-	socialclass (string)
-
-	// a synopis of the full life story of the character  (THIS FIELD IS REQUIRED)
-	backstory (string)
 
 }
 

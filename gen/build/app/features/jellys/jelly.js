@@ -81,14 +81,14 @@ export function Jelly(props) {
 				{
 					subject?.Meta.Media.Image && <RowThumbnail source={'https://storage.googleapis.com/go-gen-test-uploads/'+subject.Meta.Media.URIs[subject.Meta.Media.URIs.length-1]}/>
 				}
-				<div className='flex flex-col w-full'>
+				<div className='flex flex-wrap w-full'>
 					<div className='flex flex-row justify-between items-center w-full py-4 my-4'>
 						<div className='flex flex-row text-base'>
 							<span className='uppercase text-base'>{ subject.Meta.ClassName }</span>
 							<div className='px-2'>/</div>
 							<span className='font-bold'>{ subject.fields.name }</span>
 						</div>
-						<div className='flex flex-row'>
+						<div className='flex flex-wrap'>
 							{
 								localdata.tab.subsublinks.map(function (tabname, i) {
 									if (tabname.length == 0) { return }
@@ -325,104 +325,6 @@ export function Jelly(props) {
 												
 												
 												{ subject.fields["hp"] }
-												
-											</>
-										}
-									</div>
-								</td>
-							</tr>
-							<Spacer/>
-							
-							<tr className='flex flex-row'>
-								<td className='flex flex-col justify-start'>
-									<div className='w-full flex flex-row justify-end'>
-										<div className='font-bold'>socialclass</div>
-									</div>
-								</td>
-								<td className='flex flex-col justify-start'>
-									<div className='w-full flex flex-row justify-end'>
-										<div className='px-2'>:</div>
-									</div>
-								</td>
-								<td className='flex flex-col justify-start'>
-									<div className='w-full flex flex-row justify-end'>
-										{
-											(typeof subject.fields["socialclass"] === 'object') && <div className='flex flex-col m-4'>
-												{
-													Object.keys(subject.fields["socialclass"]).forEach(function(k, i) {
-														const v = subject.fields["socialclass"][k]
-														return (
-															<div key={i} className='flex flex-row text-xs m-2'>
-																<div className=''>{k}</div>
-																<div className='px-2'>:</div>
-																<div className=''>{v}</div>
-															</div>
-														)
-													})
-												}
-											</div>
-										}
-										{
-											Array.isArray(subject.fields["socialclass"]) && subject.fields["socialclass"].map(function(item, i) {
-												return (
-													<div key={i} className='text-xs'>{item}</div>
-												)
-											})
-										}
-										{
-											!Array.isArray(subject.fields["socialclass"]) && !(typeof subject.fields["socialclass"] === 'object') && <>
-												
-												
-												{ subject.fields["socialclass"] }
-												
-											</>
-										}
-									</div>
-								</td>
-							</tr>
-							<Spacer/>
-							
-							<tr className='flex flex-row'>
-								<td className='flex flex-col justify-start'>
-									<div className='w-full flex flex-row justify-end'>
-										<div className='font-bold'>backstory</div>
-									</div>
-								</td>
-								<td className='flex flex-col justify-start'>
-									<div className='w-full flex flex-row justify-end'>
-										<div className='px-2'>:</div>
-									</div>
-								</td>
-								<td className='flex flex-col justify-start'>
-									<div className='w-full flex flex-row justify-end'>
-										{
-											(typeof subject.fields["backstory"] === 'object') && <div className='flex flex-col m-4'>
-												{
-													Object.keys(subject.fields["backstory"]).forEach(function(k, i) {
-														const v = subject.fields["backstory"][k]
-														return (
-															<div key={i} className='flex flex-row text-xs m-2'>
-																<div className=''>{k}</div>
-																<div className='px-2'>:</div>
-																<div className=''>{v}</div>
-															</div>
-														)
-													})
-												}
-											</div>
-										}
-										{
-											Array.isArray(subject.fields["backstory"]) && subject.fields["backstory"].map(function(item, i) {
-												return (
-													<div key={i} className='text-xs'>{item}</div>
-												)
-											})
-										}
-										{
-											!Array.isArray(subject.fields["backstory"]) && !(typeof subject.fields["backstory"] === 'object') && <>
-												
-												
-												{ subject.fields["backstory"] }
 												
 											</>
 										}

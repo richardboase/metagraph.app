@@ -47,14 +47,6 @@ export function JellyMatrixRow(props) {
 			<div className='flex flex-row w-full ' >
 				<input id="hp" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["hp"] }/>
 			</div>
-		</td><td className='text-sm' style={cellStyle}>
-			<div className='flex flex-row w-full ' >
-				<input id="socialclass" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["socialclass"] }/>
-			</div>
-		</td><td className='text-sm' style={cellStyle}>
-			<div className='flex flex-row w-full ' >
-				<input id="backstory" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["backstory"] }/>
-			</div>
 		</td>
 	</tr>
 	)

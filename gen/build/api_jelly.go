@@ -264,12 +264,6 @@ func (app *App) EntrypointJELLY(w http.ResponseWriter, r *http.Request) {
 				},{
 					Path: "fields.hp",
 					Value: object.Fields.Hp,
-				},{
-					Path: "fields.socialclass",
-					Value: object.Fields.Socialclass,
-				},{
-					Path: "fields.backstory",
-					Value: object.Fields.Backstory,
 				},
 			}
 			for _, update := range updates {

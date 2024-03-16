@@ -1107,8 +1107,6 @@ type FieldsJELLY struct {
 	Gender string `json:"gender" firestore:"gender"`
 	Element string `json:"element" firestore:"element"`
 	Hp int `json:"hp" firestore:"hp"`
-	Socialclass string `json:"socialclass" firestore:"socialclass"`
-	Backstory string `json:"backstory" firestore:"backstory"`
 	
 }
 
@@ -1213,7 +1211,7 @@ func (x *JELLY) ValidateObject(m map[string]interface{}) error {
 	
 
 	_, exists = m["element"]
-	if true && !exists {
+	if false && !exists {
 		return errors.New("required field 'element' not supplied")
 	}
 	if exists {
@@ -1241,15 +1239,6 @@ func (x *JELLY) ValidateObject(m map[string]interface{}) error {
 					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Element)
 				}
 			}
-		}
-		
-		if err := assertRangeMin(1, x.Fields.Element); err != nil {
-			
-			return err
-			
-		}
-		if err := assertRangeMax(100, x.Fields.Element); err != nil {
-			return err
 		}
 		
 	}
@@ -1284,92 +1273,6 @@ func (x *JELLY) ValidateObject(m map[string]interface{}) error {
 					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Hp)
 				}
 			}
-		}
-		
-	}
-	
-
-	_, exists = m["socialclass"]
-	if true && !exists {
-		return errors.New("required field 'socialclass' not supplied")
-	}
-	if exists {
-		x.Fields.Socialclass, err = assertSTRING(m, "socialclass")
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Socialclass)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Socialclass)
-				}
-			}
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Socialclass)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Socialclass)
-				}
-			}
-		}
-		
-		if err := assertRangeMin(1, x.Fields.Socialclass); err != nil {
-			
-			return err
-			
-		}
-		if err := assertRangeMax(30, x.Fields.Socialclass); err != nil {
-			return err
-		}
-		
-	}
-	
-
-	_, exists = m["backstory"]
-	if true && !exists {
-		return errors.New("required field 'backstory' not supplied")
-	}
-	if exists {
-		x.Fields.Backstory, err = assertSTRING(m, "backstory")
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Backstory)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Backstory)
-				}
-			}
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Backstory)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Backstory)
-				}
-			}
-		}
-		
-		if err := assertRangeMin(1, x.Fields.Backstory); err != nil {
-			
-			return err
-			
-		}
-		if err := assertRangeMax(10000, x.Fields.Backstory); err != nil {
-			return err
 		}
 		
 	}

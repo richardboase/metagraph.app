@@ -61,20 +61,6 @@ export function JellyListRow(props) {
 						</div>
 						<div className="px-4"></div>
 					</>
-				}{
-					("socialclass" != "name") && !Array.isArray(props.item.fields["socialclass"]) &&  !(typeof props.item.fields["socialclass"] === 'object')  && <>
-						<div className='text-sm font-bold' title="socialclass">
-							{ props.item.fields["socialclass"] }
-						</div>
-						<div className="px-4"></div>
-					</>
-				}{
-					("backstory" != "name") && !Array.isArray(props.item.fields["backstory"]) &&  !(typeof props.item.fields["backstory"] === 'object')  && <>
-						<div className='text-sm font-bold' title="backstory">
-							{ props.item.fields["backstory"] }
-						</div>
-						<div className="px-4"></div>
-					</>
 				}
 			</div>
 			

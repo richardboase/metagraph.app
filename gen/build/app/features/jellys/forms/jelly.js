@@ -34,19 +34,13 @@ export function JellyForm(props) {
 			<Input id="gender" type='text' required={ true } title="jelly gender" placeholder="jelly gender" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="element" type='text' required={ true } title="jelly element" placeholder="jelly element" inputChange={handleInputChange}/>
+			<Select id="element" type='text' required={ false } reference={ "jellyname" } referenceParent={ subject } title="jelly element" options={ null } placeholder="jelly element" inputChange={handleInputChange}/>
 			<Spacer/>
 			
 			<Input id="hp" type='number' required={ true } title="jelly hp" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="socialclass" type='text' required={ true } title="jelly socialclass" placeholder="jelly socialclass" inputChange={handleInputChange}/>
-			<Spacer/>
-			
-			<Input id="backstory" type='text' required={ true } title="jelly backstory" placeholder="jelly backstory" inputChange={handleInputChange}/>
-			<Spacer/>
-			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","gender","element","hp","socialclass","backstory"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","gender","hp"]}/>
 			<Spacer/>
 			
 		</div>

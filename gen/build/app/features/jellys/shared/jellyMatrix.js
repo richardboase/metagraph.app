@@ -119,7 +119,7 @@ export function JellyMatrix(props) {
 				<td className='flex flex-row justify-center font-bold px-2' style={cellStyle}>
 					<div>#</div>
 				</td>
-				<td className='font-bold px-2' style={cellStyle}>name</td><td className='font-bold px-2' style={cellStyle}>gender</td><td className='font-bold px-2' style={cellStyle}>element</td><td className='font-bold px-2' style={cellStyle}>hp</td><td className='font-bold px-2' style={cellStyle}>socialclass</td><td className='font-bold px-2' style={cellStyle}>backstory</td>
+				<td className='font-bold px-2' style={cellStyle}>name</td><td className='font-bold px-2' style={cellStyle}>gender</td><td className='font-bold px-2' style={cellStyle}>element</td><td className='font-bold px-2' style={cellStyle}>hp</td>
 			</tr>
 			{
 				list && list.map(function (row, i) {
@@ -132,7 +132,7 @@ export function JellyMatrix(props) {
 				<td className='flex flex-row justify-center font-bold px-2 bg-gray-200' style={cellStyle}>
 					<div className='cursor-pointer' onClick={newobject}>+</div>
 				</td>
-				<td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td>
+				<td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td>
 			</tr>
 		</tbody></table>
 		<Spacer/>
