@@ -35,7 +35,7 @@ export function AI(props) {
 	function sendPrompt() {
 		props.updateList(false)
 		const payload = {
-			"prompt": document.getElementById("prompt").value,
+			"prompt": document.getElementById("textinput").value,
 		}
 		switch (select) {
 		case "prompt":
@@ -135,7 +135,7 @@ export function AI(props) {
 							<button onClick={sendPrompt} style={buttonStyle}>Send</button>
 						</div>
 					</div>
-					<textarea id='prompt' placeholder={"your "+select+" prompt..."} className='border p-2'></textarea>
+					<textarea id='textinput' placeholder={"your "+select+" prompt..."} className='border p-2'></textarea>
 				</>
 			}
 		</div>

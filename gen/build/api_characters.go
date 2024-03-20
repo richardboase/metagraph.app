@@ -111,8 +111,50 @@ func (app *App) EntrypointCHARACTERS(w http.ResponseWriter, r *http.Request) {
 				}
 
 			default:
-				
-				panic("openai")
+				err := fmt.Errorf("openapi mode not found: %s", mode)
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
+
+			return
+
+		case "vertex":
+
+			mode, err := cloudfunc.QueryParam(r, "mode")
+			if err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
+
+			m := map[string]interface{}{}
+			if err := cloudfunc.ParseJSON(r, &m); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
+			}
+			prompt, ok := AssertSTRING(w, m, "prompt")
+			if !ok {
+				return
+			}
+
+			object := &CHARACTER{}
+			if err := app.GetDocument(parent.ID, object); err != nil {
+				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				return
+			}
+
+			switch mode {
+
+			case "create":
+
+				if err := app.characterVertexCreate(user, object, prompt); err != nil {
+					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+					return
+				}
+
+			default:
+				err := fmt.Errorf("vertex mode not found: %s", mode)
+				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+				return
 			}
 
 			return
