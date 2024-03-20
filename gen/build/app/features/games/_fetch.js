@@ -53,12 +53,14 @@ export function GameInitUpload(user, parentID, formData) {
 // misc
 
 export function GamesChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/games?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/games?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function GamesChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/games?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/games?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function GameAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/game?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

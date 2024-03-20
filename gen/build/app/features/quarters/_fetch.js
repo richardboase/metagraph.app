@@ -53,12 +53,14 @@ export function QuarterInitUpload(user, parentID, formData) {
 // misc
 
 export function QuartersChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/quarters?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/quarters?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function QuartersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/quarters?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/quarters?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function QuarterAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/quarter?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

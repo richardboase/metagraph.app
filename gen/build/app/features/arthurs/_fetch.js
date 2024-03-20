@@ -53,12 +53,14 @@ export function ArthurInitUpload(user, parentID, formData) {
 // misc
 
 export function ArthursChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/arthurs?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/arthurs?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function ArthursChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/arthurs?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/arthurs?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function ArthurAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/arthur?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

@@ -53,12 +53,14 @@ export function StreetInitUpload(user, parentID, formData) {
 // misc
 
 export function StreetsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/streets?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/streets?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function StreetsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/streets?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/streets?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function StreetAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/street?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

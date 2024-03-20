@@ -53,12 +53,14 @@ export function ParagraphInitUpload(user, parentID, formData) {
 // misc
 
 export function ParagraphsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/paragraphs?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/paragraphs?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function ParagraphsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/paragraphs?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/paragraphs?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function ParagraphAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/paragraph?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

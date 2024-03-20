@@ -53,12 +53,14 @@ export function BuildingInitUpload(user, parentID, formData) {
 // misc
 
 export function BuildingsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/buildings?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/buildings?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function BuildingsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/buildings?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/buildings?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function BuildingAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/building?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

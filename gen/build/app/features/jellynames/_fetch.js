@@ -53,12 +53,14 @@ export function JellynameInitUpload(user, parentID, formData) {
 // misc
 
 export function JellynamesChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/jellynames?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/jellynames?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function JellynamesChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/jellynames?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/jellynames?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function JellynameAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/jellyname?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

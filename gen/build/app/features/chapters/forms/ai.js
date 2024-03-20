@@ -39,7 +39,7 @@ export function AI(props) {
 		}
 		switch (select) {
 		case "prompt":
-			ChaptersChatGPTPOST(userdata, props.subject.Meta.ID, "create", payload)
+			ChaptersChatGPTPOST(userdata, props.subject.Meta.ID, "prompt", payload)
 			.then((res) => {
 				console.log(res)
 				props.updateList(true)

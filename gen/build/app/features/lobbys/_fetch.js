@@ -53,12 +53,14 @@ export function LobbyInitUpload(user, parentID, formData) {
 // misc
 
 export function LobbysChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/lobbys?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/lobbys?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function LobbysChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/lobbys?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/lobbys?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function LobbyAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/lobby?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

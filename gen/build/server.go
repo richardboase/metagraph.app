@@ -23,6 +23,8 @@ func main() {
 		os.Getenv("DIDTOKEN"),
 	)
 	
+	app.UseChatGPT(os.Getenv("OPENAI_KEY"))
+	
 	
 	
 	http.HandleFunc("/api/user", app.UserEntrypoint)

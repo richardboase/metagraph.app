@@ -53,12 +53,14 @@ export function JellyInitUpload(user, parentID, formData) {
 // misc
 
 export function JellysChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/jellys?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/jellys?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function JellysChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/jellys?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/jellys?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function JellyAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/jelly?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

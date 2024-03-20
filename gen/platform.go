@@ -20,6 +20,9 @@ func main() {
 		SiteName:      "NewTown",
 		ProjectID:     "npg-generic",
 		DatabaseID:    "go-gen-test",
+		Options: models.StackOptions{
+			ChatGPT: true,
+		},
 	}
 
 	arthur := &models.Object{

@@ -53,12 +53,14 @@ export function FloorInitUpload(user, parentID, formData) {
 // misc
 
 export function FloorsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/floors?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/floors?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function FloorsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/floors?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/floors?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function FloorAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/floor?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

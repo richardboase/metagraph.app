@@ -53,12 +53,14 @@ export function RoomInitUpload(user, parentID, formData) {
 // misc
 
 export function RoomsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/rooms?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/rooms?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function RoomsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/rooms?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/rooms?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function RoomAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/room?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

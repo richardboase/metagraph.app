@@ -53,12 +53,14 @@ export function BookInitUpload(user, parentID, formData) {
 // misc
 
 export function BooksChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/books?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/books?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function BooksChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/books?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/books?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function BookAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/book?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

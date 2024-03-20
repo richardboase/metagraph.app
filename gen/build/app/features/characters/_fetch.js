@@ -53,12 +53,14 @@ export function CharacterInitUpload(user, parentID, formData) {
 // misc
 
 export function CharactersChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/characters?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/characters?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function CharactersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/characters?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/characters?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function CharacterAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/character?function=admin&mode="+mode+"&id="+id+"&admin="+admin)

@@ -53,12 +53,14 @@ export function ChapterInitUpload(user, parentID, formData) {
 // misc
 
 export function ChaptersChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/chapters?function=prompt&mode="+mode+"&parent="+parentID, payload)
+    return SessionFetch(user, "POST", "api/chapters?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function ChaptersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/chapters?function=prompt&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/chapters?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
+
+// permissions
 
 export function ChapterAdminPOST(user, id, mode, admin) {
     return SessionFetch(user, "POST", "api/chapter?function=admin&mode="+mode+"&id="+id+"&admin="+admin)
