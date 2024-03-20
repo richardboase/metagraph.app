@@ -58,9 +58,13 @@ export function ParagraphList(props) {
 	}
 
 	useEffect(() => {
-		
-		
-		
+		if ("".length) {
+			setListMode("")
+		} else {
+			
+			
+			
+		}
 		updateList()
 	}, [])
 

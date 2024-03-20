@@ -50,9 +50,13 @@ export function ArthurList(props) {
 	}
 
 	useEffect(() => {
-		
-		setListMode("admin")
-		
+		if ("".length) {
+			setListMode("")
+		} else {
+			
+			setListMode("admin")
+			
+		}
 		updateList()
 	}, [])
 

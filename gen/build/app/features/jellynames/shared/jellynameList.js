@@ -58,9 +58,13 @@ export function JellynameList(props) {
 	}
 
 	useEffect(() => {
-		
-		
-		
+		if ("".length) {
+			setListMode("")
+		} else {
+			
+			
+			
+		}
 		updateList()
 	}, [])
 

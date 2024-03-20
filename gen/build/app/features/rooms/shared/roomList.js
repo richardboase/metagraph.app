@@ -58,9 +58,13 @@ export function RoomList(props) {
 	}
 
 	useEffect(() => {
-		
-		
-		
+		if ("".length) {
+			setListMode("")
+		} else {
+			
+			
+			
+		}
 		updateList()
 	}, [])
 

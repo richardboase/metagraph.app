@@ -50,9 +50,13 @@ export function GameList(props) {
 	}
 
 	useEffect(() => {
-		
-		
-		
+		if ("".length) {
+			setListMode("")
+		} else {
+			
+			
+			
+		}
 		updateList()
 	}, [])
 

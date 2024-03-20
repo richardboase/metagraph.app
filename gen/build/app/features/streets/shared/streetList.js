@@ -58,9 +58,13 @@ export function StreetList(props) {
 	}
 
 	useEffect(() => {
-		
-		
-		
+		if ("".length) {
+			setListMode("")
+		} else {
+			
+			
+			
+		}
 		updateList()
 	}, [])
 

@@ -291,7 +291,9 @@ func main() {
 				Required: true,
 			},
 		},
-		Options: models.Options{},
+		Options: models.Options{
+			Admin: true,
+		},
 	}
 
 	teststreet := &models.Object{

@@ -50,9 +50,13 @@ export function TownList(props) {
 	}
 
 	useEffect(() => {
-		
-		
-		
+		if ("".length) {
+			setListMode("")
+		} else {
+			
+			setListMode("admin")
+			
+		}
 		updateList()
 	}, [])
 

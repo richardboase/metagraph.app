@@ -58,9 +58,13 @@ export function ChapterList(props) {
 	}
 
 	useEffect(() => {
-		setListMode("ordered")
-		
-		
+		if ("".length) {
+			setListMode("")
+		} else {
+			setListMode("ordered")
+			
+			
+		}
 		updateList()
 	}, [])
 
