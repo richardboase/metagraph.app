@@ -85,13 +85,13 @@ export function Jellyname(props) {
 							<div className='px-2'>/</div>
 							<span className='font-bold'>{ subject.fields.name }</span>
 						</div>
-						<div className='flex flex-wrap'>
+						<div className='flex flex-wrap m-2'>
 							{
 								localdata.tab.subsublinks.map(function (tabname, i) {
 									if (tabname.length == 0) { return }
 									const tab = interfaces[tabname]
 									return (
-										<div key={i} className='flex flex-row rounded-md border py-1 px-2 mx-2 bg-white'>
+										<div key={i} className='flex flex-row rounded-md border py-1 px-2 m-2 bg-white'>
 											<div id={tab.id} className='cursor-pointer text-gray-800' onClick={updateTabEvent}>{tab.name}</div>
 										</div>
 									)
