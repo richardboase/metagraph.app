@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"reflect"
 	"errors"
 	"encoding/json"
 
@@ -13,10 +14,23 @@ func (app *App) quarterChatGPTCreate(user *User, parent *QUARTER, prompt string)
 
 	fmt.Println("prompt with parent", parent.Meta.ID, prompt)
 
+    v := reflect.ValueOf(parent.Fields)
+    t := reflect.TypeOf(parent.Fields)
+
+	var parentString string
+
+    for i := 0; i < t.NumField(); i++ {
+        name := t.Field(i)
+        value := v.Field(i)
+		parentString += fmt.Sprintln("%s: %v", name, value)
+	}
+
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
-We want to create one or more of these data objects: 
-// A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.
+We want to create one or more of these data objects: A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.
+
+...for this parent object: ` + parentString + `
+
 {
 
 	//  
