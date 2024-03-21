@@ -17,7 +17,10 @@ We want to create one or more of these data objects:
 	//  
 	name (string)
 
-	//  
+	// A description of the building 
+	description (string)
+
+	// Street number(s) of the building 
 	number (int)
 
 	//   (THIS FIELD IS REQUIRED)

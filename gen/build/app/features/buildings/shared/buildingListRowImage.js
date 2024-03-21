@@ -39,6 +39,13 @@ export function BuildingListRowImage(props) {
 						<div className="px-4"></div>
 					</>
 				}{
+					("description" != "name") && !Array.isArray(props.item.fields["description"]) &&  !(typeof props.item.fields["description"] === 'object')  && <>
+						<div className='text-sm font-bold' title="description">
+							{ props.item.fields["description"] }
+						</div>
+						<div className="px-4"></div>
+					</>
+				}{
 					("number" != "name") && !Array.isArray(props.item.fields["number"]) &&  !(typeof props.item.fields["number"] === 'object')  && <>
 						<div className='text-sm font-bold' title="number">
 							{ props.item.fields["number"] }

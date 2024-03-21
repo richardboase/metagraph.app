@@ -37,6 +37,15 @@ export function BuildingEdit(props) {
 			required: false,
 		},
 		
+		"description": {
+			id: "description",
+			type: "string",
+			
+			value: subject.fields.description,
+			
+			required: false,
+		},
+		
 		"number": {
 			id: "number",
 			type: "int",
@@ -82,6 +91,9 @@ export function BuildingEdit(props) {
 		<div className='flex flex-col'>
 			
 			<Input id="name" type='text' required={ false } title="building name" placeholder="building name" inputChange={handleInputChange} value={ inputs["name"].value } />
+			<Spacer/>
+			
+			<Input id="description" type='text' required={ false } title="building description" placeholder="building description" inputChange={handleInputChange} value={ inputs["description"].value } />
 			<Spacer/>
 			
 			<Input id="number" type='number' required={ false } title="building number" inputChange={handleInputChange} value={ inputs["number"].value } />

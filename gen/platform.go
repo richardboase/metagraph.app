@@ -318,7 +318,7 @@ func main() {
 				Required: false,
 			},
 			{
-				Context:  "the junction at the START of the road, if any",
+				Context:  "the street junctioning at the START of the road, if any",
 				Name:     "start",
 				JSON:     "string_60",
 				Required: false,
@@ -375,8 +375,14 @@ func main() {
 				JSON: "string_30",
 			},
 			{
-				Name: "number",
-				JSON: "number_int",
+				Context: "A description of the building",
+				Name:    "description",
+				JSON:    "string_1000",
+			},
+			{
+				Context: "Street number(s) of the building",
+				Name:    "number",
+				JSON:    "number_int",
 			},
 			{
 				Name:     "xunits",

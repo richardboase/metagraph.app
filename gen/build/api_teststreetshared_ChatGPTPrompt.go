@@ -20,7 +20,7 @@ We want to create one or more of these data objects:
 	// a description of the street 
 	description (string)
 
-	// the junction at the START of the road, if any 
+	// the street junctioning at the START of the road, if any 
 	start (string)
 
 	// the junction at the END of the road, if any 

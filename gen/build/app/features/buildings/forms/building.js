@@ -31,6 +31,9 @@ export function BuildingForm(props) {
 			<Input id="name" type='text' required={ false } title="building name" placeholder="building name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
+			<Input id="description" type='text' required={ false } title="building description" placeholder="building description" inputChange={handleInputChange}/>
+			<Spacer/>
+			
 			<Input id="number" type='number' required={ false } title="building number" inputChange={handleInputChange}/>
 			<Spacer/>
 			

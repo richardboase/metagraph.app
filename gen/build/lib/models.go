@@ -4044,6 +4044,7 @@ func (user *User) NewBUILDING(parent *Internals, fields FieldsBUILDING) *BUILDIN
 
 type FieldsBUILDING struct {
 	Name string `json:"name" firestore:"name"`
+	Description string `json:"description" firestore:"description"`
 	Number int `json:"number" firestore:"number"`
 	Xunits float64 `json:"xunits" firestore:"xunits"`
 	Yunits float64 `json:"yunits" firestore:"yunits"`
@@ -4100,6 +4101,47 @@ func (x *BUILDING) ValidateObject(m map[string]interface{}) error {
 			
 		}
 		if err := assertRangeMax(30, x.Fields.Name); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["description"]
+	if false && !exists {
+		return errors.New("required field 'description' not supplied")
+	}
+	if exists {
+		x.Fields.Description, err = assertSTRING(m, "description")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Description)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Description)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Description)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Description)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Description); err != nil {
+			
+		}
+		if err := assertRangeMax(1000, x.Fields.Description); err != nil {
 			return err
 		}
 		

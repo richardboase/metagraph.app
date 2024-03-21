@@ -37,6 +37,10 @@ export function BuildingMatrixRow(props) {
 			</div>
 		</td><td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >
+				<input id="description" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["description"] }/>
+			</div>
+		</td><td className='text-sm' style={cellStyle}>
+			<div className='flex flex-row w-full ' >
 				<input id="number" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["number"] }/>
 			</div>
 		</td><td className='text-sm' style={cellStyle}>
