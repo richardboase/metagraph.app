@@ -73,6 +73,15 @@ export function BuildingEdit(props) {
 			required: true,
 		},
 		
+		"floors": {
+			id: "floors",
+			type: "int",
+			
+			value: subject.fields.floors,
+			
+			required: true,
+		},
+		
 		"doors": {
 			id: "doors",
 			type: "int",
@@ -105,10 +114,13 @@ export function BuildingEdit(props) {
 			<Input id="yunits" type='number' required={ true } title="building yunits" inputChange={handleInputChange} value={ inputs["yunits"].value } />
 			<Spacer/>
 			
+			<Input id="floors" type='number' required={ true } title="building floors" inputChange={handleInputChange} value={ inputs["floors"].value } />
+			<Spacer/>
+			
 			<Input id="doors" type='number' required={ true } title="building doors" inputChange={handleInputChange} value={ inputs["doors"].value } />
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["xunits","yunits","doors"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["xunits","yunits","floors","doors"]}/>
 			<Spacer/>
 			
 		</div>

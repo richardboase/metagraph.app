@@ -67,6 +67,13 @@ export function BuildingListRow(props) {
 						<div className="px-4"></div>
 					</>
 				}{
+					("floors" != "name") && !Array.isArray(props.item.fields["floors"]) &&  !(typeof props.item.fields["floors"] === 'object')  && <>
+						<div className='text-sm font-bold' title="floors">
+							{ props.item.fields["floors"] }
+						</div>
+						<div className="px-4"></div>
+					</>
+				}{
 					("doors" != "name") && !Array.isArray(props.item.fields["doors"]) &&  !(typeof props.item.fields["doors"] === 'object')  && <>
 						<div className='text-sm font-bold' title="doors">
 							{ props.item.fields["doors"] }

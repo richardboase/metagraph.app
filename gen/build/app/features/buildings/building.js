@@ -383,6 +383,55 @@ export function Building(props) {
 							<tr className='flex flex-row'>
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>floors</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["floors"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["floors"]).forEach(function(k, i) {
+														const v = subject.fields["floors"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["floors"]) && subject.fields["floors"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["floors"]) && !(typeof subject.fields["floors"] === 'object') && <>
+												
+												
+												{ subject.fields["floors"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
 										<div className='font-bold'>doors</div>
 									</div>
 								</td>

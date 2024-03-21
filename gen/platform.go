@@ -395,6 +395,13 @@ func main() {
 				Required: true,
 			},
 			{
+				Context:  "Number of floors this building has",
+				Name:     "floors",
+				JSON:     "number_int",
+				Required: true,
+			},
+			{
+				Context:  "Number of ground floor entrances or exits",
 				Name:     "doors",
 				JSON:     "number_int",
 				Required: true,

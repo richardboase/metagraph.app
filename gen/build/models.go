@@ -4047,6 +4047,7 @@ type FieldsBUILDING struct {
 	Number int `json:"number" firestore:"number"`
 	Xunits float64 `json:"xunits" firestore:"xunits"`
 	Yunits float64 `json:"yunits" firestore:"yunits"`
+	Floors int `json:"floors" firestore:"floors"`
 	Doors int `json:"doors" firestore:"doors"`
 	
 }
@@ -4242,6 +4243,40 @@ func (x *BUILDING) ValidateObject(m map[string]interface{}) error {
 				}
 				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Yunits)) {
 					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Yunits)
+				}
+			}
+		}
+		
+	}
+	
+
+	_, exists = m["floors"]
+	if true && !exists {
+		return errors.New("required field 'floors' not supplied")
+	}
+	if exists {
+		x.Fields.Floors, err = assertINT(m, "floors")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Floors)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Floors)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Floors)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Floors)
 				}
 			}
 		}

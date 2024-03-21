@@ -43,10 +43,13 @@ export function BuildingForm(props) {
 			<Input id="yunits" type='number' required={ true } title="building yunits" inputChange={handleInputChange}/>
 			<Spacer/>
 			
+			<Input id="floors" type='number' required={ true } title="building floors" inputChange={handleInputChange}/>
+			<Spacer/>
+			
 			<Input id="doors" type='number' required={ true } title="building doors" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["xunits","yunits","doors"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["xunits","yunits","floors","doors"]}/>
 			<Spacer/>
 			
 		</div>

@@ -269,6 +269,9 @@ func (app *App) EntrypointBUILDING(w http.ResponseWriter, r *http.Request) {
 					Path: "fields.yunits",
 					Value: object.Fields.Yunits,
 				},{
+					Path: "fields.floors",
+					Value: object.Fields.Floors,
+				},{
 					Path: "fields.doors",
 					Value: object.Fields.Doors,
 				},

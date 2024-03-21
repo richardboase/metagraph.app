@@ -34,7 +34,10 @@ We want to create one or more of these data objects:
 	//   (THIS FIELD IS REQUIRED)
 	yunits (float64)
 
-	//   (THIS FIELD IS REQUIRED)
+	// Number of floors this building has  (THIS FIELD IS REQUIRED)
+	floors (int)
+
+	// Number of ground floor entrances or exits  (THIS FIELD IS REQUIRED)
 	doors (int)
 
 }
