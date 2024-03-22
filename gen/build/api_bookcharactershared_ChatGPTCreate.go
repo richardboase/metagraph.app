@@ -58,7 +58,7 @@ We want to create one or more of these data objects: a character that will be in
 
 The response should be a raw JSON array with one or more objects, based on the user prompt: `
 
-	println(prompt)
+	println(system+prompt)
 
 	resp, err := app.ChatGPT().CreateChatCompletion(
 		app.Context(),
@@ -82,7 +82,7 @@ The response should be a raw JSON array with one or more objects, based on the u
 
 	newResults := []interface{}{}
 	replyBytes := []byte(reply)
-	if err := json.Unmarshal(replyBytes, &newResults); err != nil {
+	if err := app.ParseContentForArray(string(replyBytes), &newResults); err != nil {
 		newResult := map[string]interface{}{}
 		if err := json.Unmarshal(replyBytes, &newResult); err != nil {
 			return err
