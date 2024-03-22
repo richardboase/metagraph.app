@@ -19,8 +19,8 @@ import (
 	"github.com/kr/pretty"
 )
 
-// api-floor
-func (app *App) EntrypointFLOOR(w http.ResponseWriter, r *http.Request) {
+// api-furnishing
+func (app *App) EntrypointFURNISHING(w http.ResponseWriter, r *http.Request) {
 
 	if cloudfunc.HandleCORS(w, r, "*") {
 		return
@@ -32,13 +32,13 @@ func (app *App) EntrypointFLOOR(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// get floor
+	// get furnishing
 	id, err := cloudfunc.QueryParam(r, "id")
 	if err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
 		return
 	}
-	object := &FLOOR{}
+	object := &FURNISHING{}
 	if err := app.GetDocument(id, object); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 		return
@@ -162,12 +162,12 @@ func (app *App) EntrypointFLOOR(w http.ResponseWriter, r *http.Request) {
 
 			switch mode {
 			case "add":
-				if err := app.addFloorAdmin(object, admin); err != nil {
+				if err := app.addFurnishingAdmin(object, admin); err != nil {
 					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 					return
 				}
 			case "remove":
-				if err := app.removeFloorAdmin(object, admin); err != nil {
+				if err := app.removeFurnishingAdmin(object, admin); err != nil {
 					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 					return
 				}
@@ -221,7 +221,7 @@ func (app *App) EntrypointFLOOR(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			reply, err := app.floorChatGPTPrompt(user, object, prompt)
+			reply, err := app.furnishingChatGPTPrompt(user, object, prompt)
 			if err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
@@ -257,8 +257,8 @@ func (app *App) EntrypointFLOOR(w http.ResponseWriter, r *http.Request) {
 					Path: "fields.name",
 					Value: object.Fields.Name,
 				},{
-					Path: "fields.rooms",
-					Value: object.Fields.Rooms,
+					Path: "fields.description",
+					Value: object.Fields.Description,
 				},
 			}
 			for _, update := range updates {
@@ -378,8 +378,8 @@ func (app *App) EntrypointFLOOR(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *App) getFloorList(subject *FLOOR) []*FLOOR {
-	list := []*FLOOR{}
+func (app *App) getFurnishingList(subject *FURNISHING) []*FURNISHING {
+	list := []*FURNISHING{}
 	class := subject.Meta.Class
 	var ref *firestore.CollectionRef
 	if len(subject.Meta.Context.Parent) > 0 {
@@ -397,7 +397,7 @@ func (app *App) getFloorList(subject *FLOOR) []*FLOOR {
 			log.Println(err)
 			break
 		}
-		object := &FLOOR{}
+		object := &FURNISHING{}
 		if err := doc.DataTo(object); err != nil {
 			log.Println(err)
 			continue

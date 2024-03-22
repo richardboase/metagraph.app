@@ -419,6 +419,12 @@ func main() {
 		Fields: []*models.Field{
 			// using order from context
 			{
+				Context:  "the identifier of the floor",
+				Name:     "name",
+				JSON:     "string_100",
+				Required: true,
+			},
+			{
 				Name:     "rooms",
 				JSON:     "number_int",
 				Required: true,
@@ -442,6 +448,29 @@ func main() {
 		Options: models.Options{},
 	}
 
+	furnishing := &models.Object{
+		Parents: []string{
+			room.Name,
+		},
+		Name: "furnishing",
+		Fields: []*models.Field{
+			{
+				Context:  "the name of the utility or furnature",
+				Name:     "name",
+				JSON:     "string_30",
+				Required: true,
+			},
+			{
+				Context:  "the description of the utility or furnature",
+				Name:     "description",
+				JSON:     "string_100",
+				Required: true,
+			},
+		},
+		Options: models.Options{},
+	}
+
+	tree.Objects = append(tree.Objects, furnishing)
 	tree.Objects = append(tree.Objects, arthur)
 	tree.Objects = append(tree.Objects, jelly)
 	tree.Objects = append(tree.Objects, jellyname)

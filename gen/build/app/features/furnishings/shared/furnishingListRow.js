@@ -9,7 +9,7 @@ import { RowEdit } from "@/components/rowEdit"
 import { RowOrder } from "@/components/rowOrder"
 import { titlecase } from "../_interfaces"
 
-export function FloorListRow(props) {
+export function FurnishingListRow(props) {
 
 	const [userdata, setUserdata] = useUserContext()
 
@@ -39,16 +39,16 @@ export function FloorListRow(props) {
 						<div className="px-4"></div>
 					</>
 				}{
-					("rooms" != "name") && !Array.isArray(props.item.fields["rooms"]) &&  !(typeof props.item.fields["rooms"] === 'object')  && <>
-						<div className='text-sm font-bold' title="rooms">
-							{ props.item.fields["rooms"] }
+					("description" != "name") && !Array.isArray(props.item.fields["description"]) &&  !(typeof props.item.fields["description"] === 'object')  && <>
+						<div className='text-sm font-bold' title="description">
+							{ props.item.fields["description"] }
 						</div>
 						<div className="px-4"></div>
 					</>
 				}
 			</div>
 			
-			<RowEdit object={props.item} editInterface="editfloor"/>
+			<RowEdit object={props.item} editInterface="editfurnishing"/>
 			<RowDelete id={props.id} delete={deleteItem}/>
 		</div>
 	)

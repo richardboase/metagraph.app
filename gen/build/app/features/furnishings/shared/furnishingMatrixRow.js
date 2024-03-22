@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import { titlecase } from '../_interfaces';
 
-export function FloorMatrixRow(props) {
+export function FurnishingMatrixRow(props) {
 
 	const [ row, setRow ] = useState(props.row)
 
@@ -37,7 +37,7 @@ export function FloorMatrixRow(props) {
 			</div>
 		</td><td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >
-				<input id="rooms" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["rooms"] }/>
+				<input id="description" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["description"] }/>
 			</div>
 		</td>
 	</tr>

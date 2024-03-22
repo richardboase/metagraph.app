@@ -11,6 +11,7 @@ import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 import { RowThumbnail } from '@/components/rowThumbnail'
 
+import { FurnishingList } from '@/features/furnishings/shared/furnishingList'
 
 
 import { RoomObjectGET, RoomJobPOST } from './_fetch'
@@ -189,7 +190,13 @@ export function Room(props) {
 			</div>
 			<div className='flex flex-col'>
 				
+				
+				
 
+				
+				
+				<FurnishingList title="Furnishings" subject={subject} limit={4} />
+				
 				
 			</div>
 		</div>

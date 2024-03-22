@@ -889,6 +889,220 @@ func (job *ASYNCJOB) CompleteStage() {
 }
 
 
+type FURNISHING struct {
+	Meta    Internals
+	Fields FieldsFURNISHING `json:"fields" firestore:"fields"`
+}
+
+func (user *User) NewFURNISHING(parent *Internals, fields FieldsFURNISHING) *FURNISHING {
+	var object *FURNISHING
+	if parent == nil {
+		object = &FURNISHING{
+			Meta: (Internals{}).NewInternals("furnishings"),
+			Fields: fields,
+		}
+	} else {
+		object = &FURNISHING{
+			Meta: parent.NewInternals("furnishings"),
+			Fields: fields,
+		}
+	}
+
+	object.Meta.ClassName = "furnishings"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
+	} else {
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
+	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
+	
+	// add children to context
+	object.Meta.Context.Children = []string{
+		
+	}
+	return object
+}
+
+type FieldsFURNISHING struct {
+	Name string `json:"name" firestore:"name"`
+	Description string `json:"description" firestore:"description"`
+	
+}
+
+func (x *FURNISHING) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return false
+	}
+	return true
+}
+
+func (x *FURNISHING) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	var exists bool
+	
+
+	_, exists = m["name"]
+	if true && !exists {
+		return errors.New("required field 'name' not supplied")
+	}
+	if exists {
+		x.Fields.Name, err = assertSTRING(m, "name")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(30, x.Fields.Name); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["description"]
+	if true && !exists {
+		return errors.New("required field 'description' not supplied")
+	}
+	if exists {
+		x.Fields.Description, err = assertSTRING(m, "description")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Description)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Description)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Description)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Description)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Description); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(100, x.Fields.Description); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
+	}
+
+	x.Meta.Modify()
+
+	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *FURNISHING) ValidateImageFURNISHING(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
+}
+
+
+
 type ARTHUR struct {
 	Meta    Internals
 	Fields FieldsARTHUR `json:"fields" firestore:"fields"`
@@ -4428,6 +4642,7 @@ func (user *User) NewFLOOR(parent *Internals, fields FieldsFLOOR) *FLOOR {
 }
 
 type FieldsFLOOR struct {
+	Name string `json:"name" firestore:"name"`
 	Rooms int `json:"rooms" firestore:"rooms"`
 	
 }
@@ -4444,6 +4659,49 @@ func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 
 	var err error
 	var exists bool
+	
+
+	_, exists = m["name"]
+	if true && !exists {
+		return errors.New("required field 'name' not supplied")
+	}
+	if exists {
+		x.Fields.Name, err = assertSTRING(m, "name")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(100, x.Fields.Name); err != nil {
+			return err
+		}
+		
+	}
 	
 
 	_, exists = m["rooms"]
@@ -4583,7 +4841,7 @@ func (user *User) NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
-		
+		"furnishing",
 	}
 	return object
 }

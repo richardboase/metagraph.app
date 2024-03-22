@@ -33,6 +33,9 @@ func main() {
 	http.HandleFunc("/api/mail", app.MailEntrypoint)
 	http.HandleFunc("/api/assetlayer", app.EntrypointASSETLAYER)
 	
+	http.HandleFunc("/api/furnishing", app.EntrypointFURNISHING)
+	http.HandleFunc("/api/furnishings", app.EntrypointFURNISHINGS)
+	println("registering handlers for furnishings")
 	http.HandleFunc("/api/arthur", app.EntrypointARTHUR)
 	http.HandleFunc("/api/arthurs", app.EntrypointARTHURS)
 	println("registering handlers for arthurs")

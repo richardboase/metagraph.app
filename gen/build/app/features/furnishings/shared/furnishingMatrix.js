@@ -9,16 +9,16 @@ import { titlecase } from '../_interfaces';
 import Loading from '@/app/loading';
 import Spacer from '@/inputs/spacer';
 
-import { FloorMatrixRow } from './floorMatrixRow';
+import { FurnishingMatrixRow } from './furnishingMatrixRow';
 import {
-	FloorDELETE,
-	FloorsListGET,
-	FloorOrderPOST,
+	FurnishingDELETE,
+	FurnishingsListGET,
+	FurnishingOrderPOST,
 } from '../_fetch';
 import { ObjectPATCH } from '@/app/fetch'
 
 
-export function FloorMatrix(props) {
+export function FurnishingMatrix(props) {
 
 	// set props.limit if you want to limit query results
 
@@ -28,7 +28,7 @@ export function FloorMatrix(props) {
 	const [ list, setList ] = useState(null)
 
 	function updateList() {
-		FloorsListGET(userdata, props.subject?.Meta.ID, "admin", props.limit)
+		FurnishingsListGET(userdata, props.subject?.Meta.ID, "admin", props.limit)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -41,7 +41,7 @@ export function FloorMatrix(props) {
 	}, [])
 
 	function newobject() {
-		setLocaldata(VisitTab(localdata, "newfloor", localdata.tab.context))
+		setLocaldata(VisitTab(localdata, "newfurnishing", localdata.tab.context))
 	}
 
 	function saveUpdate(rowID, fieldID, value) {
@@ -57,19 +57,19 @@ export function FloorMatrix(props) {
 
 	// update tabs handles the updated context and sends the user to a new interface
 	function selectItem(id) {
-		console.log("SELECT Floor", id)
+		console.log("SELECT Furnishing", id)
 		const next = list[parseInt(id)]
 		const context = {
 			"_": next.fields.name,
 			"object": next,
 		}
-		setLocaldata(VisitTab(localdata, "floor", context))
+		setLocaldata(VisitTab(localdata, "furnishing", context))
 	}
 
 	function moveUp(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE UP", object)
-		FloorOrderPOST(userdata, object.Meta.ID, "up")
+		FurnishingOrderPOST(userdata, object.Meta.ID, "up")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -82,7 +82,7 @@ export function FloorMatrix(props) {
 	function moveDown(id) {
 		const object = list[parseInt(id)]
 		console.log("MOVE DOWN", object)
-		FloorOrderPOST(userdata, object.Meta.ID, "down")
+		FurnishingOrderPOST(userdata, object.Meta.ID, "down")
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -95,7 +95,7 @@ export function FloorMatrix(props) {
 	function deleteItem(id) {
 		const object = list[parseInt(id)]
 		console.log("DELETING", object)
-		FloorDELETE(userdata, object.Meta.ID)
+		FurnishingDELETE(userdata, object.Meta.ID)
 		.then((res) => console.log(res))
 		.then(function () {
 			updateList()
@@ -119,12 +119,12 @@ export function FloorMatrix(props) {
 				<td className='flex flex-row justify-center font-bold px-2' style={cellStyle}>
 					<div>#</div>
 				</td>
-				<td className='font-bold px-2' style={cellStyle}>name</td><td className='font-bold px-2' style={cellStyle}>rooms</td>
+				<td className='font-bold px-2' style={cellStyle}>name</td><td className='font-bold px-2' style={cellStyle}>description</td>
 			</tr>
 			{
 				list && list.map(function (row, i) {
 					return (
-						<FloorMatrixRow id={i} key={i} row={row} save={saveUpdate}/>
+						<FurnishingMatrixRow id={i} key={i} row={row} save={saveUpdate}/>
 					)
 				})
 			}

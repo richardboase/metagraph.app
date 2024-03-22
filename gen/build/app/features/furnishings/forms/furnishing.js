@@ -14,7 +14,7 @@ import Object from '@/inputs/object';
 
 import InputChange from '@/inputs/inputChange';
 
-export function FloorForm(props) {
+export function FurnishingForm(props) {
 
 	const [userdata, _] = useUserContext()
 	const [localdata, setLocaldata] = useLocalContext()
@@ -28,13 +28,13 @@ export function FloorForm(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="name" type='text' required={ true } title="floor name" placeholder="floor name" inputChange={handleInputChange}/>
+			<Input id="name" type='text' required={ true } title="furnishing name" placeholder="furnishing name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="rooms" type='number' required={ true } title="floor rooms" inputChange={handleInputChange}/>
+			<Input id="description" type='text' required={ true } title="furnishing description" placeholder="furnishing description" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","rooms"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","description"]}/>
 			<Spacer/>
 			
 		</div>

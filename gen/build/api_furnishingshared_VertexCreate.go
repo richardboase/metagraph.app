@@ -11,21 +11,21 @@ import (
 	"github.com/kr/pretty"
 )
 
-func (app *App) floorVertexCreate(user *User, parent *FLOOR, prompt string) error {
+func (app *App) furnishingVertexCreate(user *User, parent *FURNISHING, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.Meta.ID, prompt)
 
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
 We want to create one or more of these data objects: 
-// A level or floor of a building where rooms or spaces are located.
+// 
 {
 
-	// the identifier of the floor  (THIS FIELD IS REQUIRED)
+	// the name of the utility or furnature  (THIS FIELD IS REQUIRED)
 	name (string)
 
-	//   (THIS FIELD IS REQUIRED)
-	rooms (int)
+	// the description of the utility or furnature  (THIS FIELD IS REQUIRED)
+	description (string)
 
 }
 
@@ -66,11 +66,11 @@ The response should be a raw JSON array with one or more objects, based on the u
 				delete(result, k)
 			}
 		}
-		object := user.NewFLOOR(&parent.Meta, FieldsFLOOR{})
+		object := user.NewFURNISHING(&parent.Meta, FieldsFURNISHING{})
 		if err := object.ValidateObject(result); err != nil {
 			return err
 		}
-		if err := app.CreateDocumentFLOOR(&parent.Meta, object); err != nil {
+		if err := app.CreateDocumentFURNISHING(&parent.Meta, object); err != nil {
 			return err
 		}
 		app.SendMessageToUser(user, "create", object)

@@ -48,7 +48,7 @@ export var RoomInterfaces = {
 	"room": {
 		level: 10+2,
 		name: "Room",
-		subsublinks: [],
+		subsublinks: ["furnishings",],
 		component: (<Room />),
 		hasDeleteButton: true,
 		hasEditButton: true,

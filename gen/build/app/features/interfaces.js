@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 
+import { FurnishingInterfaces } from '@/features/furnishings/_interfaces'
 import { ArthurInterfaces } from '@/features/arthurs/_interfaces'
 import { JellyInterfaces } from '@/features/jellys/_interfaces'
 import { JellynameInterfaces } from '@/features/jellynames/_interfaces'
@@ -54,7 +55,10 @@ export function GetInterfaces() {
 	}
 	// custom features
 
-	// ArthurInterfaces
+	// FurnishingInterfaces
+	for (const k in FurnishingInterfaces) {
+		interfaces[k.toLowerCase()] = FurnishingInterfaces[k]
+	}// ArthurInterfaces
 	for (const k in ArthurInterfaces) {
 		interfaces[k.toLowerCase()] = ArthurInterfaces[k]
 	}// JellyInterfaces

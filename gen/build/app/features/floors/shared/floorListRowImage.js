@@ -32,6 +32,13 @@ export function FloorListRowImage(props) {
 				}
 				<div className="px-4"></div>
 				{
+					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && <>
+						<div className='text-sm font-bold' title="name">
+							{ props.item.fields["name"] }
+						</div>
+						<div className="px-4"></div>
+					</>
+				}{
 					("rooms" != "name") && !Array.isArray(props.item.fields["rooms"]) &&  !(typeof props.item.fields["rooms"] === 'object')  && <>
 						<div className='text-sm font-bold' title="rooms">
 							{ props.item.fields["rooms"] }

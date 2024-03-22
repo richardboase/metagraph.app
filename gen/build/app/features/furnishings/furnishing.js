@@ -11,12 +11,11 @@ import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 import { RowThumbnail } from '@/components/rowThumbnail'
 
-import { RoomList } from '@/features/rooms/shared/roomList'
 
 
-import { FloorObjectGET, FloorJobPOST } from './_fetch'
+import { FurnishingObjectGET, FurnishingJobPOST } from './_fetch'
 
-export function Floor(props) {  
+export function Furnishing(props) {  
 
     const [userdata, setUserdata] = useUserContext()
     const [localdata, setLocaldata] = useLocalContext() 
@@ -32,11 +31,11 @@ export function Floor(props) {
 
 	// update tabs handles the updated context and sends the user to a new interface
 	function editData() {
-		setLocaldata(VisitTab(localdata, "editfloor", localdata.tab.context))
+		setLocaldata(VisitTab(localdata, "editfurnishing", localdata.tab.context))
 	}
 
 	function getObject() {
-		FloorObjectGET(userdata, subject.Meta.ID)
+		FurnishingObjectGET(userdata, subject.Meta.ID)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
@@ -101,7 +100,7 @@ export function Floor(props) {
 							
 							<div className='flex flex-row justify-center items-center'>
 								<button className='text-sm' onClick={editData} style={editButtonStyle}>
-								Edit Floor
+								Edit Furnishing
 								</button>
 							</div>
 							
@@ -187,7 +186,7 @@ export function Floor(props) {
 							<tr className='flex flex-row'>
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
-										<div className='font-bold'>rooms</div>
+										<div className='font-bold'>description</div>
 									</div>
 								</td>
 								<td className='flex flex-col justify-start'>
@@ -198,10 +197,10 @@ export function Floor(props) {
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
 										{
-											(typeof subject.fields["rooms"] === 'object') && <div className='flex flex-col m-4'>
+											(typeof subject.fields["description"] === 'object') && <div className='flex flex-col m-4'>
 												{
-													Object.keys(subject.fields["rooms"]).forEach(function(k, i) {
-														const v = subject.fields["rooms"][k]
+													Object.keys(subject.fields["description"]).forEach(function(k, i) {
+														const v = subject.fields["description"][k]
 														return (
 															<div key={i} className='flex flex-row text-xs m-2'>
 																<div className=''>{k}</div>
@@ -214,17 +213,17 @@ export function Floor(props) {
 											</div>
 										}
 										{
-											Array.isArray(subject.fields["rooms"]) && subject.fields["rooms"].map(function(item, i) {
+											Array.isArray(subject.fields["description"]) && subject.fields["description"].map(function(item, i) {
 												return (
 													<div key={i} className='text-xs'>{item}</div>
 												)
 											})
 										}
 										{
-											!Array.isArray(subject.fields["rooms"]) && !(typeof subject.fields["rooms"] === 'object') && <>
+											!Array.isArray(subject.fields["description"]) && !(typeof subject.fields["description"] === 'object') && <>
 												
 												
-												{ subject.fields["rooms"] }
+												{ subject.fields["description"] }
 												
 											</>
 										}
@@ -239,13 +238,7 @@ export function Floor(props) {
 			</div>
 			<div className='flex flex-col'>
 				
-				
-				
 
-				
-				
-				<RoomList title="Rooms" subject={subject} limit={4} />
-				
 				
 			</div>
 		</div>

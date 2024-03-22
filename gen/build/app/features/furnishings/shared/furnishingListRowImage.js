@@ -9,7 +9,7 @@ import { RowEdit } from "@/components/rowEdit"
 import { RowOrder } from "@/components/rowOrder"
 import { titlecase } from "../_interfaces"
 
-export function FloorListRow(props) {
+export function FurnishingListRowImage(props) {
 
 	const [userdata, setUserdata] = useUserContext()
 
@@ -22,12 +22,12 @@ export function FloorListRow(props) {
 	}
 
 	return (
-		<div className='flex flex-row justify-between py-2 items-center w-full'>
+		<div className='flex flex-col justify-between items-center w-full'>
 			
 			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer px-4'>
 				{
 					props.item.Meta.Name?.length && <>
-						<div className='text-lg font-bold' title="Name">{ props.item.Meta.Name }</div>
+						<div className='text-sm font-bold' title="Name">{ props.item.Meta.Name }</div>
 					</>
 				}
 				<div className="px-4"></div>
@@ -39,17 +39,19 @@ export function FloorListRow(props) {
 						<div className="px-4"></div>
 					</>
 				}{
-					("rooms" != "name") && !Array.isArray(props.item.fields["rooms"]) &&  !(typeof props.item.fields["rooms"] === 'object')  && <>
-						<div className='text-sm font-bold' title="rooms">
-							{ props.item.fields["rooms"] }
+					("description" != "name") && !Array.isArray(props.item.fields["description"]) &&  !(typeof props.item.fields["description"] === 'object')  && <>
+						<div className='text-sm font-bold' title="description">
+							{ props.item.fields["description"] }
 						</div>
 						<div className="px-4"></div>
 					</>
 				}
 			</div>
-			
-			<RowEdit object={props.item} editInterface="editfloor"/>
-			<RowDelete id={props.id} delete={deleteItem}/>
+			<div className="flex flex-rowc ">
+				
+				<RowEdit object={props.item} editInterface="editfurnishing"/>
+				<RowDelete id={props.id} delete={deleteItem}/>
+			</div>
 		</div>
 	)
 }

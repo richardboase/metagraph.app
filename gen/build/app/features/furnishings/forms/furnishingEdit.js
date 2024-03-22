@@ -14,7 +14,7 @@ import Object from '@/inputs/object';
 import InputChange from '@/inputs/inputChange';
 
 
-export function FloorEdit(props) {
+export function FurnishingEdit(props) {
 
 	console.log("COLLECTION EDIT", props)
 
@@ -37,11 +37,11 @@ export function FloorEdit(props) {
 			required: true,
 		},
 		
-		"rooms": {
-			id: "rooms",
-			type: "int",
+		"description": {
+			id: "description",
+			type: "string",
 			
-			value: subject.fields.rooms,
+			value: subject.fields.description,
 			
 			required: true,
 		},
@@ -54,13 +54,13 @@ export function FloorEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="name" type='text' required={ true } title="floor name" placeholder="floor name" inputChange={handleInputChange} value={ inputs["name"].value } />
+			<Input id="name" type='text' required={ true } title="furnishing name" placeholder="furnishing name" inputChange={handleInputChange} value={ inputs["name"].value } />
 			<Spacer/>
 			
-			<Input id="rooms" type='number' required={ true } title="floor rooms" inputChange={handleInputChange} value={ inputs["rooms"].value } />
+			<Input id="description" type='text' required={ true } title="furnishing description" placeholder="furnishing description" inputChange={handleInputChange} value={ inputs["description"].value } />
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","rooms"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","description"]}/>
 			<Spacer/>
 			
 		</div>

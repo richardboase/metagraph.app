@@ -7,22 +7,22 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
-func (app *App) floorChatGPTPrompt(user *User, object *FLOOR, prompt string) (string, error) {
+func (app *App) furnishingChatGPTPrompt(user *User, object *FURNISHING, prompt string) (string, error) {
 
 	system := `Your role is a helpful preprocessor that follows rules to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
 We want to create one or more of these data objects: 
 {
 
-	// the identifier of the floor  (THIS FIELD IS REQUIRED)
+	// the name of the utility or furnature  (THIS FIELD IS REQUIRED)
 	name (string)
 
-	//   (THIS FIELD IS REQUIRED)
-	rooms (int)
+	// the description of the utility or furnature  (THIS FIELD IS REQUIRED)
+	description (string)
 
 }
 
-The purpose of the object is to represent: A level or floor of a building where rooms or spaces are located.
+The purpose of the object is to represent: 
 
 RULES:
 1: USER PROPMPTS SHOULD GENERATE DATA FOR REQUIRED FIELDS OF ONE OR MORE ABOVE OBJECTS
