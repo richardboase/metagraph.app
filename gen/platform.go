@@ -434,13 +434,21 @@ func main() {
 	}
 
 	room := &models.Object{
+		Context: "A room on this floor of the building",
 		Parents: []string{
 			floor.Name,
 		},
 		Name: "room",
 		Fields: []*models.Field{
 			{
+				Context:  "A name representing the purpose or utility of this room",
 				Name:     "name",
+				JSON:     "string_30",
+				Required: true,
+			},
+			{
+				Context:  "A description of the purpose or utility of this room",
+				Name:     "descriptoion",
 				JSON:     "string_30",
 				Required: true,
 			},
@@ -452,7 +460,8 @@ func main() {
 		Parents: []string{
 			room.Name,
 		},
-		Name: "furnishing",
+		Name:    "furnishing",
+		Context: "a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in",
 		Fields: []*models.Field{
 			{
 				Context:  "the name of the utility or furnature",
@@ -466,10 +475,58 @@ func main() {
 				JSON:     "string_100",
 				Required: true,
 			},
+			{
+				Context:  "the state of the utility or furnature",
+				Name:     "state",
+				JSON:     "string_100",
+				Required: true,
+			},
+			{
+				Context:  "age of the object in days",
+				Name:     "age",
+				JSON:     "number_int",
+				Required: true,
+			},
 		},
 		Options: models.Options{},
 	}
 
+	thing := &models.Object{
+		Parents: []string{
+			room.Name,
+		},
+		Name:    "thing",
+		Context: "a distinct ant transferrable object of any size, could be anything",
+		Fields: []*models.Field{
+			{
+				Context:  "the shortest description of the object",
+				Name:     "name",
+				JSON:     "string_60",
+				Required: true,
+			},
+			{
+				Context:  "a full description of the object",
+				Name:     "description",
+				JSON:     "string_100",
+				Required: true,
+			},
+			{
+				Context:  `the state of the object, for example: a tumbler could be "half full with water"`,
+				Name:     "state",
+				JSON:     "string_60",
+				Required: true,
+			},
+			{
+				Context:  "age of the object in days",
+				Name:     "age",
+				JSON:     "number_int",
+				Required: true,
+			},
+		},
+		Options: models.Options{},
+	}
+
+	tree.Objects = append(tree.Objects, thing)
 	tree.Objects = append(tree.Objects, furnishing)
 	tree.Objects = append(tree.Objects, arthur)
 	tree.Objects = append(tree.Objects, jelly)

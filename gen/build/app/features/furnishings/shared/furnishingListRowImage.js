@@ -45,6 +45,20 @@ export function FurnishingListRowImage(props) {
 						</div>
 						<div className="px-4"></div>
 					</>
+				}{
+					("state" != "name") && !Array.isArray(props.item.fields["state"]) &&  !(typeof props.item.fields["state"] === 'object')  && <>
+						<div className='text-sm font-bold' title="state">
+							{ props.item.fields["state"] }
+						</div>
+						<div className="px-4"></div>
+					</>
+				}{
+					("age" != "name") && !Array.isArray(props.item.fields["age"]) &&  !(typeof props.item.fields["age"] === 'object')  && <>
+						<div className='text-sm font-bold' title="age">
+							{ props.item.fields["age"] }
+						</div>
+						<div className="px-4"></div>
+					</>
 				}
 			</div>
 			<div className="flex flex-rowc ">

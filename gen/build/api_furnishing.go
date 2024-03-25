@@ -259,6 +259,12 @@ func (app *App) EntrypointFURNISHING(w http.ResponseWriter, r *http.Request) {
 				},{
 					Path: "fields.description",
 					Value: object.Fields.Description,
+				},{
+					Path: "fields.state",
+					Value: object.Fields.State,
+				},{
+					Path: "fields.age",
+					Value: object.Fields.Age,
 				},
 			}
 			for _, update := range updates {

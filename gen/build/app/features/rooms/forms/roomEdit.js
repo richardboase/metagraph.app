@@ -37,6 +37,15 @@ export function RoomEdit(props) {
 			required: true,
 		},
 		
+		"descriptoion": {
+			id: "descriptoion",
+			type: "string",
+			
+			value: subject.fields.descriptoion,
+			
+			required: true,
+		},
+		
 	})
 	function handleInputChange(obj) {
 		InputChange(inputs, setInputs, obj)
@@ -48,7 +57,10 @@ export function RoomEdit(props) {
 			<Input id="name" type='text' required={ true } title="room name" placeholder="room name" inputChange={handleInputChange} value={ inputs["name"].value } />
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name"]}/>
+			<Input id="descriptoion" type='text' required={ true } title="room descriptoion" placeholder="room descriptoion" inputChange={handleInputChange} value={ inputs["descriptoion"].value } />
+			<Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","descriptoion"]}/>
 			<Spacer/>
 			
 		</div>

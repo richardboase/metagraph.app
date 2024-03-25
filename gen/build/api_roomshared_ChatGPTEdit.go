@@ -23,7 +23,7 @@ func (app *App) roomChatGPTEdit(user *User, parent *ROOM, prompt string) error {
 Here is the object we need to edit:
 %s
 
-The purpose of the object is to represent: 
+The purpose of the object is to represent: A room on this floor of the building
 
 RULES:
 1: GENERATE DATA FOR REQUIRED FIELDS

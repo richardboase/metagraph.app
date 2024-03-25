@@ -14,12 +14,15 @@ func (app *App) roomChatGPTPrompt(user *User, object *ROOM, prompt string) (stri
 We want to create one or more of these data objects: 
 {
 
-	//   (THIS FIELD IS REQUIRED)
+	// A name representing the purpose or utility of this room  (THIS FIELD IS REQUIRED)
 	name (string)
+
+	// A description of the purpose or utility of this room  (THIS FIELD IS REQUIRED)
+	descriptoion (string)
 
 }
 
-The purpose of the object is to represent: 
+The purpose of the object is to represent: A room on this floor of the building
 
 RULES:
 1: USER PROPMPTS SHOULD GENERATE DATA FOR REQUIRED FIELDS OF ONE OR MORE ABOVE OBJECTS

@@ -23,7 +23,7 @@ func (app *App) furnishingChatGPTEdit(user *User, parent *FURNISHING, prompt str
 Here is the object we need to edit:
 %s
 
-The purpose of the object is to represent: 
+The purpose of the object is to represent: a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in
 
 RULES:
 1: GENERATE DATA FOR REQUIRED FIELDS

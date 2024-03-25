@@ -31,7 +31,10 @@ export function RoomForm(props) {
 			<Input id="name" type='text' required={ true } title="room name" placeholder="room name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name"]}/>
+			<Input id="descriptoion" type='text' required={ true } title="room descriptoion" placeholder="room descriptoion" inputChange={handleInputChange}/>
+			<Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","descriptoion"]}/>
 			<Spacer/>
 			
 		</div>

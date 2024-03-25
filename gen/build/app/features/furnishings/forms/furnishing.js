@@ -34,7 +34,13 @@ export function FurnishingForm(props) {
 			<Input id="description" type='text' required={ true } title="furnishing description" placeholder="furnishing description" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","description"]}/>
+			<Input id="state" type='text' required={ true } title="furnishing state" placeholder="furnishing state" inputChange={handleInputChange}/>
+			<Spacer/>
+			
+			<Input id="age" type='number' required={ true } title="furnishing age" inputChange={handleInputChange}/>
+			<Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","description","state","age"]}/>
 			<Spacer/>
 			
 		</div>

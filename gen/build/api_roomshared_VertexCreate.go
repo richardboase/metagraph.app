@@ -18,11 +18,14 @@ func (app *App) roomVertexCreate(user *User, parent *ROOM, prompt string) error 
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
 We want to create one or more of these data objects: 
-// 
+// A room on this floor of the building
 {
 
-	//   (THIS FIELD IS REQUIRED)
+	// A name representing the purpose or utility of this room  (THIS FIELD IS REQUIRED)
 	name (string)
+
+	// A description of the purpose or utility of this room  (THIS FIELD IS REQUIRED)
+	descriptoion (string)
 
 }
 

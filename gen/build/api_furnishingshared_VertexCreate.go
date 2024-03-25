@@ -18,7 +18,7 @@ func (app *App) furnishingVertexCreate(user *User, parent *FURNISHING, prompt st
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
 We want to create one or more of these data objects: 
-// 
+// a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in
 {
 
 	// the name of the utility or furnature  (THIS FIELD IS REQUIRED)
@@ -26,6 +26,12 @@ We want to create one or more of these data objects:
 
 	// the description of the utility or furnature  (THIS FIELD IS REQUIRED)
 	description (string)
+
+	// the state of the utility or furnature  (THIS FIELD IS REQUIRED)
+	state (string)
+
+	// age of the object in days  (THIS FIELD IS REQUIRED)
+	age (int)
 
 }
 

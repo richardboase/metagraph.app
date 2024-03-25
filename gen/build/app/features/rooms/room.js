@@ -11,6 +11,7 @@ import Loading from '@/app/loading'
 import Spacer from '@/inputs/spacer';
 import { RowThumbnail } from '@/components/rowThumbnail'
 
+import { ThingList } from '@/features/things/shared/thingList'
 import { FurnishingList } from '@/features/furnishings/shared/furnishingList'
 
 
@@ -184,6 +185,55 @@ export function Room(props) {
 							</tr>
 							<Spacer/>
 							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>descriptoion</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["descriptoion"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["descriptoion"]).forEach(function(k, i) {
+														const v = subject.fields["descriptoion"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["descriptoion"]) && subject.fields["descriptoion"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["descriptoion"]) && !(typeof subject.fields["descriptoion"] === 'object') && <>
+												
+												
+												{ subject.fields["descriptoion"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
 						</tbody>
 					</table>
 				</div>
@@ -192,7 +242,13 @@ export function Room(props) {
 				
 				
 				
+				
+				
 
+				
+				
+				<ThingList title="Things" subject={subject} limit={4} />
+				
 				
 				
 				<FurnishingList title="Furnishings" subject={subject} limit={4} />

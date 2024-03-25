@@ -38,6 +38,13 @@ export function RoomListRow(props) {
 						</div>
 						<div className="px-4"></div>
 					</>
+				}{
+					("descriptoion" != "name") && !Array.isArray(props.item.fields["descriptoion"]) &&  !(typeof props.item.fields["descriptoion"] === 'object')  && <>
+						<div className='text-sm font-bold' title="descriptoion">
+							{ props.item.fields["descriptoion"] }
+						</div>
+						<div className="px-4"></div>
+					</>
 				}
 			</div>
 			

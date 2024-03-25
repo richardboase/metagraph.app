@@ -46,6 +46,24 @@ export function FurnishingEdit(props) {
 			required: true,
 		},
 		
+		"state": {
+			id: "state",
+			type: "string",
+			
+			value: subject.fields.state,
+			
+			required: true,
+		},
+		
+		"age": {
+			id: "age",
+			type: "int",
+			
+			value: subject.fields.age,
+			
+			required: true,
+		},
+		
 	})
 	function handleInputChange(obj) {
 		InputChange(inputs, setInputs, obj)
@@ -60,7 +78,13 @@ export function FurnishingEdit(props) {
 			<Input id="description" type='text' required={ true } title="furnishing description" placeholder="furnishing description" inputChange={handleInputChange} value={ inputs["description"].value } />
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","description"]}/>
+			<Input id="state" type='text' required={ true } title="furnishing state" placeholder="furnishing state" inputChange={handleInputChange} value={ inputs["state"].value } />
+			<Spacer/>
+			
+			<Input id="age" type='number' required={ true } title="furnishing age" inputChange={handleInputChange} value={ inputs["age"].value } />
+			<Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","description","state","age"]}/>
 			<Spacer/>
 			
 		</div>

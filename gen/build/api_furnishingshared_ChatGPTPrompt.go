@@ -20,9 +20,15 @@ We want to create one or more of these data objects:
 	// the description of the utility or furnature  (THIS FIELD IS REQUIRED)
 	description (string)
 
+	// the state of the utility or furnature  (THIS FIELD IS REQUIRED)
+	state (string)
+
+	// age of the object in days  (THIS FIELD IS REQUIRED)
+	age (int)
+
 }
 
-The purpose of the object is to represent: 
+The purpose of the object is to represent: a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in
 
 RULES:
 1: USER PROPMPTS SHOULD GENERATE DATA FOR REQUIRED FIELDS OF ONE OR MORE ABOVE OBJECTS

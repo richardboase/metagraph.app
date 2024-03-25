@@ -26,6 +26,7 @@ import (
 	"github.com/google/uuid"
 	"google.golang.org/api/iterator"
 
+	"github.com/golangdaddy/leap/models"
 	"github.com/golangdaddy/leap/sdk/assetlayer"
 	"github.com/golangdaddy/leap/sdk/cloudfunc"
 
@@ -889,6 +890,305 @@ func (job *ASYNCJOB) CompleteStage() {
 }
 
 
+type THING struct {
+	Meta    Internals
+	Fields FieldsTHING `json:"fields" firestore:"fields"`
+}
+
+func (user *User) NewTHING(parent *Internals, fields FieldsTHING) *THING {
+	var object *THING
+	if parent == nil {
+		object = &THING{
+			Meta: (Internals{}).NewInternals("things"),
+			Fields: fields,
+		}
+	} else {
+		object = &THING{
+			Meta: parent.NewInternals("things"),
+			Fields: fields,
+		}
+	}
+
+	object.Meta.ClassName = "things"
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
+	} else {
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
+	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
+	
+	// add children to context
+	object.Meta.Context.Children = []string{
+		
+	}
+	return object
+}
+
+type FieldsTHING struct {
+	Name string `json:"name" firestore:"name"`
+	Description string `json:"description" firestore:"description"`
+	State string `json:"state" firestore:"state"`
+	Age int `json:"age" firestore:"age"`
+	
+}
+
+func (x *THING) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":[{"context":"the shortest description of the object","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"a full description of the object","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the state of the object, for example: a tumbler could be \"half full with water\"","json":"","name":"state","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"age of the object in days","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
+}
+
+func (x *THING) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return false
+	}
+	return true
+}
+
+func (x *THING) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	var exists bool
+	
+
+	_, exists = m["name"]
+	if true && !exists {
+		return errors.New("required field 'name' not supplied")
+	}
+	if exists {
+		x.Fields.Name, err = assertSTRING(m, "name")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(60, x.Fields.Name); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["description"]
+	if true && !exists {
+		return errors.New("required field 'description' not supplied")
+	}
+	if exists {
+		x.Fields.Description, err = assertSTRING(m, "description")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Description)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Description)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Description)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Description)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Description); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(100, x.Fields.Description); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["state"]
+	if true && !exists {
+		return errors.New("required field 'state' not supplied")
+	}
+	if exists {
+		x.Fields.State, err = assertSTRING(m, "state")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.State)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.State)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.State)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.State)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.State); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(60, x.Fields.State); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["age"]
+	if true && !exists {
+		return errors.New("required field 'age' not supplied")
+	}
+	if exists {
+		x.Fields.Age, err = assertINT(m, "age")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Age)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Age)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Age)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Age)
+				}
+			}
+		}
+		
+	}
+	
+
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	} else {
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
+	}
+
+	x.Meta.Modify()
+
+	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *THING) ValidateImageTHING(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
+}
+
+
+
 type FURNISHING struct {
 	Meta    Internals
 	Fields FieldsFURNISHING `json:"fields" firestore:"fields"`
@@ -940,7 +1240,15 @@ func (user *User) NewFURNISHING(parent *Internals, fields FieldsFURNISHING) *FUR
 type FieldsFURNISHING struct {
 	Name string `json:"name" firestore:"name"`
 	Description string `json:"description" firestore:"description"`
+	State string `json:"state" firestore:"state"`
+	Age int `json:"age" firestore:"age"`
 	
+}
+
+func (x *FURNISHING) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":[{"context":"the name of the utility or furnature","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the description of the utility or furnature","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the state of the utility or furnature","json":"","name":"state","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"age of the object in days","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *FURNISHING) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -1038,6 +1346,83 @@ func (x *FURNISHING) ValidateObject(m map[string]interface{}) error {
 		}
 		if err := assertRangeMax(100, x.Fields.Description); err != nil {
 			return err
+		}
+		
+	}
+	
+
+	_, exists = m["state"]
+	if true && !exists {
+		return errors.New("required field 'state' not supplied")
+	}
+	if exists {
+		x.Fields.State, err = assertSTRING(m, "state")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.State)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.State)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.State)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.State)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.State); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(100, x.Fields.State); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["age"]
+	if true && !exists {
+		return errors.New("required field 'age' not supplied")
+	}
+	if exists {
+		x.Fields.Age, err = assertINT(m, "age")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Age)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Age)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Age)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Age)
+				}
+			}
 		}
 		
 	}
@@ -1149,6 +1534,12 @@ func (user *User) NewARTHUR(parent *Internals, fields FieldsARTHUR) *ARTHUR {
 type FieldsARTHUR struct {
 	Name string `json:"name" firestore:"name"`
 	
+}
+
+func (x *ARTHUR) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"arthur","names":null,"plural":"arthurs","json":"","mode":"root","context":"arthurs space","children":[{"name":"jelly","names":null,"plural":"jellies","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":true,"image":true,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"jellyname","names":null,"plural":"jellynames","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *ARTHUR) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -1322,6 +1713,12 @@ type FieldsJELLY struct {
 	Element string `json:"element" firestore:"element"`
 	Hp int `json:"hp" firestore:"hp"`
 	
+}
+
+func (x *JELLY) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"jelly","names":null,"plural":"jellies","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"select","inputReference":"","inputOptions":["male","female"],"required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"element","type":"string","input":"select","inputReference":"jellynames","required":false,"filter":true,"range":null,"regexp":"","regexpHex":""},{"context":"health points","json":"","name":"hp","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":true,"image":true,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *JELLY) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -1596,6 +1993,12 @@ type FieldsJELLYNAME struct {
 	
 }
 
+func (x *JELLYNAME) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"jellyname","names":null,"plural":"jellynames","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":[{"context":"the elemental name of the jelly","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
+}
+
 func (x *JELLYNAME) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
 	if err := x.ValidateObject(m); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
@@ -1766,6 +2169,12 @@ type FieldsGAME struct {
 	
 }
 
+func (x *GAME) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"game","names":null,"plural":"games","json":"","mode":"root","context":"","children":[{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
+}
+
 func (x *GAME) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
 	if err := x.ValidateObject(m); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
@@ -1934,6 +2343,12 @@ func (user *User) NewLOBBY(parent *Internals, fields FieldsLOBBY) *LOBBY {
 type FieldsLOBBY struct {
 	Name string `json:"name" firestore:"name"`
 	
+}
+
+func (x *LOBBY) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"children":[{"name":"character","names":null,"plural":"characters","json":"","mode":"","context":"","parents":["lobby"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *LOBBY) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -2108,6 +2523,12 @@ type FieldsCHARACTER struct {
 	Socialclass string `json:"socialclass" firestore:"socialclass"`
 	Backstory string `json:"backstory" firestore:"backstory"`
 	
+}
+
+func (x *CHARACTER) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"character","names":null,"plural":"characters","json":"","mode":"","context":"","parents":["lobby"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a short synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *CHARACTER) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -2529,6 +2950,12 @@ type FieldsBOOK struct {
 	
 }
 
+func (x *BOOK) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"book","names":null,"plural":"books","json":"","mode":"root","context":"a creative writing project","children":[{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
+}
+
 func (x *BOOK) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
 	if err := x.ValidateObject(m); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
@@ -2703,6 +3130,12 @@ type FieldsBOOKCHARACTER struct {
 	Socialclass string `json:"socialclass" firestore:"socialclass"`
 	Backstory string `json:"backstory" firestore:"backstory"`
 	
+}
+
+func (x *BOOKCHARACTER) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *BOOKCHARACTER) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -3124,6 +3557,12 @@ type FieldsCHAPTER struct {
 	
 }
 
+func (x *CHAPTER) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"children":[{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
+}
+
 func (x *CHAPTER) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
 	if err := x.ValidateObject(m); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
@@ -3294,6 +3733,12 @@ type FieldsPARAGRAPH struct {
 	
 }
 
+func (x *PARAGRAPH) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":[{"context":"","json":"","name":"content","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
+}
+
 func (x *PARAGRAPH) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
 	if err := x.ValidateObject(m); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
@@ -3457,6 +3902,12 @@ func (user *User) NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
 type FieldsTOWN struct {
 	Name string `json:"name" firestore:"name"`
 	
+}
+
+func (x *TOWN) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"town","names":null,"plural":"towns","json":"","mode":"root","context":"A town where people live.","children":[{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"quarter","names":null,"plural":"quarters","json":"","mode":"","context":"A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *TOWN) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -3630,6 +4081,12 @@ type FieldsTESTSTREET struct {
 	Start string `json:"start" firestore:"start"`
 	End string `json:"end" firestore:"end"`
 	
+}
+
+func (x *TESTSTREET) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":[{"context":"the name of the street","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"a description of the street","json":"","name":"description","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"the street junctioning at the START of the road, if any","json":"","name":"start","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"the junction at the END of the road, if any","json":"","name":"end","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *TESTSTREET) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -3925,6 +4382,12 @@ type FieldsQUARTER struct {
 	
 }
 
+func (x *QUARTER) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"quarter","names":null,"plural":"quarters","json":"","mode":"","context":"A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.","parents":["town"],"children":[{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["quarter"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
+}
+
 func (x *QUARTER) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
 	if err := x.ValidateObject(m); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
@@ -4091,6 +4554,12 @@ func (user *User) NewSTREET(parent *Internals, fields FieldsSTREET) *STREET {
 type FieldsSTREET struct {
 	Name string `json:"name" firestore:"name"`
 	
+}
+
+func (x *STREET) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["quarter"],"children":[{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *STREET) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -4265,6 +4734,12 @@ type FieldsBUILDING struct {
 	Floors int `json:"floors" firestore:"floors"`
 	Doors int `json:"doors" firestore:"doors"`
 	
+}
+
+func (x *BUILDING) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"children":[{"name":"floor","names":null,"plural":"floors","json":"","mode":"","context":"A level or floor of a building where rooms or spaces are located.","parents":["building"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the building","json":"","name":"description","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"Street number(s) of the building","json":"","name":"number","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"xunits","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"yunits","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"Number of floors this building has","json":"","name":"floors","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"Number of ground floor entrances or exits","json":"","name":"doors","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *BUILDING) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -4647,6 +5122,12 @@ type FieldsFLOOR struct {
 	
 }
 
+func (x *FLOOR) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"floor","names":null,"plural":"floors","json":"","mode":"","context":"A level or floor of a building where rooms or spaces are located.","parents":["building"],"children":[{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"the identifier of the floor","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"","json":"","name":"rooms","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
+}
+
 func (x *FLOOR) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
 	if err := x.ValidateObject(m); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
@@ -4841,14 +5322,21 @@ func (user *User) NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
 	
 	// add children to context
 	object.Meta.Context.Children = []string{
-		"furnishing",
+		"thing","furnishing",
 	}
 	return object
 }
 
 type FieldsROOM struct {
 	Name string `json:"name" firestore:"name"`
+	Descriptoion string `json:"descriptoion" firestore:"descriptoion"`
 	
+}
+
+func (x *ROOM) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"A name representing the purpose or utility of this room","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the purpose or utility of this room","json":"","name":"descriptoion","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	return obj
 }
 
 func (x *ROOM) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
@@ -4902,6 +5390,49 @@ func (x *ROOM) ValidateObject(m map[string]interface{}) error {
 			
 		}
 		if err := assertRangeMax(30, x.Fields.Name); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["descriptoion"]
+	if true && !exists {
+		return errors.New("required field 'descriptoion' not supplied")
+	}
+	if exists {
+		x.Fields.Descriptoion, err = assertSTRING(m, "descriptoion")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Descriptoion)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Descriptoion)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Descriptoion)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Descriptoion)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Descriptoion); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(30, x.Fields.Descriptoion); err != nil {
 			return err
 		}
 		
