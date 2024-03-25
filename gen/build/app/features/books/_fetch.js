@@ -56,6 +56,10 @@ export function BooksChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/books?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function BooksVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/books?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function BooksChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/books?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

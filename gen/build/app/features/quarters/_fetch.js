@@ -56,6 +56,10 @@ export function QuartersChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/quarters?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function QuartersVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/quarters?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function QuartersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/quarters?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

@@ -12,7 +12,7 @@ import Select from '@/inputs/select';
 import CollectionSelect from '@/inputs/collectionSelect';
 import Color from '@/inputs/color';
 
-import { LobbysChatGPTPOST, LobbysChatGPTCollectionPOST } from '../_fetch'
+import { LobbysVertexPOST, LobbysChatGPTPOST, LobbysChatGPTCollectionPOST } from '../_fetch'
 
 export function AI(props) {
 
@@ -32,15 +32,30 @@ export function AI(props) {
 		setSelect(e.target.id)
 	}
 
+	const [model, setModel] = useState('openapi')
+	function updateModel(e) {
+		setModel(e.target.value)
+	}
+
 	function sendPrompt() {
 		props.updateList(false)
 		const payload = {
 			"prompt": document.getElementById("textinput").value,
 		}
+
+		console.log("model", model)
+
+		var prom = null
+
 		switch (select) {
 		case "prompt":
-			LobbysChatGPTPOST(userdata, props.subject.Meta.ID, "prompt", payload)
-			.then((res) => {
+
+			if (model == "openapi") {
+				prom = LobbysVertexPOST(userdata, props.subject.Meta.ID, "prompt", payload)
+			} else {
+				prom = LobbysChatGPTPOST(userdata, props.subject.Meta.ID, "prompt", payload)
+			}
+			prom.then((res) => {
 				console.log(res)
 				props.updateList(true)
 			}) 
@@ -49,9 +64,15 @@ export function AI(props) {
 				props.updateList(true)
 			})
 			break
+	
 		case "create":
-			LobbysChatGPTPOST(userdata, props.subject.Meta.ID, "create", payload)
-			.then((res) => {
+
+			if (model == "openapi") {
+				prom = LobbysVertexPOST(userdata, props.subject.Meta.ID, "create", payload)
+			} else {
+				prom = LobbysChatGPTPOST(userdata, props.subject.Meta.ID, "create", payload)
+			}
+			prom.then((res) => {
 				console.log(res)
 				props.updateList(true)
 			}) 
@@ -60,7 +81,8 @@ export function AI(props) {
 				props.updateList(true)
 			})
 			break
-		case "modify":
+	
+			case "modify":
 			LobbysChatGPTCollectionPOST(userdata, props.subject.Meta.ID, props.collection, payload)
 			.then((res) => {
 				console.log(res)
@@ -132,6 +154,10 @@ export function AI(props) {
 							}
 						</div>
 						<div>
+							<select onClick={updateModel}>
+								<option value="openapi">openapi</option>
+								<option value="vertex">gemini</option>
+							</select>
 							<button onClick={sendPrompt} style={buttonStyle}>Send</button>
 						</div>
 					</div>

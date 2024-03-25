@@ -56,6 +56,10 @@ export function BookcharactersChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/bookcharacters?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function BookcharactersVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/bookcharacters?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function BookcharactersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/bookcharacters?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

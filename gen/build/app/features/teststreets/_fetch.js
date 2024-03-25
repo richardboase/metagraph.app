@@ -56,6 +56,10 @@ export function TeststreetsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/teststreets?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function TeststreetsVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/teststreets?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function TeststreetsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/teststreets?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

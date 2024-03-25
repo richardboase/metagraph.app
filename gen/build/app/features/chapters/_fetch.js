@@ -56,6 +56,10 @@ export function ChaptersChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/chapters?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function ChaptersVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/chapters?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function ChaptersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/chapters?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

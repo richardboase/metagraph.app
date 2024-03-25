@@ -56,6 +56,10 @@ export function ParagraphsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/paragraphs?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function ParagraphsVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/paragraphs?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function ParagraphsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/paragraphs?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

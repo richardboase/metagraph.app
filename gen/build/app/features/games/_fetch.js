@@ -56,6 +56,10 @@ export function GamesChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/games?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function GamesVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/games?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function GamesChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/games?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

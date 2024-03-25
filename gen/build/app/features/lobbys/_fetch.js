@@ -56,6 +56,10 @@ export function LobbysChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/lobbys?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function LobbysVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/lobbys?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function LobbysChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/lobbys?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

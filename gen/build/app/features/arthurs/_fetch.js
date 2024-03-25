@@ -56,6 +56,10 @@ export function ArthursChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/arthurs?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function ArthursVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/arthurs?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function ArthursChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/arthurs?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

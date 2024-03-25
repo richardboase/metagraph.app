@@ -56,6 +56,10 @@ export function FloorsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/floors?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function FloorsVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/floors?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function FloorsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/floors?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

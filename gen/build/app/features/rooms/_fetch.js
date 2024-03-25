@@ -56,6 +56,10 @@ export function RoomsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/rooms?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function RoomsVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/rooms?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function RoomsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/rooms?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }

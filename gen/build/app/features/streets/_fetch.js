@@ -56,6 +56,10 @@ export function StreetsChatGPTPOST(user, parentID, mode, payload) {
     return SessionFetch(user, "POST", "api/streets?function=openai&mode="+mode+"&parent="+parentID, payload)
 }
 
+export function StreetsVertexPOST(user, parentID, mode, payload) {
+    return SessionFetch(user, "POST", "api/streets?function=vertex&mode="+mode+"&parent="+parentID, payload)
+}
+
 export function StreetsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
     return SessionFetch(user, "POST", "api/streets?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
