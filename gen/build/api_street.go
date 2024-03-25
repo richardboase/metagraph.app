@@ -256,6 +256,12 @@ func (app *App) EntrypointSTREET(w http.ResponseWriter, r *http.Request) {
 				{
 					Path: "fields.name",
 					Value: object.Fields.Name,
+				},{
+					Path: "fields.zoning",
+					Value: object.Fields.Zoning,
+				},{
+					Path: "fields.length",
+					Value: object.Fields.Length,
 				},
 			}
 			for _, update := range updates {

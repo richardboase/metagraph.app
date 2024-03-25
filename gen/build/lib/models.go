@@ -3894,7 +3894,7 @@ func (user *User) NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
 	)
 	// add children to context
 	object.Meta.Context.Children = []string{
-		"teststreet","quarter",
+		"teststreet","street",
 	}
 	return object
 }
@@ -3906,7 +3906,7 @@ type FieldsTOWN struct {
 
 func (x *TOWN) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"town","names":null,"plural":"towns","json":"","mode":"root","context":"A town where people live.","children":[{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"quarter","names":null,"plural":"quarters","json":"","mode":"","context":"A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"town","names":null,"plural":"towns","json":"","mode":"root","context":"A town where people live.","children":[{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -4329,180 +4329,6 @@ func (object *TESTSTREET) ValidateImageTESTSTREET(fileBytes []byte) (image.Image
 
 
 
-type QUARTER struct {
-	Meta    Internals
-	Fields FieldsQUARTER `json:"fields" firestore:"fields"`
-}
-
-func (user *User) NewQUARTER(parent *Internals, fields FieldsQUARTER) *QUARTER {
-	var object *QUARTER
-	if parent == nil {
-		object = &QUARTER{
-			Meta: (Internals{}).NewInternals("quarters"),
-			Fields: fields,
-		}
-	} else {
-		object = &QUARTER{
-			Meta: parent.NewInternals("quarters"),
-			Fields: fields,
-		}
-	}
-
-	object.Meta.ClassName = "quarters"
-
-	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
-	if err != nil {
-		log.Println(err)
-	} else {
-		object.Meta.Media.Color = gamut.ToHex(colors[0])
-	}
-
-	// this object inherits its admin permissions
-	if parent != nil {
-		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-		if len(parent.Moderation.Object) == 0 {
-			log.Println("USING PARENT ID AS MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.ID
-		} else {
-			log.Println("USING PARENT'S MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.Moderation.Object
-		}
-	}
-
-	
-	// add children to context
-	object.Meta.Context.Children = []string{
-		"street",
-	}
-	return object
-}
-
-type FieldsQUARTER struct {
-	Name string `json:"name" firestore:"name"`
-	
-}
-
-func (x *QUARTER) Schema() *models.Object {
-	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"quarter","names":null,"plural":"quarters","json":"","mode":"","context":"A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.","parents":["town"],"children":[{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["quarter"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
-	return obj
-}
-
-func (x *QUARTER) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
-	if err := x.ValidateObject(m); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusBadRequest)
-		return false
-	}
-	return true
-}
-
-func (x *QUARTER) ValidateObject(m map[string]interface{}) error {
-
-	var err error
-	var exists bool
-	
-
-	_, exists = m["name"]
-	if false && !exists {
-		return errors.New("required field 'name' not supplied")
-	}
-	if exists {
-		x.Fields.Name, err = assertSTRING(m, "name")
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
-				}
-			}
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
-				}
-			}
-		}
-		
-		if err := assertRangeMin(1, x.Fields.Name); err != nil {
-			
-		}
-		if err := assertRangeMax(30, x.Fields.Name); err != nil {
-			return err
-		}
-		
-	}
-	
-
-	// extract name field if exists
-	name, ok := m["name"].(string)
-	if ok {
-		x.Meta.Name = name	
-	} else {
-		var names []string
-		
-		x.Meta.Name = strings.Join(names, " ")
-	}
-
-	x.Meta.Modify()
-
-	return nil
-}
-
-// assert file is an image because of .Object.Options.Image
-func (object *QUARTER) ValidateImageQUARTER(fileBytes []byte) (image.Image, error) {
-
-	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
-	if err != nil {
-		return nil, err
-	}
-	object.Meta.Media.Image = true
-
-	// determine image format
-	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
-		object.Meta.Media.Format = "JPEG"
-	} else {
-		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
-			object.Meta.Media.Format = "PNG"
-		}
-	}
-
-	// Parse the EXIF data
-	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
-	if err == nil {
-		println(exifData.String())
-		
-		object.Meta.Media.EXIF = map[string]interface{}{}
-	
-		tm, err := exifData.DateTime()
-		if err == nil {
-			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
-			object.Meta.Modified = tm.UTC().Unix()
-			fmt.Println("Taken: ", tm)
-		}
-	
-		lat, long, err := exifData.LatLong()
-		if err != nil {
-			object.Meta.Media.EXIF["lat"] = lat
-			object.Meta.Media.EXIF["lng"] = long
-			fmt.Println("lat, long: ", lat, ", ", long)
-		}
-	}
-
-	return img, nil
-}
-
-
-
 type STREET struct {
 	Meta    Internals
 	Fields FieldsSTREET `json:"fields" firestore:"fields"`
@@ -4553,12 +4379,14 @@ func (user *User) NewSTREET(parent *Internals, fields FieldsSTREET) *STREET {
 
 type FieldsSTREET struct {
 	Name string `json:"name" firestore:"name"`
+	Zoning string `json:"zoning" firestore:"zoning"`
+	Length int `json:"length" firestore:"length"`
 	
 }
 
 func (x *STREET) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["quarter"],"children":[{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["town"],"children":[{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"The street name","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the general zoning type of the street","json":"","name":"zoning","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the length in meters of the street","json":"","name":"length","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -4612,6 +4440,81 @@ func (x *STREET) ValidateObject(m map[string]interface{}) error {
 		}
 		if err := assertRangeMax(30, x.Fields.Name); err != nil {
 			return err
+		}
+		
+	}
+	
+
+	_, exists = m["zoning"]
+	if false && !exists {
+		return errors.New("required field 'zoning' not supplied")
+	}
+	if exists {
+		x.Fields.Zoning, err = assertSTRING(m, "zoning")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Zoning)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Zoning)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Zoning)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Zoning)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Zoning); err != nil {
+			
+		}
+		if err := assertRangeMax(30, x.Fields.Zoning); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["length"]
+	if false && !exists {
+		return errors.New("required field 'length' not supplied")
+	}
+	if exists {
+		x.Fields.Length, err = assertINT(m, "length")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Length)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Length)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Length)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Length)
+				}
+			}
 		}
 		
 	}

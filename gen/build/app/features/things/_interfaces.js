@@ -19,7 +19,7 @@ export var ThingInterfaces = {
 		component: (<DeleteThing/>),
 	},
 	"newthing": {
-		level: 12+2,
+		level: 10+2,
 		name: "New Thing",
 		component: (<NewThing />),
 	},
@@ -30,7 +30,7 @@ export var ThingInterfaces = {
 		component: (<EditThing />),
 	},  
 	"things": {
-		level: 12+1,
+		level: 10+1,
 		name: "Things", 
 		component: (<Things />),
 		subsublinks: ["thingsmatrix", "newthing"],
@@ -38,7 +38,7 @@ export var ThingInterfaces = {
 		hasSpreadsheetButton: true,
 	},
 	"thingsmatrix": {
-		level: 12+2,
+		level: 10+2,
 		name: "Things Matrix", 
 		component: (<ThingsMatrix />),
 		subsublinks: ["newthing"],
@@ -46,7 +46,7 @@ export var ThingInterfaces = {
 		hasListButton: true,
 	},
 	"thing": {
-		level: 12+2,
+		level: 10+2,
 		name: "Thing",
 		subsublinks: [],
 		component: (<Thing />),
@@ -54,17 +54,17 @@ export var ThingInterfaces = {
 		hasEditButton: true,
 	},
 	"thingadmin": {
-		level: 12+2,
+		level: 10+2,
 		name: "Admin",
 		component: (<ThingAdmin />),
 	},
 	"thingadmins": {
-		level: 12+2,
+		level: 10+2,
 		name: "Admins",
 		component: (<ThingAdmins />),
 	},
 	"thingassets": {
-		level: 12+2,
+		level: 10+2,
 		name: "Thing Assets",
 		component: (<Assets />),
 	},

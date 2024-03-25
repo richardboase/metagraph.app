@@ -184,6 +184,104 @@ export function Street(props) {
 							</tr>
 							<Spacer/>
 							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>zoning</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["zoning"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["zoning"]).forEach(function(k, i) {
+														const v = subject.fields["zoning"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["zoning"]) && subject.fields["zoning"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["zoning"]) && !(typeof subject.fields["zoning"] === 'object') && <>
+												
+												
+												{ subject.fields["zoning"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>length</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["length"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["length"]).forEach(function(k, i) {
+														const v = subject.fields["length"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["length"]) && subject.fields["length"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["length"]) && !(typeof subject.fields["length"] === 'object') && <>
+												
+												
+												{ subject.fields["length"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
 						</tbody>
 					</table>
 				</div>

@@ -37,6 +37,24 @@ export function StreetEdit(props) {
 			required: false,
 		},
 		
+		"zoning": {
+			id: "zoning",
+			type: "string",
+			
+			value: subject.fields.zoning,
+			
+			required: false,
+		},
+		
+		"length": {
+			id: "length",
+			type: "int",
+			
+			value: subject.fields.length,
+			
+			required: false,
+		},
+		
 	})
 	function handleInputChange(obj) {
 		InputChange(inputs, setInputs, obj)
@@ -46,6 +64,12 @@ export function StreetEdit(props) {
 		<div className='flex flex-col'>
 			
 			<Input id="name" type='text' required={ false } title="street name" placeholder="street name" inputChange={handleInputChange} value={ inputs["name"].value } />
+			<Spacer/>
+			
+			<Input id="zoning" type='text' required={ false } title="street zoning" placeholder="street zoning" inputChange={handleInputChange} value={ inputs["zoning"].value } />
+			<Spacer/>
+			
+			<Input id="length" type='number' required={ false } title="street length" inputChange={handleInputChange} value={ inputs["length"].value } />
 			<Spacer/>
 			
 			<Submit text="Save" inputs={inputs} submit={props.submit} assert={[]}/>

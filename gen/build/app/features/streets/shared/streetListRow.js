@@ -38,6 +38,20 @@ export function StreetListRow(props) {
 						</div>
 						<div className="px-4"></div>
 					</>
+				}{
+					("zoning" != "name") && !Array.isArray(props.item.fields["zoning"]) &&  !(typeof props.item.fields["zoning"] === 'object')  && <>
+						<div className='text-sm font-bold' title="zoning">
+							{ props.item.fields["zoning"] }
+						</div>
+						<div className="px-4"></div>
+					</>
+				}{
+					("length" != "name") && !Array.isArray(props.item.fields["length"]) &&  !(typeof props.item.fields["length"] === 'object')  && <>
+						<div className='text-sm font-bold' title="length">
+							{ props.item.fields["length"] }
+						</div>
+						<div className="px-4"></div>
+					</>
 				}
 			</div>
 			

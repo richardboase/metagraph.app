@@ -24,8 +24,14 @@ We want to create one or more of these data objects: A street, part of the trans
 
 {
 
-	//  
+	// The street name 
 	name (string)
+
+	// the general zoning type of the street 
+	zoning (string)
+
+	// the length in meters of the street 
+	length (int)
 
 }
 

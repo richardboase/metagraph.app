@@ -12,7 +12,7 @@ import Spacer from '@/inputs/spacer';
 import { RowThumbnail } from '@/components/rowThumbnail'
 
 import { TeststreetList } from '@/features/teststreets/shared/teststreetList'
-import { QuarterList } from '@/features/quarters/shared/quarterList'
+import { StreetList } from '@/features/streets/shared/streetList'
 
 
 import { TownObjectGET, TownJobPOST } from './_fetch'
@@ -202,7 +202,7 @@ export function Town(props) {
 				
 				
 				
-				<QuarterList title="Quarters" subject={subject} limit={4} />
+				<StreetList title="Streets" subject={subject} limit={4} />
 				
 				
 			</div>

@@ -35,6 +35,14 @@ export function StreetMatrixRow(props) {
 			<div className='flex flex-row w-full ' >
 				<input id="name" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["name"] }/>
 			</div>
+		</td><td className='text-sm' style={cellStyle}>
+			<div className='flex flex-row w-full ' >
+				<input id="zoning" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["zoning"] }/>
+			</div>
+		</td><td className='text-sm' style={cellStyle}>
+			<div className='flex flex-row w-full ' >
+				<input id="length" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["length"] }/>
+			</div>
 		</td>
 	</tr>
 	)

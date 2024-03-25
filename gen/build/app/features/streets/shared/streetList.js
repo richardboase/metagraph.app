@@ -14,7 +14,7 @@ import { StreetListRowImage } from './streetListRowImage';
 import { StreetDELETE, StreetsListGET, StreetOrderPOST, StreetJobPOST } from '../_fetch';
 
 
-import { QuarterJobPOST } from '@/features/quarters/_fetch'
+import { TownJobPOST } from '@/features/towns/_fetch'
 
 
 export function StreetList(props) {
@@ -49,7 +49,7 @@ export function StreetList(props) {
 		console.log(e)
 		const job = e.target.id
 		
-		QuarterJobPOST(userdata, props.subject?.Meta.ID, job)
+		TownJobPOST(userdata, props.subject?.Meta.ID, job)
 		.then((res) => console.log(res))
 		.catch((e) => {
             console.error(e)

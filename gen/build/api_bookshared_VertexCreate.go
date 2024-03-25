@@ -15,10 +15,15 @@ func (app *App) bookVertexCreate(user *User, parent *BOOK, prompt string) error 
 
 	fmt.Println("prompt with parent", parent.Meta.ID, prompt)
 
+	b, _ := app.MarshalJSON(parent.Fields)
+	parentString := string(b)
+
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
-We want to create one or more of these data objects: 
-// a creative writing project
+We want to create one or more of these data objects: a creative writing project
+
+...for this parent object: ` + parentString + `
+
 {
 
 	//   (THIS FIELD IS REQUIRED)
@@ -28,7 +33,7 @@ We want to create one or more of these data objects:
 
 The response should be a raw JSON array with one or more objects, based on the user prompt: `
 
-	println(prompt)
+	println(system+prompt)
 
 	_, resp, err := app.GCPClients.GenerateContent(system+prompt, 0.9)
 	if err != nil {

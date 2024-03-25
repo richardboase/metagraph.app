@@ -15,10 +15,15 @@ func (app *App) floorVertexCreate(user *User, parent *FLOOR, prompt string) erro
 
 	fmt.Println("prompt with parent", parent.Meta.ID, prompt)
 
+	b, _ := app.MarshalJSON(parent.Fields)
+	parentString := string(b)
+
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
-We want to create one or more of these data objects: 
-// A level or floor of a building where rooms or spaces are located.
+We want to create one or more of these data objects: A level or floor of a building where rooms or spaces are located.
+
+...for this parent object: ` + parentString + `
+
 {
 
 	// the identifier of the floor  (THIS FIELD IS REQUIRED)
@@ -31,7 +36,7 @@ We want to create one or more of these data objects:
 
 The response should be a raw JSON array with one or more objects, based on the user prompt: `
 
-	println(prompt)
+	println(system+prompt)
 
 	_, resp, err := app.GCPClients.GenerateContent(system+prompt, 0.9)
 	if err != nil {

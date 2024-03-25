@@ -19,7 +19,7 @@ export var FurnishingInterfaces = {
 		component: (<DeleteFurnishing/>),
 	},
 	"newfurnishing": {
-		level: 12+2,
+		level: 10+2,
 		name: "New Furnishing",
 		component: (<NewFurnishing />),
 	},
@@ -30,7 +30,7 @@ export var FurnishingInterfaces = {
 		component: (<EditFurnishing />),
 	},  
 	"furnishings": {
-		level: 12+1,
+		level: 10+1,
 		name: "Furnishings", 
 		component: (<Furnishings />),
 		subsublinks: ["furnishingsmatrix", "newfurnishing"],
@@ -38,7 +38,7 @@ export var FurnishingInterfaces = {
 		hasSpreadsheetButton: true,
 	},
 	"furnishingsmatrix": {
-		level: 12+2,
+		level: 10+2,
 		name: "Furnishings Matrix", 
 		component: (<FurnishingsMatrix />),
 		subsublinks: ["newfurnishing"],
@@ -46,7 +46,7 @@ export var FurnishingInterfaces = {
 		hasListButton: true,
 	},
 	"furnishing": {
-		level: 12+2,
+		level: 10+2,
 		name: "Furnishing",
 		subsublinks: [],
 		component: (<Furnishing />),
@@ -54,17 +54,17 @@ export var FurnishingInterfaces = {
 		hasEditButton: true,
 	},
 	"furnishingadmin": {
-		level: 12+2,
+		level: 10+2,
 		name: "Admin",
 		component: (<FurnishingAdmin />),
 	},
 	"furnishingadmins": {
-		level: 12+2,
+		level: 10+2,
 		name: "Admins",
 		component: (<FurnishingAdmins />),
 	},
 	"furnishingassets": {
-		level: 12+2,
+		level: 10+2,
 		name: "Furnishing Assets",
 		component: (<Assets />),
 	},

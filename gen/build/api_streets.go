@@ -24,7 +24,7 @@ func (app *App) EntrypointSTREETS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// get quarter metadata
+	// get town metadata
 	parentID, err := cloudfunc.QueryParam(r, "parent")
 	if err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)

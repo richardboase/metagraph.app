@@ -19,7 +19,7 @@ export var RoomInterfaces = {
 		component: (<DeleteRoom/>),
 	},
 	"newroom": {
-		level: 10+2,
+		level: 8+2,
 		name: "New Room",
 		component: (<NewRoom />),
 	},
@@ -30,7 +30,7 @@ export var RoomInterfaces = {
 		component: (<EditRoom />),
 	},  
 	"rooms": {
-		level: 10+1,
+		level: 8+1,
 		name: "Rooms", 
 		component: (<Rooms />),
 		subsublinks: ["roomsmatrix", "newroom"],
@@ -38,7 +38,7 @@ export var RoomInterfaces = {
 		hasSpreadsheetButton: true,
 	},
 	"roomsmatrix": {
-		level: 10+2,
+		level: 8+2,
 		name: "Rooms Matrix", 
 		component: (<RoomsMatrix />),
 		subsublinks: ["newroom"],
@@ -46,7 +46,7 @@ export var RoomInterfaces = {
 		hasListButton: true,
 	},
 	"room": {
-		level: 10+2,
+		level: 8+2,
 		name: "Room",
 		subsublinks: ["things","furnishings",],
 		component: (<Room />),
@@ -54,17 +54,17 @@ export var RoomInterfaces = {
 		hasEditButton: true,
 	},
 	"roomadmin": {
-		level: 10+2,
+		level: 8+2,
 		name: "Admin",
 		component: (<RoomAdmin />),
 	},
 	"roomadmins": {
-		level: 10+2,
+		level: 8+2,
 		name: "Admins",
 		component: (<RoomAdmins />),
 	},
 	"roomassets": {
-		level: 10+2,
+		level: 8+2,
 		name: "Room Assets",
 		component: (<Assets />),
 	},

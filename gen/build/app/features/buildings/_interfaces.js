@@ -19,7 +19,7 @@ export var BuildingInterfaces = {
 		component: (<DeleteBuilding/>),
 	},
 	"newbuilding": {
-		level: 6+2,
+		level: 4+2,
 		name: "New Building",
 		component: (<NewBuilding />),
 	},
@@ -30,7 +30,7 @@ export var BuildingInterfaces = {
 		component: (<EditBuilding />),
 	},  
 	"buildings": {
-		level: 6+1,
+		level: 4+1,
 		name: "Buildings", 
 		component: (<Buildings />),
 		subsublinks: ["buildingsmatrix", "newbuilding"],
@@ -38,7 +38,7 @@ export var BuildingInterfaces = {
 		hasSpreadsheetButton: true,
 	},
 	"buildingsmatrix": {
-		level: 6+2,
+		level: 4+2,
 		name: "Buildings Matrix", 
 		component: (<BuildingsMatrix />),
 		subsublinks: ["newbuilding"],
@@ -46,7 +46,7 @@ export var BuildingInterfaces = {
 		hasListButton: true,
 	},
 	"building": {
-		level: 6+2,
+		level: 4+2,
 		name: "Building",
 		subsublinks: ["floors",],
 		component: (<Building />),
@@ -54,17 +54,17 @@ export var BuildingInterfaces = {
 		hasEditButton: true,
 	},
 	"buildingadmin": {
-		level: 6+2,
+		level: 4+2,
 		name: "Admin",
 		component: (<BuildingAdmin />),
 	},
 	"buildingadmins": {
-		level: 6+2,
+		level: 4+2,
 		name: "Admins",
 		component: (<BuildingAdmins />),
 	},
 	"buildingassets": {
-		level: 6+2,
+		level: 4+2,
 		name: "Building Assets",
 		component: (<Assets />),
 	},

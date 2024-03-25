@@ -15,10 +15,15 @@ func (app *App) furnishingVertexCreate(user *User, parent *FURNISHING, prompt st
 
 	fmt.Println("prompt with parent", parent.Meta.ID, prompt)
 
+	b, _ := app.MarshalJSON(parent.Fields)
+	parentString := string(b)
+
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
-We want to create one or more of these data objects: 
-// a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in
+We want to create one or more of these data objects: a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in
+
+...for this parent object: ` + parentString + `
+
 {
 
 	// the name of the utility or furnature  (THIS FIELD IS REQUIRED)
@@ -37,7 +42,7 @@ We want to create one or more of these data objects:
 
 The response should be a raw JSON array with one or more objects, based on the user prompt: `
 
-	println(prompt)
+	println(system+prompt)
 
 	_, resp, err := app.GCPClients.GenerateContent(system+prompt, 0.9)
 	if err != nil {

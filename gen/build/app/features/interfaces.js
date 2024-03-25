@@ -15,7 +15,6 @@ import { ChapterInterfaces } from '@/features/chapters/_interfaces'
 import { ParagraphInterfaces } from '@/features/paragraphs/_interfaces'
 import { TownInterfaces } from '@/features/towns/_interfaces'
 import { TeststreetInterfaces } from '@/features/teststreets/_interfaces'
-import { QuarterInterfaces } from '@/features/quarters/_interfaces'
 import { StreetInterfaces } from '@/features/streets/_interfaces'
 import { BuildingInterfaces } from '@/features/buildings/_interfaces'
 import { FloorInterfaces } from '@/features/floors/_interfaces'
@@ -98,9 +97,6 @@ export function GetInterfaces() {
 	}// TeststreetInterfaces
 	for (const k in TeststreetInterfaces) {
 		interfaces[k.toLowerCase()] = TeststreetInterfaces[k]
-	}// QuarterInterfaces
-	for (const k in QuarterInterfaces) {
-		interfaces[k.toLowerCase()] = QuarterInterfaces[k]
 	}// StreetInterfaces
 	for (const k in StreetInterfaces) {
 		interfaces[k.toLowerCase()] = StreetInterfaces[k]

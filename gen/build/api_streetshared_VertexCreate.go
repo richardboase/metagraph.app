@@ -15,20 +15,31 @@ func (app *App) streetVertexCreate(user *User, parent *STREET, prompt string) er
 
 	fmt.Println("prompt with parent", parent.Meta.ID, prompt)
 
+	b, _ := app.MarshalJSON(parent.Fields)
+	parentString := string(b)
+
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
-We want to create one or more of these data objects: 
-// A street, part of the transaportation network of a town or city.
+We want to create one or more of these data objects: A street, part of the transaportation network of a town or city.
+
+...for this parent object: ` + parentString + `
+
 {
 
-	//  
+	// The street name 
 	name (string)
+
+	// the general zoning type of the street 
+	zoning (string)
+
+	// the length in meters of the street 
+	length (int)
 
 }
 
 The response should be a raw JSON array with one or more objects, based on the user prompt: `
 
-	println(prompt)
+	println(system+prompt)
 
 	_, resp, err := app.GCPClients.GenerateContent(system+prompt, 0.9)
 	if err != nil {

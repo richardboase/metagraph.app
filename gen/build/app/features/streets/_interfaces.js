@@ -19,7 +19,7 @@ export var StreetInterfaces = {
 		component: (<DeleteStreet/>),
 	},
 	"newstreet": {
-		level: 4+2,
+		level: 2+2,
 		name: "New Street",
 		component: (<NewStreet />),
 	},
@@ -30,7 +30,7 @@ export var StreetInterfaces = {
 		component: (<EditStreet />),
 	},  
 	"streets": {
-		level: 4+1,
+		level: 2+1,
 		name: "Streets", 
 		component: (<Streets />),
 		subsublinks: ["streetsmatrix", "newstreet"],
@@ -38,7 +38,7 @@ export var StreetInterfaces = {
 		hasSpreadsheetButton: true,
 	},
 	"streetsmatrix": {
-		level: 4+2,
+		level: 2+2,
 		name: "Streets Matrix", 
 		component: (<StreetsMatrix />),
 		subsublinks: ["newstreet"],
@@ -46,7 +46,7 @@ export var StreetInterfaces = {
 		hasListButton: true,
 	},
 	"street": {
-		level: 4+2,
+		level: 2+2,
 		name: "Street",
 		subsublinks: ["buildings",],
 		component: (<Street />),
@@ -54,17 +54,17 @@ export var StreetInterfaces = {
 		hasEditButton: true,
 	},
 	"streetadmin": {
-		level: 4+2,
+		level: 2+2,
 		name: "Admin",
 		component: (<StreetAdmin />),
 	},
 	"streetadmins": {
-		level: 4+2,
+		level: 2+2,
 		name: "Admins",
 		component: (<StreetAdmins />),
 	},
 	"streetassets": {
-		level: 4+2,
+		level: 2+2,
 		name: "Street Assets",
 		component: (<Assets />),
 	},

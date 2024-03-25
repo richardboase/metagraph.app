@@ -19,7 +19,7 @@ export var FloorInterfaces = {
 		component: (<DeleteFloor/>),
 	},
 	"newfloor": {
-		level: 8+2,
+		level: 6+2,
 		name: "New Floor",
 		component: (<NewFloor />),
 	},
@@ -30,7 +30,7 @@ export var FloorInterfaces = {
 		component: (<EditFloor />),
 	},  
 	"floors": {
-		level: 8+1,
+		level: 6+1,
 		name: "Floors", 
 		component: (<Floors />),
 		subsublinks: ["floorsmatrix", "newfloor"],
@@ -38,7 +38,7 @@ export var FloorInterfaces = {
 		hasSpreadsheetButton: true,
 	},
 	"floorsmatrix": {
-		level: 8+2,
+		level: 6+2,
 		name: "Floors Matrix", 
 		component: (<FloorsMatrix />),
 		subsublinks: ["newfloor"],
@@ -46,7 +46,7 @@ export var FloorInterfaces = {
 		hasListButton: true,
 	},
 	"floor": {
-		level: 8+2,
+		level: 6+2,
 		name: "Floor",
 		subsublinks: ["rooms",],
 		component: (<Floor />),
@@ -54,17 +54,17 @@ export var FloorInterfaces = {
 		hasEditButton: true,
 	},
 	"flooradmin": {
-		level: 8+2,
+		level: 6+2,
 		name: "Admin",
 		component: (<FloorAdmin />),
 	},
 	"flooradmins": {
-		level: 8+2,
+		level: 6+2,
 		name: "Admins",
 		component: (<FloorAdmins />),
 	},
 	"floorassets": {
-		level: 8+2,
+		level: 6+2,
 		name: "Floor Assets",
 		component: (<Assets />),
 	},

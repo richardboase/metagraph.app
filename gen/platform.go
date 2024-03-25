@@ -333,31 +333,27 @@ func main() {
 		Options: models.Options{},
 	}
 
-	quarter := &models.Object{
-		Context: "A quarter, or part of a city; a region defined by its a generalisation of its purpose or activities partaken within.",
-		Parents: []string{
-			town.Name,
-		},
-		Name: "quarter",
-		Fields: []*models.Field{
-			{
-				Name: "name",
-				JSON: "string_30",
-			},
-		},
-		Options: models.Options{},
-	}
-
 	street := &models.Object{
 		Context: "A street, part of the transaportation network of a town or city.",
 		Parents: []string{
-			quarter.Name,
+			town.Name,
 		},
 		Name: "street",
 		Fields: []*models.Field{
 			{
-				Name: "name",
-				JSON: "string_30",
+				Context: "The street name",
+				Name:    "name",
+				JSON:    "string_30",
+			},
+			{
+				Context: "the general zoning type of the street",
+				Name:    "zoning",
+				JSON:    "string_30",
+			},
+			{
+				Context: "the length in meters of the street",
+				Name:    "length",
+				JSON:    "number_int",
 			},
 		},
 		Options: models.Options{},
@@ -544,7 +540,6 @@ func main() {
 	tree.Objects = append(tree.Objects, town)
 	tree.Objects = append(tree.Objects, teststreet)
 
-	tree.Objects = append(tree.Objects, quarter)
 	tree.Objects = append(tree.Objects, street)
 	tree.Objects = append(tree.Objects, building)
 	tree.Objects = append(tree.Objects, floor)

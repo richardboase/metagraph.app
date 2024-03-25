@@ -14,8 +14,14 @@ func (app *App) streetChatGPTPrompt(user *User, object *STREET, prompt string) (
 We want to create one or more of these data objects: 
 {
 
-	//  
+	// The street name 
 	name (string)
+
+	// the general zoning type of the street 
+	zoning (string)
+
+	// the length in meters of the street 
+	length (int)
 
 }
 

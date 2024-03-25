@@ -31,6 +31,12 @@ export function StreetForm(props) {
 			<Input id="name" type='text' required={ false } title="street name" placeholder="street name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
+			<Input id="zoning" type='text' required={ false } title="street zoning" placeholder="street zoning" inputChange={handleInputChange}/>
+			<Spacer/>
+			
+			<Input id="length" type='number' required={ false } title="street length" inputChange={handleInputChange}/>
+			<Spacer/>
+			
 			<Submit text="Save" inputs={inputs} submit={props.submit} assert={[]}/>
 			<Spacer/>
 			
