@@ -32,7 +32,7 @@ export function AI(props) {
 		setSelect(e.target.id)
 	}
 
-	const [model, setModel] = useState('openapi')
+	const [model, setModel] = useState('openai')
 	function updateModel(e) {
 		setModel(e.target.value)
 	}
@@ -155,7 +155,7 @@ export function AI(props) {
 						</div>
 						<div>
 							<select onClick={updateModel}>
-								<option value="openapi">openapi</option>
+								<option value="openai">openai</option>
 								<option value="vertex">gemini</option>
 							</select>
 							<button onClick={sendPrompt} style={buttonStyle}>Send</button>
