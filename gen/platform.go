@@ -421,6 +421,7 @@ func main() {
 				Required: true,
 			},
 			{
+				Context:  "the number of usable rooms on the this floor",
 				Name:     "rooms",
 				JSON:     "number_int",
 				Required: true,

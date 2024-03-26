@@ -30,7 +30,7 @@ We want to create one or more of these data objects: A level or floor of a build
 	// the identifier of the floor  (THIS FIELD IS REQUIRED)
 	name (string)
 
-	//   (THIS FIELD IS REQUIRED)
+	// the number of usable rooms on the this floor  (THIS FIELD IS REQUIRED)
 	rooms (int)
 
 }
