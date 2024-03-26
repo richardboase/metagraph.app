@@ -52,16 +52,12 @@ export function JellynameInitUpload(user, parentID, formData) {
 
 // misc
 
-export function JellynamesChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/jellynames?function=openai&mode="+mode+"&parent="+parentID, payload)
-}
-
-export function JellynamesVertexPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/jellynames?function=vertex&mode="+mode+"&parent="+parentID, payload)
+export function JellynamesModelšPOST(user, parentID, model, mode, payload) {
+    return SessionFetch(user, "POST", "api/jellynames?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function JellynamesChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/jellynames?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/jellynames?function=ai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 // permissions

@@ -52,16 +52,12 @@ export function BookcharacterInitUpload(user, parentID, formData) {
 
 // misc
 
-export function BookcharactersChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/bookcharacters?function=openai&mode="+mode+"&parent="+parentID, payload)
-}
-
-export function BookcharactersVertexPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/bookcharacters?function=vertex&mode="+mode+"&parent="+parentID, payload)
+export function BookcharactersModelšPOST(user, parentID, model, mode, payload) {
+    return SessionFetch(user, "POST", "api/bookcharacters?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function BookcharactersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/bookcharacters?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/bookcharacters?function=ai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 // permissions

@@ -52,16 +52,12 @@ export function TownInitUpload(user, parentID, formData) {
 
 // misc
 
-export function TownsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/towns?function=openai&mode="+mode+"&parent="+parentID, payload)
-}
-
-export function TownsVertexPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/towns?function=vertex&mode="+mode+"&parent="+parentID, payload)
+export function TownsModelšPOST(user, parentID, model, mode, payload) {
+    return SessionFetch(user, "POST", "api/towns?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function TownsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/towns?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/towns?function=ai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 // permissions

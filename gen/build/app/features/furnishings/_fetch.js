@@ -52,16 +52,12 @@ export function FurnishingInitUpload(user, parentID, formData) {
 
 // misc
 
-export function FurnishingsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/furnishings?function=openai&mode="+mode+"&parent="+parentID, payload)
-}
-
-export function FurnishingsVertexPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/furnishings?function=vertex&mode="+mode+"&parent="+parentID, payload)
+export function FurnishingsModelšPOST(user, parentID, model, mode, payload) {
+    return SessionFetch(user, "POST", "api/furnishings?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function FurnishingsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/furnishings?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/furnishings?function=ai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 // permissions

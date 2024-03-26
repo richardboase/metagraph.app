@@ -52,16 +52,12 @@ export function FloorInitUpload(user, parentID, formData) {
 
 // misc
 
-export function FloorsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/floors?function=openai&mode="+mode+"&parent="+parentID, payload)
-}
-
-export function FloorsVertexPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/floors?function=vertex&mode="+mode+"&parent="+parentID, payload)
+export function FloorsModelšPOST(user, parentID, model, mode, payload) {
+    return SessionFetch(user, "POST", "api/floors?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function FloorsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/floors?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/floors?function=ai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 // permissions

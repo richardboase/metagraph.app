@@ -52,16 +52,12 @@ export function CharacterInitUpload(user, parentID, formData) {
 
 // misc
 
-export function CharactersChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/characters?function=openai&mode="+mode+"&parent="+parentID, payload)
-}
-
-export function CharactersVertexPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/characters?function=vertex&mode="+mode+"&parent="+parentID, payload)
+export function CharactersModelšPOST(user, parentID, model, mode, payload) {
+    return SessionFetch(user, "POST", "api/characters?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function CharactersChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/characters?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/characters?function=ai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 // permissions

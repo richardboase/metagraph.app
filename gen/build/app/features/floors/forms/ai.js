@@ -12,7 +12,7 @@ import Select from '@/inputs/select';
 import CollectionSelect from '@/inputs/collectionSelect';
 import Color from '@/inputs/color';
 
-import { FloorsVertexPOST, FloorsChatGPTPOST, FloorsChatGPTCollectionPOST } from '../_fetch'
+import { FloorsModelsTPOST, FloorsChatGPTCollectionPOST } from '../_fetch'
 
 export function AI(props) {
 
@@ -50,12 +50,8 @@ export function AI(props) {
 		switch (select) {
 		case "prompt":
 
-			if (model != "openai") {
-				prom = FloorsVertexPOST(userdata, props.subject.Meta.ID, "prompt", payload)
-			} else {
-				prom = FloorsChatGPTPOST(userdata, props.subject.Meta.ID, "prompt", payload)
-			}
-			prom.then((res) => {
+			FloorsModelsPOST(userdata, props.subject.Meta.ID, model, "prompt", payload)
+			.then((res) => {
 				console.log(res)
 				props.updateList(true)
 			}) 
@@ -67,20 +63,16 @@ export function AI(props) {
 	
 		case "create":
 
-			if (model != "openai") {
-				prom = FloorsVertexPOST(userdata, props.subject.Meta.ID, "create", payload)
-			} else {
-				prom = FloorsChatGPTPOST(userdata, props.subject.Meta.ID, "create", payload)
-			}
-			prom.then((res) => {
-				console.log(res)
-				props.updateList(true)
-			}) 
-			.catch((e) => {
-				console.error(e)
-				props.updateList(true)
-			})
-			break
+		FloorsModelsPOST(userdata, props.subject.Meta.ID, model, "prompt", payload)
+		.then((res) => {
+			console.log(res)
+			props.updateList(true)
+		}) 
+		.catch((e) => {
+			console.error(e)
+			props.updateList(true)
+		})
+		break
 	
 		case "modify":
 			FloorsChatGPTCollectionPOST(userdata, props.subject.Meta.ID, props.collection, payload)
@@ -154,7 +146,7 @@ export function AI(props) {
 							}
 						</div>
 						<div>
-							<select onClick={updateModel}>
+							<select onClick={updateModel} className='mx-2'>
 								<option value="openai">openai</option>
 								<option value="vertex">gemini</option>
 							</select>

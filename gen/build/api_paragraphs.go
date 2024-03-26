@@ -57,14 +57,7 @@ func (app *App) EntrypointPARAGRAPHS(w http.ResponseWriter, r *http.Request) {
 
 		switch function {
 
-		case "openai":
-
-			// get openai command
-			mode, err := cloudfunc.QueryParam(r, "mode")
-			if err != nil {
-				cloudfunc.HttpError(w, err, http.StatusBadRequest)
-				return
-			}
+		case "ai":
 
 			m := map[string]interface{}{}
 			if err := cloudfunc.ParseJSON(r, &m); err != nil {
@@ -76,49 +69,11 @@ func (app *App) EntrypointPARAGRAPHS(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			object := &PARAGRAPH{}
-			if err := app.GetDocument(parent.ID, object); err != nil {
-				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-				return
-			}
-
-			switch mode {
-			case "prompt":
-
-				reply, err := app.paragraphChatGPTPrompt(user, object, prompt)
-				if err != nil {
-					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-					return
-				}
-
-				if err := cloudfunc.ServeJSON(w, reply); err != nil {
-					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-					return
-				}
-
-			case "create":
-
-				if err := app.paragraphChatGPTCreate(user, object, prompt); err != nil {
-					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-					return
-				}
-
-			case "modify":
-
-				if err := app.paragraphChatGPTModify(user, object, prompt); err != nil {
-					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
-					return
-				}
-
-			default:
-				err := fmt.Errorf("openapi mode not found: %s", mode)
+			model, err := cloudfunc.QueryParam(r, "model")
+			if err != nil {
 				cloudfunc.HttpError(w, err, http.StatusBadRequest)
 				return
 			}
-
-			return
-
-		case "vertex":
 
 			mode, err := cloudfunc.QueryParam(r, "mode")
 			if err != nil {
@@ -126,39 +81,69 @@ func (app *App) EntrypointPARAGRAPHS(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			m := map[string]interface{}{}
-			if err := cloudfunc.ParseJSON(r, &m); err != nil {
-				cloudfunc.HttpError(w, err, http.StatusBadRequest)
-				return
-			}
-			prompt, ok := AssertSTRING(w, m, "prompt")
-			if !ok {
-				return
-			}
-
 			object := &PARAGRAPH{}
 			if err := app.GetDocument(parent.ID, object); err != nil {
 				cloudfunc.HttpError(w, err, http.StatusInternalServerError)
 				return
 			}
 
-			switch mode {
+			switch model {
 
-			case "create":
+			case "openai":
 
-				if err := app.paragraphVertexCreate(user, object, prompt); err != nil {
-					cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+				switch mode {
+				case "prompt":
+	
+					reply, err := app.paragraphChatGPTPrompt(user, object, prompt)
+					if err != nil {
+						cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+						return
+					}
+	
+					if err := cloudfunc.ServeJSON(w, reply); err != nil {
+						cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+						return
+					}
+	
+				case "create":
+	
+					if err := app.paragraphChatGPTCreate(user, object, prompt); err != nil {
+						cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+						return
+					}
+	
+				case "modify":
+	
+					if err := app.paragraphChatGPTModify(user, object, prompt); err != nil {
+						cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+						return
+					}
+	
+				default:
+					err := fmt.Errorf("openapi mode not found: %s", mode)
+					cloudfunc.HttpError(w, err, http.StatusBadRequest)
 					return
 				}
 
-			default:
-				err := fmt.Errorf("vertex mode not found: %s", mode)
-				cloudfunc.HttpError(w, err, http.StatusBadRequest)
+			case "vertex":
+	
+				switch mode {
+	
+				case "create":
+	
+					if err := app.paragraphVertexCreate(user, object, prompt); err != nil {
+						cloudfunc.HttpError(w, err, http.StatusInternalServerError)
+						return
+					}
+	
+				default:
+					err := fmt.Errorf("vertex mode not found: %s", mode)
+					cloudfunc.HttpError(w, err, http.StatusBadRequest)
+					return
+				}
+
 				return
-			}
-
-			return
-
+		}
 		case "init":
 
 			m := map[string]interface{}{}

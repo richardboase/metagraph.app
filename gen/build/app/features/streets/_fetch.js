@@ -52,16 +52,12 @@ export function StreetInitUpload(user, parentID, formData) {
 
 // misc
 
-export function StreetsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/streets?function=openai&mode="+mode+"&parent="+parentID, payload)
-}
-
-export function StreetsVertexPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/streets?function=vertex&mode="+mode+"&parent="+parentID, payload)
+export function StreetsModelšPOST(user, parentID, model, mode, payload) {
+    return SessionFetch(user, "POST", "api/streets?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function StreetsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/streets?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/streets?function=ai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 // permissions

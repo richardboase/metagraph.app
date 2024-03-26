@@ -52,16 +52,12 @@ export function ThingInitUpload(user, parentID, formData) {
 
 // misc
 
-export function ThingsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/things?function=openai&mode="+mode+"&parent="+parentID, payload)
-}
-
-export function ThingsVertexPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/things?function=vertex&mode="+mode+"&parent="+parentID, payload)
+export function ThingsModelšPOST(user, parentID, model, mode, payload) {
+    return SessionFetch(user, "POST", "api/things?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function ThingsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/things?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/things?function=ai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 // permissions

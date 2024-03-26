@@ -52,16 +52,12 @@ export function BuildingInitUpload(user, parentID, formData) {
 
 // misc
 
-export function BuildingsChatGPTPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/buildings?function=openai&mode="+mode+"&parent="+parentID, payload)
-}
-
-export function BuildingsVertexPOST(user, parentID, mode, payload) {
-    return SessionFetch(user, "POST", "api/buildings?function=vertex&mode="+mode+"&parent="+parentID, payload)
+export function BuildingsModelšPOST(user, parentID, model, mode, payload) {
+    return SessionFetch(user, "POST", "api/buildings?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 
 export function BuildingsChatGPTCollectionPOST(user, parentID, collectionID, payload) {
-    return SessionFetch(user, "POST", "api/buildings?function=openai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
+    return SessionFetch(user, "POST", "api/buildings?function=ai&mode="+mode+"&parent="+parentID+"&collection="+collectionID, payload)
 }
 
 // permissions
