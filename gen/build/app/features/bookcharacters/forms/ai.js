@@ -82,7 +82,7 @@ export function AI(props) {
 			})
 			break
 	
-			case "modify":
+		case "modify":
 			BookcharactersChatGPTCollectionPOST(userdata, props.subject.Meta.ID, props.collection, payload)
 			.then((res) => {
 				console.log(res)

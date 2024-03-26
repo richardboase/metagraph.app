@@ -82,7 +82,7 @@ export function AI(props) {
 			})
 			break
 	
-			case "modify":
+		case "modify":
 			FloorsChatGPTCollectionPOST(userdata, props.subject.Meta.ID, props.collection, payload)
 			.then((res) => {
 				console.log(res)
