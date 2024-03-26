@@ -50,7 +50,7 @@ export function AI(props) {
 		switch (select) {
 		case "prompt":
 
-			if (model == "openapi") {
+			if (model != "openai") {
 				prom = ThingsVertexPOST(userdata, props.subject.Meta.ID, "prompt", payload)
 			} else {
 				prom = ThingsChatGPTPOST(userdata, props.subject.Meta.ID, "prompt", payload)
@@ -67,7 +67,7 @@ export function AI(props) {
 	
 		case "create":
 
-			if (model == "openapi") {
+			if (model != "openai") {
 				prom = ThingsVertexPOST(userdata, props.subject.Meta.ID, "create", payload)
 			} else {
 				prom = ThingsChatGPTPOST(userdata, props.subject.Meta.ID, "create", payload)
