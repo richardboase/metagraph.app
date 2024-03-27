@@ -52,7 +52,7 @@ export function JellynameInitUpload(user, parentID, formData) {
 
 // misc
 
-export function JellynamesModelšPOST(user, parentID, model, mode, payload) {
+export function JellynamesModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/jellynames?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

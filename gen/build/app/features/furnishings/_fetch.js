@@ -52,7 +52,7 @@ export function FurnishingInitUpload(user, parentID, formData) {
 
 // misc
 
-export function FurnishingsModelšPOST(user, parentID, model, mode, payload) {
+export function FurnishingsModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/furnishings?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

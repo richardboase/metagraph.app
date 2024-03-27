@@ -52,7 +52,7 @@ export function TeststreetInitUpload(user, parentID, formData) {
 
 // misc
 
-export function TeststreetsModelšPOST(user, parentID, model, mode, payload) {
+export function TeststreetsModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/teststreets?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

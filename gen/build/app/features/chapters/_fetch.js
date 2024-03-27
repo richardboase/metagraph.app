@@ -52,7 +52,7 @@ export function ChapterInitUpload(user, parentID, formData) {
 
 // misc
 
-export function ChaptersModelšPOST(user, parentID, model, mode, payload) {
+export function ChaptersModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/chapters?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

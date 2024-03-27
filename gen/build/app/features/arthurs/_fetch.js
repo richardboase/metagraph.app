@@ -52,7 +52,7 @@ export function ArthurInitUpload(user, parentID, formData) {
 
 // misc
 
-export function ArthursModelšPOST(user, parentID, model, mode, payload) {
+export function ArthursModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/arthurs?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

@@ -52,7 +52,7 @@ export function GameInitUpload(user, parentID, formData) {
 
 // misc
 
-export function GamesModelšPOST(user, parentID, model, mode, payload) {
+export function GamesModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/games?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

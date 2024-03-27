@@ -52,7 +52,7 @@ export function StreetInitUpload(user, parentID, formData) {
 
 // misc
 
-export function StreetsModelšPOST(user, parentID, model, mode, payload) {
+export function StreetsModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/streets?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

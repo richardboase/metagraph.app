@@ -52,7 +52,7 @@ export function TownInitUpload(user, parentID, formData) {
 
 // misc
 
-export function TownsModelšPOST(user, parentID, model, mode, payload) {
+export function TownsModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/towns?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

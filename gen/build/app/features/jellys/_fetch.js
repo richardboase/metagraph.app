@@ -52,7 +52,7 @@ export function JellyInitUpload(user, parentID, formData) {
 
 // misc
 
-export function JellysModelšPOST(user, parentID, model, mode, payload) {
+export function JellysModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/jellys?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

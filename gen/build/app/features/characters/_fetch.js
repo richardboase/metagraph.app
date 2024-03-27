@@ -52,7 +52,7 @@ export function CharacterInitUpload(user, parentID, formData) {
 
 // misc
 
-export function CharactersModelšPOST(user, parentID, model, mode, payload) {
+export function CharactersModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/characters?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

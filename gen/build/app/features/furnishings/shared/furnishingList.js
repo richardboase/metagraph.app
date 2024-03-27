@@ -136,7 +136,7 @@ export function FurnishingList(props) {
 			props.title && <div className="flex flex-row justify-between items-center">
 				<div className="flex flex-row">
 					<div className='py-4 my-4 text-xl font-bold'>{props.title}:</div>
-					<select onClick={updateListMode}>
+					<select onChange={updateListMode}>
 						<option value="created">Created</option>
 						<option value="modified">Modified</option>
 						<option value="order">Ordered</option>

@@ -52,7 +52,7 @@ export function BookcharacterInitUpload(user, parentID, formData) {
 
 // misc
 
-export function BookcharactersModelšPOST(user, parentID, model, mode, payload) {
+export function BookcharactersModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/bookcharacters?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

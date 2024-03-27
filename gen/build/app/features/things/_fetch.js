@@ -52,7 +52,7 @@ export function ThingInitUpload(user, parentID, formData) {
 
 // misc
 
-export function ThingsModelšPOST(user, parentID, model, mode, payload) {
+export function ThingsModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/things?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

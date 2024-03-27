@@ -52,7 +52,7 @@ export function ParagraphInitUpload(user, parentID, formData) {
 
 // misc
 
-export function ParagraphsModelšPOST(user, parentID, model, mode, payload) {
+export function ParagraphsModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/paragraphs?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

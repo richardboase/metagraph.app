@@ -52,7 +52,7 @@ export function LobbyInitUpload(user, parentID, formData) {
 
 // misc
 
-export function LobbysModelšPOST(user, parentID, model, mode, payload) {
+export function LobbysModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/lobbys?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

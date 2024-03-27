@@ -52,7 +52,7 @@ export function RoomInitUpload(user, parentID, formData) {
 
 // misc
 
-export function RoomsModelšPOST(user, parentID, model, mode, payload) {
+export function RoomsModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/rooms?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

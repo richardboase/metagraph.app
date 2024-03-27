@@ -52,7 +52,7 @@ export function FloorInitUpload(user, parentID, formData) {
 
 // misc
 
-export function FloorsModelšPOST(user, parentID, model, mode, payload) {
+export function FloorsModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/floors?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 

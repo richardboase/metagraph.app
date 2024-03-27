@@ -52,7 +52,7 @@ export function BuildingInitUpload(user, parentID, formData) {
 
 // misc
 
-export function BuildingsModelšPOST(user, parentID, model, mode, payload) {
+export function BuildingsModelsPOST(user, parentID, model, mode, payload) {
     return SessionFetch(user, "POST", "api/buildings?function=ai&model="+model+"&mode="+mode+"&parent="+parentID, payload)
 }
 
