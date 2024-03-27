@@ -28,7 +28,7 @@ We want to create one or more of these data objects: A room on this floor of the
 	name (string)
 
 	// A description of the purpose or utility of this room  (THIS FIELD IS REQUIRED)
-	descriptoion (string)
+	description (string)
 
 }
 

@@ -5231,13 +5231,13 @@ func (user *User) NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
 
 type FieldsROOM struct {
 	Name string `json:"name" firestore:"name"`
-	Descriptoion string `json:"descriptoion" firestore:"descriptoion"`
+	Description string `json:"description" firestore:"description"`
 	
 }
 
 func (x *ROOM) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"A name representing the purpose or utility of this room","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the purpose or utility of this room","json":"","name":"descriptoion","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"A name representing the purpose or utility of this room","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the purpose or utility of this room","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -5298,20 +5298,20 @@ func (x *ROOM) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	_, exists = m["descriptoion"]
+	_, exists = m["description"]
 	if true && !exists {
-		return errors.New("required field 'descriptoion' not supplied")
+		return errors.New("required field 'description' not supplied")
 	}
 	if exists {
-		x.Fields.Descriptoion, err = assertSTRING(m, "descriptoion")
+		x.Fields.Description, err = assertSTRING(m, "description")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Descriptoion)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Descriptoion)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Description)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Description)
 				}
 			}
 		}
@@ -5323,18 +5323,18 @@ func (x *ROOM) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Descriptoion)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Descriptoion)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Description)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Description)
 				}
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Descriptoion); err != nil {
+		if err := assertRangeMin(1, x.Fields.Description); err != nil {
 			
 			return err
 			
 		}
-		if err := assertRangeMax(30, x.Fields.Descriptoion); err != nil {
+		if err := assertRangeMax(30, x.Fields.Description); err != nil {
 			return err
 		}
 		

@@ -257,8 +257,8 @@ func (app *App) EntrypointROOM(w http.ResponseWriter, r *http.Request) {
 					Path: "fields.name",
 					Value: object.Fields.Name,
 				},{
-					Path: "fields.descriptoion",
-					Value: object.Fields.Descriptoion,
+					Path: "fields.description",
+					Value: object.Fields.Description,
 				},
 			}
 			for _, update := range updates {

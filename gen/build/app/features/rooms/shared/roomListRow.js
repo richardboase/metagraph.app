@@ -39,9 +39,9 @@ export function RoomListRow(props) {
 						<div className="px-4"></div>
 					</>
 				}{
-					("descriptoion" != "name") && !Array.isArray(props.item.fields["descriptoion"]) &&  !(typeof props.item.fields["descriptoion"] === 'object')  && <>
-						<div className='text-sm font-bold' title="descriptoion">
-							{ props.item.fields["descriptoion"] }
+					("description" != "name") && !Array.isArray(props.item.fields["description"]) &&  !(typeof props.item.fields["description"] === 'object')  && <>
+						<div className='text-sm font-bold' title="description">
+							{ props.item.fields["description"] }
 						</div>
 						<div className="px-4"></div>
 					</>

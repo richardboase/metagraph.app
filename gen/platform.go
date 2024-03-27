@@ -445,7 +445,7 @@ func main() {
 			},
 			{
 				Context:  "A description of the purpose or utility of this room",
-				Name:     "descriptoion",
+				Name:     "description",
 				JSON:     "string_30",
 				Required: true,
 			},

@@ -37,7 +37,7 @@ export function RoomMatrixRow(props) {
 			</div>
 		</td><td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >
-				<input id="descriptoion" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["descriptoion"] }/>
+				<input id="description" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["description"] }/>
 			</div>
 		</td>
 	</tr>
