@@ -19,7 +19,8 @@ func main() {
 		RepoURI:       "github.com/golangdaddy/newtown",
 		SiteName:      "NewTown",
 		ProjectID:     "npg-generic",
-		DatabaseID:    "go-gen-test",
+		ProjectName:   "go-gen-test",
+		ProjectRegion: "europe-west2-b",
 		Options: models.StackOptions{
 			ChatGPT: true,
 		},

@@ -45,15 +45,16 @@ export function Chapters(props) {
 			<div className='flex flex-row justify-between w-full'>
 				<div className='flex flex-row'>
 					
-					<button id={'newchapter'} onClick={updateTabEvent} className="flex flex-col justify-center items-center m-2 cursor-pointer" style={buttonStyle}>
+					<button id={'newchapter'} onClick={updateTabEvent} className="flex flex-col justify-center items-center cursor-pointer" style={buttonStyle}>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" style={ {pointerEvents:"none"} }>
 						<path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 						</svg>
 					</button>
 					
 				</div>
-				<AI subject={subject} updateList={updateList} collection="chapters"/>
 			</div>
+			<div className='py-1'></div>
+			<AI subject={subject} updateList={updateList} collection="chapters"/>
 			{
 				!promptToggle && <Loading/>
 			}

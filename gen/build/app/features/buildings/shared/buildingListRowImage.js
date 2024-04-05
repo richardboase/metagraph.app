@@ -24,59 +24,54 @@ export function BuildingListRowImage(props) {
 	return (
 		<div className='flex flex-col justify-between items-center w-full'>
 			
-			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer px-4'>
-				{
-					props.item.Meta.Name?.length && <>
-						<div className='text-sm font-bold' title="Name">{ props.item.Meta.Name }</div>
-					</>
-				}
+			<div className='flex flex-col w-full justify-center items-center m-4'>
 				<div className="px-4"></div>
 				{
-					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && <>
-						<div className='text-sm font-bold' title="name">
-							{ props.item.fields["name"] }
+					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && (props.item.fields["name"].length > 0) && <>
+						<div className='text-base font-bold' title="name">
+							"{ props.item.fields["name"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("description" != "name") && !Array.isArray(props.item.fields["description"]) &&  !(typeof props.item.fields["description"] === 'object')  && <>
-						<div className='text-sm font-bold' title="description">
-							{ props.item.fields["description"] }
+					("description" != "name") && !Array.isArray(props.item.fields["description"]) &&  !(typeof props.item.fields["description"] === 'object')  && (props.item.fields["description"].length > 0) && <>
+						<div className='text-base font-bold' title="description">
+							"{ props.item.fields["description"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("number" != "name") && !Array.isArray(props.item.fields["number"]) &&  !(typeof props.item.fields["number"] === 'object')  && <>
-						<div className='text-sm font-bold' title="number">
-							{ props.item.fields["number"] }
+					("number" != "name") && !Array.isArray(props.item.fields["number"]) &&  !(typeof props.item.fields["number"] === 'object')  && (props.item.fields["number"].length > 0) && <>
+						<div className='text-base font-bold' title="number">
+							"{ props.item.fields["number"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("xunits" != "name") && !Array.isArray(props.item.fields["xunits"]) &&  !(typeof props.item.fields["xunits"] === 'object')  && <>
-						<div className='text-sm font-bold' title="xunits">
-							{ props.item.fields["xunits"] }
+					("xunits" != "name") && !Array.isArray(props.item.fields["xunits"]) &&  !(typeof props.item.fields["xunits"] === 'object')  && (props.item.fields["xunits"].length > 0) && <>
+						<div className='text-base font-bold' title="xunits">
+							"{ props.item.fields["xunits"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("yunits" != "name") && !Array.isArray(props.item.fields["yunits"]) &&  !(typeof props.item.fields["yunits"] === 'object')  && <>
-						<div className='text-sm font-bold' title="yunits">
-							{ props.item.fields["yunits"] }
+					("yunits" != "name") && !Array.isArray(props.item.fields["yunits"]) &&  !(typeof props.item.fields["yunits"] === 'object')  && (props.item.fields["yunits"].length > 0) && <>
+						<div className='text-base font-bold' title="yunits">
+							"{ props.item.fields["yunits"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("floors" != "name") && !Array.isArray(props.item.fields["floors"]) &&  !(typeof props.item.fields["floors"] === 'object')  && <>
-						<div className='text-sm font-bold' title="floors">
-							{ props.item.fields["floors"] }
+					("floors" != "name") && !Array.isArray(props.item.fields["floors"]) &&  !(typeof props.item.fields["floors"] === 'object')  && (props.item.fields["floors"].length > 0) && <>
+						<div className='text-base font-bold' title="floors">
+							"{ props.item.fields["floors"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("doors" != "name") && !Array.isArray(props.item.fields["doors"]) &&  !(typeof props.item.fields["doors"] === 'object')  && <>
-						<div className='text-sm font-bold' title="doors">
-							{ props.item.fields["doors"] }
+					("doors" != "name") && !Array.isArray(props.item.fields["doors"]) &&  !(typeof props.item.fields["doors"] === 'object')  && (props.item.fields["doors"].length > 0) && <>
+						<div className='text-base font-bold' title="doors">
+							"{ props.item.fields["doors"] }"
 						</div>
 						<div className="px-4"></div>
 					</>

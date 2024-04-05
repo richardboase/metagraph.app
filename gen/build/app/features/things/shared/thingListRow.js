@@ -7,6 +7,7 @@ import { RowThumbnail } from "@/components/rowThumbnail"
 import { RowDelete } from "@/components/rowDelete"
 import { RowEdit } from "@/components/rowEdit"
 import { RowOrder } from "@/components/rowOrder"
+import { RowPay } from "@/components/rowPay"
 import { titlecase } from "../_interfaces"
 
 export function ThingListRow(props) {
@@ -61,6 +62,8 @@ export function ThingListRow(props) {
 					</>
 				}
 			</div>
+			<RowPay id={props.id}/>
+
 			
 			<RowEdit object={props.item} editInterface="editthing"/>
 			<RowDelete id={props.id} delete={deleteItem}/>

@@ -24,38 +24,33 @@ export function FurnishingListRowImage(props) {
 	return (
 		<div className='flex flex-col justify-between items-center w-full'>
 			
-			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer px-4'>
-				{
-					props.item.Meta.Name?.length && <>
-						<div className='text-sm font-bold' title="Name">{ props.item.Meta.Name }</div>
-					</>
-				}
+			<div className='flex flex-col w-full justify-center items-center m-4'>
 				<div className="px-4"></div>
 				{
-					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && <>
-						<div className='text-sm font-bold' title="name">
-							{ props.item.fields["name"] }
+					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && (props.item.fields["name"].length > 0) && <>
+						<div className='text-base font-bold' title="name">
+							"{ props.item.fields["name"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("description" != "name") && !Array.isArray(props.item.fields["description"]) &&  !(typeof props.item.fields["description"] === 'object')  && <>
-						<div className='text-sm font-bold' title="description">
-							{ props.item.fields["description"] }
+					("description" != "name") && !Array.isArray(props.item.fields["description"]) &&  !(typeof props.item.fields["description"] === 'object')  && (props.item.fields["description"].length > 0) && <>
+						<div className='text-base font-bold' title="description">
+							"{ props.item.fields["description"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("state" != "name") && !Array.isArray(props.item.fields["state"]) &&  !(typeof props.item.fields["state"] === 'object')  && <>
-						<div className='text-sm font-bold' title="state">
-							{ props.item.fields["state"] }
+					("state" != "name") && !Array.isArray(props.item.fields["state"]) &&  !(typeof props.item.fields["state"] === 'object')  && (props.item.fields["state"].length > 0) && <>
+						<div className='text-base font-bold' title="state">
+							"{ props.item.fields["state"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("age" != "name") && !Array.isArray(props.item.fields["age"]) &&  !(typeof props.item.fields["age"] === 'object')  && <>
-						<div className='text-sm font-bold' title="age">
-							{ props.item.fields["age"] }
+					("age" != "name") && !Array.isArray(props.item.fields["age"]) &&  !(typeof props.item.fields["age"] === 'object')  && (props.item.fields["age"].length > 0) && <>
+						<div className='text-base font-bold' title="age">
+							"{ props.item.fields["age"] }"
 						</div>
 						<div className="px-4"></div>
 					</>

@@ -24,31 +24,26 @@ export function StreetListRowImage(props) {
 	return (
 		<div className='flex flex-col justify-between items-center w-full'>
 			
-			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer px-4'>
-				{
-					props.item.Meta.Name?.length && <>
-						<div className='text-sm font-bold' title="Name">{ props.item.Meta.Name }</div>
-					</>
-				}
+			<div className='flex flex-col w-full justify-center items-center m-4'>
 				<div className="px-4"></div>
 				{
-					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && <>
-						<div className='text-sm font-bold' title="name">
-							{ props.item.fields["name"] }
+					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && (props.item.fields["name"].length > 0) && <>
+						<div className='text-base font-bold' title="name">
+							"{ props.item.fields["name"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("zoning" != "name") && !Array.isArray(props.item.fields["zoning"]) &&  !(typeof props.item.fields["zoning"] === 'object')  && <>
-						<div className='text-sm font-bold' title="zoning">
-							{ props.item.fields["zoning"] }
+					("zoning" != "name") && !Array.isArray(props.item.fields["zoning"]) &&  !(typeof props.item.fields["zoning"] === 'object')  && (props.item.fields["zoning"].length > 0) && <>
+						<div className='text-base font-bold' title="zoning">
+							"{ props.item.fields["zoning"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("length" != "name") && !Array.isArray(props.item.fields["length"]) &&  !(typeof props.item.fields["length"] === 'object')  && <>
-						<div className='text-sm font-bold' title="length">
-							{ props.item.fields["length"] }
+					("length" != "name") && !Array.isArray(props.item.fields["length"]) &&  !(typeof props.item.fields["length"] === 'object')  && (props.item.fields["length"].length > 0) && <>
+						<div className='text-base font-bold' title="length">
+							"{ props.item.fields["length"] }"
 						</div>
 						<div className="px-4"></div>
 					</>

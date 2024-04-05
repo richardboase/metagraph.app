@@ -16,40 +16,30 @@ export function GameAdmins(props) {
     const [ userdata, setUserdata] = useUserContext()
     const [ localdata, setLocaldata] = useLocalContext()
 
-    const [project, setProject] = useState(localdata.tab.context.object)
+    const [object, setObject] = useState(localdata.tab.context.object)
 
 	const [newAdmins, setNewAdmins] = useState()
 
-    console.log("FEATURES >> PROJECTS >> ADMINS", localdata)
-
-	function updateProject() {
-		ProjectObjectGET(userdata, project.Meta.ID)
+	function updateObject() {
+		ObjectObjectGET(userdata, object.Meta.ID)
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data)
-			setProject(data)
+			setObject(data)
 		})
 		.catch((e) => {
 			console.error(e)
 		})
 	}
 
-    // update tabs handles the updated context and sends the user to a new interface
-    function updateTabEvent(e) {
-        const id = e.target.id
-        console.log("SELECT PROJECT", id)
-        const next = projects[id.split("_")[1]]
-        const context = {
-            "_": next.name,
-            "object": next
-        }
-        setLocaldata(VisitTab(localdata, "project", context))
-    }
-
 	function deleteAdmin(id) {
-		const adminID = project.Meta.Moderation.Admins[id]
-		GameAdminPOST(userdata, project.Meta.ID, "remove", adminID)
-		.then(updateProject)
+		const adminID = object.Meta.Moderation.Admins[id]
+		GameAdminPOST(userdata, object.Meta.ID, "remove", adminID)
+		.then(function () {
+			updateObject()
+		}).error(function (e) {
+			console.error(e)
+		})
 	}
 
 	function inputChange(obj) {
@@ -59,8 +49,12 @@ export function GameAdmins(props) {
 
 	function addAdmins() {
 		newAdmins.forEach(function (admin, i) {
-			GameAdminPOST(userdata, project.Meta.ID, "add", admin)
-			.then(updateProject)
+			GameAdminPOST(userdata, object.Meta.ID, "add", admin)
+			.then(function () {
+				updateObject()
+			}).error(function (e) {
+				console.error(e)
+			})
 		})
 	}
 
@@ -89,7 +83,7 @@ export function GameAdmins(props) {
 			<Spacer/>
 			<div className='flex flex-col'>
 				{
-					project.Meta.Moderation.Admins.map(function (adminID, i) {
+					object.Meta.Moderation.Admins.map(function (adminID, i) {
 						return (
 							<GameAdmin key={adminID} id={i} admin={adminID} delete={deleteAdmin}/>
 						)

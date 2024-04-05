@@ -99,7 +99,11 @@ type Internals struct {
 	Created    int64
 	Deleted    int64 `json:",omitempty"`
 	Modified   int64
-	Stats      map[string]float64 `json:",omitempty"`
+	Price      struct {
+		Currency string `json:",omitempty"`
+		Units    int64  `json:",omitempty"`
+	} `json:",omitempty"`
+	Stats map[string]float64 `json:",omitempty"`
 }
 
 func RegExp(exp, matchString string) bool {
@@ -267,6 +271,7 @@ type Media struct {
 }
 
 type Context struct {
+	User     string   `json:",omitempty"`
 	Children []string `json:",omitempty"`
 	Parent   string   `json:",omitempty"`
 	Parents  []string `json:",omitempty"`
@@ -294,19 +299,19 @@ func (app *App) SendMessageToUser(user *User, msgType string, data interface{}) 
 type Users []*User
 
 type UserRef struct {
-	Account  int
+	Mode     string
 	ID       string
 	Username string
 }
 
 func DemoUser() *User {
-	return NewUser(0, "john@doe.com", "john doe")
+	return NewUser("demo", "john@doe.com", "john_doe")
 }
 
-func NewUser(accountType int, email, username string) *User {
+func NewUser(mode string, email, username string) *User {
 	user := &User{
 		Meta:     (Internals{}).NewInternals("users"),
-		Account:  accountType,
+		Mode:     mode,
 		Email:    strings.ToLower(strings.TrimSpace(email)),
 		Username: strings.ToLower(strings.TrimSpace(username)),
 	}
@@ -315,14 +320,14 @@ func NewUser(accountType int, email, username string) *User {
 
 type User struct {
 	Meta     Internals
-	Account  int    `json:"account" firestore:"account"`
+	Mode     string `json:"mode" firestore:"mode"`
 	Email    string `json:"email" firestore:"email"`
 	Username string `json:"username" firestore:"username"`
 }
 
 func (user *User) Ref() UserRef {
 	return UserRef{
-		Account:  user.Account,
+		Mode:     user.Mode,
 		ID:       user.Meta.ID,
 		Username: user.Username,
 	}
@@ -339,7 +344,7 @@ func (users Users) Refs() []UserRef {
 func (user *User) IsValid() bool {
 	log.Println(user.Username)
 
-	if len(user.Username) < 6 {
+	if len(user.Username) < 3 {
 		return false
 	}
 	if len(user.Username) > 24 {
@@ -909,6 +914,7 @@ func (user *User) NewTHING(parent *Internals, fields FieldsTHING) *THING {
 	}
 
 	object.Meta.ClassName = "things"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -947,7 +953,7 @@ type FieldsTHING struct {
 
 func (x *THING) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":[{"context":"the shortest description of the object","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"a full description of the object","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the state of the object, for example: a tumbler could be \"half full with water\"","json":"","name":"state","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"age of the object in days","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":[{"context":"the shortest description of the object","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"a full description of the object","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the state of the object, for example: a tumbler could be \"half full with water\"","json":"","name":"state","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"age of the object in days","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -1133,6 +1139,7 @@ func (x *THING) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -1208,6 +1215,7 @@ func (user *User) NewFURNISHING(parent *Internals, fields FieldsFURNISHING) *FUR
 	}
 
 	object.Meta.ClassName = "furnishings"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -1246,7 +1254,7 @@ type FieldsFURNISHING struct {
 
 func (x *FURNISHING) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":[{"context":"the name of the utility or furnature","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the description of the utility or furnature","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the state of the utility or furnature","json":"","name":"state","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"age of the object in days","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":[{"context":"the name of the utility or furnature","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the description of the utility or furnature","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the state of the utility or furnature","json":"","name":"state","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"age of the object in days","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -1432,6 +1440,7 @@ func (x *FURNISHING) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -1507,6 +1516,7 @@ func (user *User) NewARTHUR(parent *Internals, fields FieldsARTHUR) *ARTHUR {
 	}
 
 	object.Meta.ClassName = "arthurs"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -1537,7 +1547,7 @@ type FieldsARTHUR struct {
 
 func (x *ARTHUR) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"arthur","names":null,"plural":"arthurs","json":"","mode":"root","context":"arthurs space","children":[{"name":"jelly","names":null,"plural":"jellies","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":true,"image":true,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"jellyname","names":null,"plural":"jellynames","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"arthur","names":null,"plural":"arthurs","json":"","mode":"root","context":"arthurs space","children":[{"name":"jelly","names":null,"plural":"jellies","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":true,"image":true,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"jellyname","names":null,"plural":"jellynames","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -1603,6 +1613,7 @@ func (x *ARTHUR) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -1678,6 +1689,7 @@ func (user *User) NewJELLY(parent *Internals, fields FieldsJELLY) *JELLY {
 	}
 
 	object.Meta.ClassName = "jellies"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -1716,7 +1728,7 @@ type FieldsJELLY struct {
 
 func (x *JELLY) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"jelly","names":null,"plural":"jellies","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"select","inputReference":"","inputOptions":["male","female"],"required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"element","type":"string","input":"select","inputReference":"jellynames","required":false,"filter":true,"range":null,"regexp":"","regexpHex":""},{"context":"health points","json":"","name":"hp","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":true,"image":true,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"jelly","names":null,"plural":"jellies","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"select","inputReference":"","inputOptions":["male","female"],"required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"element","type":"string","input":"select","inputReference":"jellynames","required":false,"filter":true,"range":null,"regexp":"","regexpHex":""},{"context":"health points","json":"","name":"hp","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":true,"image":true,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -1884,6 +1896,7 @@ func (x *JELLY) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -1959,6 +1972,7 @@ func (user *User) NewJELLYNAME(parent *Internals, fields FieldsJELLYNAME) *JELLY
 	}
 
 	object.Meta.ClassName = "jellynames"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -1994,7 +2008,7 @@ type FieldsJELLYNAME struct {
 
 func (x *JELLYNAME) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"jellyname","names":null,"plural":"jellynames","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":[{"context":"the elemental name of the jelly","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"jellyname","names":null,"plural":"jellynames","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":[{"context":"the elemental name of the jelly","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -2060,6 +2074,7 @@ func (x *JELLYNAME) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -2135,6 +2150,7 @@ func (user *User) NewGAME(parent *Internals, fields FieldsGAME) *GAME {
 	}
 
 	object.Meta.ClassName = "games"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -2170,7 +2186,7 @@ type FieldsGAME struct {
 
 func (x *GAME) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"game","names":null,"plural":"games","json":"","mode":"root","context":"","children":[{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"game","names":null,"plural":"games","json":"","mode":"root","context":"","children":[{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -2236,6 +2252,7 @@ func (x *GAME) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -2311,6 +2328,7 @@ func (user *User) NewLOBBY(parent *Internals, fields FieldsLOBBY) *LOBBY {
 	}
 
 	object.Meta.ClassName = "lobbys"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -2346,7 +2364,7 @@ type FieldsLOBBY struct {
 
 func (x *LOBBY) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"children":[{"name":"character","names":null,"plural":"characters","json":"","mode":"","context":"","parents":["lobby"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"children":[{"name":"character","names":null,"plural":"characters","json":"","mode":"","context":"","parents":["lobby"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -2410,6 +2428,7 @@ func (x *LOBBY) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -2485,6 +2504,7 @@ func (user *User) NewCHARACTER(parent *Internals, fields FieldsCHARACTER) *CHARA
 	}
 
 	object.Meta.ClassName = "characters"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -2526,7 +2546,7 @@ type FieldsCHARACTER struct {
 
 func (x *CHARACTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"character","names":null,"plural":"characters","json":"","mode":"","context":"","parents":["lobby"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a short synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"character","names":null,"plural":"characters","json":"","mode":"","context":"","parents":["lobby"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a short synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -2841,6 +2861,7 @@ func (x *CHARACTER) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -2916,6 +2937,7 @@ func (user *User) NewBOOK(parent *Internals, fields FieldsBOOK) *BOOK {
 	}
 
 	object.Meta.ClassName = "books"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -2951,7 +2973,7 @@ type FieldsBOOK struct {
 
 func (x *BOOK) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"book","names":null,"plural":"books","json":"","mode":"root","context":"a creative writing project","children":[{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"book","names":null,"plural":"books","json":"","mode":"root","context":"a creative writing project","children":[{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -3017,6 +3039,7 @@ func (x *BOOK) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -3092,6 +3115,7 @@ func (user *User) NewBOOKCHARACTER(parent *Internals, fields FieldsBOOKCHARACTER
 	}
 
 	object.Meta.ClassName = "bookcharacters"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -3133,7 +3157,7 @@ type FieldsBOOKCHARACTER struct {
 
 func (x *BOOKCHARACTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -3448,6 +3472,7 @@ func (x *BOOKCHARACTER) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -3523,6 +3548,7 @@ func (user *User) NewCHAPTER(parent *Internals, fields FieldsCHAPTER) *CHAPTER {
 	}
 
 	object.Meta.ClassName = "chapters"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -3558,7 +3584,7 @@ type FieldsCHAPTER struct {
 
 func (x *CHAPTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"children":[{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"children":[{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -3624,6 +3650,7 @@ func (x *CHAPTER) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -3699,6 +3726,7 @@ func (user *User) NewPARAGRAPH(parent *Internals, fields FieldsPARAGRAPH) *PARAG
 	}
 
 	object.Meta.ClassName = "paragraphs"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -3734,7 +3762,7 @@ type FieldsPARAGRAPH struct {
 
 func (x *PARAGRAPH) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":[{"context":"","json":"","name":"content","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":[{"context":"","json":"","name":"content","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -3800,6 +3828,7 @@ func (x *PARAGRAPH) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -3875,6 +3904,7 @@ func (user *User) NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
 	}
 
 	object.Meta.ClassName = "towns"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -3905,7 +3935,7 @@ type FieldsTOWN struct {
 
 func (x *TOWN) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"town","names":null,"plural":"towns","json":"","mode":"root","context":"A town where people live.","children":[{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"town","names":null,"plural":"towns","json":"","mode":"root","context":"A town where people live.","children":[{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -3971,6 +4001,7 @@ func (x *TOWN) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -4046,6 +4077,7 @@ func (user *User) NewTESTSTREET(parent *Internals, fields FieldsTESTSTREET) *TES
 	}
 
 	object.Meta.ClassName = "teststreets"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -4084,7 +4116,7 @@ type FieldsTESTSTREET struct {
 
 func (x *TESTSTREET) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":[{"context":"the name of the street","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"a description of the street","json":"","name":"description","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"the street junctioning at the START of the road, if any","json":"","name":"start","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"the junction at the END of the road, if any","json":"","name":"end","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":[{"context":"the name of the street","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"a description of the street","json":"","name":"description","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"the street junctioning at the START of the road, if any","json":"","name":"start","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"the junction at the END of the road, if any","json":"","name":"end","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -4273,6 +4305,7 @@ func (x *TESTSTREET) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -4348,6 +4381,7 @@ func (user *User) NewSTREET(parent *Internals, fields FieldsSTREET) *STREET {
 	}
 
 	object.Meta.ClassName = "streets"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -4385,7 +4419,7 @@ type FieldsSTREET struct {
 
 func (x *STREET) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["town"],"children":[{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"The street name","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the general zoning type of the street","json":"","name":"zoning","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the length in meters of the street","json":"","name":"length","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["town"],"children":[{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"The street name","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the general zoning type of the street","json":"","name":"zoning","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the length in meters of the street","json":"","name":"length","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -4524,6 +4558,7 @@ func (x *STREET) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -4599,6 +4634,7 @@ func (user *User) NewBUILDING(parent *Internals, fields FieldsBUILDING) *BUILDIN
 	}
 
 	object.Meta.ClassName = "buildings"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -4640,7 +4676,7 @@ type FieldsBUILDING struct {
 
 func (x *BUILDING) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"children":[{"name":"floor","names":null,"plural":"floors","json":"","mode":"","context":"A level or floor of a building where rooms or spaces are located.","parents":["building"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the building","json":"","name":"description","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"Street number(s) of the building","json":"","name":"number","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"xunits","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"yunits","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"Number of floors this building has","json":"","name":"floors","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"Number of ground floor entrances or exits","json":"","name":"doors","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"children":[{"name":"floor","names":null,"plural":"floors","json":"","mode":"","context":"A level or floor of a building where rooms or spaces are located.","parents":["building"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the building","json":"","name":"description","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"Street number(s) of the building","json":"","name":"number","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"xunits","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"yunits","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"Number of floors this building has","json":"","name":"floors","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"Number of ground floor entrances or exits","json":"","name":"doors","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -4915,6 +4951,7 @@ func (x *BUILDING) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -4990,6 +5027,7 @@ func (user *User) NewFLOOR(parent *Internals, fields FieldsFLOOR) *FLOOR {
 	}
 
 	object.Meta.ClassName = "floors"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -5026,7 +5064,7 @@ type FieldsFLOOR struct {
 
 func (x *FLOOR) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"floor","names":null,"plural":"floors","json":"","mode":"","context":"A level or floor of a building where rooms or spaces are located.","parents":["building"],"children":[{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"the identifier of the floor","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the number of usable rooms on the this floor","json":"","name":"rooms","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"floor","names":null,"plural":"floors","json":"","mode":"","context":"A level or floor of a building where rooms or spaces are located.","parents":["building"],"children":[{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"the identifier of the floor","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the number of usable rooms on the this floor","json":"","name":"rooms","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -5126,6 +5164,7 @@ func (x *FLOOR) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")
@@ -5201,6 +5240,7 @@ func (user *User) NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
 	}
 
 	object.Meta.ClassName = "rooms"
+	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
 	if err != nil {
@@ -5237,7 +5277,7 @@ type FieldsROOM struct {
 
 func (x *ROOM) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"A name representing the purpose or utility of this room","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the purpose or utility of this room","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"job":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"A name representing the purpose or utility of this room","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the purpose or utility of this room","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
 	return obj
 }
 
@@ -5346,6 +5386,7 @@ func (x *ROOM) ValidateObject(m map[string]interface{}) error {
 	if ok {
 		x.Meta.Name = name	
 	} else {
+		log.Println("trying to composite object name")
 		var names []string
 		
 		x.Meta.Name = strings.Join(names, " ")

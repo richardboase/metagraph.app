@@ -7,6 +7,7 @@ import { RowThumbnail } from "@/components/rowThumbnail"
 import { RowDelete } from "@/components/rowDelete"
 import { RowEdit } from "@/components/rowEdit"
 import { RowOrder } from "@/components/rowOrder"
+import { RowPay } from "@/components/rowPay"
 import { titlecase } from "../_interfaces"
 
 export function FloorListRow(props) {
@@ -47,6 +48,8 @@ export function FloorListRow(props) {
 					</>
 				}
 			</div>
+			<RowPay id={props.id}/>
+
 			
 			<RowEdit object={props.item} editInterface="editfloor"/>
 			<RowDelete id={props.id} delete={deleteItem}/>

@@ -24,17 +24,12 @@ export function ParagraphListRowImage(props) {
 	return (
 		<div className='flex flex-col justify-between items-center w-full'>
 			
-			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer px-4'>
-				{
-					props.item.Meta.Name?.length && <>
-						<div className='text-sm font-bold' title="Name">{ props.item.Meta.Name }</div>
-					</>
-				}
+			<div className='flex flex-col w-full justify-center items-center m-4'>
 				<div className="px-4"></div>
 				{
-					("content" != "name") && !Array.isArray(props.item.fields["content"]) &&  !(typeof props.item.fields["content"] === 'object')  && <>
-						<div className='text-sm font-bold' title="content">
-							{ props.item.fields["content"] }
+					("content" != "name") && !Array.isArray(props.item.fields["content"]) &&  !(typeof props.item.fields["content"] === 'object')  && (props.item.fields["content"].length > 0) && <>
+						<div className='text-base font-bold' title="content">
+							"{ props.item.fields["content"] }"
 						</div>
 						<div className="px-4"></div>
 					</>

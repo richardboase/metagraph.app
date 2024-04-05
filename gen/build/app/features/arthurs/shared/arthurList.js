@@ -23,7 +23,11 @@ export function ArthurList(props) {
 	const [topics, setTopics] = useState([])
 
 	const [ list, setList ] = useState(null)
-	const [ listMode, setListMode ] = useState("modified")
+
+	
+	const [ listMode, setListMode ] = useState("admin")
+	
+	
 
 	function updateListMode(e) {
 		const mode = e.target.value
@@ -128,12 +132,7 @@ export function ArthurList(props) {
 			props.title && <div className="flex flex-row justify-between items-center">
 				<div className="flex flex-row">
 					<div className='py-4 my-4 text-xl font-bold'>{props.title}:</div>
-					<select onChange={updateListMode}>
-						<option value="created">Created</option>
-						<option value="modified">Modified</option>
-						<option value="order">Ordered</option>
-						<option value="exif">EXIF</option>
-					</select>
+					
 				</div>
 				{
 					(topics.length > 0) && <div className='flex flex-row'>
@@ -157,7 +156,9 @@ export function ArthurList(props) {
 			props.title && <hr/>
 		}
 		{
-			!list && <Loading/>
+			!list && <div className="p-4">
+				<Loading/>
+			</div>
 		}
 		
 		

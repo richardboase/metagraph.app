@@ -24,24 +24,19 @@ export function FloorListRowImage(props) {
 	return (
 		<div className='flex flex-col justify-between items-center w-full'>
 			
-			<div onClick={selectItem} className='flex flex-row w-full items-center cursor-pointer px-4'>
-				{
-					props.item.Meta.Name?.length && <>
-						<div className='text-sm font-bold' title="Name">{ props.item.Meta.Name }</div>
-					</>
-				}
+			<div className='flex flex-col w-full justify-center items-center m-4'>
 				<div className="px-4"></div>
 				{
-					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && <>
-						<div className='text-sm font-bold' title="name">
-							{ props.item.fields["name"] }
+					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && (props.item.fields["name"].length > 0) && <>
+						<div className='text-base font-bold' title="name">
+							"{ props.item.fields["name"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("rooms" != "name") && !Array.isArray(props.item.fields["rooms"]) &&  !(typeof props.item.fields["rooms"] === 'object')  && <>
-						<div className='text-sm font-bold' title="rooms">
-							{ props.item.fields["rooms"] }
+					("rooms" != "name") && !Array.isArray(props.item.fields["rooms"]) &&  !(typeof props.item.fields["rooms"] === 'object')  && (props.item.fields["rooms"].length > 0) && <>
+						<div className='text-base font-bold' title="rooms">
+							"{ props.item.fields["rooms"] }"
 						</div>
 						<div className="px-4"></div>
 					</>

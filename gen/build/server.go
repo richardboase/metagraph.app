@@ -17,17 +17,30 @@ func main() {
 	}
 
 	app := NewApp()
+
+	// init asset layer
 	app.UseAssetlayer(
 		os.Getenv("ASSETLAYERAPPID"),
 		os.Getenv("ASSETLAYERSECRET"),
 		os.Getenv("DIDTOKEN"),
 	)
+
+	// init openai
 	
 	app.UseVertex("europe-west2-b")
 	app.UseChatGPT(os.Getenv("OPENAI_KEY"))
 	
+
+	// init pusher
 	
+
+	// init handcash
 	
+
+	/*
+	
+	*/
+
 	http.HandleFunc("/api/user", app.UserEntrypoint)
 	http.HandleFunc("/api/users", app.UsersEntrypoint)
 	http.HandleFunc("/api/auth", app.AuthEntrypoint)
