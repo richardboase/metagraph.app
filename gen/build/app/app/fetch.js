@@ -1,6 +1,21 @@
 import axios, {isCancel, AxiosError} from 'axios';
 
-export const host = "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/"
+export const hostApi = (process.env.ENVIRONMENT == undefined) ? "http://localhost:8080/" : "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/"
+export const webApi = (process.env.ENVIRONMENT == undefined) ? "http://localhost:3000/" : "https://newtown.vercel.app/"
+
+export function WebFetch(method, url, body) {
+
+	console.log("PublicFetch >>>", method, url, body);
+	console.log(url)
+
+	return fetch(
+		webApi + url,
+		{
+			method: method,
+			body: JSON.stringify(body),
+		}
+	)
+}
 
 export function PublicFetch(method, url, body) {
 
@@ -8,7 +23,7 @@ export function PublicFetch(method, url, body) {
 	console.log(url)
 
 	return fetch(
-		host + url,
+		hostApi + url,
 		{
 			method: method,
 			body: JSON.stringify(body),
@@ -29,7 +44,7 @@ export function AxiosPOST(user, url, formData) {
 
 export default function SessionFetch(user, method, url, body) {
 
-	console.log("SessionFetch >>>", method, url, body);
+	console.log("SessionFetch", process.env.HANDCASH_APP_ID, process.env.ENVIRONMENT, ">>>", method, url, body);
 	console.log(url)
 
 	if (user == null) {
@@ -38,7 +53,7 @@ export default function SessionFetch(user, method, url, body) {
 	}
 
 	return fetch(
-		host + url,
+		hostApi + url,
 		{
 			method: method,
 			body: JSON.stringify(body),
@@ -52,7 +67,7 @@ export function OTPFetch(url) {
 	console.log("OTPFetch >>>", url);
 	console.log(url)
 
-	return fetch(host + url, {"method":"POST"})
+	return fetch(hostApi + url, {"method":"POST"})
 }
 
 export function UserAutocompleteGET(user, query) {
@@ -115,4 +130,10 @@ export function InboxMessagesGET(user, conversation) {
 
 export function InboxSendMessage(user, msg) {
 	return SessionFetch(user, "POST", "api/mail?", msg)
+}
+
+// handcash
+
+export function HandcashPaymentPOST(authToken, payment) {
+    return WebFetch("POST", "api/handcash/payment?authToken="+authToken, payment)
 }

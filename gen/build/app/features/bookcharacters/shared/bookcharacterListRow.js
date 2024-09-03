@@ -83,7 +83,7 @@ export function BookcharacterListRow(props) {
 					</>
 				}
 			</div>
-			<RowPay id={props.id}/>
+			<RowPay id={props.id} item={props.item}/>
 
 			
 			<RowEdit object={props.item} editInterface="editbookcharacter"/>

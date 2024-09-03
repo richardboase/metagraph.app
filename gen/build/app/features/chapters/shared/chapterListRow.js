@@ -41,7 +41,7 @@ export function ChapterListRow(props) {
 					</>
 				}
 			</div>
-			<RowPay id={props.id}/>
+			<RowPay id={props.id} item={props.item}/>
 
 			<RowOrder id={props.id} listLength={props.listLength} moveUp={props.moveUp} moveDown={props.moveDown}/>
 			<RowEdit object={props.item} editInterface="editchapter"/>

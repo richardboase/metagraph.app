@@ -26,6 +26,10 @@ export default function Home(props) {
 			Games
 			</div>
 			
+			<div id="dnss" className='text-xl font-bold m-4' onClick={updateTabEvent}>
+			Dnss
+			</div>
+			
 			<div id="books" className='text-xl font-bold m-4' onClick={updateTabEvent}>
 			Books
 			</div>

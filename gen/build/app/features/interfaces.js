@@ -9,6 +9,7 @@ import { JellynameInterfaces } from '@/features/jellynames/_interfaces'
 import { GameInterfaces } from '@/features/games/_interfaces'
 import { LobbyInterfaces } from '@/features/lobbys/_interfaces'
 import { CharacterInterfaces } from '@/features/characters/_interfaces'
+import { DnsInterfaces } from '@/features/dnss/_interfaces'
 import { BookInterfaces } from '@/features/books/_interfaces'
 import { BookcharacterInterfaces } from '@/features/bookcharacters/_interfaces'
 import { ChapterInterfaces } from '@/features/chapters/_interfaces'
@@ -24,6 +25,7 @@ import Home from '@/features/home'
 import Account from '@/features/account/account'
 import AccountInbox from '@/features/account/accountInbox'
 import AccountInboxMessages from '@/features/account/accountInboxMessages'
+import PaymentConfirmation from '@/components/paymentConfirmation'
 
 export var Interfaces = {
 	"home": {
@@ -45,6 +47,11 @@ export var Interfaces = {
 		level: 3,
 		name: "Conversation",
 		component: (<AccountInboxMessages/>),
+	},
+	"paymentconfirmation": {
+		level: 3,
+		name: "Confirm Payment",
+		component: (<PaymentConfirmation/>),
 	}
 }
 
@@ -79,6 +86,9 @@ export function GetInterfaces() {
 	}// CharacterInterfaces
 	for (const k in CharacterInterfaces) {
 		interfaces[k.toLowerCase()] = CharacterInterfaces[k]
+	}// DnsInterfaces
+	for (const k in DnsInterfaces) {
+		interfaces[k.toLowerCase()] = DnsInterfaces[k]
 	}// BookInterfaces
 	for (const k in BookInterfaces) {
 		interfaces[k.toLowerCase()] = BookInterfaces[k]

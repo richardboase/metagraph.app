@@ -95,15 +95,12 @@ type Internals struct {
 	Context    Context
 	Moderation Moderation
 	Media      Media
+	Payment    Payment
 	Updated    bool
 	Created    int64
 	Deleted    int64 `json:",omitempty"`
 	Modified   int64
-	Price      struct {
-		Currency string `json:",omitempty"`
-		Units    int64  `json:",omitempty"`
-	} `json:",omitempty"`
-	Stats map[string]float64 `json:",omitempty"`
+	Stats      map[string]float64 `json:",omitempty"`
 }
 
 func RegExp(exp, matchString string) bool {
@@ -293,6 +290,18 @@ type Moderation struct {
 	ApprovedTime int64    `json:",omitempty"`
 	ApprovedBy   string   `json:",omitempty"`
 }
+
+type Payment struct {
+	Mint         bool
+	Destinations []*PaymentDestination
+}
+
+type PaymentDestination struct {
+	To           string  `json:"to"`
+	Amount       float64 `json:"amount"`
+	CurrencyCode string  `json:"currencyCode"`
+}
+
 func (app *App) SendMessageToUser(user *User, msgType string, data interface{}) {
 	
 }
@@ -936,6 +945,9 @@ func (user *User) NewTHING(parent *Internals, fields FieldsTHING) *THING {
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		
@@ -953,7 +965,7 @@ type FieldsTHING struct {
 
 func (x *THING) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":[{"context":"the shortest description of the object","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"a full description of the object","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the state of the object, for example: a tumbler could be \"half full with water\"","json":"","name":"state","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"age of the object in days","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":[{"context":"the shortest description of the object","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"a full description of the object","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the state of the object, for example: a tumbler could be \"half full with water\"","json":"","name":"state","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"age of the object in days","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1237,6 +1249,9 @@ func (user *User) NewFURNISHING(parent *Internals, fields FieldsFURNISHING) *FUR
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		
@@ -1254,7 +1269,7 @@ type FieldsFURNISHING struct {
 
 func (x *FURNISHING) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":[{"context":"the name of the utility or furnature","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the description of the utility or furnature","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the state of the utility or furnature","json":"","name":"state","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"age of the object in days","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":[{"context":"the name of the utility or furnature","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the description of the utility or furnature","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the state of the utility or furnature","json":"","name":"state","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"age of the object in days","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1533,6 +1548,9 @@ func (user *User) NewARTHUR(parent *Internals, fields FieldsARTHUR) *ARTHUR {
 		object.Meta.Moderation.Admins,
 		user.Meta.ID,
 	)
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"jelly","jellyname","lobby",
@@ -1547,7 +1565,7 @@ type FieldsARTHUR struct {
 
 func (x *ARTHUR) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"arthur","names":null,"plural":"arthurs","json":"","mode":"root","context":"arthurs space","children":[{"name":"jelly","names":null,"plural":"jellies","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":true,"image":true,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"jellyname","names":null,"plural":"jellynames","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"arthur","names":null,"plural":"arthurs","json":"","mode":"root","context":"arthurs space","children":[{"name":"jelly","names":null,"plural":"jellies","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":true,"image":true,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null},{"name":"jellyname","names":null,"plural":"jellynames","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null},{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1711,6 +1729,9 @@ func (user *User) NewJELLY(parent *Internals, fields FieldsJELLY) *JELLY {
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		
@@ -1728,7 +1749,7 @@ type FieldsJELLY struct {
 
 func (x *JELLY) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"jelly","names":null,"plural":"jellies","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"select","inputReference":"","inputOptions":["male","female"],"required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"element","type":"string","input":"select","inputReference":"jellynames","required":false,"filter":true,"range":null,"regexp":"","regexpHex":""},{"context":"health points","json":"","name":"hp","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":true,"image":true,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"jelly","names":null,"plural":"jellies","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"select","inputReference":"","inputOptions":["male","female"],"required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"element","type":"string","input":"select","inputReference":"jellynames","required":false,"filter":true,"range":null,"regexp":"","regexpHex":""},{"context":"health points","json":"","name":"hp","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":true,"image":true,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1994,6 +2015,9 @@ func (user *User) NewJELLYNAME(parent *Internals, fields FieldsJELLYNAME) *JELLY
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		
@@ -2008,7 +2032,7 @@ type FieldsJELLYNAME struct {
 
 func (x *JELLYNAME) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"jellyname","names":null,"plural":"jellynames","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":[{"context":"the elemental name of the jelly","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"jellyname","names":null,"plural":"jellynames","json":"","mode":"","context":"arthurs ","parents":["arthur"],"fields":[{"context":"the elemental name of the jelly","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -2172,6 +2196,9 @@ func (user *User) NewGAME(parent *Internals, fields FieldsGAME) *GAME {
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"lobby",
@@ -2186,7 +2213,7 @@ type FieldsGAME struct {
 
 func (x *GAME) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"game","names":null,"plural":"games","json":"","mode":"root","context":"","children":[{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"game","names":null,"plural":"games","json":"","mode":"root","context":"","children":[{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -2350,6 +2377,9 @@ func (user *User) NewLOBBY(parent *Internals, fields FieldsLOBBY) *LOBBY {
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"character",
@@ -2364,7 +2394,7 @@ type FieldsLOBBY struct {
 
 func (x *LOBBY) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"children":[{"name":"character","names":null,"plural":"characters","json":"","mode":"","context":"","parents":["lobby"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"lobby","names":null,"plural":"lobbys","json":"","mode":"","context":"","parents":["game","arthur"],"children":[{"name":"character","names":null,"plural":"characters","json":"","mode":"","context":"","parents":["lobby"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -2526,6 +2556,9 @@ func (user *User) NewCHARACTER(parent *Internals, fields FieldsCHARACTER) *CHARA
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		
@@ -2546,7 +2579,7 @@ type FieldsCHARACTER struct {
 
 func (x *CHARACTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"character","names":null,"plural":"characters","json":"","mode":"","context":"","parents":["lobby"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a short synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"character","names":null,"plural":"characters","json":"","mode":"","context":"","parents":["lobby"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a short synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -2917,6 +2950,187 @@ func (object *CHARACTER) ValidateImageCHARACTER(fileBytes []byte) (image.Image, 
 
 
 
+type DNS struct {
+	Meta    Internals
+	Fields FieldsDNS `json:"fields" firestore:"fields"`
+}
+
+func (user *User) NewDNS(parent *Internals, fields FieldsDNS) *DNS {
+	var object *DNS
+	if parent == nil {
+		object = &DNS{
+			Meta: (Internals{}).NewInternals("dnss"),
+			Fields: fields,
+		}
+	} else {
+		object = &DNS{
+			Meta: parent.NewInternals("dnss"),
+			Fields: fields,
+		}
+	}
+
+	object.Meta.ClassName = "dnss"
+	object.Meta.Context.User = user.Meta.ID
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
+	} else {
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
+	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
+	
+
+	
+
+	// add children to context
+	object.Meta.Context.Children = []string{
+		
+	}
+	return object
+}
+
+type FieldsDNS struct {
+	Name string `json:"name" firestore:"name"`
+	
+}
+
+func (x *DNS) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"dns","names":null,"plural":"dnss","json":"","mode":"root","context":"a domain trading platform","fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	return obj
+}
+
+func (x *DNS) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return false
+	}
+	return true
+}
+
+func (x *DNS) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	var exists bool
+	
+
+	_, exists = m["name"]
+	if true && !exists {
+		return errors.New("required field 'name' not supplied")
+	}
+	if exists {
+		x.Fields.Name, err = assertSTRING(m, "name")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(60, x.Fields.Name); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	} else {
+		log.Println("trying to composite object name")
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
+	}
+
+	x.Meta.Modify()
+
+	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *DNS) ValidateImageDNS(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
+}
+
+
+
 type BOOK struct {
 	Meta    Internals
 	Fields FieldsBOOK `json:"fields" firestore:"fields"`
@@ -2959,6 +3173,9 @@ func (user *User) NewBOOK(parent *Internals, fields FieldsBOOK) *BOOK {
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"bookcharacter","chapter",
@@ -2973,7 +3190,7 @@ type FieldsBOOK struct {
 
 func (x *BOOK) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"book","names":null,"plural":"books","json":"","mode":"root","context":"a creative writing project","children":[{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"book","names":null,"plural":"books","json":"","mode":"root","context":"a creative writing project","children":[{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null},{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -3137,6 +3354,9 @@ func (user *User) NewBOOKCHARACTER(parent *Internals, fields FieldsBOOKCHARACTER
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		
@@ -3157,7 +3377,7 @@ type FieldsBOOKCHARACTER struct {
 
 func (x *BOOKCHARACTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -3570,6 +3790,9 @@ func (user *User) NewCHAPTER(parent *Internals, fields FieldsCHAPTER) *CHAPTER {
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"paragraph",
@@ -3584,7 +3807,7 @@ type FieldsCHAPTER struct {
 
 func (x *CHAPTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"children":[{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"children":[{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -3748,6 +3971,9 @@ func (user *User) NewPARAGRAPH(parent *Internals, fields FieldsPARAGRAPH) *PARAG
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		
@@ -3762,7 +3988,7 @@ type FieldsPARAGRAPH struct {
 
 func (x *PARAGRAPH) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":[{"context":"","json":"","name":"content","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":[{"context":"","json":"","name":"content","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -3921,6 +4147,9 @@ func (user *User) NewTOWN(parent *Internals, fields FieldsTOWN) *TOWN {
 		object.Meta.Moderation.Admins,
 		user.Meta.ID,
 	)
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"teststreet","street",
@@ -3935,7 +4164,7 @@ type FieldsTOWN struct {
 
 func (x *TOWN) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"town","names":null,"plural":"towns","json":"","mode":"root","context":"A town where people live.","children":[{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"town","names":null,"plural":"towns","json":"","mode":"root","context":"A town where people live.","children":[{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null},{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["town"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -4099,6 +4328,9 @@ func (user *User) NewTESTSTREET(parent *Internals, fields FieldsTESTSTREET) *TES
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		
@@ -4116,7 +4348,7 @@ type FieldsTESTSTREET struct {
 
 func (x *TESTSTREET) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":[{"context":"the name of the street","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"a description of the street","json":"","name":"description","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"the street junctioning at the START of the road, if any","json":"","name":"start","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"the junction at the END of the road, if any","json":"","name":"end","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"teststreet","names":null,"plural":"teststreets","json":"","mode":"many","context":"A street where people live.","parents":["town"],"fields":[{"context":"the name of the street","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"a description of the street","json":"","name":"description","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"the street junctioning at the START of the road, if any","json":"","name":"start","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"the junction at the END of the road, if any","json":"","name":"end","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -4403,6 +4635,9 @@ func (user *User) NewSTREET(parent *Internals, fields FieldsSTREET) *STREET {
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"building",
@@ -4419,7 +4654,7 @@ type FieldsSTREET struct {
 
 func (x *STREET) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["town"],"children":[{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"The street name","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the general zoning type of the street","json":"","name":"zoning","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the length in meters of the street","json":"","name":"length","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"street","names":null,"plural":"streets","json":"","mode":"","context":"A street, part of the transaportation network of a town or city.","parents":["town"],"children":[{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"The street name","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the general zoning type of the street","json":"","name":"zoning","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the length in meters of the street","json":"","name":"length","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -4656,6 +4891,9 @@ func (user *User) NewBUILDING(parent *Internals, fields FieldsBUILDING) *BUILDIN
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"floor",
@@ -4676,7 +4914,7 @@ type FieldsBUILDING struct {
 
 func (x *BUILDING) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"children":[{"name":"floor","names":null,"plural":"floors","json":"","mode":"","context":"A level or floor of a building where rooms or spaces are located.","parents":["building"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the building","json":"","name":"description","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"Street number(s) of the building","json":"","name":"number","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"xunits","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"yunits","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"Number of floors this building has","json":"","name":"floors","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"Number of ground floor entrances or exits","json":"","name":"doors","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"building","names":null,"plural":"buildings","json":"","mode":"","context":"A building which exists in a street, could be residential, commercial, or industrial.","parents":["street"],"children":[{"name":"floor","names":null,"plural":"floors","json":"","mode":"","context":"A level or floor of a building where rooms or spaces are located.","parents":["building"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the building","json":"","name":"description","type":"string","input":"text","inputReference":"","required":false,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"Street number(s) of the building","json":"","name":"number","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"xunits","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"yunits","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"Number of floors this building has","json":"","name":"floors","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"Number of ground floor entrances or exits","json":"","name":"doors","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -5049,6 +5287,9 @@ func (user *User) NewFLOOR(parent *Internals, fields FieldsFLOOR) *FLOOR {
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"room",
@@ -5064,7 +5305,7 @@ type FieldsFLOOR struct {
 
 func (x *FLOOR) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"floor","names":null,"plural":"floors","json":"","mode":"","context":"A level or floor of a building where rooms or spaces are located.","parents":["building"],"children":[{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"the identifier of the floor","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the number of usable rooms on the this floor","json":"","name":"rooms","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"floor","names":null,"plural":"floors","json":"","mode":"","context":"A level or floor of a building where rooms or spaces are located.","parents":["building"],"children":[{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"the identifier of the floor","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"the number of usable rooms on the this floor","json":"","name":"rooms","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -5262,6 +5503,9 @@ func (user *User) NewROOM(parent *Internals, fields FieldsROOM) *ROOM {
 	}
 
 	
+
+	
+
 	// add children to context
 	object.Meta.Context.Children = []string{
 		"thing","furnishing",
@@ -5277,7 +5521,7 @@ type FieldsROOM struct {
 
 func (x *ROOM) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}],"fields":[{"context":"A name representing the purpose or utility of this room","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the purpose or utility of this room","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null}}`), obj)
+	json.Unmarshal([]byte(`{"name":"room","names":null,"plural":"rooms","json":"","mode":"","context":"A room on this floor of the building","parents":["floor"],"children":[{"name":"thing","names":null,"plural":"things","json":"","mode":"","context":"a distinct ant transferrable object of any size, could be anything","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null},{"name":"furnishing","names":null,"plural":"furnishings","json":"","mode":"","context":"a utility or furnishing in a room, such as a mirror on the wall, decorative object, or something to store objects in","parents":["room"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"A name representing the purpose or utility of this room","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"A description of the purpose or utility of this room","json":"","name":"description","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
