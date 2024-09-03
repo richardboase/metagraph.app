@@ -149,6 +149,14 @@ github.com/golangdaddy/leap v0.0.0-20240903195345-b2f928ad1b27 h1:rn/1gmYwbQMphq
 github.com/golangdaddy/leap v0.0.0-20240903195345-b2f928ad1b27/go.mod h1:x4IoDFdCNBct6vD/PnO1qrtDNn4n6fTLeNUixywCozc=
 github.com/golangdaddy/leap v0.0.0-20240903201234-d11a54694037 h1:5qAcGYkg6cZObGPMvs+/rGxQMxiGBViDr0A2oI19VPE=
 github.com/golangdaddy/leap v0.0.0-20240903201234-d11a54694037/go.mod h1:x4IoDFdCNBct6vD/PnO1qrtDNn4n6fTLeNUixywCozc=
+github.com/golangdaddy/leap v0.0.0-20240903205653-e075eaced1b0 h1:+ocpt/2QiUVUqWtE66jaCIpGca5CE6nAGf7HVgw8X0A=
+github.com/golangdaddy/leap v0.0.0-20240903205653-e075eaced1b0/go.mod h1:x4IoDFdCNBct6vD/PnO1qrtDNn4n6fTLeNUixywCozc=
+github.com/golangdaddy/leap v0.0.0-20240903205911-b23912c91e83 h1:R265pHIsbokqf7fiyIifrqS8QkX29xtses2+Wh1/2Yk=
+github.com/golangdaddy/leap v0.0.0-20240903205911-b23912c91e83/go.mod h1:x4IoDFdCNBct6vD/PnO1qrtDNn4n6fTLeNUixywCozc=
+github.com/golangdaddy/leap v0.0.0-20240903205948-94b82787311f h1:FmIM9CPNV+reU+lQIkbpPFcj2NEY9YWLxXzjbjNAHtE=
+github.com/golangdaddy/leap v0.0.0-20240903205948-94b82787311f/go.mod h1:x4IoDFdCNBct6vD/PnO1qrtDNn4n6fTLeNUixywCozc=
+github.com/golangdaddy/leap v0.0.0-20240903210448-ce7898c14f10 h1:3gYKlg9WU+AbmtWekx8fPo578mUsAERN/cyJbHpF5+A=
+github.com/golangdaddy/leap v0.0.0-20240903210448-ce7898c14f10/go.mod h1:x4IoDFdCNBct6vD/PnO1qrtDNn4n6fTLeNUixywCozc=
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/google/go-cmp v0.3.0/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
 github.com/google/go-cmp v0.3.1/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=

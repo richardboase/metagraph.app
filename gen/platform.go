@@ -1,4 +1,4 @@
-package main
+package structure
 
 import (
 	"encoding/json"
@@ -10,17 +10,10 @@ import (
 	"github.com/otiai10/copy"
 )
 
-func main() {
+func buildStructure(config models.Config) {
 
 	tree := models.Stack{
-		WebsocketHost: "server-go-gen-test-da7z6jf32a-nw.a.run.app",
-		WebAPI:        "https://newtown.vercel.app/",
-		HostAPI:       "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/",
-		RepoURI:       "github.com/golangdaddy/newtown",
-		SiteName:      "Pet Rescue Center",
-		ProjectID:     "prc-generic",
-		ProjectName:   "pet-rescue-center",
-		ProjectRegion: "us-central1",
+		Config: config,
 		Options: models.StackOptions{
 			ChatGPT: true,
 		},
