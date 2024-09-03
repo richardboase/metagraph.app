@@ -1,18 +1,12 @@
 package structure
 
 import (
-	"encoding/json"
-	"log"
-	"os"
-
-	"github.com/golangdaddy/leap"
 	"github.com/golangdaddy/leap/models"
-	"github.com/otiai10/copy"
 )
 
-func buildStructure(config models.Config) {
+func buildStructure(config models.Config) *models.Stack {
 
-	tree := models.Stack{
+	tree := &models.Stack{
 		Config: config,
 		Options: models.StackOptions{
 			ChatGPT: true,
@@ -101,27 +95,5 @@ func buildStructure(config models.Config) {
 	// Add all objects to the tree
 	tree.Objects = append(tree.Objects, animal, healthCheckup, adopter)
 
-	// Prepare the data model
-	if err := models.Prepare(&tree); err != nil {
-		panic(err)
-	}
-
-	// Build the application
-	if err := leap.Build(&tree); err != nil {
-		panic(err)
-	}
-
-	// Copy necessary node modules
-	if err := copy.Copy("node_modules", "build/app/node_modules"); err != nil {
-		log.Println(err)
-	}
-
-	// Export debug JSON
-	b, err := json.Marshal(tree)
-	if err != nil {
-		panic(err)
-	}
-	if err := os.WriteFile("../out.json", b, 0755); err != nil {
-		panic(err)
-	}
+	return tree
 }
