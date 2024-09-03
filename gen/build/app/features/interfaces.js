@@ -1,25 +1,11 @@
 import * as React from 'react'
 
 
-import { ThingInterfaces } from '@/features/things/_interfaces'
-import { FurnishingInterfaces } from '@/features/furnishings/_interfaces'
-import { ArthurInterfaces } from '@/features/arthurs/_interfaces'
-import { JellyInterfaces } from '@/features/jellys/_interfaces'
-import { JellynameInterfaces } from '@/features/jellynames/_interfaces'
-import { GameInterfaces } from '@/features/games/_interfaces'
-import { LobbyInterfaces } from '@/features/lobbys/_interfaces'
-import { CharacterInterfaces } from '@/features/characters/_interfaces'
 import { DnsInterfaces } from '@/features/dnss/_interfaces'
 import { BookInterfaces } from '@/features/books/_interfaces'
 import { BookcharacterInterfaces } from '@/features/bookcharacters/_interfaces'
 import { ChapterInterfaces } from '@/features/chapters/_interfaces'
 import { ParagraphInterfaces } from '@/features/paragraphs/_interfaces'
-import { TownInterfaces } from '@/features/towns/_interfaces'
-import { TeststreetInterfaces } from '@/features/teststreets/_interfaces'
-import { StreetInterfaces } from '@/features/streets/_interfaces'
-import { BuildingInterfaces } from '@/features/buildings/_interfaces'
-import { FloorInterfaces } from '@/features/floors/_interfaces'
-import { RoomInterfaces } from '@/features/rooms/_interfaces'
 
 import Home from '@/features/home'
 import Account from '@/features/account/account'
@@ -62,31 +48,7 @@ export function GetInterfaces() {
 	}
 	// custom features
 
-	// ThingInterfaces
-	for (const k in ThingInterfaces) {
-		interfaces[k.toLowerCase()] = ThingInterfaces[k]
-	}// FurnishingInterfaces
-	for (const k in FurnishingInterfaces) {
-		interfaces[k.toLowerCase()] = FurnishingInterfaces[k]
-	}// ArthurInterfaces
-	for (const k in ArthurInterfaces) {
-		interfaces[k.toLowerCase()] = ArthurInterfaces[k]
-	}// JellyInterfaces
-	for (const k in JellyInterfaces) {
-		interfaces[k.toLowerCase()] = JellyInterfaces[k]
-	}// JellynameInterfaces
-	for (const k in JellynameInterfaces) {
-		interfaces[k.toLowerCase()] = JellynameInterfaces[k]
-	}// GameInterfaces
-	for (const k in GameInterfaces) {
-		interfaces[k.toLowerCase()] = GameInterfaces[k]
-	}// LobbyInterfaces
-	for (const k in LobbyInterfaces) {
-		interfaces[k.toLowerCase()] = LobbyInterfaces[k]
-	}// CharacterInterfaces
-	for (const k in CharacterInterfaces) {
-		interfaces[k.toLowerCase()] = CharacterInterfaces[k]
-	}// DnsInterfaces
+	// DnsInterfaces
 	for (const k in DnsInterfaces) {
 		interfaces[k.toLowerCase()] = DnsInterfaces[k]
 	}// BookInterfaces
@@ -101,24 +63,6 @@ export function GetInterfaces() {
 	}// ParagraphInterfaces
 	for (const k in ParagraphInterfaces) {
 		interfaces[k.toLowerCase()] = ParagraphInterfaces[k]
-	}// TownInterfaces
-	for (const k in TownInterfaces) {
-		interfaces[k.toLowerCase()] = TownInterfaces[k]
-	}// TeststreetInterfaces
-	for (const k in TeststreetInterfaces) {
-		interfaces[k.toLowerCase()] = TeststreetInterfaces[k]
-	}// StreetInterfaces
-	for (const k in StreetInterfaces) {
-		interfaces[k.toLowerCase()] = StreetInterfaces[k]
-	}// BuildingInterfaces
-	for (const k in BuildingInterfaces) {
-		interfaces[k.toLowerCase()] = BuildingInterfaces[k]
-	}// FloorInterfaces
-	for (const k in FloorInterfaces) {
-		interfaces[k.toLowerCase()] = FloorInterfaces[k]
-	}// RoomInterfaces
-	for (const k in RoomInterfaces) {
-		interfaces[k.toLowerCase()] = RoomInterfaces[k]
 	}
 	
 	// put id key into the object

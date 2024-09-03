@@ -4,7 +4,7 @@ import (
 	"github.com/golangdaddy/leap/models"
 )
 
-func arthur() []*models.Object {
+func arthurObjects() []*models.Object {
 
 	arthur := &models.Object{
 		Context: "arthurs space",
@@ -78,7 +78,7 @@ func arthur() []*models.Object {
 		},
 	}
 
-	objects := []*tree.Objects
+	objects := []*tree.Objects{}
 	objects = append(objects, arthur)
 	objects = append(objects, jelly)
 	objects = append(objects, jellyname)
