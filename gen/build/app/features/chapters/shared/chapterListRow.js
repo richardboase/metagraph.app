@@ -8,6 +8,7 @@ import { RowDelete } from "@/components/rowDelete"
 import { RowEdit } from "@/components/rowEdit"
 import { RowOrder } from "@/components/rowOrder"
 import { RowPay } from "@/components/rowPay"
+import { RowMint } from "@/components/rowMint"
 import { titlecase } from "../_interfaces"
 
 export function ChapterListRow(props) {
@@ -41,8 +42,8 @@ export function ChapterListRow(props) {
 					</>
 				}
 			</div>
-			<RowPay id={props.id} item={props.item}/>
-
+			
+			
 			<RowOrder id={props.id} listLength={props.listLength} moveUp={props.moveUp} moveDown={props.moveDown}/>
 			<RowEdit object={props.item} editInterface="editchapter"/>
 			<RowDelete id={props.id} delete={deleteItem}/>

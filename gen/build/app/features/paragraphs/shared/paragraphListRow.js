@@ -8,6 +8,7 @@ import { RowDelete } from "@/components/rowDelete"
 import { RowEdit } from "@/components/rowEdit"
 import { RowOrder } from "@/components/rowOrder"
 import { RowPay } from "@/components/rowPay"
+import { RowMint } from "@/components/rowMint"
 import { titlecase } from "../_interfaces"
 
 export function ParagraphListRow(props) {
@@ -41,8 +42,8 @@ export function ParagraphListRow(props) {
 					</>
 				}
 			</div>
-			<RowPay id={props.id} item={props.item}/>
-
+			
+			
 			
 			<RowEdit object={props.item} editInterface="editparagraph"/>
 			<RowDelete id={props.id} delete={deleteItem}/>

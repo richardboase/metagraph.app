@@ -1,7 +1,7 @@
 import axios, {isCancel, AxiosError} from 'axios';
 
-export const hostApi = (process.env.ENVIRONMENT == undefined) ? "http://localhost:8080/" : "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/"
-export const webApi = (process.env.ENVIRONMENT == undefined) ? "http://localhost:3000/" : "https://newtown.vercel.app/"
+export const hostApi = "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/"
+export const webApi = "https://newtown.vercel.app/"
 
 export function WebFetch(method, url, body) {
 
@@ -136,4 +136,8 @@ export function InboxSendMessage(user, msg) {
 
 export function HandcashPaymentPOST(authToken, payment) {
     return WebFetch("POST", "api/handcash/payment?authToken="+authToken, payment)
+}
+
+export function HandcashMintPOST(authToken, data) {
+    return WebFetch("POST", "api/handcash/mint?authToken="+authToken, data)
 }

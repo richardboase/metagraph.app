@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strconv"
 	"net/http"
-	"html/template"
 	"os"
 	"log"
 )
@@ -31,9 +30,6 @@ func main() {
 	// init handcash
 	
 
-	/*
-	
-	*/
 
 	http.HandleFunc("/api/user", app.UserEntrypoint)
 	http.HandleFunc("/api/users", app.UsersEntrypoint)
@@ -57,9 +53,6 @@ func main() {
 	http.HandleFunc("/api/paragraphs", app.EntrypointPARAGRAPHS)
 	println("registering handlers for paragraphs")
 
-	http.HandleFunc("/htmx/hello", htmx_hello)
-	http.HandleFunc("/htmx/world", htmx_world)
-
 	port, err := strconv.Atoi(os.Getenv("PORT"))
 	if err != nil {
 		port = 8080
@@ -68,51 +61,5 @@ func main() {
 	fmt.Printf("Server is running on http://localhost:%d\n", port)
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		fmt.Println("Error:", err)
-	}
-}
-
-func htmx_hello(w http.ResponseWriter, r *http.Request) {
-	htmlTemplate := `
-	<!DOCTYPE html>
-	<html>
-	<head>
-		<title>Hello World</title>
-		<script src="https://cdn.jsdelivr.net/npm/htmx.org/dist/htmx.js"></script>
-	</head>
-	<body>
-		<h1 id="hello" hx-put="/htmx/world" hx-target="this" hx-swap="outerHTML"></h1>
-		<button hx-get="/world" hx-trigger="click" hx-swap="outerHTML">Refresh</button>
-	</body>
-	</html>
-	`
-
-	// Parse the HTML template
-	tmpl, err := template.New("hello").Parse(htmlTemplate)
-	if err != nil {
-		log.Fatal("Error parsing template:", err)
-	}
-
-	// Execute the template and write the output to os.Stdout
-	err = tmpl.Execute(w, nil)
-	if err != nil {
-		log.Fatal("Error executing template:", err)
-	}
-}
-
-func htmx_world(w http.ResponseWriter, r *http.Request) {
-	htmlTemplate := `
-		<h1 id="hello">hello the world</h1>
-`
-
-	// Parse the HTML template
-	tmpl, err := template.New("hello").Parse(htmlTemplate)
-	if err != nil {
-		log.Fatal("Error parsing template:", err)
-	}
-
-	// Execute the template and write the output to os.Stdout
-	err = tmpl.Execute(w, nil)
-	if err != nil {
-		log.Fatal("Error executing template:", err)
 	}
 }

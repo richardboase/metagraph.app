@@ -947,6 +947,7 @@ func (user *User) NewDNS(parent *Internals, fields FieldsDNS) *DNS {
 	
 
 	
+	
 
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -962,7 +963,7 @@ type FieldsDNS struct {
 
 func (x *DNS) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"dns","names":null,"plural":"dnss","json":"","mode":"root","context":"a domain trading platform","fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"dns","names":null,"plural":"dnss","json":"","mode":"root","context":"a domain trading platform","fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1128,6 +1129,7 @@ func (user *User) NewBOOK(parent *Internals, fields FieldsBOOK) *BOOK {
 	
 
 	
+	
 
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -1143,7 +1145,7 @@ type FieldsBOOK struct {
 
 func (x *BOOK) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"book","names":null,"plural":"books","json":"","mode":"root","context":"a creative writing project","children":[{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null},{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"book","names":null,"plural":"books","json":"","mode":"root","context":"a creative writing project","children":[{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null},{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1309,6 +1311,7 @@ func (user *User) NewBOOKCHARACTER(parent *Internals, fields FieldsBOOKCHARACTER
 	
 
 	
+	
 
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -1330,7 +1333,7 @@ type FieldsBOOKCHARACTER struct {
 
 func (x *BOOKCHARACTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"bookcharacter","names":null,"plural":"bookcharacters","json":"","mode":"","context":"a character that will be involved with the storyline, or who might impact a central character but be passive in nature","parents":["book"],"fields":[{"context":"the name of the unique character","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"the age in years of the character","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"either male or female","json":"","name":"gender","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10},"regexp":"","regexpHex":""},{"context":"primary job or ocuupation of the character","json":"","name":"profession","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"health issues affecting the character","json":"","name":"diseases","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"the social class of the character (upper, middle, working, lower)","json":"","name":"socialclass","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"a synopis of the full life story of the character","json":"","name":"backstory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1745,6 +1748,7 @@ func (user *User) NewCHAPTER(parent *Internals, fields FieldsCHAPTER) *CHAPTER {
 	
 
 	
+	
 
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -1760,7 +1764,7 @@ type FieldsCHAPTER struct {
 
 func (x *CHAPTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"children":[{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"chapter","names":null,"plural":"chapters","json":"","mode":"many","context":"a chapter of the book","parents":["book"],"children":[{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":true,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1926,6 +1930,7 @@ func (user *User) NewPARAGRAPH(parent *Internals, fields FieldsPARAGRAPH) *PARAG
 	
 
 	
+	
 
 	// add children to context
 	object.Meta.Context.Children = []string{
@@ -1941,7 +1946,7 @@ type FieldsPARAGRAPH struct {
 
 func (x *PARAGRAPH) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":[{"context":"","json":"","name":"content","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":null,"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"paragraph","names":null,"plural":"paragraphs","json":"","mode":"many","context":"a paragraph in a chapter","parents":["chapter"],"fields":[{"context":"","json":"","name":"content","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 

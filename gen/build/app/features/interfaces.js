@@ -12,6 +12,7 @@ import Account from '@/features/account/account'
 import AccountInbox from '@/features/account/accountInbox'
 import AccountInboxMessages from '@/features/account/accountInboxMessages'
 import PaymentConfirmation from '@/components/paymentConfirmation'
+import MintConfirmation from '@/components/mintConfirmation'
 
 export var Interfaces = {
 	"home": {
@@ -38,6 +39,11 @@ export var Interfaces = {
 		level: 3,
 		name: "Confirm Payment",
 		component: (<PaymentConfirmation/>),
+	},
+	"mintconfirmation": {
+		level: 3,
+		name: "Confirm Mint",
+		component: (<MintConfirmation/>),
 	}
 }
 
