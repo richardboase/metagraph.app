@@ -17,7 +17,7 @@ func buildStructure(config models.Config) *models.Stack {
 	// Define the animal object with context for each field
 	animal := &models.Object{
 		Context: "Define the main object for storing information about each rescued animal",
-		Mode:    "root",
+
 		Parents: []string{},
 		Name:    "animal",
 		Fields: []*models.Field{
@@ -48,7 +48,6 @@ func buildStructure(config models.Config) *models.Stack {
 	// Define the health checkup object with context for each field
 	healthCheckup := &models.Object{
 		Context: "A record of each health checkup per animal, detailing health-related observations",
-		Mode:    "many",
 		Parents: []string{animal.Name},
 		Name:    "healthCheckup",
 		Fields: []*models.Field{
@@ -65,7 +64,7 @@ func buildStructure(config models.Config) *models.Stack {
 	// Define the adopter object with context for each field
 	adopter := &models.Object{
 		Context: "Stores information about individuals who adopt animals",
-		Mode:    "root",
+
 		Parents: []string{},
 		Name:    "adopter",
 		Fields: []*models.Field{
