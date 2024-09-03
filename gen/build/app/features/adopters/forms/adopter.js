@@ -28,16 +28,16 @@ export function AdopterForm(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="fullname" type='text' required={ true } title="adopter fullname" placeholder="adopter fullname" inputChange={handleInputChange}/>
+			<Input id="name" type='text' required={ true } title="adopter name" placeholder="adopter name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="contactinfo" type='text' required={ true } title="adopter contactinfo" placeholder="adopter contactinfo" inputChange={handleInputChange}/>
+			<Input id="contactnumber" type='text' required={ true } title="adopter contactnumber" placeholder="adopter contactnumber" inputChange={handleInputChange}/>
 			<Spacer/>
 			
 			<Input id="address" type='text' required={ true } title="adopter address" placeholder="adopter address" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["fullname","contactinfo","address"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","contactnumber","address"]}/>
 			<Spacer/>
 			
 		</div>

@@ -48,7 +48,7 @@ export var AdopterInterfaces = {
 	"adopter": {
 		level: 0+2,
 		name: "Adopter",
-		subsublinks: [],
+		subsublinks: ["adopteradmins"],
 		component: (<Adopter />),
 		hasDeleteButton: true,
 		hasEditButton: true,

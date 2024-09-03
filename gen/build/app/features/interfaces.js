@@ -1,9 +1,9 @@
 import * as React from 'react'
 
 
-import { PetInterfaces } from '@/features/pets/_interfaces'
+import { AnimalInterfaces } from '@/features/animals/_interfaces'
+import { HealthcheckupInterfaces } from '@/features/healthcheckups/_interfaces'
 import { AdopterInterfaces } from '@/features/adopters/_interfaces'
-import { DonationInterfaces } from '@/features/donations/_interfaces'
 
 import Home from '@/features/home'
 import Account from '@/features/account/account'
@@ -52,15 +52,15 @@ export function GetInterfaces() {
 	}
 	// custom features
 
-	// PetInterfaces
-	for (const k in PetInterfaces) {
-		interfaces[k.toLowerCase()] = PetInterfaces[k]
+	// AnimalInterfaces
+	for (const k in AnimalInterfaces) {
+		interfaces[k.toLowerCase()] = AnimalInterfaces[k]
+	}// HealthcheckupInterfaces
+	for (const k in HealthcheckupInterfaces) {
+		interfaces[k.toLowerCase()] = HealthcheckupInterfaces[k]
 	}// AdopterInterfaces
 	for (const k in AdopterInterfaces) {
 		interfaces[k.toLowerCase()] = AdopterInterfaces[k]
-	}// DonationInterfaces
-	for (const k in DonationInterfaces) {
-		interfaces[k.toLowerCase()] = DonationInterfaces[k]
 	}
 	
 	// put id key into the object

@@ -1,10 +1,10 @@
 provider "google" {
-  project = "rescue-center-management"
+  project = "pet-rescue-center"
   region  = "us-central1"
 }
 
 resource "google_storage_bucket" "primarybucket" {
-  name          = "rescue-center-management-uploads"
+  name          = "pet-rescue-center-uploads"
   location      = "EU"
 }
 

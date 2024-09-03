@@ -13,119 +13,117 @@ import (
 func main() {
 
 	tree := models.Stack{
-		WebsocketHost: "rescue-center-go-gen-test-host.com",
-		WebAPI:        "https://rescuecenterapi.example.com/",
-		HostAPI:       "https://rescue-center-go-gen-test-host.com/",
-		RepoURI:       "github.com/yourusername/rescuecenter",
-		SiteName:      "RescueCenter",
-		ProjectID:     "rescue-center-proj",
-		ProjectName:   "rescue-center-management",
+		WebsocketHost: "server-go-gen-test-da7z6jf32a-nw.a.run.app",
+		WebAPI:        "https://newtown.vercel.app/",
+		HostAPI:       "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/",
+		RepoURI:       "github.com/golangdaddy/newtown",
+		SiteName:      "Pet Rescue Center",
+		ProjectID:     "prc-generic",
+		ProjectName:   "pet-rescue-center",
 		ProjectRegion: "us-central1",
 		Options: models.StackOptions{
-			ChatGPT: true, // Optional, for AI integrations
+			ChatGPT: true,
 		},
 	}
 
-	pet := &models.Object{
-		Context: "details about a pet in the rescue center",
+	// Define the animal object with context for each field
+	animal := &models.Object{
+		Context: "Define the main object for storing information about each rescued animal",
 		Mode:    "root",
 		Parents: []string{},
-		Name:    "pet",
+		Name:    "animal",
 		Fields: []*models.Field{
 			{
+				Context:  "The name of the animal, must be a string up to 30 characters",
 				Name:     "name",
 				JSON:     "string_30",
 				Required: true,
 			},
 			{
+				Context:  "Species of the animal, must be a string up to 30 characters",
 				Name:     "species",
 				JSON:     "string_30",
 				Required: true,
 			},
 			{
-				Name:     "breed",
-				JSON:     "string_60",
-				Required: true,
-			},
-			{
+				Context:  "Age of the animal, integer, not required",
 				Name:     "age",
 				JSON:     "number_int",
-				Required: true,
+				Required: false,
 			},
+		},
+		Options: models.Options{
+			Admin: true,
+		},
+	}
+
+	// Define the health checkup object with context for each field
+	healthCheckup := &models.Object{
+		Context: "A record of each health checkup per animal, detailing health-related observations",
+		Mode:    "many",
+		Parents: []string{animal.Name},
+		Name:    "healthCheckup",
+		Fields: []*models.Field{
 			{
-				Name:     "medicalHistory",
-				JSON:     "array_csv",
-				Required: true,
-			},
-			{
-				Name:     "adoptionStatus",
-				JSON:     "string_30",
+				Context:  "Detailed notes from the health checkup, up to 1000 characters",
+				Name:     "notes",
+				JSON:     "string_1000",
 				Required: true,
 			},
 		},
 		Options: models.Options{},
 	}
 
+	// Define the adopter object with context for each field
 	adopter := &models.Object{
-		Context: "information about an adopter",
+		Context: "Stores information about individuals who adopt animals",
 		Mode:    "root",
 		Parents: []string{},
 		Name:    "adopter",
 		Fields: []*models.Field{
 			{
-				Name:     "fullName",
-				JSON:     "string_100",
+				Context:  "Full name of the adopter, must be a string up to 60 characters",
+				Name:     "name",
+				JSON:     "string_60",
 				Required: true,
 			},
 			{
-				Name:     "contactInfo",
-				JSON:     "string_1000",
+				Context:  "Contact number of the adopter, must be a string up to 20 characters",
+				Name:     "contactNumber",
+				JSON:     "string_20",
 				Required: true,
 			},
 			{
+				Context:  "Address of the adopter, up to 200 characters",
 				Name:     "address",
-				JSON:     "string_1000",
+				JSON:     "string_200",
 				Required: true,
 			},
 		},
-		Options: models.Options{},
-	}
-
-	donation := &models.Object{
-		Context: "record of a donation made to the rescue center",
-		Mode:    "root",
-		Parents: []string{},
-		Name:    "donation",
-		Fields: []*models.Field{
-			{
-				Name:     "amount",
-				JSON:     "number_float",
-				Required: true,
-			},
-			{
-				Name:     "donorName",
-				JSON:     "string_100",
-				Required: true,
-			},
+		Options: models.Options{
+			Admin: true,
 		},
-		Options: models.Options{},
 	}
 
-	tree.Objects = append(tree.Objects, pet, adopter, donation)
+	// Add all objects to the tree
+	tree.Objects = append(tree.Objects, animal, healthCheckup, adopter)
 
+	// Prepare the data model
 	if err := models.Prepare(&tree); err != nil {
 		panic(err)
 	}
 
+	// Build the application
 	if err := leap.Build(&tree); err != nil {
 		panic(err)
 	}
 
+	// Copy necessary node modules
 	if err := copy.Copy("node_modules", "build/app/node_modules"); err != nil {
 		log.Println(err)
 	}
 
-	// export debug json
+	// Export debug JSON
 	b, err := json.Marshal(tree)
 	if err != nil {
 		panic(err)

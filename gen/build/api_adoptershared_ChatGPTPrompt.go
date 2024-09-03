@@ -14,18 +14,18 @@ func (app *App) adopterChatGPTPrompt(user *User, object *ADOPTER, prompt string)
 We want to create one or more of these data objects: 
 {
 
-	//   (THIS FIELD IS REQUIRED)
-	fullname (string)
+	// Full name of the adopter, must be a string up to 60 characters  (THIS FIELD IS REQUIRED)
+	name (string)
 
-	//   (THIS FIELD IS REQUIRED)
-	contactinfo (string)
+	// Contact number of the adopter, must be a string up to 20 characters  (THIS FIELD IS REQUIRED)
+	contactnumber (string)
 
-	//   (THIS FIELD IS REQUIRED)
+	// Address of the adopter, up to 200 characters  (THIS FIELD IS REQUIRED)
 	address (string)
 
 }
 
-The purpose of the object is to represent: information about an adopter
+The purpose of the object is to represent: Stores information about individuals who adopt animals
 
 RULES:
 1: USER PROPMPTS SHOULD GENERATE DATA FOR REQUIRED FIELDS OF ONE OR MORE ABOVE OBJECTS

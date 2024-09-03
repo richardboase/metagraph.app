@@ -39,11 +39,11 @@ import (
 )
 
 const (
-	CONST_PROJECT_ID   = "rescue-center-proj"
-	CONST_FIRESTORE_DB = "rescue-center-management"
+	CONST_PROJECT_ID   = "prc-generic"
+	CONST_FIRESTORE_DB = "pet-rescue-center"
 
-	CONST_BUCKET_UPLOADS = "rescue-center-management-uploads"
-	CONST_BUCKET_JOBS    = "rescue-center-management-jobs"
+	CONST_BUCKET_UPLOADS = "pet-rescue-center-uploads"
+	CONST_BUCKET_JOBS    = "pet-rescue-center-jobs"
 )
 type App struct {
 	*common.App
@@ -904,26 +904,26 @@ func (job *ASYNCJOB) CompleteStage() {
 }
 
 
-type PET struct {
+type ANIMAL struct {
 	Meta    Internals
-	Fields FieldsPET `json:"fields" firestore:"fields"`
+	Fields FieldsANIMAL `json:"fields" firestore:"fields"`
 }
 
-func (user *User) NewPET(parent *Internals, fields FieldsPET) *PET {
-	var object *PET
+func (user *User) NewANIMAL(parent *Internals, fields FieldsANIMAL) *ANIMAL {
+	var object *ANIMAL
 	if parent == nil {
-		object = &PET{
-			Meta: (Internals{}).NewInternals("pets"),
+		object = &ANIMAL{
+			Meta: (Internals{}).NewInternals("animals"),
 			Fields: fields,
 		}
 	} else {
-		object = &PET{
-			Meta: parent.NewInternals("pets"),
+		object = &ANIMAL{
+			Meta: parent.NewInternals("animals"),
 			Fields: fields,
 		}
 	}
 
-	object.Meta.ClassName = "pets"
+	object.Meta.ClassName = "animals"
 	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
@@ -933,47 +933,39 @@ func (user *User) NewPET(parent *Internals, fields FieldsPET) *PET {
 		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
 
-	// this object inherits its admin permissions
-	if parent != nil {
-		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-		if len(parent.Moderation.Object) == 0 {
-			log.Println("USING PARENT ID AS MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.ID
-		} else {
-			log.Println("USING PARENT'S MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.Moderation.Object
-		}
-	}
-
 	
+
+	// this object is owned by the user that created it
+	log.Println("OPTIONS ADMIN IS ON:", user.Meta.ID)
+	object.Meta.Moderation.Admins = append(
+		object.Meta.Moderation.Admins,
+		user.Meta.ID,
+	)
 
 	
 	
 
 	// add children to context
 	object.Meta.Context.Children = []string{
-		
+		"healthCheckup",
 	}
 	return object
 }
 
-type FieldsPET struct {
+type FieldsANIMAL struct {
 	Name string `json:"name" firestore:"name"`
 	Species string `json:"species" firestore:"species"`
-	Breed string `json:"breed" firestore:"breed"`
 	Age int `json:"age" firestore:"age"`
-	Medicalhistory string `json:"medicalhistory" firestore:"medicalhistory"`
-	Adoptionstatus string `json:"adoptionstatus" firestore:"adoptionstatus"`
 	
 }
 
-func (x *PET) Schema() *models.Object {
+func (x *ANIMAL) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"pet","names":null,"plural":"pets","json":"","mode":"root","context":"details about a pet in the rescue center","fields":[{"context":"","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"","json":"","name":"species","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"","json":"","name":"breed","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"","json":"","name":"age","type":"int","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"medicalHistory","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":1000000},"regexp":"","regexpHex":"5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"},{"context":"","json":"","name":"adoptionStatus","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"animal","names":null,"plural":"animals","json":"","mode":"root","context":"Define the main object for storing information about each rescued animal","children":[{"name":"healthCheckup","names":null,"plural":"healthCheckups","json":"","mode":"many","context":"A record of each health checkup per animal, detailing health-related observations","parents":["animal"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"The name of the animal, must be a string up to 30 characters","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"Species of the animal, must be a string up to 30 characters","json":"","name":"species","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"Age of the animal, integer, not required","json":"","name":"age","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
-func (x *PET) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+func (x *ANIMAL) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
 	if err := x.ValidateObject(m); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
 		return false
@@ -981,7 +973,7 @@ func (x *PET) ValidateInput(w http.ResponseWriter, m map[string]interface{}) boo
 	return true
 }
 
-func (x *PET) ValidateObject(m map[string]interface{}) error {
+func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 
 	var err error
 	var exists bool
@@ -1073,51 +1065,8 @@ func (x *PET) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	_, exists = m["breed"]
-	if true && !exists {
-		return errors.New("required field 'breed' not supplied")
-	}
-	if exists {
-		x.Fields.Breed, err = assertSTRING(m, "breed")
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Breed)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Breed)
-				}
-			}
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Breed)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Breed)
-				}
-			}
-		}
-		
-		if err := assertRangeMin(1, x.Fields.Breed); err != nil {
-			
-			return err
-			
-		}
-		if err := assertRangeMax(60, x.Fields.Breed); err != nil {
-			return err
-		}
-		
-	}
-	
-
 	_, exists = m["age"]
-	if true && !exists {
+	if false && !exists {
 		return errors.New("required field 'age' not supplied")
 	}
 	if exists {
@@ -1150,63 +1099,159 @@ func (x *PET) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	_, exists = m["medicalhistory"]
-	if true && !exists {
-		return errors.New("required field 'medicalhistory' not supplied")
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	} else {
+		log.Println("trying to composite object name")
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
 	}
-	if exists {
-		x.Fields.Medicalhistory, err = assertSTRING(m, "medicalhistory")
+
+	x.Meta.Modify()
+
+	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *ANIMAL) ValidateImageANIMAL(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
 		if err != nil {
-			return errors.New(err.Error())
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
 		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Medicalhistory)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Medicalhistory)
-				}
-			}
-		}
-		{
-			exp := "5E283F3A283F3A225B5E225D2A227C5B5E2C5D2B292C292A283F3A225B5E225D2A227C5B5E2C5D2B2924"
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Medicalhistory)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Medicalhistory)
-				}
-			}
-		}
-		
-		if err := assertRangeMin(0, x.Fields.Medicalhistory); err != nil {
-			
-			return err
-			
-		}
-		if err := assertRangeMax(1e+06, x.Fields.Medicalhistory); err != nil {
-			return err
-		}
-		
 	}
+
+	return img, nil
+}
+
+
+
+type HEALTHCHECKUP struct {
+	Meta    Internals
+	Fields FieldsHEALTHCHECKUP `json:"fields" firestore:"fields"`
+}
+
+func (user *User) NewHEALTHCHECKUP(parent *Internals, fields FieldsHEALTHCHECKUP) *HEALTHCHECKUP {
+	var object *HEALTHCHECKUP
+	if parent == nil {
+		object = &HEALTHCHECKUP{
+			Meta: (Internals{}).NewInternals("healthcheckups"),
+			Fields: fields,
+		}
+	} else {
+		object = &HEALTHCHECKUP{
+			Meta: parent.NewInternals("healthcheckups"),
+			Fields: fields,
+		}
+	}
+
+	object.Meta.ClassName = "healthcheckups"
+	object.Meta.Context.User = user.Meta.ID
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
+	} else {
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
+	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
 	
 
-	_, exists = m["adoptionstatus"]
+	
+	
+
+	// add children to context
+	object.Meta.Context.Children = []string{
+		
+	}
+	return object
+}
+
+type FieldsHEALTHCHECKUP struct {
+	Notes string `json:"notes" firestore:"notes"`
+	
+}
+
+func (x *HEALTHCHECKUP) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"healthCheckup","names":null,"plural":"healthCheckups","json":"","mode":"many","context":"A record of each health checkup per animal, detailing health-related observations","parents":["animal"],"fields":[{"context":"Detailed notes from the health checkup, up to 1000 characters","json":"","name":"notes","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	return obj
+}
+
+func (x *HEALTHCHECKUP) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return false
+	}
+	return true
+}
+
+func (x *HEALTHCHECKUP) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	var exists bool
+	
+
+	_, exists = m["notes"]
 	if true && !exists {
-		return errors.New("required field 'adoptionstatus' not supplied")
+		return errors.New("required field 'notes' not supplied")
 	}
 	if exists {
-		x.Fields.Adoptionstatus, err = assertSTRING(m, "adoptionstatus")
+		x.Fields.Notes, err = assertSTRING(m, "notes")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Adoptionstatus)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Adoptionstatus)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Notes)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Notes)
 				}
 			}
 		}
@@ -1218,18 +1263,18 @@ func (x *PET) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Adoptionstatus)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Adoptionstatus)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Notes)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Notes)
 				}
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Adoptionstatus); err != nil {
+		if err := assertRangeMin(1, x.Fields.Notes); err != nil {
 			
 			return err
 			
 		}
-		if err := assertRangeMax(30, x.Fields.Adoptionstatus); err != nil {
+		if err := assertRangeMax(1000, x.Fields.Notes); err != nil {
 			return err
 		}
 		
@@ -1253,7 +1298,7 @@ func (x *PET) ValidateObject(m map[string]interface{}) error {
 }
 
 // assert file is an image because of .Object.Options.Image
-func (object *PET) ValidateImagePET(fileBytes []byte) (image.Image, error) {
+func (object *HEALTHCHECKUP) ValidateImageHEALTHCHECKUP(fileBytes []byte) (image.Image, error) {
 
 	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	if err != nil {
@@ -1326,19 +1371,14 @@ func (user *User) NewADOPTER(parent *Internals, fields FieldsADOPTER) *ADOPTER {
 		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
 
-	// this object inherits its admin permissions
-	if parent != nil {
-		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-		if len(parent.Moderation.Object) == 0 {
-			log.Println("USING PARENT ID AS MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.ID
-		} else {
-			log.Println("USING PARENT'S MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.Moderation.Object
-		}
-	}
-
 	
+
+	// this object is owned by the user that created it
+	log.Println("OPTIONS ADMIN IS ON:", user.Meta.ID)
+	object.Meta.Moderation.Admins = append(
+		object.Meta.Moderation.Admins,
+		user.Meta.ID,
+	)
 
 	
 	
@@ -1351,15 +1391,15 @@ func (user *User) NewADOPTER(parent *Internals, fields FieldsADOPTER) *ADOPTER {
 }
 
 type FieldsADOPTER struct {
-	Fullname string `json:"fullname" firestore:"fullname"`
-	Contactinfo string `json:"contactinfo" firestore:"contactinfo"`
+	Name string `json:"name" firestore:"name"`
+	Contactnumber string `json:"contactnumber" firestore:"contactnumber"`
 	Address string `json:"address" firestore:"address"`
 	
 }
 
 func (x *ADOPTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"adopter","names":null,"plural":"adopters","json":"","mode":"root","context":"information about an adopter","fields":[{"context":"","json":"","name":"fullName","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""},{"context":"","json":"","name":"contactInfo","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""},{"context":"","json":"","name":"address","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"adopter","names":null,"plural":"adopters","json":"","mode":"root","context":"Stores information about individuals who adopt animals","fields":[{"context":"Full name of the adopter, must be a string up to 60 characters","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"Contact number of the adopter, must be a string up to 20 characters","json":"","name":"contactNumber","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":20},"regexp":"","regexpHex":""},{"context":"Address of the adopter, up to 200 characters","json":"","name":"address","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":200},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1377,20 +1417,20 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	_, exists = m["fullname"]
+	_, exists = m["name"]
 	if true && !exists {
-		return errors.New("required field 'fullname' not supplied")
+		return errors.New("required field 'name' not supplied")
 	}
 	if exists {
-		x.Fields.Fullname, err = assertSTRING(m, "fullname")
+		x.Fields.Name, err = assertSTRING(m, "name")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Fullname)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Fullname)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
 				}
 			}
 		}
@@ -1402,38 +1442,38 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Fullname)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Fullname)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
 				}
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Fullname); err != nil {
+		if err := assertRangeMin(1, x.Fields.Name); err != nil {
 			
 			return err
 			
 		}
-		if err := assertRangeMax(100, x.Fields.Fullname); err != nil {
+		if err := assertRangeMax(60, x.Fields.Name); err != nil {
 			return err
 		}
 		
 	}
 	
 
-	_, exists = m["contactinfo"]
+	_, exists = m["contactnumber"]
 	if true && !exists {
-		return errors.New("required field 'contactinfo' not supplied")
+		return errors.New("required field 'contactnumber' not supplied")
 	}
 	if exists {
-		x.Fields.Contactinfo, err = assertSTRING(m, "contactinfo")
+		x.Fields.Contactnumber, err = assertSTRING(m, "contactnumber")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Contactinfo)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Contactinfo)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Contactnumber)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Contactnumber)
 				}
 			}
 		}
@@ -1445,18 +1485,18 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Contactinfo)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Contactinfo)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Contactnumber)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Contactnumber)
 				}
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Contactinfo); err != nil {
+		if err := assertRangeMin(1, x.Fields.Contactnumber); err != nil {
 			
 			return err
 			
 		}
-		if err := assertRangeMax(1000, x.Fields.Contactinfo); err != nil {
+		if err := assertRangeMax(20, x.Fields.Contactnumber); err != nil {
 			return err
 		}
 		
@@ -1499,7 +1539,7 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 			return err
 			
 		}
-		if err := assertRangeMax(1000, x.Fields.Address); err != nil {
+		if err := assertRangeMax(200, x.Fields.Address); err != nil {
 			return err
 		}
 		
@@ -1524,223 +1564,6 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 
 // assert file is an image because of .Object.Options.Image
 func (object *ADOPTER) ValidateImageADOPTER(fileBytes []byte) (image.Image, error) {
-
-	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
-	if err != nil {
-		return nil, err
-	}
-	object.Meta.Media.Image = true
-
-	// determine image format
-	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
-		object.Meta.Media.Format = "JPEG"
-	} else {
-		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
-			object.Meta.Media.Format = "PNG"
-		}
-	}
-
-	// Parse the EXIF data
-	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
-	if err == nil {
-		println(exifData.String())
-		
-		object.Meta.Media.EXIF = map[string]interface{}{}
-	
-		tm, err := exifData.DateTime()
-		if err == nil {
-			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
-			object.Meta.Modified = tm.UTC().Unix()
-			fmt.Println("Taken: ", tm)
-		}
-	
-		lat, long, err := exifData.LatLong()
-		if err != nil {
-			object.Meta.Media.EXIF["lat"] = lat
-			object.Meta.Media.EXIF["lng"] = long
-			fmt.Println("lat, long: ", lat, ", ", long)
-		}
-	}
-
-	return img, nil
-}
-
-
-
-type DONATION struct {
-	Meta    Internals
-	Fields FieldsDONATION `json:"fields" firestore:"fields"`
-}
-
-func (user *User) NewDONATION(parent *Internals, fields FieldsDONATION) *DONATION {
-	var object *DONATION
-	if parent == nil {
-		object = &DONATION{
-			Meta: (Internals{}).NewInternals("donations"),
-			Fields: fields,
-		}
-	} else {
-		object = &DONATION{
-			Meta: parent.NewInternals("donations"),
-			Fields: fields,
-		}
-	}
-
-	object.Meta.ClassName = "donations"
-	object.Meta.Context.User = user.Meta.ID
-
-	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
-	if err != nil {
-		log.Println(err)
-	} else {
-		object.Meta.Media.Color = gamut.ToHex(colors[0])
-	}
-
-	// this object inherits its admin permissions
-	if parent != nil {
-		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-		if len(parent.Moderation.Object) == 0 {
-			log.Println("USING PARENT ID AS MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.ID
-		} else {
-			log.Println("USING PARENT'S MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.Moderation.Object
-		}
-	}
-
-	
-
-	
-	
-
-	// add children to context
-	object.Meta.Context.Children = []string{
-		
-	}
-	return object
-}
-
-type FieldsDONATION struct {
-	Amount float64 `json:"amount" firestore:"amount"`
-	Donorname string `json:"donorname" firestore:"donorname"`
-	
-}
-
-func (x *DONATION) Schema() *models.Object {
-	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"donation","names":null,"plural":"donations","json":"","mode":"root","context":"record of a donation made to the rescue center","fields":[{"context":"","json":"","name":"amount","type":"float64","input":"number","inputReference":"","required":true,"filter":false,"range":null,"regexp":"","regexpHex":""},{"context":"","json":"","name":"donorName","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":100},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
-	return obj
-}
-
-func (x *DONATION) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
-	if err := x.ValidateObject(m); err != nil {
-		cloudfunc.HttpError(w, err, http.StatusBadRequest)
-		return false
-	}
-	return true
-}
-
-func (x *DONATION) ValidateObject(m map[string]interface{}) error {
-
-	var err error
-	var exists bool
-	
-
-	_, exists = m["amount"]
-	if true && !exists {
-		return errors.New("required field 'amount' not supplied")
-	}
-	if exists {
-		x.Fields.Amount, err = assertFLOAT64(m, "amount")
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Amount)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Amount)
-				}
-			}
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Amount)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Amount)
-				}
-			}
-		}
-		
-	}
-	
-
-	_, exists = m["donorname"]
-	if true && !exists {
-		return errors.New("required field 'donorname' not supplied")
-	}
-	if exists {
-		x.Fields.Donorname, err = assertSTRING(m, "donorname")
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Donorname)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Donorname)
-				}
-			}
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Donorname)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Donorname)
-				}
-			}
-		}
-		
-		if err := assertRangeMin(1, x.Fields.Donorname); err != nil {
-			
-			return err
-			
-		}
-		if err := assertRangeMax(100, x.Fields.Donorname); err != nil {
-			return err
-		}
-		
-	}
-	
-
-	// extract name field if exists
-	name, ok := m["name"].(string)
-	if ok {
-		x.Meta.Name = name	
-	} else {
-		log.Println("trying to composite object name")
-		var names []string
-		
-		x.Meta.Name = strings.Join(names, " ")
-	}
-
-	x.Meta.Modify()
-
-	return nil
-}
-
-// assert file is an image because of .Object.Options.Image
-func (object *DONATION) ValidateImageDONATION(fileBytes []byte) (image.Image, error) {
 
 	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	if err != nil {

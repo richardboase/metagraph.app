@@ -33,11 +33,11 @@ export function AdopterMatrixRow(props) {
 		</td>
 		<td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >
-				<input id="fullname" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["fullname"] }/>
+				<input id="name" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["name"] }/>
 			</div>
 		</td><td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >
-				<input id="contactinfo" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["contactinfo"] }/>
+				<input id="contactnumber" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["contactnumber"] }/>
 			</div>
 		</td><td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >

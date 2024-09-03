@@ -89,7 +89,7 @@ export function Adopter(props) {
 					<span className='font-bold'>{ (subject.Meta.Name?.length > 20) ? subject.Meta.Name.substr(0, 20)+"..." : subject.Meta.Name }</span>
 				</div>
 				{
-					subject?.Meta.Media.Image && <img className='m-4' src={'https://storage.googleapis.com/rescue-center-management-uploads/'+subject.Meta.Media.URIs[subject.Meta.Media.URIs.length-1]}/>
+					subject?.Meta.Media.Image && <img className='m-4' src={'https://storage.googleapis.com/pet-rescue-center-uploads/'+subject.Meta.Media.URIs[subject.Meta.Media.URIs.length-1]}/>
 				}
 				<div className='flex flex-wrap my-4'>
 					{
@@ -134,7 +134,7 @@ export function Adopter(props) {
 							<tr className='flex flex-row'>
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
-										<div className='font-bold'>fullName</div>
+										<div className='font-bold'>name</div>
 									</div>
 								</td>
 								<td className='flex flex-col justify-start'>
@@ -145,10 +145,10 @@ export function Adopter(props) {
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
 										{
-											(typeof subject.fields["fullname"] === 'object') && <div className='flex flex-col m-4'>
+											(typeof subject.fields["name"] === 'object') && <div className='flex flex-col m-4'>
 												{
-													Object.keys(subject.fields["fullname"]).forEach(function(k, i) {
-														const v = subject.fields["fullname"][k]
+													Object.keys(subject.fields["name"]).forEach(function(k, i) {
+														const v = subject.fields["name"][k]
 														return (
 															<div key={i} className='flex flex-row text-xs m-2'>
 																<div className=''>{k}</div>
@@ -161,17 +161,17 @@ export function Adopter(props) {
 											</div>
 										}
 										{
-											Array.isArray(subject.fields["fullname"]) && subject.fields["fullname"].map(function(item, i) {
+											Array.isArray(subject.fields["name"]) && subject.fields["name"].map(function(item, i) {
 												return (
 													<div key={i} className='text-xs'>{item}</div>
 												)
 											})
 										}
 										{
-											!Array.isArray(subject.fields["fullname"]) && !(typeof subject.fields["fullname"] === 'object') && <>
+											!Array.isArray(subject.fields["name"]) && !(typeof subject.fields["name"] === 'object') && <>
 												
+												{ subject.Meta.Name }
 												
-												{ subject.fields["fullname"] }
 												
 											</>
 										}
@@ -183,7 +183,7 @@ export function Adopter(props) {
 							<tr className='flex flex-row'>
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
-										<div className='font-bold'>contactInfo</div>
+										<div className='font-bold'>contactNumber</div>
 									</div>
 								</td>
 								<td className='flex flex-col justify-start'>
@@ -194,10 +194,10 @@ export function Adopter(props) {
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
 										{
-											(typeof subject.fields["contactinfo"] === 'object') && <div className='flex flex-col m-4'>
+											(typeof subject.fields["contactnumber"] === 'object') && <div className='flex flex-col m-4'>
 												{
-													Object.keys(subject.fields["contactinfo"]).forEach(function(k, i) {
-														const v = subject.fields["contactinfo"][k]
+													Object.keys(subject.fields["contactnumber"]).forEach(function(k, i) {
+														const v = subject.fields["contactnumber"][k]
 														return (
 															<div key={i} className='flex flex-row text-xs m-2'>
 																<div className=''>{k}</div>
@@ -210,17 +210,17 @@ export function Adopter(props) {
 											</div>
 										}
 										{
-											Array.isArray(subject.fields["contactinfo"]) && subject.fields["contactinfo"].map(function(item, i) {
+											Array.isArray(subject.fields["contactnumber"]) && subject.fields["contactnumber"].map(function(item, i) {
 												return (
 													<div key={i} className='text-xs'>{item}</div>
 												)
 											})
 										}
 										{
-											!Array.isArray(subject.fields["contactinfo"]) && !(typeof subject.fields["contactinfo"] === 'object') && <>
+											!Array.isArray(subject.fields["contactnumber"]) && !(typeof subject.fields["contactnumber"] === 'object') && <>
 												
 												
-												{ subject.fields["contactinfo"] }
+												{ subject.fields["contactnumber"] }
 												
 											</>
 										}

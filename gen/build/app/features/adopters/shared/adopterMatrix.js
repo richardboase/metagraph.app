@@ -119,7 +119,7 @@ export function AdopterMatrix(props) {
 				<td className='flex flex-row justify-center font-bold px-2' style={cellStyle}>
 					<div>#</div>
 				</td>
-				<td className='font-bold px-2' style={cellStyle}>fullname</td><td className='font-bold px-2' style={cellStyle}>contactinfo</td><td className='font-bold px-2' style={cellStyle}>address</td>
+				<td className='font-bold px-2' style={cellStyle}>name</td><td className='font-bold px-2' style={cellStyle}>contactnumber</td><td className='font-bold px-2' style={cellStyle}>address</td>
 			</tr>
 			{
 				list && list.map(function (row, i) {

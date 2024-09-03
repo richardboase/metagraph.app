@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	log.Println("Starting Application", "rescue-center-proj", "rescue-center-management")
+	log.Println("Starting Application", "prc-generic", "pet-rescue-center")
 
 	// handle local dev
 	if os.Getenv("ENVIRONMENT") != "production" {
@@ -37,15 +37,15 @@ func main() {
 	http.HandleFunc("/api/mail", app.MailEntrypoint)
 	http.HandleFunc("/api/assetlayer", app.EntrypointASSETLAYER)
 	
-	http.HandleFunc("/api/pet", app.EntrypointPET)
-	http.HandleFunc("/api/pets", app.EntrypointPETS)
-	println("registering handlers for pets")
+	http.HandleFunc("/api/animal", app.EntrypointANIMAL)
+	http.HandleFunc("/api/animals", app.EntrypointANIMALS)
+	println("registering handlers for animals")
+	http.HandleFunc("/api/healthcheckup", app.EntrypointHEALTHCHECKUP)
+	http.HandleFunc("/api/healthcheckups", app.EntrypointHEALTHCHECKUPS)
+	println("registering handlers for healthcheckups")
 	http.HandleFunc("/api/adopter", app.EntrypointADOPTER)
 	http.HandleFunc("/api/adopters", app.EntrypointADOPTERS)
 	println("registering handlers for adopters")
-	http.HandleFunc("/api/donation", app.EntrypointDONATION)
-	http.HandleFunc("/api/donations", app.EntrypointDONATIONS)
-	println("registering handlers for donations")
 
 	port, err := strconv.Atoi(os.Getenv("PORT"))
 	if err != nil {

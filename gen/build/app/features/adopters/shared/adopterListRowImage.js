@@ -27,16 +27,16 @@ export function AdopterListRowImage(props) {
 			<div className='flex flex-col w-full justify-center items-center m-4'>
 				<div className="px-4"></div>
 				{
-					("fullname" != "name") && !Array.isArray(props.item.fields["fullname"]) &&  !(typeof props.item.fields["fullname"] === 'object')  && (props.item.fields["fullname"].length > 0) && <>
-						<div className='text-base font-bold' title="fullname">
-							"{ props.item.fields["fullname"] }"
+					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && (props.item.fields["name"].length > 0) && <>
+						<div className='text-base font-bold' title="name">
+							"{ props.item.fields["name"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("contactinfo" != "name") && !Array.isArray(props.item.fields["contactinfo"]) &&  !(typeof props.item.fields["contactinfo"] === 'object')  && (props.item.fields["contactinfo"].length > 0) && <>
-						<div className='text-base font-bold' title="contactinfo">
-							"{ props.item.fields["contactinfo"] }"
+					("contactnumber" != "name") && !Array.isArray(props.item.fields["contactnumber"]) &&  !(typeof props.item.fields["contactnumber"] === 'object')  && (props.item.fields["contactnumber"].length > 0) && <>
+						<div className='text-base font-bold' title="contactnumber">
+							"{ props.item.fields["contactnumber"] }"
 						</div>
 						<div className="px-4"></div>
 					</>

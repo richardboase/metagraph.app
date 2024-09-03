@@ -34,16 +34,16 @@ export function AdopterListRow(props) {
 				}
 				<div className="px-4"></div>
 				{
-					("fullname" != "name") && !Array.isArray(props.item.fields["fullname"]) &&  !(typeof props.item.fields["fullname"] === 'object')  && <>
-						<div className='text-sm font-bold' title="fullname">
-							{ props.item.fields["fullname"] }
+					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && <>
+						<div className='text-sm font-bold' title="name">
+							{ props.item.fields["name"] }
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("contactinfo" != "name") && !Array.isArray(props.item.fields["contactinfo"]) &&  !(typeof props.item.fields["contactinfo"] === 'object')  && <>
-						<div className='text-sm font-bold' title="contactinfo">
-							{ props.item.fields["contactinfo"] }
+					("contactnumber" != "name") && !Array.isArray(props.item.fields["contactnumber"]) &&  !(typeof props.item.fields["contactnumber"] === 'object')  && <>
+						<div className='text-sm font-bold' title="contactnumber">
+							{ props.item.fields["contactnumber"] }
 						</div>
 						<div className="px-4"></div>
 					</>

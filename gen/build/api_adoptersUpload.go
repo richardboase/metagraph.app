@@ -142,7 +142,7 @@ func (app *App) newUploadObjectADOPTER(parent *Internals, user *User, n int, nam
 		return nil, err
 	}
 
-	object.Meta.Media.Preview = "https://storage.googleapis.com/rescue-center-management-uploads/" + uri
+	object.Meta.Media.Preview = "https://storage.googleapis.com/pet-rescue-center-uploads/" + uri
 
 	return object, nil
 }

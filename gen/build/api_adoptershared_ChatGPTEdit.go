@@ -23,7 +23,7 @@ func (app *App) adopterChatGPTEdit(user *User, parent *ADOPTER, prompt string) e
 Here is the object we need to edit:
 %s
 
-The purpose of the object is to represent: information about an adopter
+The purpose of the object is to represent: Stores information about individuals who adopt animals
 
 RULES:
 1: GENERATE DATA FOR REQUIRED FIELDS

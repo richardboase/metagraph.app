@@ -28,20 +28,20 @@ export function AdopterEdit(props) {
 
 	const [inputs, setInputs] = useState({
 		
-		"fullname": {
-			id: "fullname",
+		"name": {
+			id: "name",
 			type: "string",
 			
-			value: subject.fields.fullname,
+			value: subject.Meta.Name,
 			
 			required: true,
 		},
 		
-		"contactinfo": {
-			id: "contactinfo",
+		"contactnumber": {
+			id: "contactnumber",
 			type: "string",
 			
-			value: subject.fields.contactinfo,
+			value: subject.fields.contactnumber,
 			
 			required: true,
 		},
@@ -63,16 +63,16 @@ export function AdopterEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="fullname" type='text' required={ true } title="adopter fullname" placeholder="adopter fullname" inputChange={handleInputChange} value={ inputs["fullname"].value } />
+			<Input id="name" type='text' required={ true } title="adopter name" placeholder="adopter name" inputChange={handleInputChange} value={ inputs["name"].value } />
 			<Spacer/>
 			
-			<Input id="contactinfo" type='text' required={ true } title="adopter contactinfo" placeholder="adopter contactinfo" inputChange={handleInputChange} value={ inputs["contactinfo"].value } />
+			<Input id="contactnumber" type='text' required={ true } title="adopter contactnumber" placeholder="adopter contactnumber" inputChange={handleInputChange} value={ inputs["contactnumber"].value } />
 			<Spacer/>
 			
 			<Input id="address" type='text' required={ true } title="adopter address" placeholder="adopter address" inputChange={handleInputChange} value={ inputs["address"].value } />
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["fullname","contactinfo","address"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","contactnumber","address"]}/>
 			<Spacer/>
 			
 		</div>

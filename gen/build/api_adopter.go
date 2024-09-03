@@ -254,11 +254,11 @@ func (app *App) EntrypointADOPTER(w http.ResponseWriter, r *http.Request) {
 					Value: app.TimeNow().Unix(),
 				},
 				{
-					Path: "fields.fullname",
-					Value: object.Fields.Fullname,
+					Path: "fields.name",
+					Value: object.Fields.Name,
 				},{
-					Path: "fields.contactinfo",
-					Value: object.Fields.Contactinfo,
+					Path: "fields.contactnumber",
+					Value: object.Fields.Contactnumber,
 				},{
 					Path: "fields.address",
 					Value: object.Fields.Address,
@@ -307,7 +307,7 @@ func (app *App) EntrypointADOPTER(w http.ResponseWriter, r *http.Request) {
 
 			// prepare upload with a new URI
 			objectName := object.Meta.NewURI()
-			writer := app.GCPClients.GCS().Bucket("rescue-center-proj-uploads").Object(objectName).NewWriter(app.Context())
+			writer := app.GCPClients.GCS().Bucket("prc-generic-uploads").Object(objectName).NewWriter(app.Context())
 			//writer.ObjectAttrs.CacheControl = "no-store"
 			defer writer.Close()
 		

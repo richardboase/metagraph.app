@@ -25,8 +25,8 @@ export function AdopterList(props) {
 	const [ list, setList ] = useState(null)
 
 	
+	const [ listMode, setListMode ] = useState("admin")
 	
-	const [ listMode, setListMode ] = useState("modified")
 	
 
 	function updateListMode(e) {
@@ -58,7 +58,7 @@ export function AdopterList(props) {
 			setListMode("")
 		} else {
 			
-			
+			setListMode("admin")
 			
 		}
 		updateList()
@@ -132,13 +132,6 @@ export function AdopterList(props) {
 			props.title && <div className="flex flex-row justify-between items-center">
 				<div className="flex flex-row">
 					<div className='py-4 my-4 text-xl font-bold'>{props.title}:</div>
-					
-					<select onChange={updateListMode}>
-						<option value="created">Created</option>
-						<option value="modified">Modified</option>
-						<option value="order">Ordered</option>
-						<option value="exif">EXIF</option>
-					</select>
 					
 				</div>
 				{
