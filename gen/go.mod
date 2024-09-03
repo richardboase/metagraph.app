@@ -8,7 +8,7 @@ require (
 	cloud.google.com/go/pubsub v1.40.0
 	github.com/dsoprea/go-jpeg-image-structure v0.0.0-20221012074422-4f3f7e934102
 	github.com/dsoprea/go-png-image-structure v0.0.0-20210512210324-29b889a6093d
-	github.com/golangdaddy/leap v0.0.0-20240903213712-4a3a9e634a0b
+	github.com/golangdaddy/leap v0.0.0-20240903215550-b613cd8b05fc
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.2
 	github.com/kr/pretty v0.3.1
@@ -17,7 +17,6 @@ require (
 	github.com/otiai10/copy v1.14.0
 	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
 	github.com/sashabaranov/go-openai v1.26.3
-	github.com/sendgrid/sendgrid-go v3.14.0+incompatible
 	google.golang.org/api v0.188.0
 )
 
@@ -86,7 +85,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/pusher/pusher-http-go/v5 v5.1.1 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
-	github.com/sendgrid/rest v2.6.9+incompatible // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
