@@ -1,0 +1,80 @@
+import { useState, useEffect } from 'react';
+import { useUserContext } from '@/context/user';
+import { useLocalContext } from '@/context/local';
+
+import Spacer from '@/inputs/spacer';
+import Submit from '@/inputs/submit';
+import Input from '@/inputs/input';
+import Color from '@/inputs/color';
+import Checkbox from '@/inputs/checkbox';
+import Select from '@/inputs/select';
+import CollectionSelect from '@/inputs/collectionSelect';
+import Object from '@/inputs/object';
+
+import InputChange from '@/inputs/inputChange';
+
+
+export function AnimalEdit(props) {
+
+	console.log("COLLECTION EDIT", props)
+
+	const [userdata, _] = useUserContext()
+	const [localdata, setLocaldata] = useLocalContext()
+	const [subject] = useState(localdata.tab.context.object)
+
+	function handleInputChange(obj) {
+		InputChange(inputs, setInputs, obj)
+	}
+
+	const [inputs, setInputs] = useState({
+		
+		"name": {
+			id: "name",
+			type: "string",
+			
+			value: subject.Meta.Name,
+			
+			required: true,
+		},
+		
+		"species": {
+			id: "species",
+			type: "string",
+			
+			value: subject.fields.species,
+			
+			required: true,
+		},
+		
+		"age": {
+			id: "age",
+			type: "int",
+			
+			value: subject.fields.age,
+			
+			required: false,
+		},
+		
+	})
+	function handleInputChange(obj) {
+		InputChange(inputs, setInputs, obj)
+	}
+
+	return (
+		<div className='flex flex-col'>
+			
+			<Input id="name" type='text' required={ true } title="animal name" placeholder="animal name" inputChange={handleInputChange} value={ inputs["name"].value } />
+			<Spacer/>
+			
+			<Input id="species" type='text' required={ true } title="animal species" placeholder="animal species" inputChange={handleInputChange} value={ inputs["species"].value } />
+			<Spacer/>
+			
+			<Input id="age" type='number' required={ false } title="animal age" inputChange={handleInputChange} value={ inputs["age"].value } />
+			<Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","species"]}/>
+			<Spacer/>
+			
+		</div>
+	);
+}
