@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	log.Println("Starting Application", "npg-generic", "go-gen-test")
+	log.Println("Starting Application", "rescue-center-proj", "rescue-center-management")
 
 	// handle local dev
 	if os.Getenv("ENVIRONMENT") != "production" {
@@ -20,7 +20,7 @@ func main() {
 
 	// init openai
 	
-	app.UseVertex("europe-west2-b")
+	app.UseVertex("us-central1")
 	app.UseChatGPT(os.Getenv("OPENAI_KEY"))
 	
 
@@ -37,21 +37,15 @@ func main() {
 	http.HandleFunc("/api/mail", app.MailEntrypoint)
 	http.HandleFunc("/api/assetlayer", app.EntrypointASSETLAYER)
 	
-	http.HandleFunc("/api/dns", app.EntrypointDNS)
-	http.HandleFunc("/api/dnss", app.EntrypointDNSS)
-	println("registering handlers for dnss")
-	http.HandleFunc("/api/book", app.EntrypointBOOK)
-	http.HandleFunc("/api/books", app.EntrypointBOOKS)
-	println("registering handlers for books")
-	http.HandleFunc("/api/bookcharacter", app.EntrypointBOOKCHARACTER)
-	http.HandleFunc("/api/bookcharacters", app.EntrypointBOOKCHARACTERS)
-	println("registering handlers for bookcharacters")
-	http.HandleFunc("/api/chapter", app.EntrypointCHAPTER)
-	http.HandleFunc("/api/chapters", app.EntrypointCHAPTERS)
-	println("registering handlers for chapters")
-	http.HandleFunc("/api/paragraph", app.EntrypointPARAGRAPH)
-	http.HandleFunc("/api/paragraphs", app.EntrypointPARAGRAPHS)
-	println("registering handlers for paragraphs")
+	http.HandleFunc("/api/pet", app.EntrypointPET)
+	http.HandleFunc("/api/pets", app.EntrypointPETS)
+	println("registering handlers for pets")
+	http.HandleFunc("/api/adopter", app.EntrypointADOPTER)
+	http.HandleFunc("/api/adopters", app.EntrypointADOPTERS)
+	println("registering handlers for adopters")
+	http.HandleFunc("/api/donation", app.EntrypointDONATION)
+	http.HandleFunc("/api/donations", app.EntrypointDONATIONS)
+	println("registering handlers for donations")
 
 	port, err := strconv.Atoi(os.Getenv("PORT"))
 	if err != nil {

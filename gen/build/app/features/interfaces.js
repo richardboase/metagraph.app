@@ -1,11 +1,9 @@
 import * as React from 'react'
 
 
-import { DnsInterfaces } from '@/features/dnss/_interfaces'
-import { BookInterfaces } from '@/features/books/_interfaces'
-import { BookcharacterInterfaces } from '@/features/bookcharacters/_interfaces'
-import { ChapterInterfaces } from '@/features/chapters/_interfaces'
-import { ParagraphInterfaces } from '@/features/paragraphs/_interfaces'
+import { PetInterfaces } from '@/features/pets/_interfaces'
+import { AdopterInterfaces } from '@/features/adopters/_interfaces'
+import { DonationInterfaces } from '@/features/donations/_interfaces'
 
 import Home from '@/features/home'
 import Account from '@/features/account/account'
@@ -54,21 +52,15 @@ export function GetInterfaces() {
 	}
 	// custom features
 
-	// DnsInterfaces
-	for (const k in DnsInterfaces) {
-		interfaces[k.toLowerCase()] = DnsInterfaces[k]
-	}// BookInterfaces
-	for (const k in BookInterfaces) {
-		interfaces[k.toLowerCase()] = BookInterfaces[k]
-	}// BookcharacterInterfaces
-	for (const k in BookcharacterInterfaces) {
-		interfaces[k.toLowerCase()] = BookcharacterInterfaces[k]
-	}// ChapterInterfaces
-	for (const k in ChapterInterfaces) {
-		interfaces[k.toLowerCase()] = ChapterInterfaces[k]
-	}// ParagraphInterfaces
-	for (const k in ParagraphInterfaces) {
-		interfaces[k.toLowerCase()] = ParagraphInterfaces[k]
+	// PetInterfaces
+	for (const k in PetInterfaces) {
+		interfaces[k.toLowerCase()] = PetInterfaces[k]
+	}// AdopterInterfaces
+	for (const k in AdopterInterfaces) {
+		interfaces[k.toLowerCase()] = AdopterInterfaces[k]
+	}// DonationInterfaces
+	for (const k in DonationInterfaces) {
+		interfaces[k.toLowerCase()] = DonationInterfaces[k]
 	}
 	
 	// put id key into the object

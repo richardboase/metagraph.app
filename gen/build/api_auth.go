@@ -82,20 +82,20 @@ func (app *App) AuthEntrypoint(w http.ResponseWriter, r *http.Request) {
 			SENDGRID_API_KEY := os.Getenv("SENDGRID_API_KEY")
 			from := mail.NewEmail("", "richard@ninjapunkgirls.com")
 			to := mail.NewEmail(user.Username, email)
-			subject := "MAGIC LINK for NewTown"
+			subject := "MAGIC LINK for RescueCenter"
 			plainTextContent := fmt.Sprintf(
 				"one time password link: %shome?otp=%s",
-				"https://newtown.vercel.app/",
+				"https://rescuecenterapi.example.com/",
 				secret,
 			)
 
 			htmlContent := fmt.Sprintf(
 				`<h2>One-time-password link:</h2>
 				<br/>
-				<a href='http://localhost:3000/home?p=NewTown&otp=%s'>Debug</a>
+				<a href='http://localhost:3000/home?p=RescueCenter&otp=%s'>Debug</a>
 				<br/>
 				<br/>
-				<a href='https://newtown.vercel.app/home?p=NewTown&otp=%s'>Click here to Login</a>
+				<a href='https://rescuecenterapi.example.com/home?p=RescueCenter&otp=%s'>Click here to Login</a>
 				`,
 				secret,
 				secret,

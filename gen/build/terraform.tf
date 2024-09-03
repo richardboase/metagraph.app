@@ -1,10 +1,10 @@
 provider "google" {
-  project = "go-gen-test"
-  region  = "europe-west2-b"
+  project = "rescue-center-management"
+  region  = "us-central1"
 }
 
 resource "google_storage_bucket" "primarybucket" {
-  name          = "go-gen-test-uploads"
+  name          = "rescue-center-management-uploads"
   location      = "EU"
 }
 

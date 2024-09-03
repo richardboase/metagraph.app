@@ -18,12 +18,16 @@ export default function Home(props) {
 	return (
 		<div className='flex flex-col text-sm cursor-pointer' style={ {padding:"30px 60px 30px 60px"} }>
 			
-			<div id="dnss" className='text-xl font-bold m-4' onClick={updateTabEvent}>
-			Dnss
+			<div id="pets" className='text-xl font-bold m-4' onClick={updateTabEvent}>
+			Pets
 			</div>
 			
-			<div id="books" className='text-xl font-bold m-4' onClick={updateTabEvent}>
-			Books
+			<div id="adopters" className='text-xl font-bold m-4' onClick={updateTabEvent}>
+			Adopters
+			</div>
+			
+			<div id="donations" className='text-xl font-bold m-4' onClick={updateTabEvent}>
+			Donations
 			</div>
 			
 		</div>
