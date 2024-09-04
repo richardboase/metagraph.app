@@ -5,38 +5,42 @@ import (
 )
 
 func buildStructure(config models.Config) *models.Stack {
-
 	tree := &models.Stack{
-		WebsiteName: "CAT HAPPY",
+		WebsiteName: "BSVMint",
 		Config:      config,
 		Options: models.StackOptions{
 			ChatGPT: true,
 		},
 	}
 
-	// Define the animal object with context for each field
-	animal := &models.Object{
-		Context: "Define the main object for storing information about each rescued animal",
-
+	// Creator object
+	creator := &models.Object{
+		Context: "Information about the token creator",
 		Parents: []string{},
-		Name:    "animal",
+		Name:    "creator",
 		Fields: []*models.Field{
 			{
-				Context:  "The name of the animal, must be a string up to 30 characters",
+				Context:  "Name of the creator",
 				Name:     "name",
-				JSON:     "string_30",
+				JSON:     "string_100",
 				Required: true,
 			},
 			{
-				Context:  "Species of the animal, must be a string up to 30 characters",
-				Name:     "species",
-				JSON:     "string_30",
-				Required: true,
+				Context:  "Company of the creator",
+				Name:     "company",
+				JSON:     "string_100",
+				Required: false,
 			},
 			{
-				Context:  "Age of the animal, integer, not required",
-				Name:     "age",
-				JSON:     "number_int",
+				Context:  "Band name, if applicable",
+				Name:     "band",
+				JSON:     "string_100",
+				Required: false,
+			},
+			{
+				Context:  "Artist name, if applicable",
+				Name:     "artistName",
+				JSON:     "string_100",
 				Required: false,
 			},
 		},
@@ -45,45 +49,64 @@ func buildStructure(config models.Config) *models.Stack {
 		},
 	}
 
-	// Define the health checkup object with context for each field
-	healthCheckup := &models.Object{
-		Context: "A record of each health checkup per animal, detailing health-related observations",
-		Parents: []string{animal.Name},
-		Name:    "healthCheckup",
+	// Token object
+	token := &models.Object{
+		Context: "Information about the token being minted",
+		Parents: []string{creator.Name},
+		Name:    "token",
 		Fields: []*models.Field{
 			{
-				Context:  "Detailed notes from the health checkup, up to 1000 characters",
-				Name:     "notes",
-				JSON:     "string_1000",
-				Required: true,
-			},
-		},
-		Options: models.Options{},
-	}
-
-	// Define the adopter object with context for each field
-	adopter := &models.Object{
-		Context: "Stores information about individuals who adopt animals",
-
-		Parents: []string{},
-		Name:    "adopter",
-		Fields: []*models.Field{
-			{
-				Context:  "Full name of the adopter, must be a string up to 60 characters",
-				Name:     "name",
-				JSON:     "string_60",
+				Context:  "Type of token (Music Track, Picture, Gaming Card)",
+				Name:     "tokenType",
+				JSON:     "string_30",
 				Required: true,
 			},
 			{
-				Context:  "Contact number of the adopter, must be a string up to 20 characters",
-				Name:     "contactNumber",
-				JSON:     "string_20",
+				Context:  "Supply of the token",
+				Name:     "supply",
+				JSON:     "number_int",
 				Required: true,
 			},
 			{
-				Context:  "Address of the adopter, up to 200 characters",
-				Name:     "address",
+				Context:  "Whether the token offers dividends",
+				Name:     "hasDividend",
+				JSON:     "string_10",
+				Required: true,
+			},
+			{
+				Context:  "Website associated with the token",
+				Name:     "website",
 				JSON:     "string_200",
+				Required: false,
+			},
+			{
+				Context:  "Twitter handle associated with the token",
+				Name:     "twitter",
+				JSON:     "string_50",
+				Required: false,
+			},
+			{
+				Context:  "Telegram handle associated with the token",
+				Name:     "telegram",
+				JSON:     "string_50",
+				Required: false,
+			},
+			{
+				Context:  "Liquidity address for the token",
+				Name:     "liquidityAddress",
+				JSON:     "string_100",
+				Required: false,
+			},
+			{
+				Context:  "Amount to burn for liquidity",
+				Name:     "burnAmount",
+				JSON:     "number_float",
+				Required: false,
+			},
+			{
+				Context:  "Mint location address",
+				Name:     "mintLocation",
+				JSON:     "string_100",
 				Required: true,
 			},
 		},
@@ -92,8 +115,101 @@ func buildStructure(config models.Config) *models.Stack {
 		},
 	}
 
+	// Music Token Details
+	musicDetails := &models.Object{
+		Context: "Additional details for music tokens",
+		Parents: []string{token.Name},
+		Name:    "musicDetails",
+		Fields: []*models.Field{
+			{
+				Context:  "Name of the album",
+				Name:     "albumName",
+				JSON:     "string_100",
+				Required: true,
+			},
+			{
+				Context:  "Name of the track",
+				Name:     "trackName",
+				JSON:     "string_100",
+				Required: true,
+			},
+			{
+				Context:  "URL or reference to the album image",
+				Name:     "albumImage",
+				JSON:     "string_200",
+				Required: false,
+			},
+			{
+				Context:  "URL or reference to the track image",
+				Name:     "trackImage",
+				JSON:     "string_200",
+				Required: false,
+			},
+		},
+	}
+
+	// Picture Token Details
+	pictureDetails := &models.Object{
+		Context: "Additional details for picture tokens",
+		Parents: []string{token.Name},
+		Name:    "pictureDetails",
+		Fields: []*models.Field{
+			{
+				Context:  "Name of the series",
+				Name:     "seriesName",
+				JSON:     "string_100",
+				Required: true,
+			},
+			{
+				Context:  "Title of the image",
+				Name:     "imageTitle",
+				JSON:     "string_100",
+				Required: true,
+			},
+			{
+				Context:  "URL or reference to the uploaded picture",
+				Name:     "pictureUrl",
+				JSON:     "string_200",
+				Required: true,
+			},
+		},
+	}
+
+	// Gaming Card Token Details
+	gamingCardDetails := &models.Object{
+		Context: "Additional details for gaming card tokens",
+		Parents: []string{token.Name},
+		Name:    "gamingCardDetails",
+		Fields: []*models.Field{
+			{
+				Context:  "Title of the game",
+				Name:     "gameTitle",
+				JSON:     "string_100",
+				Required: true,
+			},
+			{
+				Context:  "Type of the card",
+				Name:     "cardType",
+				JSON:     "string_50",
+				Required: true,
+			},
+			{
+				Context:  "Rarity of the card (Common, Rare, Legendary)",
+				Name:     "cardRarity",
+				JSON:     "string_20",
+				Required: true,
+			},
+			{
+				Context:  "URL or reference to the uploaded card image",
+				Name:     "cardImageUrl",
+				JSON:     "string_200",
+				Required: true,
+			},
+		},
+	}
+
 	// Add all objects to the tree
-	tree.Objects = append(tree.Objects, animal, healthCheckup, adopter)
+	tree.Objects = append(tree.Objects, creator, token, musicDetails, pictureDetails, gamingCardDetails)
 
 	return tree
 }

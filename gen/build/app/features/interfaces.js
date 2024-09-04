@@ -1,9 +1,11 @@
 import * as React from 'react'
 
 
-import { AnimalInterfaces } from '@/features/animals/_interfaces'
-import { HealthcheckupInterfaces } from '@/features/healthcheckups/_interfaces'
-import { AdopterInterfaces } from '@/features/adopters/_interfaces'
+import { CreatorInterfaces } from '@/features/creators/_interfaces'
+import { TokenInterfaces } from '@/features/tokens/_interfaces'
+import { MusicdetailsInterfaces } from '@/features/musicdetailss/_interfaces'
+import { PicturedetailsInterfaces } from '@/features/picturedetailss/_interfaces'
+import { GamingcarddetailsInterfaces } from '@/features/gamingcarddetailss/_interfaces'
 
 import Home from '@/features/home'
 import Account from '@/features/account/account'
@@ -52,15 +54,21 @@ export function GetInterfaces() {
 	}
 	// custom features
 
-	// AnimalInterfaces
-	for (const k in AnimalInterfaces) {
-		interfaces[k.toLowerCase()] = AnimalInterfaces[k]
-	}// HealthcheckupInterfaces
-	for (const k in HealthcheckupInterfaces) {
-		interfaces[k.toLowerCase()] = HealthcheckupInterfaces[k]
-	}// AdopterInterfaces
-	for (const k in AdopterInterfaces) {
-		interfaces[k.toLowerCase()] = AdopterInterfaces[k]
+	// CreatorInterfaces
+	for (const k in CreatorInterfaces) {
+		interfaces[k.toLowerCase()] = CreatorInterfaces[k]
+	}// TokenInterfaces
+	for (const k in TokenInterfaces) {
+		interfaces[k.toLowerCase()] = TokenInterfaces[k]
+	}// MusicdetailsInterfaces
+	for (const k in MusicdetailsInterfaces) {
+		interfaces[k.toLowerCase()] = MusicdetailsInterfaces[k]
+	}// PicturedetailsInterfaces
+	for (const k in PicturedetailsInterfaces) {
+		interfaces[k.toLowerCase()] = PicturedetailsInterfaces[k]
+	}// GamingcarddetailsInterfaces
+	for (const k in GamingcarddetailsInterfaces) {
+		interfaces[k.toLowerCase()] = GamingcarddetailsInterfaces[k]
 	}
 	
 	// put id key into the object
