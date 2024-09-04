@@ -7,7 +7,7 @@ import (
 func buildStructure(config models.Config) *models.Stack {
 
 	tree := &models.Stack{
-		WebsiteName: "CAT HAPPY"
+		WebsiteName: "CAT HAPPY",
 		Config:      config,
 		Options: models.StackOptions{
 			ChatGPT: true,
