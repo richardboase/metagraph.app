@@ -28,20 +28,20 @@ export function AdopterEdit(props) {
 
 	const [inputs, setInputs] = useState({
 		
-		"": {
-			id: "",
+		"adopter-name": {
+			id: "adopter-name",
 			type: "person.name",
 			
-			value: subject.fields.,
+			value: subject.fields.adopter-name,
 			
 			required: true,
 		},
 		
-		"": {
-			id: "",
+		"adopter-phone-number": {
+			id: "adopter-phone-number",
 			type: "phone",
 			
-			value: subject.fields.,
+			value: subject.fields.adopter-phone-number,
 			
 			required: true,
 		},

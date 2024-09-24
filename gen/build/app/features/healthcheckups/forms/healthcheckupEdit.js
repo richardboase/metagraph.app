@@ -28,11 +28,11 @@ export function HealthcheckupEdit(props) {
 
 	const [inputs, setInputs] = useState({
 		
-		"": {
-			id: "",
+		"notes": {
+			id: "notes",
 			type: "string",
 			
-			value: subject.fields.,
+			value: subject.fields.notes,
 			
 			required: true,
 		},

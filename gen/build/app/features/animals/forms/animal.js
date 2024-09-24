@@ -37,7 +37,7 @@ export function AnimalForm(props) {
 			<Input id="animal age" type='number' required={ true } title="animal animal age" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="animal birthday" type='number' required={ true } title="animal animal birthday" inputChange={handleInputChange}/>
+			<Input id="animal birthday" type='date' required={ true } title="animal animal birthday" inputChange={handleInputChange}/>
 			<Spacer/>
 			
 			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["animal name","animal species","animal age","animal birthday"]}/>
