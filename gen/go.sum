@@ -141,10 +141,10 @@ github.com/golang/protobuf v1.4.3/go.mod h1:oDoupMAO8OvCJWAcko0GGGIgR6R6ocIYbsSw
 github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=
 github.com/golang/protobuf v1.5.4 h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=
 github.com/golang/protobuf v1.5.4/go.mod h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6rSs7xps=
-github.com/golangdaddy/leap v0.0.0-20240924202845-23e046489612 h1:5O7wLsSvbienuGhzomHQTZl67FXd+Mf/CXpJrL++8Hs=
-github.com/golangdaddy/leap v0.0.0-20240924202845-23e046489612/go.mod h1:x4IoDFdCNBct6vD/PnO1qrtDNn4n6fTLeNUixywCozc=
 github.com/golangdaddy/leap v0.0.0-20240924205026-c61af8066e68 h1:aktOfso5URD6yVLGjfysRR/cvOB2CNaY4OxNt9UgCvA=
 github.com/golangdaddy/leap v0.0.0-20240924205026-c61af8066e68/go.mod h1:x4IoDFdCNBct6vD/PnO1qrtDNn4n6fTLeNUixywCozc=
+github.com/golangdaddy/leap v0.0.0-20240924205227-d6be5c4e699d h1:LGZ00/NUoGai17fsBySRgR/xR9EiTQb5jIY+TErOEoo=
+github.com/golangdaddy/leap v0.0.0-20240924205227-d6be5c4e699d/go.mod h1:x4IoDFdCNBct6vD/PnO1qrtDNn4n6fTLeNUixywCozc=
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/google/go-cmp v0.3.0/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
 github.com/google/go-cmp v0.3.1/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=

@@ -28,7 +28,7 @@ export function AnimalEdit(props) {
 
 	const [inputs, setInputs] = useState({
 		
-		"animal name": {
+		"": {
 			id: "",
 			type: "string",
 			
@@ -37,7 +37,7 @@ export function AnimalEdit(props) {
 			required: true,
 		},
 		
-		"animal species": {
+		"": {
 			id: "",
 			type: "string",
 			
@@ -46,7 +46,7 @@ export function AnimalEdit(props) {
 			required: true,
 		},
 		
-		"animal age": {
+		"": {
 			id: "",
 			type: "uint",
 			
@@ -55,7 +55,7 @@ export function AnimalEdit(props) {
 			required: true,
 		},
 		
-		"animal birthday": {
+		"": {
 			id: "",
 			type: "date",
 			
