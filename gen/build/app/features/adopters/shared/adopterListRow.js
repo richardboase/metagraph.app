@@ -34,23 +34,16 @@ export function AdopterListRow(props) {
 				}
 				<div className="px-4"></div>
 				{
-					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && <>
-						<div className='text-sm font-bold' title="name">
-							{ props.item.fields["name"] }
+					("adopter name" != "name") && !Array.isArray(props.item.fields["adopter name"]) &&  !(typeof props.item.fields["adopter name"] === 'object')  && <>
+						<div className='text-sm font-bold' title="adopter name">
+							{ props.item.fields["adopter name"] }
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("contactnumber" != "name") && !Array.isArray(props.item.fields["contactnumber"]) &&  !(typeof props.item.fields["contactnumber"] === 'object')  && <>
-						<div className='text-sm font-bold' title="contactnumber">
-							{ props.item.fields["contactnumber"] }
-						</div>
-						<div className="px-4"></div>
-					</>
-				}{
-					("address" != "name") && !Array.isArray(props.item.fields["address"]) &&  !(typeof props.item.fields["address"] === 'object')  && <>
-						<div className='text-sm font-bold' title="address">
-							{ props.item.fields["address"] }
+					("adopter phone number" != "name") && !Array.isArray(props.item.fields["adopter phone number"]) &&  !(typeof props.item.fields["adopter phone number"] === 'object')  && <>
+						<div className='text-sm font-bold' title="adopter phone number">
+							{ props.item.fields["adopter phone number"] }
 						</div>
 						<div className="px-4"></div>
 					</>

@@ -952,15 +952,16 @@ func (user *User) NewANIMAL(parent *Internals, fields FieldsANIMAL) *ANIMAL {
 }
 
 type FieldsANIMAL struct {
-	Name string `json:"name" firestore:"name"`
-	Species string `json:"species" firestore:"species"`
-	Age int `json:"age" firestore:"age"`
+	Animal name string `json:"animal name" firestore:"animal name"`
+	Animal species string `json:"animal species" firestore:"animal species"`
+	Animal age uint `json:"animal age" firestore:"animal age"`
+	Animal birthday date `json:"animal birthday" firestore:"animal birthday"`
 	
 }
 
 func (x *ANIMAL) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"animal","names":null,"plural":"animals","json":"","context":"Define the main object for storing information about each rescued animal","children":[{"name":"healthCheckup","names":null,"plural":"healthCheckups","json":"","context":"A record of each health checkup per animal, detailing health-related observations","parents":["animal"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"The name of the animal, must be a string up to 30 characters","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"Species of the animal, must be a string up to 30 characters","json":"","name":"species","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"Age of the animal, integer, not required","json":"","name":"age","type":"int","input":"number","inputReference":"","required":false,"filter":false,"range":null,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"animal","names":null,"plural":"animals","json":"","context":"Define the main object for storing information about each rescued animal","children":[{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per animal, detailing health-related observations","parents":["animal"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"context":"The name of the animal","name":"animal name","type":"string","element":"input","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"The species of the animal","name":"animal species","type":"string","element":"input","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"context":"The age of the animal","name":"animal age","type":"uint","element":"number","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":-1},"regexp":"","regexpHex":""},{"context":"The D.O.B. of the animal","name":"animal birthday","type":"date","element":"date","inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -978,20 +979,20 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	_, exists = m["name"]
+	_, exists = m["animal name"]
 	if true && !exists {
-		return errors.New("required field 'name' not supplied")
+		return errors.New("required field 'animal name' not supplied")
 	}
 	if exists {
-		x.Fields.Name, err = assertSTRING(m, "name")
+		x.Fields.Animal name, err = assertSTRING(m, "animal name")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal name)
 				}
 			}
 		}
@@ -1003,38 +1004,38 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal name)
 				}
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Name); err != nil {
+		if err := assertRangeMin(1, x.Fields.Animal name); err != nil {
 			
 			return err
 			
 		}
-		if err := assertRangeMax(30, x.Fields.Name); err != nil {
+		if err := assertRangeMax(30, x.Fields.Animal name); err != nil {
 			return err
 		}
 		
 	}
 	
 
-	_, exists = m["species"]
+	_, exists = m["animal species"]
 	if true && !exists {
-		return errors.New("required field 'species' not supplied")
+		return errors.New("required field 'animal species' not supplied")
 	}
 	if exists {
-		x.Fields.Species, err = assertSTRING(m, "species")
+		x.Fields.Animal species, err = assertSTRING(m, "animal species")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Species)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Species)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal species)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal species)
 				}
 			}
 		}
@@ -1046,38 +1047,38 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Species)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Species)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal species)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal species)
 				}
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Species); err != nil {
+		if err := assertRangeMin(1, x.Fields.Animal species); err != nil {
 			
 			return err
 			
 		}
-		if err := assertRangeMax(30, x.Fields.Species); err != nil {
+		if err := assertRangeMax(30, x.Fields.Animal species); err != nil {
 			return err
 		}
 		
 	}
 	
 
-	_, exists = m["age"]
-	if false && !exists {
-		return errors.New("required field 'age' not supplied")
+	_, exists = m["animal age"]
+	if true && !exists {
+		return errors.New("required field 'animal age' not supplied")
 	}
 	if exists {
-		x.Fields.Age, err = assertINT(m, "age")
+		x.Fields.Animal age, err = assertUINT(m, "animal age")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Age)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Age)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal age)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal age)
 				}
 			}
 		}
@@ -1089,8 +1090,51 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Age)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Age)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal age)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal age)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(0, x.Fields.Animal age); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(-1, x.Fields.Animal age); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["animal birthday"]
+	if true && !exists {
+		return errors.New("required field 'animal birthday' not supplied")
+	}
+	if exists {
+		x.Fields.Animal birthday, err = assertDATE(m, "animal birthday")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal birthday)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal birthday)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal birthday)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal birthday)
 				}
 			}
 		}
@@ -1178,7 +1222,7 @@ func (user *User) NewHEALTHCHECKUP(parent *Internals, fields FieldsHEALTHCHECKUP
 		}
 	}
 
-	object.Meta.ClassName = "healthcheckups"
+	object.Meta.ClassName = "checkups"
 	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
@@ -1219,7 +1263,7 @@ type FieldsHEALTHCHECKUP struct {
 
 func (x *HEALTHCHECKUP) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"healthCheckup","names":null,"plural":"healthCheckups","json":"","context":"A record of each health checkup per animal, detailing health-related observations","parents":["animal"],"fields":[{"context":"Detailed notes from the health checkup, up to 1000 characters","json":"","name":"notes","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":1000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per animal, detailing health-related observations","parents":["animal"],"fields":[{"context":"notes about the animal's health checkup","name":"notes","type":"string","element":"input","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1273,7 +1317,7 @@ func (x *HEALTHCHECKUP) ValidateObject(m map[string]interface{}) error {
 			return err
 			
 		}
-		if err := assertRangeMax(1000, x.Fields.Notes); err != nil {
+		if err := assertRangeMax(10000, x.Fields.Notes); err != nil {
 			return err
 		}
 		
@@ -1390,15 +1434,14 @@ func (user *User) NewADOPTER(parent *Internals, fields FieldsADOPTER) *ADOPTER {
 }
 
 type FieldsADOPTER struct {
-	Name string `json:"name" firestore:"name"`
-	Contactnumber string `json:"contactnumber" firestore:"contactnumber"`
-	Address string `json:"address" firestore:"address"`
+	Adopter name person.name `json:"adopter name" firestore:"adopter name"`
+	Adopter phone number phone `json:"adopter phone number" firestore:"adopter phone number"`
 	
 }
 
 func (x *ADOPTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"adopter","names":null,"plural":"adopters","json":"","context":"Stores information about individuals who adopt animals","fields":[{"context":"Full name of the adopter, must be a string up to 60 characters","json":"","name":"name","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":60},"regexp":"","regexpHex":""},{"context":"Contact number of the adopter, must be a string up to 20 characters","json":"","name":"contactNumber","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":20},"regexp":"","regexpHex":""},{"context":"Address of the adopter, up to 200 characters","json":"","name":"address","type":"string","input":"text","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":200},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"adopter","names":null,"plural":"adopters","json":"","context":"Stores information about individuals who adopt animals","fields":[{"context":"The name of the adopter","name":"adopter name","type":"person.name","element":"none","inputs":[{"context":"A name or names of something or someone","name":"first-name","type":"name","element":"input","inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"context":"A name or names of something or someone","name":"middle-names","type":"name","element":"input","inputReference":"","required":false,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"context":"A name or names of something or someone","name":"last-name","type":"name","element":"input","inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""}],"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"context":"The phone number of the adopter","name":"adopter phone number","type":"phone","element":"phone","inputReference":"","required":true,"filter":false,"regexp":"^\\+?[1-9]\\d{1,14}$","regexpHex":"5e5c2b3f5b312d395d5c647b312c31347d24"}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1416,20 +1459,20 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	_, exists = m["name"]
+	_, exists = m["adopter name"]
 	if true && !exists {
-		return errors.New("required field 'name' not supplied")
+		return errors.New("required field 'adopter name' not supplied")
 	}
 	if exists {
-		x.Fields.Name, err = assertSTRING(m, "name")
+		x.Fields.Adopter name, err = assertPERSON.NAME(m, "adopter name")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Name)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Name)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Adopter name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Adopter name)
 				}
 			}
 		}
@@ -1441,105 +1484,44 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Name)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Name)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Adopter name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Adopter name)
 				}
 			}
-		}
-		
-		if err := assertRangeMin(1, x.Fields.Name); err != nil {
-			
-			return err
-			
-		}
-		if err := assertRangeMax(60, x.Fields.Name); err != nil {
-			return err
 		}
 		
 	}
 	
 
-	_, exists = m["contactnumber"]
+	_, exists = m["adopter phone number"]
 	if true && !exists {
-		return errors.New("required field 'contactnumber' not supplied")
+		return errors.New("required field 'adopter phone number' not supplied")
 	}
 	if exists {
-		x.Fields.Contactnumber, err = assertSTRING(m, "contactnumber")
+		x.Fields.Adopter phone number, err = assertPHONE(m, "adopter phone number")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
-			exp := ""
+			exp := "^\+?[1-9]\d{1,14}$"
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Contactnumber)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Contactnumber)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Adopter phone number)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Adopter phone number)
 				}
 			}
 		}
 		{
-			exp := ""
+			exp := "5e5c2b3f5b312d395d5c647b312c31347d24"
 			if len(exp) > 0 {
 				log.Println("EXPR", exp)
 				b, err := hex.DecodeString(exp)
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Contactnumber)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Contactnumber)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Adopter phone number)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Adopter phone number)
 				}
 			}
-		}
-		
-		if err := assertRangeMin(1, x.Fields.Contactnumber); err != nil {
-			
-			return err
-			
-		}
-		if err := assertRangeMax(20, x.Fields.Contactnumber); err != nil {
-			return err
-		}
-		
-	}
-	
-
-	_, exists = m["address"]
-	if true && !exists {
-		return errors.New("required field 'address' not supplied")
-	}
-	if exists {
-		x.Fields.Address, err = assertSTRING(m, "address")
-		if err != nil {
-			return errors.New(err.Error())
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Address)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Address)
-				}
-			}
-		}
-		{
-			exp := ""
-			if len(exp) > 0 {
-				log.Println("EXPR", exp)
-				b, err := hex.DecodeString(exp)
-				if err != nil {
-					log.Println(err)
-				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Address)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Address)
-				}
-			}
-		}
-		
-		if err := assertRangeMin(1, x.Fields.Address); err != nil {
-			
-			return err
-			
-		}
-		if err := assertRangeMax(200, x.Fields.Address); err != nil {
-			return err
 		}
 		
 	}

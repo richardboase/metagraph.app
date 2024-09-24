@@ -59,7 +59,7 @@ export function Healthcheckups(props) {
 				!promptToggle && <Loading/>
 			}
 			{
-				promptToggle && <HealthcheckupList title="Healthcheckups" subject={subject} native={true} />
+				promptToggle && <HealthcheckupList title="Checkups" subject={subject} native={true} />
 			}
 		</div>
 	)

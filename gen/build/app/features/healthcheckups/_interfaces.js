@@ -31,7 +31,7 @@ export var HealthcheckupInterfaces = {
 	},  
 	"healthcheckups": {
 		level: 2+1,
-		name: "Healthcheckups", 
+		name: "Checkups", 
 		component: (<Healthcheckups />),
 		subsublinks: ["healthcheckupsmatrix", "newhealthcheckup"],
 		hasNewButton: true,

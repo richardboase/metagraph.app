@@ -254,14 +254,11 @@ func (app *App) EntrypointADOPTER(w http.ResponseWriter, r *http.Request) {
 					Value: app.TimeNow().Unix(),
 				},
 				{
-					Path: "fields.name",
-					Value: object.Fields.Name,
+					Path: "fields.adopter name",
+					Value: object.Fields.Adopter name,
 				},{
-					Path: "fields.contactnumber",
-					Value: object.Fields.Contactnumber,
-				},{
-					Path: "fields.address",
-					Value: object.Fields.Address,
+					Path: "fields.adopter phone number",
+					Value: object.Fields.Adopter phone number,
 				},
 			}
 			for _, update := range updates {

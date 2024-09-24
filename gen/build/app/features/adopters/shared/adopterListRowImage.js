@@ -27,23 +27,16 @@ export function AdopterListRowImage(props) {
 			<div className='flex flex-col w-full justify-center items-center m-4'>
 				<div className="px-4"></div>
 				{
-					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && (props.item.fields["name"].length > 0) && <>
-						<div className='text-base font-bold' title="name">
-							"{ props.item.fields["name"] }"
+					("adopter name" != "name") && !Array.isArray(props.item.fields["adopter name"]) &&  !(typeof props.item.fields["adopter name"] === 'object')  && (props.item.fields["adopter name"].length > 0) && <>
+						<div className='text-base font-bold' title="adopter name">
+							"{ props.item.fields["adopter name"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("contactnumber" != "name") && !Array.isArray(props.item.fields["contactnumber"]) &&  !(typeof props.item.fields["contactnumber"] === 'object')  && (props.item.fields["contactnumber"].length > 0) && <>
-						<div className='text-base font-bold' title="contactnumber">
-							"{ props.item.fields["contactnumber"] }"
-						</div>
-						<div className="px-4"></div>
-					</>
-				}{
-					("address" != "name") && !Array.isArray(props.item.fields["address"]) &&  !(typeof props.item.fields["address"] === 'object')  && (props.item.fields["address"].length > 0) && <>
-						<div className='text-base font-bold' title="address">
-							"{ props.item.fields["address"] }"
+					("adopter phone number" != "name") && !Array.isArray(props.item.fields["adopter phone number"]) &&  !(typeof props.item.fields["adopter phone number"] === 'object')  && (props.item.fields["adopter phone number"].length > 0) && <>
+						<div className='text-base font-bold' title="adopter phone number">
+							"{ props.item.fields["adopter phone number"] }"
 						</div>
 						<div className="px-4"></div>
 					</>

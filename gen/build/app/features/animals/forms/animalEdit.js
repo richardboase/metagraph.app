@@ -28,31 +28,40 @@ export function AnimalEdit(props) {
 
 	const [inputs, setInputs] = useState({
 		
-		"name": {
-			id: "name",
+		"animal name": {
+			id: "animal name",
 			type: "string",
 			
-			value: subject.Meta.Name,
+			value: subject.fields.animal name,
 			
 			required: true,
 		},
 		
-		"species": {
-			id: "species",
+		"animal species": {
+			id: "animal species",
 			type: "string",
 			
-			value: subject.fields.species,
+			value: subject.fields.animal species,
 			
 			required: true,
 		},
 		
-		"age": {
-			id: "age",
-			type: "int",
+		"animal age": {
+			id: "animal age",
+			type: "uint",
 			
-			value: subject.fields.age,
+			value: subject.fields.animal age,
 			
-			required: false,
+			required: true,
+		},
+		
+		"animal birthday": {
+			id: "animal birthday",
+			type: "date",
+			
+			value: subject.fields.animal birthday,
+			
+			required: true,
 		},
 		
 	})
@@ -63,16 +72,19 @@ export function AnimalEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="name" type='text' required={ true } title="animal name" placeholder="animal name" inputChange={handleInputChange} value={ inputs["name"].value } />
+			<Input id="animal name" type='text' required={ true } title="animal animal name" placeholder="animal animal name" inputChange={handleInputChange} value={ inputs["animal name"].value } />
 			<Spacer/>
 			
-			<Input id="species" type='text' required={ true } title="animal species" placeholder="animal species" inputChange={handleInputChange} value={ inputs["species"].value } />
+			<Input id="animal species" type='text' required={ true } title="animal animal species" placeholder="animal animal species" inputChange={handleInputChange} value={ inputs["animal species"].value } />
 			<Spacer/>
 			
-			<Input id="age" type='number' required={ false } title="animal age" inputChange={handleInputChange} value={ inputs["age"].value } />
+			<Input id="animal age" type='number' required={ true } title="animal animal age" inputChange={handleInputChange} value={ inputs["animal age"].value } />
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","species"]}/>
+			<Input id="animal birthday" type='number' required={ true } title="animal animal birthday" inputChange={handleInputChange}/>
+			<Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["animal name","animal species","animal age","animal birthday"]}/>
 			<Spacer/>
 			
 		</div>

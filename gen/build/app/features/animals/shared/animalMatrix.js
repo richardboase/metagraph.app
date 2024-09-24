@@ -119,7 +119,7 @@ export function AnimalMatrix(props) {
 				<td className='flex flex-row justify-center font-bold px-2' style={cellStyle}>
 					<div>#</div>
 				</td>
-				<td className='font-bold px-2' style={cellStyle}>name</td><td className='font-bold px-2' style={cellStyle}>species</td><td className='font-bold px-2' style={cellStyle}>age</td>
+				<td className='font-bold px-2' style={cellStyle}>animal name</td><td className='font-bold px-2' style={cellStyle}>animal species</td><td className='font-bold px-2' style={cellStyle}>animal age</td><td className='font-bold px-2' style={cellStyle}>animal birthday</td>
 			</tr>
 			{
 				list && list.map(function (row, i) {
@@ -132,7 +132,7 @@ export function AnimalMatrix(props) {
 				<td className='flex flex-row justify-center font-bold px-2 bg-gray-200' style={cellStyle}>
 					<div className='cursor-pointer' onClick={newobject}>+</div>
 				</td>
-				<td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td>
+				<td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td><td className='font-bold px-2'></td>
 			</tr>
 		</tbody></table>
 		<Spacer/>

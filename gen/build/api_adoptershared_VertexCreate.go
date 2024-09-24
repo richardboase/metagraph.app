@@ -27,14 +27,11 @@ We want to create one or more of these data objects: Stores information about in
 
 {
 
-	// Full name of the adopter, must be a string up to 60 characters  (THIS FIELD IS REQUIRED)
-	name (string)
+	// The name of the adopter  (THIS FIELD IS REQUIRED)
+	adopter name (person.name)
 
-	// Contact number of the adopter, must be a string up to 20 characters  (THIS FIELD IS REQUIRED)
-	contactnumber (string)
-
-	// Address of the adopter, up to 200 characters  (THIS FIELD IS REQUIRED)
-	address (string)
+	// The phone number of the adopter  (THIS FIELD IS REQUIRED)
+	adopter phone number (phone)
 
 }
 

@@ -1,6 +1,8 @@
 module github.com/golangdaddy/newtown
 
-go 1.21.5
+go 1.22
+
+toolchain go1.22.3
 
 require (
 	cloud.google.com/go/firestore v1.15.0
@@ -8,7 +10,7 @@ require (
 	cloud.google.com/go/pubsub v1.40.0
 	github.com/dsoprea/go-jpeg-image-structure v0.0.0-20221012074422-4f3f7e934102
 	github.com/dsoprea/go-png-image-structure v0.0.0-20210512210324-29b889a6093d
-	github.com/golangdaddy/leap v0.0.0-20240903231925-79fb2bedb676
+	github.com/golangdaddy/leap v0.0.0-20240924202845-23e046489612
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.2
 	github.com/kr/pretty v0.3.1
@@ -17,7 +19,7 @@ require (
 	github.com/otiai10/copy v1.14.0
 	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
 	github.com/sashabaranov/go-openai v1.26.3
-	github.com/sendgrid/sendgrid-go v3.16.0+incompatible
+	github.com/sendgrid/sendgrid-go v3.14.0+incompatible
 	google.golang.org/api v0.188.0
 )
 
@@ -85,7 +87,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/pusher/pusher-http-go/v5 v5.1.1 // indirect
-	github.com/rogpeppe/go-internal v1.12.0 // indirect
+	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/sendgrid/rest v2.6.9+incompatible // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/stretchr/testify v1.9.0 // indirect
@@ -105,7 +107,7 @@ require (
 	golang.org/x/oauth2 v0.21.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.24.0 // indirect
-	golang.org/x/text v0.17.0 // indirect
+	golang.org/x/text v0.18.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/appengine/v2 v2.0.6 // indirect
 	google.golang.org/genproto v0.0.0-20240711142825-46eb208f015d // indirect

@@ -28,29 +28,20 @@ export function AdopterEdit(props) {
 
 	const [inputs, setInputs] = useState({
 		
-		"name": {
-			id: "name",
-			type: "string",
+		"adopter name": {
+			id: "adopter name",
+			type: "person.name",
 			
-			value: subject.Meta.Name,
-			
-			required: true,
-		},
-		
-		"contactnumber": {
-			id: "contactnumber",
-			type: "string",
-			
-			value: subject.fields.contactnumber,
+			value: subject.fields.adopter name,
 			
 			required: true,
 		},
 		
-		"address": {
-			id: "address",
-			type: "string",
+		"adopter phone number": {
+			id: "adopter phone number",
+			type: "phone",
 			
-			value: subject.fields.address,
+			value: subject.fields.adopter phone number,
 			
 			required: true,
 		},
@@ -63,16 +54,13 @@ export function AdopterEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="name" type='text' required={ true } title="adopter name" placeholder="adopter name" inputChange={handleInputChange} value={ inputs["name"].value } />
+			<Input id="first-name" type='text' required={ true } title="adopter first-name" placeholder="adopter first-name" inputChange={handleInputChange} value={ inputs["first-name"].value } /><Input id="middle-names" type='text' required={ false } title="adopter middle-names" placeholder="adopter middle-names" inputChange={handleInputChange} value={ inputs["middle-names"].value } /><Input id="last-name" type='text' required={ true } title="adopter last-name" placeholder="adopter last-name" inputChange={handleInputChange} value={ inputs["last-name"].value } />
 			<Spacer/>
 			
-			<Input id="contactnumber" type='text' required={ true } title="adopter contactnumber" placeholder="adopter contactnumber" inputChange={handleInputChange} value={ inputs["contactnumber"].value } />
+			<Input id="adopter phone number" type='phone' required={ true } title="adopter adopter phone number" inputChange={handleInputChange} value={ inputs["adopter phone number"].value } />
 			<Spacer/>
 			
-			<Input id="address" type='text' required={ true } title="adopter address" placeholder="adopter address" inputChange={handleInputChange} value={ inputs["address"].value } />
-			<Spacer/>
-			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","contactnumber","address"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["adopter name","adopter phone number"]}/>
 			<Spacer/>
 			
 		</div>

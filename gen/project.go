@@ -17,28 +17,14 @@ func buildStructure(config models.Config) *models.Stack {
 	// Define the animal object with context for each field
 	animal := &models.Object{
 		Context: "Define the main object for storing information about each rescued animal",
-
+		Plural:  "animals",
 		Parents: []string{},
 		Name:    "animal",
 		Fields: []*models.Field{
-			{
-				Context:  "The name of the animal, must be a string up to 30 characters",
-				Name:     "name",
-				JSON:     "string_30",
-				Required: true,
-			},
-			{
-				Context:  "Species of the animal, must be a string up to 30 characters",
-				Name:     "species",
-				JSON:     "string_30",
-				Required: true,
-			},
-			{
-				Context:  "Age of the animal, integer, not required",
-				Name:     "age",
-				JSON:     "number_int",
-				Required: false,
-			},
+			models.Required("string", "30").SetName("animal name").SetCtx("The name of the animal"),
+			models.Required("string", "30").SetName("animal species").SetCtx("The species of the animal"),
+			models.Required("uint").SetName("animal age").SetCtx("The age of the animal"),
+			models.Required("date").SetName("animal birthday").SetCtx("The D.O.B. of the animal"),
 		},
 		Options: models.Options{
 			Admin: true,
@@ -47,16 +33,12 @@ func buildStructure(config models.Config) *models.Stack {
 
 	// Define the health checkup object with context for each field
 	healthCheckup := &models.Object{
+		Plural:  "checkups",
 		Context: "A record of each health checkup per animal, detailing health-related observations",
 		Parents: []string{animal.Name},
 		Name:    "healthCheckup",
 		Fields: []*models.Field{
-			{
-				Context:  "Detailed notes from the health checkup, up to 1000 characters",
-				Name:     "notes",
-				JSON:     "string_1000",
-				Required: true,
-			},
+			models.Required("string", "10000").SetName("notes").SetCtx("notes about the animal's health checkup"),
 		},
 		Options: models.Options{},
 	}
@@ -64,28 +46,12 @@ func buildStructure(config models.Config) *models.Stack {
 	// Define the adopter object with context for each field
 	adopter := &models.Object{
 		Context: "Stores information about individuals who adopt animals",
-
+		Plural:  "adopters",
 		Parents: []string{},
 		Name:    "adopter",
 		Fields: []*models.Field{
-			{
-				Context:  "Full name of the adopter, must be a string up to 60 characters",
-				Name:     "name",
-				JSON:     "string_60",
-				Required: true,
-			},
-			{
-				Context:  "Contact number of the adopter, must be a string up to 20 characters",
-				Name:     "contactNumber",
-				JSON:     "string_20",
-				Required: true,
-			},
-			{
-				Context:  "Address of the adopter, up to 200 characters",
-				Name:     "address",
-				JSON:     "string_200",
-				Required: true,
-			},
+			models.Required("person.name").SetName("adopter name").SetCtx("The name of the adopter"),
+			models.Required("phone").SetName("adopter phone number").SetCtx("The phone number of the adopter"),
 		},
 		Options: models.Options{
 			Admin: true,

@@ -33,15 +33,19 @@ export function AnimalMatrixRow(props) {
 		</td>
 		<td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >
-				<input id="name" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["name"] }/>
+				<input id="animal name" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["animal name"] }/>
 			</div>
 		</td><td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >
-				<input id="species" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["species"] }/>
+				<input id="animal species" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["animal species"] }/>
 			</div>
 		</td><td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >
-				<input id="age" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["age"] }/>
+				<input id="animal age" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["animal age"] }/>
+			</div>
+		</td><td className='text-sm' style={cellStyle}>
+			<div className='flex flex-row w-full ' >
+				<input id="animal birthday" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["animal birthday"] }/>
 			</div>
 		</td>
 	</tr>

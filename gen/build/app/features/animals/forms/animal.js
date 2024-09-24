@@ -28,16 +28,19 @@ export function AnimalForm(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="name" type='text' required={ true } title="animal name" placeholder="animal name" inputChange={handleInputChange}/>
+			<Input id="animal name" type='text' required={ true } title="animal animal name" placeholder="animal animal name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="species" type='text' required={ true } title="animal species" placeholder="animal species" inputChange={handleInputChange}/>
+			<Input id="animal species" type='text' required={ true } title="animal animal species" placeholder="animal animal species" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="age" type='number' required={ false } title="animal age" inputChange={handleInputChange}/>
+			<Input id="animal age" type='number' required={ true } title="animal animal age" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","species"]}/>
+			<Input id="animal birthday" type='number' required={ true } title="animal animal birthday" inputChange={handleInputChange}/>
+			<Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["animal name","animal species","animal age","animal birthday"]}/>
 			<Spacer/>
 			
 		</div>

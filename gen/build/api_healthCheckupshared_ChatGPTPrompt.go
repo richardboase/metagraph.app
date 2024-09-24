@@ -14,7 +14,7 @@ func (app *App) healthcheckupChatGPTPrompt(user *User, object *HEALTHCHECKUP, pr
 We want to create one or more of these data objects: 
 {
 
-	// Detailed notes from the health checkup, up to 1000 characters  (THIS FIELD IS REQUIRED)
+	// notes about the animal's health checkup  (THIS FIELD IS REQUIRED)
 	notes (string)
 
 }

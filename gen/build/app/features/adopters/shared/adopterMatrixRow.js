@@ -33,15 +33,11 @@ export function AdopterMatrixRow(props) {
 		</td>
 		<td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >
-				<input id="name" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["name"] }/>
+				<input id="adopter name" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["adopter name"] }/>
 			</div>
 		</td><td className='text-sm' style={cellStyle}>
 			<div className='flex flex-row w-full ' >
-				<input id="contactnumber" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["contactnumber"] }/>
-			</div>
-		</td><td className='text-sm' style={cellStyle}>
-			<div className='flex flex-row w-full ' >
-				<input id="address" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["address"] }/>
+				<input id="adopter phone number" onFocus={cellEdit} onBlur={cellSave} className="w-full px-2" type="text" defaultValue={ props.row.fields["adopter phone number"] }/>
 			</div>
 		</td>
 	</tr>

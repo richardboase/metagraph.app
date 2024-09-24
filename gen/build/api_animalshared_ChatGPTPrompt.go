@@ -14,14 +14,17 @@ func (app *App) animalChatGPTPrompt(user *User, object *ANIMAL, prompt string) (
 We want to create one or more of these data objects: 
 {
 
-	// The name of the animal, must be a string up to 30 characters  (THIS FIELD IS REQUIRED)
-	name (string)
+	// The name of the animal  (THIS FIELD IS REQUIRED)
+	animal name (string)
 
-	// Species of the animal, must be a string up to 30 characters  (THIS FIELD IS REQUIRED)
-	species (string)
+	// The species of the animal  (THIS FIELD IS REQUIRED)
+	animal species (string)
 
-	// Age of the animal, integer, not required 
-	age (int)
+	// The age of the animal  (THIS FIELD IS REQUIRED)
+	animal age (uint)
+
+	// The D.O.B. of the animal  (THIS FIELD IS REQUIRED)
+	animal birthday (date)
 
 }
 

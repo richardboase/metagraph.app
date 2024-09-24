@@ -27,23 +27,30 @@ export function AnimalListRowImage(props) {
 			<div className='flex flex-col w-full justify-center items-center m-4'>
 				<div className="px-4"></div>
 				{
-					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && (props.item.fields["name"].length > 0) && <>
-						<div className='text-base font-bold' title="name">
-							"{ props.item.fields["name"] }"
+					("animal name" != "name") && !Array.isArray(props.item.fields["animal name"]) &&  !(typeof props.item.fields["animal name"] === 'object')  && (props.item.fields["animal name"].length > 0) && <>
+						<div className='text-base font-bold' title="animal name">
+							"{ props.item.fields["animal name"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("species" != "name") && !Array.isArray(props.item.fields["species"]) &&  !(typeof props.item.fields["species"] === 'object')  && (props.item.fields["species"].length > 0) && <>
-						<div className='text-base font-bold' title="species">
-							"{ props.item.fields["species"] }"
+					("animal species" != "name") && !Array.isArray(props.item.fields["animal species"]) &&  !(typeof props.item.fields["animal species"] === 'object')  && (props.item.fields["animal species"].length > 0) && <>
+						<div className='text-base font-bold' title="animal species">
+							"{ props.item.fields["animal species"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("age" != "name") && !Array.isArray(props.item.fields["age"]) &&  !(typeof props.item.fields["age"] === 'object')  && (props.item.fields["age"].length > 0) && <>
-						<div className='text-base font-bold' title="age">
-							"{ props.item.fields["age"] }"
+					("animal age" != "name") && !Array.isArray(props.item.fields["animal age"]) &&  !(typeof props.item.fields["animal age"] === 'object')  && (props.item.fields["animal age"].length > 0) && <>
+						<div className='text-base font-bold' title="animal age">
+							"{ props.item.fields["animal age"] }"
+						</div>
+						<div className="px-4"></div>
+					</>
+				}{
+					("animal birthday" != "name") && !Array.isArray(props.item.fields["animal birthday"]) &&  !(typeof props.item.fields["animal birthday"] === 'object')  && (props.item.fields["animal birthday"].length > 0) && <>
+						<div className='text-base font-bold' title="animal birthday">
+							"{ props.item.fields["animal birthday"] }"
 						</div>
 						<div className="px-4"></div>
 					</>
