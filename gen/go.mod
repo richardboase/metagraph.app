@@ -1,8 +1,10 @@
 module github.com/golangdaddy/newtown
 
-go 1.21.13
+go 1.22
 
-replace github.com/golangdaddy/leap => ../../leap
+toolchain go1.22.3
+
+//replace github.com/golangdaddy/leap => ../../leap
 
 require (
 	cloud.google.com/go/firestore v1.15.0
