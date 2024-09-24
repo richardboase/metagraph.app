@@ -38,11 +38,11 @@ import (
 	"github.com/dsoprea/go-png-image-structure"
 )
 const (
-	CONST_PROJECT_ID   = "{{.Config.ProjectID}}"
-	CONST_FIRESTORE_DB = "{{.Config.ProjectName}}"
+	CONST_PROJECT_ID   = "npg-generic"
+	CONST_FIRESTORE_DB = "go-gen-test"
 
-	CONST_BUCKET_UPLOADS = "{{.Config.ProjectName}}-uploads"
-	CONST_BUCKET_JOBS    = "{{.Config.ProjectName}}-jobs"
+	CONST_BUCKET_UPLOADS = "go-gen-test-uploads"
+	CONST_BUCKET_JOBS    = "go-gen-test-jobs"
 )
 type App struct {
 	*common.App
@@ -303,13 +303,7 @@ type PaymentDestination struct {
 }
 
 func (app *App) SendMessageToUser(user *User, msgType string, data interface{}) {
-	{{if .Options.Pusher}}
-	log.Printf("SENDING %s MESSAGE TO PUSHER USER %s (%s)", msgType, user.Username, user.Meta.ID)
-	err := app.Pusher().Trigger(user.Meta.ID, msgType, data)
-	if err != nil {
-		log.Println(err.Error())
-	}
-	{{end}}
+	
 }
 type Users []*User
 
@@ -907,28 +901,28 @@ func (job *ASYNCJOB) CompleteStage() {
 		job.AddNote("JOB COMPLETED")
 	}
 }
-{{range .Objects}}
 
-type {{.ID}} struct {
+
+type ANIMAL struct {
 	Meta    Internals
-	Fields Fields{{.ID}} `json:"fields" firestore:"fields"`
+	Fields FieldsANIMAL `json:"fields" firestore:"fields"`
 }
 
-func (user *User) New{{.ID}}(parent *Internals, fields Fields{{.ID}}) *{{.ID}} {
-	var object *{{.ID}}
+func (user *User) NewANIMAL(parent *Internals, fields FieldsANIMAL) *ANIMAL {
+	var object *ANIMAL
 	if parent == nil {
-		object = &{{.ID}}{
-			Meta: (Internals{}).NewInternals("{{lowercase .Name}}s"),
+		object = &ANIMAL{
+			Meta: (Internals{}).NewInternals("animals"),
 			Fields: fields,
 		}
 	} else {
-		object = &{{.ID}}{
-			Meta: parent.NewInternals("{{.ID}}s"),
+		object = &ANIMAL{
+			Meta: parent.NewInternals("animals"),
 			Fields: fields,
 		}
 	}
 
-	object.Meta.ClassName = "{{lowercase .Plural}}"
+	object.Meta.ClassName = "animals"
 	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
@@ -938,57 +932,40 @@ func (user *User) New{{.ID}}(parent *Internals, fields Fields{{.ID}}) *{{.ID}} {
 		object.Meta.Media.Color = gamut.ToHex(colors[0])
 	}
 
-	{{if eq false .Options.Admin}}// this object inherits its admin permissions
-	if parent != nil {
-		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
-		if len(parent.Moderation.Object) == 0 {
-			log.Println("USING PARENT ID AS MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.ID
-		} else {
-			log.Println("USING PARENT'S MODERATION OBJECT")
-			object.Meta.Moderation.Object = parent.Moderation.Object
-		}
-	}{{end}}
+	
 
-	{{if .Options.Admin}}// this object is owned by the user that created it
+	// this object is owned by the user that created it
 	log.Println("OPTIONS ADMIN IS ON:", user.Meta.ID)
 	object.Meta.Moderation.Admins = append(
 		object.Meta.Moderation.Admins,
 		user.Meta.ID,
-	){{end}}
-
-	{{if .Options.Handcash}}
-	{{if eq "pay" .Options.Handcash.Type}}
-	{{range .Options.Handcash.Payments}}
-	object.Meta.Payment.Destinations = append(
-		object.Meta.Payment.Destinations,
-		&PaymentDestination{
-			To: "{{.To}}",
-			CurrencyCode: "{{.CurrencyCode}}",
-			Amount: {{.Amount}},
-		},
 	)
-	{{end}}{{end}}{{end}}
+
+	
+	
 
 	// add children to context
 	object.Meta.Context.Children = []string{
-		{{range .Children}}"{{.Name}}",{{end}}
+		"healthCheckup",
 	}
 	return object
 }
 
-type Fields{{.ID}} struct {
-	{{range .Fields}}{{titlecase .Name}} {{.Type}} `json:"{{.ID}}" firestore:"{{.ID}}"`
-	{{end}}
+type FieldsANIMAL struct {
+	ANIMALNAME string `json:"ANIMALNAME" firestore:"ANIMALNAME"`
+	ANIMALSPECIES string `json:"ANIMALSPECIES" firestore:"ANIMALSPECIES"`
+	ANIMALAGE uint `json:"ANIMALAGE" firestore:"ANIMALAGE"`
+	ANIMALBIRTHDAY date `json:"ANIMALBIRTHDAY" firestore:"ANIMALBIRTHDAY"`
+	
 }
 
-func (x *{{.ID}}) Schema() *models.Object {
+func (x *ANIMAL) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{{jsonmarshal .}}`), obj)
+	json.Unmarshal([]byte(`{"name":"animal","names":null,"plural":"animals","json":"","context":"Define the main object for storing information about each rescued animal","children":[{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per animal, detailing health-related observations","parents":["animal"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"id":"ANIMALNAME","context":"The name of the animal","name":"animal name","type":"string","element":"input","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"ANIMALSPECIES","context":"The species of the animal","name":"animal species","type":"string","element":"input","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"ANIMALAGE","context":"The age of the animal","name":"animal age","type":"uint","element":"number","inputReference":"","required":true,"filter":false,"range":{"min":0,"max":-1},"regexp":"","regexpHex":""},{"id":"ANIMALBIRTHDAY","context":"The D.O.B. of the animal","name":"animal birthday","type":"date","element":"date","inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
-func (x *{{.ID}}) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+func (x *ANIMAL) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
 	if err := x.ValidateObject(m); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
 		return false
@@ -996,54 +973,174 @@ func (x *{{.ID}}) ValidateInput(w http.ResponseWriter, m map[string]interface{})
 	return true
 }
 
-func (x *{{.ID}}) ValidateObject(m map[string]interface{}) error {
+func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 
 	var err error
 	var exists bool
-	{{range .Fields}}
+	
 
-	_, exists = m["{{lowercase .Name}}"]
-	if {{.Required}} && !exists {
-		return errors.New("required field '{{lowercase .Name}}' not supplied")
+	_, exists = m["animal name"]
+	if true && !exists {
+		return errors.New("required field 'animal name' not supplied")
 	}
 	if exists {
-		x.Fields.{{titlecase .Name}}, err = assert{{tidy .Type}}(m, "{{lowercase .Name}}")
+		x.Fields.Animal name, err = assertSTRING(m, "animal name")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
-			exp := "{{.Regexp}}"
+			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.{{titlecase .Name}})) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.{{titlecase .Name}})
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal name)
 				}
 			}
 		}
 		{
-			exp := "{{.RegexpHex}}"
+			exp := ""
 			if len(exp) > 0 {
 				log.Println("EXPR", exp)
 				b, err := hex.DecodeString(exp)
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.{{titlecase .Name}})) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.{{titlecase .Name}})
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal name)
 				}
 			}
 		}
-		{{if .Range}}
-		if err := assertRangeMin({{.Range.Min}}, x.Fields.{{titlecase .Name}}); err != nil {
-			{{if .Required}}
+		
+		if err := assertRangeMin(1, x.Fields.Animal name); err != nil {
+			
 			return err
-			{{end}}
+			
 		}
-		if err := assertRangeMax({{.Range.Max}}, x.Fields.{{titlecase .Name}}); err != nil {
+		if err := assertRangeMax(30, x.Fields.Animal name); err != nil {
 			return err
 		}
-		{{end}}
+		
 	}
-	{{end}}
+	
+
+	_, exists = m["animal species"]
+	if true && !exists {
+		return errors.New("required field 'animal species' not supplied")
+	}
+	if exists {
+		x.Fields.Animal species, err = assertSTRING(m, "animal species")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal species)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal species)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal species)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal species)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Animal species); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(30, x.Fields.Animal species); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["animal age"]
+	if true && !exists {
+		return errors.New("required field 'animal age' not supplied")
+	}
+	if exists {
+		x.Fields.Animal age, err = assertUINT(m, "animal age")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal age)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal age)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal age)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal age)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(0, x.Fields.Animal age); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(-1, x.Fields.Animal age); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	_, exists = m["animal birthday"]
+	if true && !exists {
+		return errors.New("required field 'animal birthday' not supplied")
+	}
+	if exists {
+		x.Fields.Animal birthday, err = assertDATE(m, "animal birthday")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal birthday)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal birthday)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal birthday)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal birthday)
+				}
+			}
+		}
+		
+	}
+	
 
 	// extract name field if exists
 	name, ok := m["name"].(string)
@@ -1052,8 +1149,7 @@ func (x *{{.ID}}) ValidateObject(m map[string]interface{}) error {
 	} else {
 		log.Println("trying to composite object name")
 		var names []string
-		{{range .Names}}names = append(names, m["{{.}}"].(string))
-		{{end}}
+		
 		x.Meta.Name = strings.Join(names, " ")
 	}
 
@@ -1063,7 +1159,7 @@ func (x *{{.ID}}) ValidateObject(m map[string]interface{}) error {
 }
 
 // assert file is an image because of .Object.Options.Image
-func (object *{{.ID}}) ValidateImage{{.ID}}(fileBytes []byte) (image.Image, error) {
+func (object *ANIMAL) ValidateImageANIMAL(fileBytes []byte) (image.Image, error) {
 
 	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	if err != nil {
@@ -1105,4 +1201,389 @@ func (object *{{.ID}}) ValidateImage{{.ID}}(fileBytes []byte) (image.Image, erro
 	return img, nil
 }
 
-{{end}}
+
+
+type HEALTHCHECKUP struct {
+	Meta    Internals
+	Fields FieldsHEALTHCHECKUP `json:"fields" firestore:"fields"`
+}
+
+func (user *User) NewHEALTHCHECKUP(parent *Internals, fields FieldsHEALTHCHECKUP) *HEALTHCHECKUP {
+	var object *HEALTHCHECKUP
+	if parent == nil {
+		object = &HEALTHCHECKUP{
+			Meta: (Internals{}).NewInternals("healthcheckups"),
+			Fields: fields,
+		}
+	} else {
+		object = &HEALTHCHECKUP{
+			Meta: parent.NewInternals("healthcheckups"),
+			Fields: fields,
+		}
+	}
+
+	object.Meta.ClassName = "checkups"
+	object.Meta.Context.User = user.Meta.ID
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
+	} else {
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
+	}
+
+	// this object inherits its admin permissions
+	if parent != nil {
+		log.Println("OPTIONS ADMIN IS OFF:", parent.Moderation.Object)
+		if len(parent.Moderation.Object) == 0 {
+			log.Println("USING PARENT ID AS MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.ID
+		} else {
+			log.Println("USING PARENT'S MODERATION OBJECT")
+			object.Meta.Moderation.Object = parent.Moderation.Object
+		}
+	}
+
+	
+
+	
+	
+
+	// add children to context
+	object.Meta.Context.Children = []string{
+		
+	}
+	return object
+}
+
+type FieldsHEALTHCHECKUP struct {
+	NOTES string `json:"NOTES" firestore:"NOTES"`
+	
+}
+
+func (x *HEALTHCHECKUP) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per animal, detailing health-related observations","parents":["animal"],"fields":[{"id":"NOTES","context":"notes about the animal's health checkup","name":"notes","type":"string","element":"input","inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	return obj
+}
+
+func (x *HEALTHCHECKUP) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return false
+	}
+	return true
+}
+
+func (x *HEALTHCHECKUP) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	var exists bool
+	
+
+	_, exists = m["notes"]
+	if true && !exists {
+		return errors.New("required field 'notes' not supplied")
+	}
+	if exists {
+		x.Fields.Notes, err = assertSTRING(m, "notes")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Notes)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Notes)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Notes)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Notes)
+				}
+			}
+		}
+		
+		if err := assertRangeMin(1, x.Fields.Notes); err != nil {
+			
+			return err
+			
+		}
+		if err := assertRangeMax(10000, x.Fields.Notes); err != nil {
+			return err
+		}
+		
+	}
+	
+
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	} else {
+		log.Println("trying to composite object name")
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
+	}
+
+	x.Meta.Modify()
+
+	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *HEALTHCHECKUP) ValidateImageHEALTHCHECKUP(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
+}
+
+
+
+type ADOPTER struct {
+	Meta    Internals
+	Fields FieldsADOPTER `json:"fields" firestore:"fields"`
+}
+
+func (user *User) NewADOPTER(parent *Internals, fields FieldsADOPTER) *ADOPTER {
+	var object *ADOPTER
+	if parent == nil {
+		object = &ADOPTER{
+			Meta: (Internals{}).NewInternals("adopters"),
+			Fields: fields,
+		}
+	} else {
+		object = &ADOPTER{
+			Meta: parent.NewInternals("adopters"),
+			Fields: fields,
+		}
+	}
+
+	object.Meta.ClassName = "adopters"
+	object.Meta.Context.User = user.Meta.ID
+
+	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
+	if err != nil {
+		log.Println(err)
+	} else {
+		object.Meta.Media.Color = gamut.ToHex(colors[0])
+	}
+
+	
+
+	// this object is owned by the user that created it
+	log.Println("OPTIONS ADMIN IS ON:", user.Meta.ID)
+	object.Meta.Moderation.Admins = append(
+		object.Meta.Moderation.Admins,
+		user.Meta.ID,
+	)
+
+	
+	
+
+	// add children to context
+	object.Meta.Context.Children = []string{
+		
+	}
+	return object
+}
+
+type FieldsADOPTER struct {
+	ADOPTERNAME person.name `json:"ADOPTERNAME" firestore:"ADOPTERNAME"`
+	ADOPTERPHONENUMBER phone `json:"ADOPTERPHONENUMBER" firestore:"ADOPTERPHONENUMBER"`
+	
+}
+
+func (x *ADOPTER) Schema() *models.Object {
+	obj := &models.Object{}
+	json.Unmarshal([]byte(`{"name":"adopter","names":null,"plural":"adopters","json":"","context":"Stores information about individuals who adopt animals","fields":[{"id":"ADOPTERNAME","context":"The name of the adopter","name":"adopter name","type":"person.name","element":"none","inputs":[{"id":"FIRSTNAME","context":"A name or names of something or someone","name":"first-name","type":"name","element":"input","inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"MIDDLENAMES","context":"A name or names of something or someone","name":"middle-names","type":"name","element":"input","inputReference":"","required":false,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"LASTNAME","context":"A name or names of something or someone","name":"last-name","type":"name","element":"input","inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""}],"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"ADOPTERPHONENUMBER","context":"The phone number of the adopter","name":"adopter phone number","type":"phone","element":"phone","inputReference":"","required":true,"filter":false,"regexp":"^\\+?[1-9]\\d{1,14}$","regexpHex":"5e5c2b3f5b312d395d5c647b312c31347d24"}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	return obj
+}
+
+func (x *ADOPTER) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+	if err := x.ValidateObject(m); err != nil {
+		cloudfunc.HttpError(w, err, http.StatusBadRequest)
+		return false
+	}
+	return true
+}
+
+func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
+
+	var err error
+	var exists bool
+	
+
+	_, exists = m["adopter name"]
+	if true && !exists {
+		return errors.New("required field 'adopter name' not supplied")
+	}
+	if exists {
+		x.Fields.Adopter name, err = assertPERSON.NAME(m, "adopter name")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Adopter name)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Adopter name)
+				}
+			}
+		}
+		{
+			exp := ""
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Adopter name)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Adopter name)
+				}
+			}
+		}
+		
+	}
+	
+
+	_, exists = m["adopter phone number"]
+	if true && !exists {
+		return errors.New("required field 'adopter phone number' not supplied")
+	}
+	if exists {
+		x.Fields.Adopter phone number, err = assertPHONE(m, "adopter phone number")
+		if err != nil {
+			return errors.New(err.Error())
+		}
+		{
+			exp := "^\+?[1-9]\d{1,14}$"
+			if len(exp) > 0 {
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Adopter phone number)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Adopter phone number)
+				}
+			}
+		}
+		{
+			exp := "5e5c2b3f5b312d395d5c647b312c31347d24"
+			if len(exp) > 0 {
+				log.Println("EXPR", exp)
+				b, err := hex.DecodeString(exp)
+				if err != nil {
+					log.Println(err)
+				}
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Adopter phone number)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Adopter phone number)
+				}
+			}
+		}
+		
+	}
+	
+
+	// extract name field if exists
+	name, ok := m["name"].(string)
+	if ok {
+		x.Meta.Name = name	
+	} else {
+		log.Println("trying to composite object name")
+		var names []string
+		
+		x.Meta.Name = strings.Join(names, " ")
+	}
+
+	x.Meta.Modify()
+
+	return nil
+}
+
+// assert file is an image because of .Object.Options.Image
+func (object *ADOPTER) ValidateImageADOPTER(fileBytes []byte) (image.Image, error) {
+
+	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
+	if err != nil {
+		return nil, err
+	}
+	object.Meta.Media.Image = true
+
+	// determine image format
+	if jpegstructure.NewJpegMediaParser().LooksLikeFormat(fileBytes) {
+		object.Meta.Media.Format = "JPEG"
+	} else {
+		if pngstructure.NewPngMediaParser().LooksLikeFormat(fileBytes) {
+			object.Meta.Media.Format = "PNG"
+		}
+	}
+
+	// Parse the EXIF data
+	exifData, err := exif.Decode(bytes.NewBuffer(fileBytes))
+	if err == nil {
+		println(exifData.String())
+		
+		object.Meta.Media.EXIF = map[string]interface{}{}
+	
+		tm, err := exifData.DateTime()
+		if err == nil {
+			object.Meta.Media.EXIF["taken"] = tm.UTC().Unix()
+			object.Meta.Modified = tm.UTC().Unix()
+			fmt.Println("Taken: ", tm)
+		}
+	
+		lat, long, err := exifData.LatLong()
+		if err != nil {
+			object.Meta.Media.EXIF["lat"] = lat
+			object.Meta.Media.EXIF["lng"] = long
+			fmt.Println("lat, long: ", lat, ", ", long)
+		}
+	}
+
+	return img, nil
+}
+
+
