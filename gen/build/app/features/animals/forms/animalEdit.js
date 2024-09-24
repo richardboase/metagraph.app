@@ -29,37 +29,37 @@ export function AnimalEdit(props) {
 	const [inputs, setInputs] = useState({
 		
 		"animal name": {
-			id: "animal name",
+			id: "",
 			type: "string",
 			
-			value: subject.fields.animal name,
+			value: subject.fields.,
 			
 			required: true,
 		},
 		
 		"animal species": {
-			id: "animal species",
+			id: "",
 			type: "string",
 			
-			value: subject.fields.animal species,
+			value: subject.fields.,
 			
 			required: true,
 		},
 		
 		"animal age": {
-			id: "animal age",
+			id: "",
 			type: "uint",
 			
-			value: subject.fields.animal age,
+			value: subject.fields.,
 			
 			required: true,
 		},
 		
 		"animal birthday": {
-			id: "animal birthday",
+			id: "",
 			type: "date",
 			
-			value: subject.fields.animal birthday,
+			value: subject.fields.,
 			
 			required: true,
 		},
