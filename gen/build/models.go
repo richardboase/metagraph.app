@@ -952,10 +952,10 @@ func (user *User) NewANIMAL(parent *Internals, fields FieldsANIMAL) *ANIMAL {
 }
 
 type FieldsANIMAL struct {
-	Animal name string `json:"animal name" firestore:"animal name"`
-	Animal species string `json:"animal species" firestore:"animal species"`
-	Animal age uint `json:"animal age" firestore:"animal age"`
-	Animal birthday date `json:"animal birthday" firestore:"animal birthday"`
+	animal-name string `json:"animal-name" firestore:"animal-name"`
+	animal-species string `json:"animal-species" firestore:"animal-species"`
+	animal-age uint `json:"animal-age" firestore:"animal-age"`
+	animal-birthday date `json:"animal-birthday" firestore:"animal-birthday"`
 	
 }
 
@@ -1257,7 +1257,7 @@ func (user *User) NewHEALTHCHECKUP(parent *Internals, fields FieldsHEALTHCHECKUP
 }
 
 type FieldsHEALTHCHECKUP struct {
-	Notes string `json:"notes" firestore:"notes"`
+	notes string `json:"notes" firestore:"notes"`
 	
 }
 
@@ -1434,8 +1434,8 @@ func (user *User) NewADOPTER(parent *Internals, fields FieldsADOPTER) *ADOPTER {
 }
 
 type FieldsADOPTER struct {
-	Adopter name person.name `json:"adopter name" firestore:"adopter name"`
-	Adopter phone number phone `json:"adopter phone number" firestore:"adopter phone number"`
+	adopter-name person.name `json:"adopter-name" firestore:"adopter-name"`
+	adopter-phone-number phone `json:"adopter-phone-number" firestore:"adopter-phone-number"`
 	
 }
 
