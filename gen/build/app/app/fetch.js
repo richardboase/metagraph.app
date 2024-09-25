@@ -1,7 +1,7 @@
 import axios, {isCancel, AxiosError} from 'axios';
 
-export const hostApi = "{{.Config.HostAPI}}"
-export const webApi = "{{.Config.WebAPI}}"
+export const hostApi = "https://server-go-gen-test-da7z6jf32a-nw.a.run.app/"
+export const webApi = "https://newtown.vercel.app/"
 
 export function WebFetch(method, url, body) {
 
