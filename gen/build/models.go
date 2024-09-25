@@ -952,10 +952,10 @@ func (user *User) NewANIMAL(parent *Internals, fields FieldsANIMAL) *ANIMAL {
 }
 
 type FieldsANIMAL struct {
-	ANIMALNAME string `json:"ANIMALNAME" firestore:"ANIMALNAME"`
-	ANIMALSPECIES string `json:"ANIMALSPECIES" firestore:"ANIMALSPECIES"`
-	ANIMALAGE uint `json:"ANIMALAGE" firestore:"ANIMALAGE"`
-	ANIMALBIRTHDAY date `json:"ANIMALBIRTHDAY" firestore:"ANIMALBIRTHDAY"`
+	ANIMALNAME string `json:"animal name" firestore:"animal name"`
+	ANIMALSPECIES string `json:"animal species" firestore:"animal species"`
+	ANIMALAGE uint `json:"animal age" firestore:"animal age"`
+	ANIMALBIRTHDAY date `json:"animal birthday" firestore:"animal birthday"`
 	
 }
 
@@ -984,15 +984,15 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 		return errors.New("required field 'animal name' not supplied")
 	}
 	if exists {
-		x.Fields.Animal name, err = assertSTRING(m, "animal name")
+		x.Fields.ANIMALNAME, err = assertSTRING(m, "animal name")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal name)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal name)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.ANIMALNAME)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.ANIMALNAME)
 				}
 			}
 		}
@@ -1004,18 +1004,18 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal name)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal name)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.ANIMALNAME)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.ANIMALNAME)
 				}
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Animal name); err != nil {
+		if err := assertRangeMin(1, x.Fields.ANIMALNAME); err != nil {
 			
 			return err
 			
 		}
-		if err := assertRangeMax(30, x.Fields.Animal name); err != nil {
+		if err := assertRangeMax(30, x.Fields.ANIMALNAME); err != nil {
 			return err
 		}
 		
@@ -1027,15 +1027,15 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 		return errors.New("required field 'animal species' not supplied")
 	}
 	if exists {
-		x.Fields.Animal species, err = assertSTRING(m, "animal species")
+		x.Fields.ANIMALSPECIES, err = assertSTRING(m, "animal species")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal species)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal species)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.ANIMALSPECIES)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.ANIMALSPECIES)
 				}
 			}
 		}
@@ -1047,18 +1047,18 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal species)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal species)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.ANIMALSPECIES)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.ANIMALSPECIES)
 				}
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Animal species); err != nil {
+		if err := assertRangeMin(1, x.Fields.ANIMALSPECIES); err != nil {
 			
 			return err
 			
 		}
-		if err := assertRangeMax(30, x.Fields.Animal species); err != nil {
+		if err := assertRangeMax(30, x.Fields.ANIMALSPECIES); err != nil {
 			return err
 		}
 		
@@ -1070,15 +1070,15 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 		return errors.New("required field 'animal age' not supplied")
 	}
 	if exists {
-		x.Fields.Animal age, err = assertUINT(m, "animal age")
+		x.Fields.ANIMALAGE, err = assertUINT(m, "animal age")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal age)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal age)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.ANIMALAGE)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.ANIMALAGE)
 				}
 			}
 		}
@@ -1090,18 +1090,18 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal age)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal age)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.ANIMALAGE)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.ANIMALAGE)
 				}
 			}
 		}
 		
-		if err := assertRangeMin(0, x.Fields.Animal age); err != nil {
+		if err := assertRangeMin(0, x.Fields.ANIMALAGE); err != nil {
 			
 			return err
 			
 		}
-		if err := assertRangeMax(-1, x.Fields.Animal age); err != nil {
+		if err := assertRangeMax(-1, x.Fields.ANIMALAGE); err != nil {
 			return err
 		}
 		
@@ -1113,15 +1113,15 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 		return errors.New("required field 'animal birthday' not supplied")
 	}
 	if exists {
-		x.Fields.Animal birthday, err = assertDATE(m, "animal birthday")
+		x.Fields.ANIMALBIRTHDAY, err = assertDATE(m, "animal birthday")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Animal birthday)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Animal birthday)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.ANIMALBIRTHDAY)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.ANIMALBIRTHDAY)
 				}
 			}
 		}
@@ -1133,8 +1133,8 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Animal birthday)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Animal birthday)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.ANIMALBIRTHDAY)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.ANIMALBIRTHDAY)
 				}
 			}
 		}
@@ -1257,7 +1257,7 @@ func (user *User) NewHEALTHCHECKUP(parent *Internals, fields FieldsHEALTHCHECKUP
 }
 
 type FieldsHEALTHCHECKUP struct {
-	NOTES string `json:"NOTES" firestore:"NOTES"`
+	NOTES string `json:"notes" firestore:"notes"`
 	
 }
 
@@ -1286,15 +1286,15 @@ func (x *HEALTHCHECKUP) ValidateObject(m map[string]interface{}) error {
 		return errors.New("required field 'notes' not supplied")
 	}
 	if exists {
-		x.Fields.Notes, err = assertSTRING(m, "notes")
+		x.Fields.NOTES, err = assertSTRING(m, "notes")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Notes)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Notes)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.NOTES)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.NOTES)
 				}
 			}
 		}
@@ -1306,18 +1306,18 @@ func (x *HEALTHCHECKUP) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Notes)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Notes)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.NOTES)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.NOTES)
 				}
 			}
 		}
 		
-		if err := assertRangeMin(1, x.Fields.Notes); err != nil {
+		if err := assertRangeMin(1, x.Fields.NOTES); err != nil {
 			
 			return err
 			
 		}
-		if err := assertRangeMax(10000, x.Fields.Notes); err != nil {
+		if err := assertRangeMax(10000, x.Fields.NOTES); err != nil {
 			return err
 		}
 		
@@ -1434,8 +1434,8 @@ func (user *User) NewADOPTER(parent *Internals, fields FieldsADOPTER) *ADOPTER {
 }
 
 type FieldsADOPTER struct {
-	ADOPTERNAME person.name `json:"ADOPTERNAME" firestore:"ADOPTERNAME"`
-	ADOPTERPHONENUMBER phone `json:"ADOPTERPHONENUMBER" firestore:"ADOPTERPHONENUMBER"`
+	ADOPTERNAME person.name `json:"adopter name" firestore:"adopter name"`
+	ADOPTERPHONENUMBER phone `json:"adopter phone number" firestore:"adopter phone number"`
 	
 }
 
@@ -1464,15 +1464,15 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 		return errors.New("required field 'adopter name' not supplied")
 	}
 	if exists {
-		x.Fields.Adopter name, err = assertPERSON.NAME(m, "adopter name")
+		x.Fields.ADOPTERNAME, err = assertPERSON.NAME(m, "adopter name")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := ""
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Adopter name)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Adopter name)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.ADOPTERNAME)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.ADOPTERNAME)
 				}
 			}
 		}
@@ -1484,8 +1484,8 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Adopter name)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Adopter name)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.ADOPTERNAME)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.ADOPTERNAME)
 				}
 			}
 		}
@@ -1498,15 +1498,15 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 		return errors.New("required field 'adopter phone number' not supplied")
 	}
 	if exists {
-		x.Fields.Adopter phone number, err = assertPHONE(m, "adopter phone number")
+		x.Fields.ADOPTERPHONENUMBER, err = assertPHONE(m, "adopter phone number")
 		if err != nil {
 			return errors.New(err.Error())
 		}
 		{
 			exp := "^\+?[1-9]\d{1,14}$"
 			if len(exp) > 0 {
-				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.Adopter phone number)) {
-					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.Adopter phone number)
+				if !RegExp(exp, fmt.Sprintf("%v", x.Fields.ADOPTERPHONENUMBER)) {
+					return fmt.Errorf("failed to regexp: %s >> %s", exp, x.Fields.ADOPTERPHONENUMBER)
 				}
 			}
 		}
@@ -1518,8 +1518,8 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.Adopter phone number)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.Adopter phone number)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.ADOPTERPHONENUMBER)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.ADOPTERPHONENUMBER)
 				}
 			}
 		}
