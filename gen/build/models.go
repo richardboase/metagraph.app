@@ -1004,7 +1004,7 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 			if err != nil {
 				return errors.New(err.Error())
 			}
-			exp := ""
+			exp = ""
 			if len(exp) > 0 {
 				log.Println("EXPR", exp)
 				b, err := hex.DecodeString(exp)
@@ -1039,7 +1039,7 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 			if err != nil {
 				return errors.New(err.Error())
 			}
-			exp := ""
+			exp = ""
 			if len(exp) > 0 {
 				log.Println("EXPR", exp)
 				b, err := hex.DecodeString(exp)
@@ -1074,7 +1074,7 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 			if err != nil {
 				return errors.New(err.Error())
 			}
-			exp := ""
+			exp = ""
 			if len(exp) > 0 {
 				log.Println("EXPR", exp)
 				b, err := hex.DecodeString(exp)
@@ -1109,7 +1109,7 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 			if err != nil {
 				return errors.New(err.Error())
 			}
-			exp := ""
+			exp = ""
 			if len(exp) > 0 {
 				log.Println("EXPR", exp)
 				b, err := hex.DecodeString(exp)
@@ -1279,7 +1279,7 @@ func (x *HEALTHCHECKUP) ValidateObject(m map[string]interface{}) error {
 			if err != nil {
 				return errors.New(err.Error())
 			}
-			exp := ""
+			exp = ""
 			if len(exp) > 0 {
 				log.Println("EXPR", exp)
 				b, err := hex.DecodeString(exp)
@@ -1472,7 +1472,7 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					return errors.New(err.Error())
 				}
-				exp := ""
+				exp = ""
 				if len(exp) > 0 {
 					log.Println("EXPR", exp)
 					b, err := hex.DecodeString(exp)
@@ -1498,7 +1498,7 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					return errors.New(err.Error())
 				}
-				exp := ""
+				exp = ""
 				if len(exp) > 0 {
 					log.Println("EXPR", exp)
 					b, err := hex.DecodeString(exp)
@@ -1522,7 +1522,7 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					return errors.New(err.Error())
 				}
-				exp := ""
+				exp = ""
 				if len(exp) > 0 {
 					log.Println("EXPR", exp)
 					b, err := hex.DecodeString(exp)
@@ -1558,7 +1558,7 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 			if err != nil {
 				return errors.New(err.Error())
 			}
-			exp := "5e5c2b3f5b312d395d5c647b312c31347d24"
+			exp = "5e5c2b3f5b312d395d5c647b312c31347d24"
 			if len(exp) > 0 {
 				log.Println("EXPR", exp)
 				b, err := hex.DecodeString(exp)
