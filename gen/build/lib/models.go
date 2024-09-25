@@ -980,12 +980,12 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	_, exists = m["animal name"]
+	_, exists = m["ANIMALNAME"]
 	if true && !exists {
-		return errors.New("required field 'animal name' not supplied")
+		return errors.New("required field 'ANIMALNAME' not supplied")
 	}
 	if exists {
-		x.Fields.ANIMALNAME, err = assertSTRING(m, "animal name")
+		x.Fields.ANIMALNAME, err = assertSTRING(m, "ANIMALNAME")
 		if err != nil {
 			return errors.New(err.Error())
 		}
@@ -1023,12 +1023,12 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	_, exists = m["animal species"]
+	_, exists = m["ANIMALSPECIES"]
 	if true && !exists {
-		return errors.New("required field 'animal species' not supplied")
+		return errors.New("required field 'ANIMALSPECIES' not supplied")
 	}
 	if exists {
-		x.Fields.ANIMALSPECIES, err = assertSTRING(m, "animal species")
+		x.Fields.ANIMALSPECIES, err = assertSTRING(m, "ANIMALSPECIES")
 		if err != nil {
 			return errors.New(err.Error())
 		}
@@ -1066,12 +1066,12 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	_, exists = m["animal age"]
+	_, exists = m["ANIMALAGE"]
 	if true && !exists {
-		return errors.New("required field 'animal age' not supplied")
+		return errors.New("required field 'ANIMALAGE' not supplied")
 	}
 	if exists {
-		x.Fields.ANIMALAGE, err = assertUINT(m, "animal age")
+		x.Fields.ANIMALAGE, err = assertUINT(m, "ANIMALAGE")
 		if err != nil {
 			return errors.New(err.Error())
 		}
@@ -1109,12 +1109,12 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	_, exists = m["animal birthday"]
+	_, exists = m["ANIMALBIRTHDAY"]
 	if true && !exists {
-		return errors.New("required field 'animal birthday' not supplied")
+		return errors.New("required field 'ANIMALBIRTHDAY' not supplied")
 	}
 	if exists {
-		x.Fields.ANIMALBIRTHDAY, err = assertDATE(m, "animal birthday")
+		x.Fields.ANIMALBIRTHDAY, err = assertDATE(m, "ANIMALBIRTHDAY")
 		if err != nil {
 			return errors.New(err.Error())
 		}
@@ -1282,12 +1282,12 @@ func (x *HEALTHCHECKUP) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	_, exists = m["notes"]
+	_, exists = m["NOTES"]
 	if true && !exists {
-		return errors.New("required field 'notes' not supplied")
+		return errors.New("required field 'NOTES' not supplied")
 	}
 	if exists {
-		x.Fields.NOTES, err = assertSTRING(m, "notes")
+		x.Fields.NOTES, err = assertSTRING(m, "NOTES")
 		if err != nil {
 			return errors.New(err.Error())
 		}
@@ -1460,12 +1460,12 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	_, exists = m["adopter name"]
+	_, exists = m["ADOPTERNAME"]
 	if true && !exists {
-		return errors.New("required field 'adopter name' not supplied")
+		return errors.New("required field 'ADOPTERNAME' not supplied")
 	}
 	if exists {
-		x.Fields.ADOPTERNAME, err = assertPERSON.NAME(m, "adopter name")
+		x.Fields.ADOPTERNAME, err = assertPERSON.NAME(m, "ADOPTERNAME")
 		if err != nil {
 			return errors.New(err.Error())
 		}
@@ -1494,12 +1494,12 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	_, exists = m["adopter phone number"]
+	_, exists = m["ADOPTERPHONENUMBER"]
 	if true && !exists {
-		return errors.New("required field 'adopter phone number' not supplied")
+		return errors.New("required field 'ADOPTERPHONENUMBER' not supplied")
 	}
 	if exists {
-		x.Fields.ADOPTERPHONENUMBER, err = assertPHONE(m, "adopter phone number")
+		x.Fields.ADOPTERPHONENUMBER, err = assertPHONE(m, "ADOPTERPHONENUMBER")
 		if err != nil {
 			return errors.New(err.Error())
 		}
