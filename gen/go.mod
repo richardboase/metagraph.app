@@ -12,7 +12,7 @@ require (
 	cloud.google.com/go/pubsub v1.40.0
 	github.com/dsoprea/go-jpeg-image-structure v0.0.0-20221012074422-4f3f7e934102
 	github.com/dsoprea/go-png-image-structure v0.0.0-20210512210324-29b889a6093d
-	github.com/golangdaddy/leap v0.0.0-20240925205311-a3332a7644fe
+	github.com/golangdaddy/leap v0.0.0-20240925205654-28e9eac7cc13
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.2
 	github.com/kr/pretty v0.3.1
