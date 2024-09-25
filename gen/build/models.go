@@ -994,7 +994,7 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	newValue, exists = m["animalname"]
+	_, exists = m["animalname"]
 	if true && !exists {
 		return errors.New("required field 'ANIMALNAME' not supplied")
 	}
@@ -1029,7 +1029,7 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	newValue, exists = m["animalspecies"]
+	_, exists = m["animalspecies"]
 	if true && !exists {
 		return errors.New("required field 'ANIMALSPECIES' not supplied")
 	}
@@ -1064,7 +1064,7 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	newValue, exists = m["animalage"]
+	_, exists = m["animalage"]
 	if true && !exists {
 		return errors.New("required field 'ANIMALAGE' not supplied")
 	}
@@ -1099,7 +1099,7 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	newValue, exists = m["animalbirthday"]
+	_, exists = m["animalbirthday"]
 	if true && !exists {
 		return errors.New("required field 'ANIMALBIRTHDAY' not supplied")
 	}
@@ -1269,7 +1269,7 @@ func (x *HEALTHCHECKUP) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	newValue, exists = m["notes"]
+	_, exists = m["notes"]
 	if true && !exists {
 		return errors.New("required field 'NOTES' not supplied")
 	}
@@ -1460,7 +1460,7 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	newValue, exists = m["adoptername"]
+	_, exists = m["adoptername"]
 	if true && !exists {
 		return errors.New("required field 'ADOPTERNAME' not supplied")
 	}
@@ -1547,7 +1547,7 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 	}
 	
 
-	newValue, exists = m["adopterphonenumber"]
+	_, exists = m["adopterphonenumber"]
 	if true && !exists {
 		return errors.New("required field 'ADOPTERPHONENUMBER' not supplied")
 	}
