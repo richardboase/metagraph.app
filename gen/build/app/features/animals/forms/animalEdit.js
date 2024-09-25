@@ -81,19 +81,19 @@ export function AnimalEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="name" type='string' required={ true } title="animal name" placeholder="animal name" inputChange={handleInputChange} value={ inputs["name"].value } />
+			<Input id="name" type='string' required={ true } title="animal name" placeholder="animal name" inputChange={handleInputChange} value={ inputs["NAME"].value } />
 			<Spacer/>
 			
-			<Input id="species" type='string' required={ true } title="animal species" placeholder="animal species" inputChange={handleInputChange} value={ inputs["species"].value } />
+			<Input id="species" type='string' required={ true } title="animal species" placeholder="animal species" inputChange={handleInputChange} value={ inputs["SPECIES"].value } />
 			<Spacer/>
 			
-			<Input id="age" type='number' required={ true } title="animal age" inputChange={handleInputChange} value={ inputs["age"].value } />
+			<Input id="age" type='number' required={ true } title="animal age" inputChange={handleInputChange} value={ inputs["AGE"].value } />
 			<Spacer/>
 			
-			<Input id="birthday" type='date' required={ true } title="animal birthday" placeholder="animal birthday" inputChange={handleInputChange} value={ inputs["birthday"].value } />
+			<Input id="birthday" type='date' required={ true } title="animal birthday" placeholder="animal birthday" inputChange={handleInputChange} value={ inputs["BIRTHDAY"].value } />
 			<Spacer/>
 			
-			<Input id="building number" type='number' required={ true } title="animal building number" inputChange={handleInputChange} value={ inputs["buildingnumber"].value } /><Input id="apartment number" type='number' required={ false } title="animal apartment number" inputChange={handleInputChange} value={ inputs["apartmentnumber"].value } /><Input id="street" type='string' required={ true } title="animal street" placeholder="animal street" inputChange={handleInputChange} value={ inputs["street"].value } /><Input id="town or city" type='string' required={ true } title="animal town or city" placeholder="animal town or city" inputChange={handleInputChange} value={ inputs["townorcity"].value } /><Input id="country" type='string' required={ true } title="animal country" placeholder="animal country" inputChange={handleInputChange} value={ inputs["country"].value } />
+			<Input id="building number" type='number' required={ true } title="animal building number" inputChange={handleInputChange} value={ inputs["BUILDINGNUMBER"].value } /><Input id="apartment number" type='number' required={ false } title="animal apartment number" inputChange={handleInputChange} value={ inputs["APARTMENTNUMBER"].value } /><Input id="street" type='string' required={ true } title="animal street" placeholder="animal street" inputChange={handleInputChange} value={ inputs["STREET"].value } /><Input id="town or city" type='string' required={ true } title="animal town or city" placeholder="animal town or city" inputChange={handleInputChange} value={ inputs["TOWNORCITY"].value } /><Input id="country" type='string' required={ true } title="animal country" placeholder="animal country" inputChange={handleInputChange} value={ inputs["COUNTRY"].value } />
 			<Spacer/>
 			
 			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","species","age","birthday","address"]}/>
