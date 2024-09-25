@@ -1467,6 +1467,7 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 	}
 	if exists {
 		
+			var exp string
 			
 				x.Fields.FIRSTNAME, err = assertSTRING(m, "FIRSTNAME")
 				if err != nil {
