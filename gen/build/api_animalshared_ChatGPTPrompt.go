@@ -15,16 +15,19 @@ We want to create one or more of these data objects:
 {
 
 	// The name of the animal  (THIS FIELD IS REQUIRED)
-	animal name (string)
+	name (string)
 
 	// The species of the animal  (THIS FIELD IS REQUIRED)
-	animal species (string)
+	species (string)
 
 	// The age of the animal  (THIS FIELD IS REQUIRED)
-	animal age (uint)
+	age (uint)
 
 	// The D.O.B. of the animal  (THIS FIELD IS REQUIRED)
-	animal birthday (date)
+	birthday (date)
+
+	// The D.O.B. of the animal  (THIS FIELD IS REQUIRED)
+	address (address)
 
 }
 

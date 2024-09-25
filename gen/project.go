@@ -21,10 +21,11 @@ func buildStructure(config models.Config) *models.Stack {
 		Parents: []string{},
 		Name:    "animal",
 		Fields: []*models.Field{
-			models.Required("string", "30").SetName("animal name").SetCtx("The name of the animal"),
-			models.Required("string", "30").SetName("animal species").SetCtx("The species of the animal"),
-			models.Required("uint").SetName("animal age").SetCtx("The age of the animal"),
-			models.Required("date").SetName("animal birthday").SetCtx("The D.O.B. of the animal"),
+			models.Required("string", "30").SetName("name").SetCtx("The name of the animal"),
+			models.Required("string", "30").SetName("species").SetCtx("The species of the animal"),
+			models.Required("uint").SetName("age").SetCtx("The age of the animal"),
+			models.Required("date").SetName("birthday").SetCtx("The D.O.B. of the animal"),
+			models.Required("address").SetName("address").SetCtx("The D.O.B. of the animal"),
 		},
 		Options: models.Options{
 			Admin: true,

@@ -28,19 +28,22 @@ export function AnimalForm(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="animal name" type='string' required={ true } title="animal animal name" placeholder="animal animal name" inputChange={handleInputChange}/>
+			<Input id="name" type='string' required={ true } title="animal name" placeholder="animal name" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="animal species" type='string' required={ true } title="animal animal species" placeholder="animal animal species" inputChange={handleInputChange}/>
+			<Input id="species" type='string' required={ true } title="animal species" placeholder="animal species" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="animal age" type='number' required={ true } title="animal animal age" inputChange={handleInputChange}/>
+			<Input id="age" type='number' required={ true } title="animal age" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Input id="animal birthday" type='date' required={ true } title="animal animal birthday" placeholder="animal animal birthday" inputChange={handleInputChange}/>
+			<Input id="birthday" type='date' required={ true } title="animal birthday" placeholder="animal birthday" inputChange={handleInputChange}/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["animal name","animal species","animal age","animal birthday"]}/>
+			<Input id="building number" type='number' required={ true } title="animal building number" inputChange={handleInputChange} value={ inputs["building number"].value } /><Input id="apartment number" type='number' required={ false } title="animal apartment number" inputChange={handleInputChange} value={ inputs["apartment number"].value } /><Input id="street" type='string' required={ true } title="animal street" placeholder="animal street" inputChange={handleInputChange} value={ inputs["street"].value } /><Input id="town or city" type='string' required={ true } title="animal town or city" placeholder="animal town or city" inputChange={handleInputChange} value={ inputs["town or city"].value } /><Input id="country" type='string' required={ true } title="animal country" placeholder="animal country" inputChange={handleInputChange} value={ inputs["country"].value } />
+			<Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","species","age","birthday","address"]}/>
 			<Spacer/>
 			
 		</div>

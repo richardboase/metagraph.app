@@ -135,7 +135,7 @@ export function Animal(props) {
 							<tr className='flex flex-row'>
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
-										<div className='font-bold'>animal name</div>
+										<div className='font-bold'>name</div>
 									</div>
 								</td>
 								<td className='flex flex-col justify-start'>
@@ -146,10 +146,10 @@ export function Animal(props) {
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
 										{
-											(typeof subject.fields["animal name"] === 'object') && <div className='flex flex-col m-4'>
+											(typeof subject.fields["name"] === 'object') && <div className='flex flex-col m-4'>
 												{
-													Object.keys(subject.fields["animal name"]).forEach(function(k, i) {
-														const v = subject.fields["animal name"][k]
+													Object.keys(subject.fields["name"]).forEach(function(k, i) {
+														const v = subject.fields["name"][k]
 														return (
 															<div key={i} className='flex flex-row text-xs m-2'>
 																<div className=''>{k}</div>
@@ -162,17 +162,17 @@ export function Animal(props) {
 											</div>
 										}
 										{
-											Array.isArray(subject.fields["animal name"]) && subject.fields["animal name"].map(function(item, i) {
+											Array.isArray(subject.fields["name"]) && subject.fields["name"].map(function(item, i) {
 												return (
 													<div key={i} className='text-xs'>{item}</div>
 												)
 											})
 										}
 										{
-											!Array.isArray(subject.fields["animal name"]) && !(typeof subject.fields["animal name"] === 'object') && <>
+											!Array.isArray(subject.fields["name"]) && !(typeof subject.fields["name"] === 'object') && <>
 												
+												{ subject.Meta.Name }
 												
-												{ subject.fields["animal name"] }
 												
 											</>
 										}
@@ -184,7 +184,7 @@ export function Animal(props) {
 							<tr className='flex flex-row'>
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
-										<div className='font-bold'>animal species</div>
+										<div className='font-bold'>species</div>
 									</div>
 								</td>
 								<td className='flex flex-col justify-start'>
@@ -195,10 +195,10 @@ export function Animal(props) {
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
 										{
-											(typeof subject.fields["animal species"] === 'object') && <div className='flex flex-col m-4'>
+											(typeof subject.fields["species"] === 'object') && <div className='flex flex-col m-4'>
 												{
-													Object.keys(subject.fields["animal species"]).forEach(function(k, i) {
-														const v = subject.fields["animal species"][k]
+													Object.keys(subject.fields["species"]).forEach(function(k, i) {
+														const v = subject.fields["species"][k]
 														return (
 															<div key={i} className='flex flex-row text-xs m-2'>
 																<div className=''>{k}</div>
@@ -211,17 +211,17 @@ export function Animal(props) {
 											</div>
 										}
 										{
-											Array.isArray(subject.fields["animal species"]) && subject.fields["animal species"].map(function(item, i) {
+											Array.isArray(subject.fields["species"]) && subject.fields["species"].map(function(item, i) {
 												return (
 													<div key={i} className='text-xs'>{item}</div>
 												)
 											})
 										}
 										{
-											!Array.isArray(subject.fields["animal species"]) && !(typeof subject.fields["animal species"] === 'object') && <>
+											!Array.isArray(subject.fields["species"]) && !(typeof subject.fields["species"] === 'object') && <>
 												
 												
-												{ subject.fields["animal species"] }
+												{ subject.fields["species"] }
 												
 											</>
 										}
@@ -233,7 +233,7 @@ export function Animal(props) {
 							<tr className='flex flex-row'>
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
-										<div className='font-bold'>animal age</div>
+										<div className='font-bold'>age</div>
 									</div>
 								</td>
 								<td className='flex flex-col justify-start'>
@@ -244,10 +244,10 @@ export function Animal(props) {
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
 										{
-											(typeof subject.fields["animal age"] === 'object') && <div className='flex flex-col m-4'>
+											(typeof subject.fields["age"] === 'object') && <div className='flex flex-col m-4'>
 												{
-													Object.keys(subject.fields["animal age"]).forEach(function(k, i) {
-														const v = subject.fields["animal age"][k]
+													Object.keys(subject.fields["age"]).forEach(function(k, i) {
+														const v = subject.fields["age"][k]
 														return (
 															<div key={i} className='flex flex-row text-xs m-2'>
 																<div className=''>{k}</div>
@@ -260,17 +260,17 @@ export function Animal(props) {
 											</div>
 										}
 										{
-											Array.isArray(subject.fields["animal age"]) && subject.fields["animal age"].map(function(item, i) {
+											Array.isArray(subject.fields["age"]) && subject.fields["age"].map(function(item, i) {
 												return (
 													<div key={i} className='text-xs'>{item}</div>
 												)
 											})
 										}
 										{
-											!Array.isArray(subject.fields["animal age"]) && !(typeof subject.fields["animal age"] === 'object') && <>
+											!Array.isArray(subject.fields["age"]) && !(typeof subject.fields["age"] === 'object') && <>
 												
 												
-												{ subject.fields["animal age"] }
+												{ subject.fields["age"] }
 												
 											</>
 										}
@@ -282,7 +282,7 @@ export function Animal(props) {
 							<tr className='flex flex-row'>
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
-										<div className='font-bold'>animal birthday</div>
+										<div className='font-bold'>birthday</div>
 									</div>
 								</td>
 								<td className='flex flex-col justify-start'>
@@ -293,10 +293,10 @@ export function Animal(props) {
 								<td className='flex flex-col justify-start'>
 									<div className='w-full flex flex-row justify-end'>
 										{
-											(typeof subject.fields["animal birthday"] === 'object') && <div className='flex flex-col m-4'>
+											(typeof subject.fields["birthday"] === 'object') && <div className='flex flex-col m-4'>
 												{
-													Object.keys(subject.fields["animal birthday"]).forEach(function(k, i) {
-														const v = subject.fields["animal birthday"][k]
+													Object.keys(subject.fields["birthday"]).forEach(function(k, i) {
+														const v = subject.fields["birthday"][k]
 														return (
 															<div key={i} className='flex flex-row text-xs m-2'>
 																<div className=''>{k}</div>
@@ -309,17 +309,66 @@ export function Animal(props) {
 											</div>
 										}
 										{
-											Array.isArray(subject.fields["animal birthday"]) && subject.fields["animal birthday"].map(function(item, i) {
+											Array.isArray(subject.fields["birthday"]) && subject.fields["birthday"].map(function(item, i) {
 												return (
 													<div key={i} className='text-xs'>{item}</div>
 												)
 											})
 										}
 										{
-											!Array.isArray(subject.fields["animal birthday"]) && !(typeof subject.fields["animal birthday"] === 'object') && <>
+											!Array.isArray(subject.fields["birthday"]) && !(typeof subject.fields["birthday"] === 'object') && <>
 												
 												
-												{ subject.fields["animal birthday"] }
+												{ subject.fields["birthday"] }
+												
+											</>
+										}
+									</div>
+								</td>
+							</tr>
+							<Spacer/>
+							
+							<tr className='flex flex-row'>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='font-bold'>address</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										<div className='px-2'>:</div>
+									</div>
+								</td>
+								<td className='flex flex-col justify-start'>
+									<div className='w-full flex flex-row justify-end'>
+										{
+											(typeof subject.fields["address"] === 'object') && <div className='flex flex-col m-4'>
+												{
+													Object.keys(subject.fields["address"]).forEach(function(k, i) {
+														const v = subject.fields["address"][k]
+														return (
+															<div key={i} className='flex flex-row text-xs m-2'>
+																<div className=''>{k}</div>
+																<div className='px-2'>:</div>
+																<div className=''>{v}</div>
+															</div>
+														)
+													})
+												}
+											</div>
+										}
+										{
+											Array.isArray(subject.fields["address"]) && subject.fields["address"].map(function(item, i) {
+												return (
+													<div key={i} className='text-xs'>{item}</div>
+												)
+											})
+										}
+										{
+											!Array.isArray(subject.fields["address"]) && !(typeof subject.fields["address"] === 'object') && <>
+												
+												
+												{ subject.fields["address"] }
 												
 											</>
 										}

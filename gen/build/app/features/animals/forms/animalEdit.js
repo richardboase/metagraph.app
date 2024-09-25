@@ -28,38 +28,47 @@ export function AnimalEdit(props) {
 
 	const [inputs, setInputs] = useState({
 		
-		"animalname": {
-			id: "animalname",
+		"name": {
+			id: "name",
 			type: "string",
 			
-			value: subject.fields.animalname,
+			value: subject.Meta.Name,
 			
 			required: true,
 		},
 		
-		"animalspecies": {
-			id: "animalspecies",
+		"species": {
+			id: "species",
 			type: "string",
 			
-			value: subject.fields.animalspecies,
+			value: subject.fields.species,
 			
 			required: true,
 		},
 		
-		"animalage": {
-			id: "animalage",
+		"age": {
+			id: "age",
 			type: "uint",
 			
-			value: subject.fields.animalage,
+			value: subject.fields.age,
 			
 			required: true,
 		},
 		
-		"animalbirthday": {
-			id: "animalbirthday",
+		"birthday": {
+			id: "birthday",
 			type: "date",
 			
-			value: subject.fields.animalbirthday,
+			value: subject.fields.birthday,
+			
+			required: true,
+		},
+		
+		"address": {
+			id: "address",
+			type: "address",
+			
+			value: subject.fields.address,
 			
 			required: true,
 		},
@@ -72,19 +81,22 @@ export function AnimalEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="animal name" type='string' required={ true } title="animal animal name" placeholder="animal animal name" inputChange={handleInputChange} value={ inputs["animal name"].value } />
+			<Input id="name" type='string' required={ true } title="animal name" placeholder="animal name" inputChange={handleInputChange} value={ inputs["name"].value } />
 			<Spacer/>
 			
-			<Input id="animal species" type='string' required={ true } title="animal animal species" placeholder="animal animal species" inputChange={handleInputChange} value={ inputs["animal species"].value } />
+			<Input id="species" type='string' required={ true } title="animal species" placeholder="animal species" inputChange={handleInputChange} value={ inputs["species"].value } />
 			<Spacer/>
 			
-			<Input id="animal age" type='number' required={ true } title="animal animal age" inputChange={handleInputChange} value={ inputs["animal age"].value } />
+			<Input id="age" type='number' required={ true } title="animal age" inputChange={handleInputChange} value={ inputs["age"].value } />
 			<Spacer/>
 			
-			<Input id="animal birthday" type='date' required={ true } title="animal animal birthday" placeholder="animal animal birthday" inputChange={handleInputChange} value={ inputs["animal birthday"].value } />
+			<Input id="birthday" type='date' required={ true } title="animal birthday" placeholder="animal birthday" inputChange={handleInputChange} value={ inputs["birthday"].value } />
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["animal name","animal species","animal age","animal birthday"]}/>
+			<Input id="building number" type='number' required={ true } title="animal building number" inputChange={handleInputChange} value={ inputs["building number"].value } /><Input id="apartment number" type='number' required={ false } title="animal apartment number" inputChange={handleInputChange} value={ inputs["apartment number"].value } /><Input id="street" type='string' required={ true } title="animal street" placeholder="animal street" inputChange={handleInputChange} value={ inputs["street"].value } /><Input id="town or city" type='string' required={ true } title="animal town or city" placeholder="animal town or city" inputChange={handleInputChange} value={ inputs["town or city"].value } /><Input id="country" type='string' required={ true } title="animal country" placeholder="animal country" inputChange={handleInputChange} value={ inputs["country"].value } />
+			<Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["name","species","age","birthday","address"]}/>
 			<Spacer/>
 			
 		</div>

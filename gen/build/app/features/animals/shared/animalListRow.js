@@ -34,30 +34,37 @@ export function AnimalListRow(props) {
 				}
 				<div className="px-4"></div>
 				{
-					("animal name" != "name") && !Array.isArray(props.item.fields["animal name"]) &&  !(typeof props.item.fields["animal name"] === 'object')  && <>
-						<div className='text-sm font-bold' title="animal name">
-							{ props.item.fields["animal name"] }
+					("name" != "name") && !Array.isArray(props.item.fields["name"]) &&  !(typeof props.item.fields["name"] === 'object')  && <>
+						<div className='text-sm font-bold' title="name">
+							{ props.item.fields["name"] }
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("animal species" != "name") && !Array.isArray(props.item.fields["animal species"]) &&  !(typeof props.item.fields["animal species"] === 'object')  && <>
-						<div className='text-sm font-bold' title="animal species">
-							{ props.item.fields["animal species"] }
+					("species" != "name") && !Array.isArray(props.item.fields["species"]) &&  !(typeof props.item.fields["species"] === 'object')  && <>
+						<div className='text-sm font-bold' title="species">
+							{ props.item.fields["species"] }
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("animal age" != "name") && !Array.isArray(props.item.fields["animal age"]) &&  !(typeof props.item.fields["animal age"] === 'object')  && <>
-						<div className='text-sm font-bold' title="animal age">
-							{ props.item.fields["animal age"] }
+					("age" != "name") && !Array.isArray(props.item.fields["age"]) &&  !(typeof props.item.fields["age"] === 'object')  && <>
+						<div className='text-sm font-bold' title="age">
+							{ props.item.fields["age"] }
 						</div>
 						<div className="px-4"></div>
 					</>
 				}{
-					("animal birthday" != "name") && !Array.isArray(props.item.fields["animal birthday"]) &&  !(typeof props.item.fields["animal birthday"] === 'object')  && <>
-						<div className='text-sm font-bold' title="animal birthday">
-							{ props.item.fields["animal birthday"] }
+					("birthday" != "name") && !Array.isArray(props.item.fields["birthday"]) &&  !(typeof props.item.fields["birthday"] === 'object')  && <>
+						<div className='text-sm font-bold' title="birthday">
+							{ props.item.fields["birthday"] }
+						</div>
+						<div className="px-4"></div>
+					</>
+				}{
+					("address" != "name") && !Array.isArray(props.item.fields["address"]) &&  !(typeof props.item.fields["address"] === 'object')  && <>
+						<div className='text-sm font-bold' title="address">
+							{ props.item.fields["address"] }
 						</div>
 						<div className="px-4"></div>
 					</>

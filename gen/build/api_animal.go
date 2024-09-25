@@ -254,17 +254,20 @@ func (app *App) EntrypointANIMAL(w http.ResponseWriter, r *http.Request) {
 					Value: app.TimeNow().Unix(),
 				},
 				{
-					Path: "fields.animal name",
-					Value: object.Fields.Animal name,
+					Path: "fields.name",
+					Value: object.Fields.Name,
 				},{
-					Path: "fields.animal species",
-					Value: object.Fields.Animal species,
+					Path: "fields.species",
+					Value: object.Fields.Species,
 				},{
-					Path: "fields.animal age",
-					Value: object.Fields.Animal age,
+					Path: "fields.age",
+					Value: object.Fields.Age,
 				},{
-					Path: "fields.animal birthday",
-					Value: object.Fields.Animal birthday,
+					Path: "fields.birthday",
+					Value: object.Fields.Birthday,
+				},{
+					Path: "fields.address",
+					Value: object.Fields.Address,
 				},
 			}
 			for _, update := range updates {

@@ -141,8 +141,6 @@ github.com/golang/protobuf v1.4.3/go.mod h1:oDoupMAO8OvCJWAcko0GGGIgR6R6ocIYbsSw
 github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=
 github.com/golang/protobuf v1.5.4 h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=
 github.com/golang/protobuf v1.5.4/go.mod h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6rSs7xps=
-github.com/golangdaddy/leap v0.0.0-20240925205311-a3332a7644fe h1:UNGqfqqhQNJCcdog05vzEQP9cFsAfki/xH+7z8lXw64=
-github.com/golangdaddy/leap v0.0.0-20240925205311-a3332a7644fe/go.mod h1:4keyqiioOiikNaixVF8RS2R0vdv+AnFdfx5TxllewpU=
 github.com/golangdaddy/leap v0.0.0-20240925205654-28e9eac7cc13 h1:pb8CDdyT+VGsGUzzbYN+1psJhbifF6XECDD0gAZAoeM=
 github.com/golangdaddy/leap v0.0.0-20240925205654-28e9eac7cc13/go.mod h1:4keyqiioOiikNaixVF8RS2R0vdv+AnFdfx5TxllewpU=
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
