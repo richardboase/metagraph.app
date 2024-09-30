@@ -7,7 +7,7 @@ import (
 func buildStructure(config models.Config) *models.Stack {
 
 	tree := &models.Stack{
-		WebsiteName: "Rescue Centre",
+		WebsiteName: "MetaGraph.app",
 		Config:      config,
 		Options: models.StackOptions{
 			ChatGPT: true,
