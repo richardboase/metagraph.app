@@ -1,0 +1,7 @@
+FOR THE FRONT END 
+
+sh dev.sh
+quit the local server (ctrlk c) 
+git add -A && git commit -m "comment" && git push 
+
+Then it automatically deploy on Vercel 
