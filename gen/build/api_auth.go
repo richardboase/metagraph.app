@@ -85,7 +85,7 @@ func (app *App) AuthEntrypoint(w http.ResponseWriter, r *http.Request) {
 			subject := "MAGIC LINK for MetaGraph.app"
 			plainTextContent := fmt.Sprintf(
 				"one time password link: %shome?otp=%s",
-				"https://newtown.vercel.app/",
+				"https://metagraph-app.vercel.app/",
 				secret,
 			)
 
@@ -95,7 +95,7 @@ func (app *App) AuthEntrypoint(w http.ResponseWriter, r *http.Request) {
 				<a href='http://localhost:3000/home?p=MetaGraph.app&otp=%s'>Debug</a>
 				<br/>
 				<br/>
-				<a href='https://newtown.vercel.app/home?p=MetaGraph.app&otp=%s'>Click here to Login</a>
+				<a href='https://metagraph-app.vercel.app/home?p=MetaGraph.app&otp=%s'>Click here to Login</a>
 				`,
 				secret,
 				secret,

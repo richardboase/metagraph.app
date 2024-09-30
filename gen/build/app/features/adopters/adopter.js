@@ -89,7 +89,7 @@ export function Adopter(props) {
 					<span className='font-bold'>{ (subject.Meta.Name?.length > 20) ? subject.Meta.Name.substr(0, 20)+"..." : subject.Meta.Name }</span>
 				</div>
 				{
-					subject?.Meta.Media.Image && <img className='m-4' src={'https://storage.googleapis.com/go-gen-test-uploads/'+subject.Meta.Media.URIs[subject.Meta.Media.URIs.length-1]}/>
+					subject?.Meta.Media.Image && <img className='m-4' src={'https://storage.googleapis.com/metagraphapp-uploads/'+subject.Meta.Media.URIs[subject.Meta.Media.URIs.length-1]}/>
 				}
 				<div className='flex flex-wrap my-4'>
 					{

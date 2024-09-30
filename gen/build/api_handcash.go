@@ -64,7 +64,7 @@ func (app *App) HandcashEntrypointSuccess(w http.ResponseWriter, r *http.Request
 		http.Redirect(
 			w,
 			r,
-			fmt.Sprintf("%shome?otp=%s&authToken=%s", "https://newtown.vercel.app/", secret, authToken),
+			fmt.Sprintf("%shome?otp=%s&authToken=%s", "https://metagraph-app.vercel.app/", secret, authToken),
 			http.StatusTemporaryRedirect,
 		)
 

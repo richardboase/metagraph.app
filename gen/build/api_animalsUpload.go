@@ -142,7 +142,7 @@ func (app *App) newUploadObjectANIMAL(parent *Internals, user *User, n int, name
 		return nil, err
 	}
 
-	object.Meta.Media.Preview = "https://storage.googleapis.com/go-gen-test-uploads/" + uri
+	object.Meta.Media.Preview = "https://storage.googleapis.com/metagraphapp-uploads/" + uri
 
 	return object, nil
 }

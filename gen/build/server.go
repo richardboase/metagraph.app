@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	log.Println("Starting Application", "npg-generic", "go-gen-test")
+	log.Println("Starting Application", "npg-generic", "metagraphapp")
 
 	// handle local dev
 	if strings.ToLower(os.Getenv("ENVIRONMENT")) != "production" {

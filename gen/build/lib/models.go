@@ -40,10 +40,10 @@ import (
 
 const (
 	CONST_PROJECT_ID   = "npg-generic"
-	CONST_FIRESTORE_DB = "go-gen-test"
+	CONST_FIRESTORE_DB = "metagraphapp"
 
-	CONST_BUCKET_UPLOADS = "go-gen-test-uploads"
-	CONST_BUCKET_JOBS    = "go-gen-test-jobs"
+	CONST_BUCKET_UPLOADS = "metagraphapp-uploads"
+	CONST_BUCKET_JOBS    = "metagraphapp-jobs"
 )
 type App struct {
 	*common.App

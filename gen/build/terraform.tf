@@ -1,10 +1,10 @@
 provider "google" {
-  project = "go-gen-test"
+  project = "metagraphapp"
   region  = "europe-west2-b"
 }
 
 resource "google_storage_bucket" "primarybucket" {
-  name          = "go-gen-test-uploads"
+  name          = "metagraphapp-uploads"
   location      = "EU"
 }
 
