@@ -4,7 +4,7 @@ go 1.22
 
 toolchain go1.22.3
 
-replace github.com/golangdaddy/leap => ../../leap
+//replace github.com/golangdaddy/leap => ../../leap
 
 require (
 	cloud.google.com/go/firestore v1.15.0
