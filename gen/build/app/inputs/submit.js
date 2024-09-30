@@ -21,7 +21,7 @@ export default function Submit(props) {
 	for (var input in props.inputs) {
 		var i = props.inputs[input]
 		console.log("VALIDATE INPUTS", i, input, props.inputs, props.assert)
-		var id = i.type
+		var id = i.id.toLowerCase()
 		if (requiredIndex[id]) {
 			if (i.required) {
 				switch (id) {
@@ -65,7 +65,7 @@ export default function Submit(props) {
 						setValid++
 						break
 					default:
-						console.error("ERROR VALIDATING FORM:", id, i)
+						console.error("ERROR VALIDATING FORM: "+i.name)
 					}
 			}
 		}

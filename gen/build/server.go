@@ -30,6 +30,8 @@ func main() {
 
 	// init handcash
 	
+	http.HandleFunc("/handcash/success", app.HandcashEntrypointSuccess)
+	
 
 
 	http.HandleFunc("/api/user", app.UserEntrypoint)
