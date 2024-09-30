@@ -18,13 +18,13 @@ func (app *App) healthcheckupChatGPTCreate(user *User, parent *HEALTHCHECKUP, pr
 
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
-We want to create one or more of these data objects: A record of each health checkup per animal, detailing health-related observations
+We want to create one or more of these data objects: A record of each health checkup per parent, detailing health-related observations
 
 ...for this parent object: ` + parentString + `
 
 {
 
-	// notes about the animal's health checkup  (THIS FIELD IS REQUIRED)
+	// notes about the parent's health checkup  (THIS FIELD IS REQUIRED)
 	notes (string)
 
 }

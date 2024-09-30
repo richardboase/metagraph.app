@@ -21,7 +21,7 @@ func (app *App) adopterVertexCreate(user *User, parent *ADOPTER, prompt string) 
 
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
-We want to create one or more of these data objects: Stores information about individuals who adopt animals
+We want to create one or more of these data objects: Stores information about individuals who adopt parents
 
 ...for this parent object: ` + parentString + `
 

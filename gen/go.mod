@@ -1,4 +1,4 @@
-module github.com/golangdaddy/newtown
+module github.com/richardboase/metagraph-app
 
 go 1.22
 

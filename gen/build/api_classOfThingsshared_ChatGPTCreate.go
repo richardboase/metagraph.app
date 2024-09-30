@@ -2,17 +2,14 @@ package main
 
 import (
 	"fmt"
-	// "io"
-	//	"log"
+	"log"
 	"errors"
 	"encoding/json"
 
-	//a	"github.com/sashabaranov/go-openai"
-
-	"github.com/kr/pretty"
+	"github.com/sashabaranov/go-openai"
 )
 
-func (app *App) healthcheckupVertexCreate(user *User, parent *HEALTHCHECKUP, prompt string) error {
+func (app *App) classofthingsChatGPTCreate(user *User, parent *CLASSOFTHINGS, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.Meta.ID, prompt)
 
@@ -21,14 +18,26 @@ func (app *App) healthcheckupVertexCreate(user *User, parent *HEALTHCHECKUP, pro
 
 	system := `Your role is a helpful preprocessor that follows the prompt to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
-We want to create one or more of these data objects: A record of each health checkup per parent, detailing health-related observations
+We want to create one or more of these data objects: Define the main object for storing information about each rescued parent
 
 ...for this parent object: ` + parentString + `
 
 {
 
-	// notes about the parent's health checkup  (THIS FIELD IS REQUIRED)
-	notes (string)
+	// The name of the parent  (THIS FIELD IS REQUIRED)
+	name (string)
+
+	// The species of the parent  (THIS FIELD IS REQUIRED)
+	species (string)
+
+	// The age of the parent  (THIS FIELD IS REQUIRED)
+	age (uint)
+
+	// The D.O.B. of the parent  (THIS FIELD IS REQUIRED)
+	birthday (date)
+
+	// The D.O.B. of the parent  (THIS FIELD IS REQUIRED)
+	address (address)
 
 }
 
@@ -36,17 +45,25 @@ The response should be a raw JSON array with one or more objects, based on the u
 
 	println(system+prompt)
 
-	_, resp, err := app.GCPClients.GenerateContent(system+prompt, 0.9)
+	resp, err := app.ChatGPT().CreateChatCompletion(
+		app.Context(),
+		openai.ChatCompletionRequest{
+			Model: openai.GPT3Dot5Turbo1106,
+			Messages: []openai.ChatCompletionMessage{
+				{
+					Role:    openai.ChatMessageRoleSystem,
+					Content: system+prompt,
+				},
+			},
+		},
+	)
 	if err != nil {
 		err = fmt.Errorf("ChatCompletion error: %v\n", err)
 		return err
 	}
 
-	c := resp.Candidates[0].Content.Parts[0]
-
-	pretty.Println(c)
-
-	reply, _ := app.MarshalJSON(c)
+	reply := resp.Choices[0].Message.Content
+	log.Println("reply >>", reply)
 
 	newResults := []interface{}{}
 	replyBytes := []byte(reply)
@@ -70,11 +87,11 @@ The response should be a raw JSON array with one or more objects, based on the u
 				delete(result, k)
 			}
 		}
-		object := user.NewHEALTHCHECKUP(&parent.Meta, FieldsHEALTHCHECKUP{})
+		object := user.NewCLASSOFTHINGS(&parent.Meta, FieldsCLASSOFTHINGS{})
 		if err := object.ValidateObject(result); err != nil {
 			return err
 		}
-		if err := app.CreateDocumentHEALTHCHECKUP(&parent.Meta, object); err != nil {
+		if err := app.CreateDocumentCLASSOFTHINGS(&parent.Meta, object); err != nil {
 			return err
 		}
 		app.SendMessageToUser(user, "create", object)

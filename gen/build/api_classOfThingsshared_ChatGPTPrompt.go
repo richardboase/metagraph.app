@@ -7,22 +7,31 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
-func (app *App) adopterChatGPTPrompt(user *User, object *ADOPTER, prompt string) (string, error) {
+func (app *App) classofthingsChatGPTPrompt(user *User, object *CLASSOFTHINGS, prompt string) (string, error) {
 
 	system := `Your role is a helpful preprocessor that follows rules to create one or more JSON objects, ultimately outputting raw valid JSON array.
 
 We want to create one or more of these data objects: 
 {
 
-	// The name of the adopter  (THIS FIELD IS REQUIRED)
-	adopter name (person.name)
+	// The name of the parent  (THIS FIELD IS REQUIRED)
+	name (string)
 
-	// The phone number of the adopter  (THIS FIELD IS REQUIRED)
-	adopter phone number (phone)
+	// The species of the parent  (THIS FIELD IS REQUIRED)
+	species (string)
+
+	// The age of the parent  (THIS FIELD IS REQUIRED)
+	age (uint)
+
+	// The D.O.B. of the parent  (THIS FIELD IS REQUIRED)
+	birthday (date)
+
+	// The D.O.B. of the parent  (THIS FIELD IS REQUIRED)
+	address (address)
 
 }
 
-The purpose of the object is to represent: Stores information about individuals who adopt parents
+The purpose of the object is to represent: Define the main object for storing information about each rescued parent
 
 RULES:
 1: USER PROPMPTS SHOULD GENERATE DATA FOR REQUIRED FIELDS OF ONE OR MORE ABOVE OBJECTS

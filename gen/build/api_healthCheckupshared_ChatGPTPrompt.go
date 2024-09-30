@@ -14,12 +14,12 @@ func (app *App) healthcheckupChatGPTPrompt(user *User, object *HEALTHCHECKUP, pr
 We want to create one or more of these data objects: 
 {
 
-	// notes about the animal's health checkup  (THIS FIELD IS REQUIRED)
+	// notes about the parent's health checkup  (THIS FIELD IS REQUIRED)
 	notes (string)
 
 }
 
-The purpose of the object is to represent: A record of each health checkup per animal, detailing health-related observations
+The purpose of the object is to represent: A record of each health checkup per parent, detailing health-related observations
 
 RULES:
 1: USER PROPMPTS SHOULD GENERATE DATA FOR REQUIRED FIELDS OF ONE OR MORE ABOVE OBJECTS

@@ -903,26 +903,26 @@ func (job *ASYNCJOB) CompleteStage() {
 }
 
 
-type ANIMAL struct {
+type CLASSOFTHINGS struct {
 	Meta    Internals
-	Fields FieldsANIMAL `json:"fields" firestore:"fields"`
+	Fields FieldsCLASSOFTHINGS `json:"fields" firestore:"fields"`
 }
 
-func (user *User) NewANIMAL(parent *Internals, fields FieldsANIMAL) *ANIMAL {
-	var object *ANIMAL
+func (user *User) NewCLASSOFTHINGS(parent *Internals, fields FieldsCLASSOFTHINGS) *CLASSOFTHINGS {
+	var object *CLASSOFTHINGS
 	if parent == nil {
-		object = &ANIMAL{
-			Meta: (Internals{}).NewInternals("animals"),
+		object = &CLASSOFTHINGS{
+			Meta: (Internals{}).NewInternals("classofthingss"),
 			Fields: fields,
 		}
 	} else {
-		object = &ANIMAL{
-			Meta: parent.NewInternals("animals"),
+		object = &CLASSOFTHINGS{
+			Meta: parent.NewInternals("classofthingss"),
 			Fields: fields,
 		}
 	}
 
-	object.Meta.ClassName = "animals"
+	object.Meta.ClassName = "parents"
 	object.Meta.Context.User = user.Meta.ID
 
 	colors, err := gamut.Generate(8, gamut.PastelGenerator{})
@@ -954,7 +954,7 @@ func (user *User) NewANIMAL(parent *Internals, fields FieldsANIMAL) *ANIMAL {
 }
 
 // set the fields export tags to lowercase
-type FieldsANIMAL struct {
+type FieldsCLASSOFTHINGS struct {
 	
 		
 			NAME string `json:"name" firestore:"name"`
@@ -998,13 +998,13 @@ type FieldsANIMAL struct {
 	
 }
 
-func (x *ANIMAL) Schema() *models.Object {
+func (x *CLASSOFTHINGS) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"animal","names":null,"plural":"animals","json":"","context":"Define the main object for storing information about each rescued animal","children":[{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per animal, detailing health-related observations","parents":["animal"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"id":"NAME","context":"The name of the animal","name":"name","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"SPECIES","context":"The species of the animal","name":"species","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"AGE","context":"The age of the animal","name":"age","type":"uint","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":true,"filter":false,"range":{"min":0,"max":-1},"regexp":"","regexpHex":""},{"id":"BIRTHDAY","context":"The D.O.B. of the animal","name":"birthday","type":"date","element":{"Name":"DATE","Go":"string","Input":"input","Type":"date"},"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"ADDRESS","context":"The D.O.B. of the animal","name":"address","type":"address","element":null,"inputs":[{"id":"BUILDINGNUMBER","context":"the number of the building on the street","name":"building number","type":"int","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"APARTMENTNUMBER","context":"if applicable, the number of the unit or apartment in the building","name":"apartment number","type":"int","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":false,"filter":false,"regexp":"","regexpHex":""},{"id":"STREET","context":"the street where the building is","name":"street","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":75},"regexp":"","regexpHex":""},{"id":"TOWNORCITY","context":"the town or city where the street is","name":"town or city","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":50},"regexp":"","regexpHex":""},{"id":"COUNTRY","context":"the country where the town or city is","name":"country","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":50},"regexp":"","regexpHex":""}],"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"classOfThings","names":null,"plural":"parents","json":"","context":"Define the main object for storing information about each rescued parent","children":[{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per parent, detailing health-related observations","parents":["classOfThings"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"id":"NAME","context":"The name of the parent","name":"name","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"SPECIES","context":"The species of the parent","name":"species","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"AGE","context":"The age of the parent","name":"age","type":"uint","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":true,"filter":false,"range":{"min":0,"max":-1},"regexp":"","regexpHex":""},{"id":"BIRTHDAY","context":"The D.O.B. of the parent","name":"birthday","type":"date","element":{"Name":"DATE","Go":"string","Input":"input","Type":"date"},"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"ADDRESS","context":"The D.O.B. of the parent","name":"address","type":"address","element":null,"inputs":[{"id":"BUILDINGNUMBER","context":"the number of the building on the street","name":"building number","type":"int","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"APARTMENTNUMBER","context":"if applicable, the number of the unit or apartment in the building","name":"apartment number","type":"int","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":false,"filter":false,"regexp":"","regexpHex":""},{"id":"STREET","context":"the street where the building is","name":"street","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":75},"regexp":"","regexpHex":""},{"id":"TOWNORCITY","context":"the town or city where the street is","name":"town or city","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":50},"regexp":"","regexpHex":""},{"id":"COUNTRY","context":"the country where the town or city is","name":"country","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":50},"regexp":"","regexpHex":""}],"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
-func (x *ANIMAL) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
+func (x *CLASSOFTHINGS) ValidateInput(w http.ResponseWriter, m map[string]interface{}) bool {
 	if err := x.ValidateObject(m); err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
 		return false
@@ -1012,7 +1012,7 @@ func (x *ANIMAL) ValidateInput(w http.ResponseWriter, m map[string]interface{}) 
 	return true
 }
 
-func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
+func (x *CLASSOFTHINGS) ValidateObject(m map[string]interface{}) error {
 
 	var err error
 	var exists bool
@@ -1294,7 +1294,7 @@ func (x *ANIMAL) ValidateObject(m map[string]interface{}) error {
 }
 
 // assert file is an image because of .Object.Options.Image
-func (object *ANIMAL) ValidateImageANIMAL(fileBytes []byte) (image.Image, error) {
+func (object *CLASSOFTHINGS) ValidateImageCLASSOFTHINGS(fileBytes []byte) (image.Image, error) {
 
 	img, _, err := image.Decode(bytes.NewBuffer(fileBytes))
 	if err != nil {
@@ -1403,7 +1403,7 @@ type FieldsHEALTHCHECKUP struct {
 
 func (x *HEALTHCHECKUP) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per animal, detailing health-related observations","parents":["animal"],"fields":[{"id":"NOTES","context":"notes about the animal's health checkup","name":"notes","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per parent, detailing health-related observations","parents":["classOfThings"],"fields":[{"id":"NOTES","context":"notes about the parent's health checkup","name":"notes","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1595,7 +1595,7 @@ type FieldsADOPTER struct {
 
 func (x *ADOPTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"adopter","names":null,"plural":"adopters","json":"","context":"Stores information about individuals who adopt animals","fields":[{"id":"ADOPTERNAME","context":"The name of the adopter","name":"adopter name","type":"person.name","element":null,"inputs":[{"id":"FIRSTNAME","context":"A name or names of something or someone","name":"first-name","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"MIDDLENAMES","context":"A name or names of something or someone","name":"middle-names","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":false,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"LASTNAME","context":"A name or names of something or someone","name":"last-name","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""}],"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"ADOPTERPHONENUMBER","context":"The phone number of the adopter","name":"adopter phone number","type":"phone","element":{"Name":"PHONE","Go":"string","Input":"input","Type":"tel"},"inputReference":"","required":true,"filter":false,"regexp":"^\\+?[1-9]\\d{1,14}$","regexpHex":"5e5c2b3f5b312d395d5c647b312c31347d24"}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"adopter","names":null,"plural":"adopters","json":"","context":"Stores information about individuals who adopt parents","fields":[{"id":"ADOPTERNAME","context":"The name of the adopter","name":"adopter name","type":"person.name","element":null,"inputs":[{"id":"FIRSTNAME","context":"A name or names of something or someone","name":"first-name","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"MIDDLENAMES","context":"A name or names of something or someone","name":"middle-names","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":false,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"LASTNAME","context":"A name or names of something or someone","name":"last-name","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""}],"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"ADOPTERPHONENUMBER","context":"The phone number of the adopter","name":"adopter phone number","type":"phone","element":{"Name":"PHONE","Go":"string","Input":"input","Type":"tel"},"inputReference":"","required":true,"filter":false,"regexp":"^\\+?[1-9]\\d{1,14}$","regexpHex":"5e5c2b3f5b312d395d5c647b312c31347d24"}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 

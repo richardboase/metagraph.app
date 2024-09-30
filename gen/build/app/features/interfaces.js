@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 
-import { AnimalInterfaces } from '@/features/animals/_interfaces'
+import { ClassofthingsInterfaces } from '@/features/classofthingss/_interfaces'
 import { HealthcheckupInterfaces } from '@/features/healthcheckups/_interfaces'
 import { AdopterInterfaces } from '@/features/adopters/_interfaces'
 
@@ -52,9 +52,9 @@ export function GetInterfaces() {
 	}
 	// custom features
 
-	// AnimalInterfaces
-	for (const k in AnimalInterfaces) {
-		interfaces[k.toLowerCase()] = AnimalInterfaces[k]
+	// ClassofthingsInterfaces
+	for (const k in ClassofthingsInterfaces) {
+		interfaces[k.toLowerCase()] = ClassofthingsInterfaces[k]
 	}// HealthcheckupInterfaces
 	for (const k in HealthcheckupInterfaces) {
 		interfaces[k.toLowerCase()] = HealthcheckupInterfaces[k]

@@ -9,7 +9,7 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
-func (app *App) healthcheckupChatGPTEdit(user *User, parent *HEALTHCHECKUP, prompt string) error {
+func (app *App) classofthingsChatGPTEdit(user *User, parent *CLASSOFTHINGS, prompt string) error {
 
 	fmt.Println("prompt with parent", parent.Meta.ID, prompt)
 
@@ -23,7 +23,7 @@ func (app *App) healthcheckupChatGPTEdit(user *User, parent *HEALTHCHECKUP, prom
 Here is the object we need to edit:
 %s
 
-The purpose of the object is to represent: A record of each health checkup per parent, detailing health-related observations
+The purpose of the object is to represent: Define the main object for storing information about each rescued parent
 
 RULES:
 1: GENERATE DATA FOR REQUIRED FIELDS
@@ -78,11 +78,11 @@ PROMPT: `,
 				delete(result, k)
 			}
 		}
-		object := user.NewHEALTHCHECKUP(&parent.Meta, FieldsHEALTHCHECKUP{})
+		object := user.NewCLASSOFTHINGS(&parent.Meta, FieldsCLASSOFTHINGS{})
 		if err := object.ValidateObject(result); err != nil {
 			return err
 		}
-		if err := app.CreateDocumentHEALTHCHECKUP(&parent.Meta, object); err != nil {
+		if err := app.CreateDocumentCLASSOFTHINGS(&parent.Meta, object); err != nil {
 			return err
 		}
 		app.SendMessageToUser(user, "create", object)

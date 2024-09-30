@@ -40,9 +40,9 @@ func main() {
 	http.HandleFunc("/api/mail", app.MailEntrypoint)
 	http.HandleFunc("/api/assetlayer", app.EntrypointASSETLAYER)
 	
-	http.HandleFunc("/api/animal", app.EntrypointANIMAL)
-	http.HandleFunc("/api/animals", app.EntrypointANIMALS)
-	println("registering handlers for animals")
+	http.HandleFunc("/api/classofthings", app.EntrypointCLASSOFTHINGS)
+	http.HandleFunc("/api/classofthingss", app.EntrypointCLASSOFTHINGSS)
+	println("registering handlers for classofthingss")
 	http.HandleFunc("/api/healthcheckup", app.EntrypointHEALTHCHECKUP)
 	http.HandleFunc("/api/healthcheckups", app.EntrypointHEALTHCHECKUPS)
 	println("registering handlers for healthcheckups")
