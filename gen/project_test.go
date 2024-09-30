@@ -16,7 +16,7 @@ func TestStructure(t *testing.T) {
 
 	tree := buildStructure(
 		models.Config{
-			WebsocketHost: "server-go-gen-test-da7z6jf32a-nw.a.run.app",
+			WebsocketHost: "https://metagraph-app-1031571142925.europe-west2.run.app",
 			WebAPI:        "https://metagraph-app.vercel.app/",
 			HostAPI:       "https://metagraph-app-1031571142925.europe-west2.run.app/",
 			RepoURI:       "github.com/richardboase/metagraph.app",
