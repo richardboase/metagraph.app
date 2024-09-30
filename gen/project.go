@@ -23,7 +23,7 @@ func buildStructure(config models.Config) *models.Stack {
 		Context: "Define the main object for storing information about each rescued parent",
 		Plural:  "parents",
 		Parents: []string{},
-		Name:    "classOfThings",
+		Name:    "Parent",
 		Fields: []*models.Field{
 			models.Required("string", "30").SetName("name").SetCtx("The name of the parent"),
 			models.Required("string", "30").SetName("species").SetCtx("The species of the parent"),

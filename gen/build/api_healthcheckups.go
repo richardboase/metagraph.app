@@ -24,7 +24,7 @@ func (app *App) EntrypointHEALTHCHECKUPS(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	// get classOfThings metadata
+	// get Parent metadata
 	parentID, err := cloudfunc.QueryParam(r, "parent")
 	if err != nil {
 		cloudfunc.HttpError(w, err, http.StatusBadRequest)
