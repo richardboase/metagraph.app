@@ -20,10 +20,11 @@ export default function Submit(props) {
 	var isValid = true
 	for (var input in props.inputs) {
 		var i = props.inputs[input]
-		console.log("VALIDATE INPUTS", input, props.inputs)
-		if (requiredIndex[i.id]) {
+		console.log("VALIDATE INPUTS", i, input, props.inputs, props.assert)
+		var id = i.type
+		if (requiredIndex[id]) {
 			if (i.required) {
-				switch (i.type) {
+				switch (id) {
 					case "color":
 						if (i.value.length < 7) {
 							isValid = false
@@ -40,8 +41,7 @@ export default function Submit(props) {
 						setValid++
 						break
 					case "int":
-					case "date":
-					case "number":
+					case "float":
 						if (parseInt(i.value) < 0) {
 							isValid = false
 							continue
@@ -65,7 +65,7 @@ export default function Submit(props) {
 						setValid++
 						break
 					default:
-						console.error("ERROR VALIDATING FORM: "+i.type)
+						console.error("ERROR VALIDATING FORM:", id, i)
 					}
 			}
 		}
@@ -74,7 +74,8 @@ export default function Submit(props) {
 		if (Object.keys(props.inputs).length == 0) {
 			isValid = false
 		}
-		if (setValid != props.assert?.length) {
+		if (setValid < props.assert?.length) {
+			console.log(setValid, "SETVALID")
 			isValid = false
 		}
 	} else {

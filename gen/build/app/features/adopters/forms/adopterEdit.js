@@ -54,13 +54,19 @@ export function AdopterEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="first-name" type='name' required={ true } title="adopter first-name" placeholder="adopter first-name" inputChange={handleInputChange} value={ inputs["FIRSTNAME"].value } /><Input id="middle-names" type='name' required={ false } title="adopter middle-names" placeholder="adopter middle-names" inputChange={handleInputChange} value={ inputs["MIDDLENAMES"].value } /><Input id="last-name" type='name' required={ true } title="adopter last-name" placeholder="adopter last-name" inputChange={handleInputChange} value={ inputs["LASTNAME"].value } />
+			<Input id="FIRSTNAME" type='name' required={ true } title="adopter first-name" placeholder="adopter first-name" inputChange={handleInputChange} value={ inputs["FIRSTNAME"].value } /><Spacer/>
 			<Spacer/>
 			
-			<Input id="adopter phone number" type='phone' required={ true } title="adopter adopter phone number" placeholder="adopter adopter phone number" inputChange={handleInputChange} value={ inputs["ADOPTERPHONENUMBER"].value } />
+			<Input id="MIDDLENAMES" type='name' required={ false } title="adopter middle-names" placeholder="adopter middle-names" inputChange={handleInputChange} value={ inputs["MIDDLENAMES"].value } /><Spacer/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["adopter name","adopter phone number"]}/>
+			<Input id="LASTNAME" type='name' required={ true } title="adopter last-name" placeholder="adopter last-name" inputChange={handleInputChange} value={ inputs["LASTNAME"].value } /><Spacer/>
+			<Spacer/>
+			
+			<Input id="ADOPTERPHONENUMBER" type='phone' required={ true } title="adopter adopter phone number" placeholder="adopter adopter phone number" inputChange={handleInputChange} value={ inputs["ADOPTERPHONENUMBER"].value } /><Spacer/>
+			<Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["first-name","last-name","adopter phone number"]}/>
 			<Spacer/>
 			
 		</div>

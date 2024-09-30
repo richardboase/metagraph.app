@@ -28,14 +28,15 @@ export function AdopterForm(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="first-name" type='name' required={ true } title="adopter first-name" placeholder="adopter first-name" inputChange={handleInputChange} value={ inputs["FIRSTNAME"].value } /><Input id="middle-names" type='name' required={ false } title="adopter middle-names" placeholder="adopter middle-names" inputChange={handleInputChange} value={ inputs["MIDDLENAMES"].value } /><Input id="last-name" type='name' required={ true } title="adopter last-name" placeholder="adopter last-name" inputChange={handleInputChange} value={ inputs["LASTNAME"].value } />
-			<Spacer/>
+			<Input id="FIRSTNAME" type='name' required={ true } title="adopter first-name" placeholder="adopter first-name" inputChange={handleInputChange}/><Spacer/>
 			
-			<Input id="adopter phone number" type='phone' required={ true } title="adopter adopter phone number" placeholder="adopter adopter phone number" inputChange={handleInputChange}/>
-			<Spacer/>
+			<Input id="MIDDLENAMES" type='name' required={ false } title="adopter middle-names" placeholder="adopter middle-names" inputChange={handleInputChange}/><Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["adopter name","adopter phone number"]}/>
-			<Spacer/>
+			<Input id="LASTNAME" type='name' required={ true } title="adopter last-name" placeholder="adopter last-name" inputChange={handleInputChange}/><Spacer/>
+			
+			<Input id="ADOPTERPHONENUMBER" type='phone' required={ true } title="adopter adopter phone number" placeholder="adopter adopter phone number" inputChange={handleInputChange}/><Spacer/>
+			
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["first-name","last-name","adopter phone number"]}/>
 			
 		</div>
 	);
