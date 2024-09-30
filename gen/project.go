@@ -10,7 +10,7 @@ func buildStructure(config models.Config) *models.Stack {
 		WebsiteName: "MetaGraph.app",
 		Config:      config,
 		Options: models.StackOptions{
-			ChatGPT: true,
+			ChatGPT: false,
 			Handcash: &models.OptionsHandcash{
 				AppID:     "660c209b9295c1bcf6312def",
 				AppSecret: "7b7489072ece66e7f93867ba6ff638a1f80943ebb51629e6bfc6b17d85dbb1b1",
