@@ -7,7 +7,7 @@ export default function Submit(props) {
 	var requiredIndex = {}
 	if (props.assert) {
 		for (var i in props.assert) {
-			requiredIndex[props.assert[i]] = true
+			requiredIndex[props.assert[i].toUpperCase()] = true
 		}
 	}
 
@@ -20,11 +20,12 @@ export default function Submit(props) {
 	var isValid = true
 	for (var input in props.inputs) {
 		var i = props.inputs[input]
+		var goType = i.ftype?.Go
+		console.log("VALIDATE goTypes", goType)
 		console.log("VALIDATE INPUTS", i, input, props.inputs, props.assert)
-		var id = i.id.toLowerCase()
-		if (requiredIndex[id]) {
+		if (requiredIndex[i.id]) {
 			if (i.required) {
-				switch (id) {
+				switch (goType) {
 					case "color":
 						if (i.value.length < 7) {
 							isValid = false
@@ -32,6 +33,7 @@ export default function Submit(props) {
 						}
 						setValid++
 						break
+					case "date":
 					case "text":
 					case "string":
 						if (i.value == "") {
@@ -40,21 +42,29 @@ export default function Submit(props) {
 						}
 						setValid++
 						break
-					case "int":
-					case "float":
-						if (parseInt(i.value) < 0) {
+					case "uint":
+						if (parseInt(i.value, 10) >= 0) {
+							setValid++
+						} else {
 							isValid = false
 							continue
 						}
-						setValid++
+						break
+					case "int":
+						if (parseInt(i.value, 10) !== NaN) {
+							setValid++
+						} else {
+							isValid = false
+							continue
+						}
 						break
 					case "float":
-					case "float64":
-						if (parseInt(i.value) < 0) {
+						if (parseFloat(value) !== NaN) {
+							setValid++
+						} else {
 							isValid = false
 							continue
 						}
-						setValid++
 						break
 					case "array":
 						if (i.value.length < 1) {
@@ -65,7 +75,7 @@ export default function Submit(props) {
 						setValid++
 						break
 					default:
-						console.error("ERROR VALIDATING FORM: "+i.name)
+						console.error("ERROR VALIDATING FORM:", goType, i)
 					}
 			}
 		}
@@ -75,7 +85,7 @@ export default function Submit(props) {
 			isValid = false
 		}
 		if (setValid < props.assert?.length) {
-			console.log(setValid, "SETVALID")
+			console.log(setValid, props.assert?.length, "SETVALID")
 			isValid = false
 		}
 	} else {

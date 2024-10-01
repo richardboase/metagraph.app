@@ -28,9 +28,9 @@ export function HealthcheckupForm(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="NOTES" type='string' required={ true } title="healthCheckup notes" placeholder="healthCheckup notes" inputChange={handleInputChange}/><Spacer/>
+			<Input id="NOTES" ftype={ {"Name":"STRING","Go":"string","Input":"input","Type":"text"} } required={ true } title="healthCheckup notes" placeholder="healthCheckup notes" inputChange={handleInputChange}/><Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["notes"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["NOTES"]}/>
 			
 		</div>
 	);

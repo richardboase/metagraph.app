@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaGraph.app</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #1c1c1c;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        header h1 {
+            margin: 0; /* Remove default h1 margin */
+            font-size: 1.5rem; /* Adjust heading size */
+        }
+
+        header div {
+            display: flex;
+            flex-wrap: wrap; /* Allow buttons to wrap */
+            justify-content: center; /* Center buttons */
+        }
+
+        .cta-button,
+        .handcash-button {
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 1rem;
+            white-space: nowrap; /* Prevent buttons from wrapping */
+        }
+
+        .cta-button {
+            background-color: #4a4a4a;
+            color: white;
+        }
+
+        .handcash-button {
+            background-color: #0EB55D;
+            color: white;
+            margin-left: 0.5rem; /* Adjust spacing */
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column; /* Stack nav and main vertically on smaller screens */
+            flex: 1;
+        }
+
+        nav {
+            background-color: #333;
+            width: 100%; /* Make nav full width on smaller screens */
+            padding: 1rem;
+            order: 2; /* Place nav below main content on smaller screens */
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        main {
+            flex: 1;
+            padding: 1rem; /* Reduced padding for smaller screens */
+            overflow-y: auto;
+            order: 1; /* Place main content above nav on smaller screens */
+        }
+
+        .feature-box {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 1rem; /* Reduced margin for smaller screens */
+        }
+
+        footer {
+            background-color: #1c1c1c;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.2rem;
+            }
+
+            .cta-button,
+            .handcash-button {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MetaGraph.app</h1>
+        <div>
+            <a href="#" class="cta-button">Edit Account</a>
+            <a href="#" class="handcash-button">Login with HandCash</a>
+        </div>
+    </header>
+    <div class="content-wrapper">
+        <nav>
+            <a href="#">Dashboard</a>
+            <a href="#">Classes</a>
+            <a href="#">Objects</a>
+            <a href="#">Relationships</a>
+            <a href="#">Tokenize</a>
+            <a href="#">MetaTokens</a>
+            <a href="#">AI Integration</a>
+            <a href="#">API</a>
+            <a href="#">SDK</a>
+            <a href="#">Analytics</a>
+        </nav>
+        <main>
+            <h2>Advanced Graph Database for Blockchain</h2>
+            <p>MetaGraph.app is a cutting-edge graph database architecture for tokenizing data on the
+                blockchain, powered by deep AI integration, a high-performance API, and a comprehensive SDK.</p>
+
+            <div class="feature-box">
+                <h3>Key Features</h3>
+                <ul>
+                    <li>Deep AI Integration: Enhance your data analysis and decision-making processes</li>
+                    <li>Powerful API: Built with GoLang for optimal efficiency</li>
+                    <li>Comprehensive SDK: Streamline development and integration</li>
+                    <li>Cloud-Native Architecture: Designed for scalability and reliability</li>
+                    <li>MetaTokens: Group multiple tokens into a single entity for advanced data structuring</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h3>AI-Powered Graph Database</h3>
+                <p>Our deep AI integration allows for:</p>
+                <ul>
+                    <li>Intelligent data classification and organization</li>
+                    <li>Predictive analytics and trend forecasting</li>
+                    <li>Automated relationship discovery between data points</li>
+                    <li>Enhanced query optimization for complex data structures</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h3>High-Performance API</h3>
+                <p>Our API, written in GoLang, offers:</p>
+                <ul>
+                    <li>Optimum efficiency for high-throughput operations</li>
+                    <li>Seamless integration with existing systems</li>
+                    <li>Robust security features for data protection</li>
+                    <li>Comprehensive documentation and developer resources</li>
+                </ul>
+                <a href="#" class="cta-button">Explore API Documentation</a>
+            </div>
+
+            <div class="feature-box">
+                <h3>MetaGraph SDK</h3>
+                <p>Our comprehensive SDK enables developers to:</p>
+                <ul>
+                    <li>Quickly integrate MetaGraph functionality into applications</li>
+                    <li>Access pre-built components for common graph database operations</li>
+                    <li>Leverage AI capabilities with ease</li>
+                    <li>Implement MetaTokens and complex data structures efficiently</li>
+                </ul>
+                <a href="#" class="cta-button">Download SDK</a>
+            </div>
+
+            <div class="feature-box">
+                <h3>Cloud-Native Architecture</h3>
+                <p>Benefits of our cloud-native design:</p>
+                <ul>
+                    <li>Scalability to handle growing data volumes</li>
+                    <li>High availability and fault tolerance</li>
+                    <li>Easy deployment and management across cloud environments</li>
+                    <li>Cost-effective resource utilization</li>
+                </ul>
+            </div>
+
+            <a href="#" class="cta-button">Get Started with MetaGraph</a>
+        </main>
+    </div>
+    <footer>
+        <p>&copy; 2024 MetaGraph.app. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

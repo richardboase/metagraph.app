@@ -16,7 +16,7 @@ import InputChange from '@/inputs/inputChange';
 
 export function HealthcheckupEdit(props) {
 
-	console.log("COLLECTION EDIT", props)
+	console.error("COLLECTION EDIT", props)
 
 	const [userdata, _] = useUserContext()
 	const [localdata, setLocaldata] = useLocalContext()
@@ -28,11 +28,11 @@ export function HealthcheckupEdit(props) {
 
 	const [inputs, setInputs] = useState({
 		
-		"notes": {
-			id: "notes",
-			type: "string",
+		"NOTES": {
+			id: "NOTES",
+			ftype: {"Name":"STRING","Go":"string","Input":"input","Type":"text"},
 			
-			value: subject.fields.notes,
+				value: subject.fields.NOTES,
 			
 			required: true,
 		},
@@ -45,10 +45,10 @@ export function HealthcheckupEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="NOTES" type='string' required={ true } title="healthCheckup notes" placeholder="healthCheckup notes" inputChange={handleInputChange} value={ inputs["NOTES"].value } /><Spacer/>
+			<Input id="NOTES" ftype={ {"Name":"STRING","Go":"string","Input":"input","Type":"text"} } required={ true } title="healthCheckup notes" placeholder="healthCheckup notes" inputChange={handleInputChange} value={ inputs["NOTES"].value } /><Spacer/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["notes"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["NOTES"]}/>
 			<Spacer/>
 			
 		</div>

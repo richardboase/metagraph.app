@@ -16,7 +16,7 @@ import InputChange from '@/inputs/inputChange';
 
 export function AdopterEdit(props) {
 
-	console.log("COLLECTION EDIT", props)
+	console.error("COLLECTION EDIT", props)
 
 	const [userdata, _] = useUserContext()
 	const [localdata, setLocaldata] = useLocalContext()
@@ -28,20 +28,20 @@ export function AdopterEdit(props) {
 
 	const [inputs, setInputs] = useState({
 		
-		"adoptername": {
-			id: "adoptername",
-			type: "person.name",
+		"ADOPTER_NAME": {
+			id: "ADOPTER_NAME",
+			ftype: null,
 			
-			value: subject.fields.adoptername,
+				value: "",
 			
 			required: true,
 		},
 		
-		"adopterphonenumber": {
-			id: "adopterphonenumber",
-			type: "phone",
+		"ADOPTER_PHONE_NUMBER": {
+			id: "ADOPTER_PHONE_NUMBER",
+			ftype: {"Name":"PHONE","Go":"string","Input":"input","Type":"tel"},
 			
-			value: subject.fields.adopterphonenumber,
+				value: subject.fields.ADOPTER_PHONE_NUMBER,
 			
 			required: true,
 		},
@@ -54,19 +54,19 @@ export function AdopterEdit(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="FIRSTNAME" type='name' required={ true } title="adopter first-name" placeholder="adopter first-name" inputChange={handleInputChange} value={ inputs["FIRSTNAME"].value } /><Spacer/>
+			<Input id="FIRST_NAME" ftype={ {"Name":"STRING","Go":"string","Input":"input","Type":"text"} } required={ true } title="adopter first-name" placeholder="adopter first-name" inputChange={handleInputChange} value={ inputs["FIRST_NAME"].value } /><Spacer/>
 			<Spacer/>
 			
-			<Input id="MIDDLENAMES" type='name' required={ false } title="adopter middle-names" placeholder="adopter middle-names" inputChange={handleInputChange} value={ inputs["MIDDLENAMES"].value } /><Spacer/>
+			<Input id="MIDDLE_NAMES" ftype={ {"Name":"STRING","Go":"string","Input":"input","Type":"text"} } required={ false } title="adopter middle-names" placeholder="adopter middle-names" inputChange={handleInputChange} value={ inputs["MIDDLE_NAMES"].value } /><Spacer/>
 			<Spacer/>
 			
-			<Input id="LASTNAME" type='name' required={ true } title="adopter last-name" placeholder="adopter last-name" inputChange={handleInputChange} value={ inputs["LASTNAME"].value } /><Spacer/>
+			<Input id="LAST_NAME" ftype={ {"Name":"STRING","Go":"string","Input":"input","Type":"text"} } required={ true } title="adopter last-name" placeholder="adopter last-name" inputChange={handleInputChange} value={ inputs["LAST_NAME"].value } /><Spacer/>
 			<Spacer/>
 			
-			<Input id="ADOPTERPHONENUMBER" type='phone' required={ true } title="adopter adopter phone number" placeholder="adopter adopter phone number" inputChange={handleInputChange} value={ inputs["ADOPTERPHONENUMBER"].value } /><Spacer/>
+			<Input id="ADOPTER_PHONE_NUMBER" ftype={ {"Name":"PHONE","Go":"string","Input":"input","Type":"tel"} } required={ true } title="adopter adopter phone number" placeholder="adopter adopter phone number" inputChange={handleInputChange} value={ inputs["ADOPTER_PHONE_NUMBER"].value } /><Spacer/>
 			<Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["first-name","last-name","adopter phone number"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["FIRST_NAME","LAST_NAME","ADOPTER_PHONE_NUMBER"]}/>
 			<Spacer/>
 			
 		</div>

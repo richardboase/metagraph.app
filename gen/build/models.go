@@ -957,41 +957,41 @@ func (user *User) NewPARENT(parent *Internals, fields FieldsPARENT) *PARENT {
 type FieldsPARENT struct {
 	
 		
-			NAME string `json:"name" firestore:"name"`
+			NAME string
 		
 	
 		
-			SPECIES string `json:"species" firestore:"species"`
+			SPECIES string
 		
 	
 		
-			AGE int `json:"age" firestore:"age"`
+			AGE int
 		
 	
 		
-			BIRTHDAY string `json:"birthday" firestore:"birthday"`
+			BIRTHDAY string
 		
 	
 		
 			
 				
-					BUILDINGNUMBER int `json:"address" firestore:"address"`
+					BUILDING_NUMBER int
 				
 			
 				
-					APARTMENTNUMBER int `json:"address" firestore:"address"`
+					APARTMENT_NUMBER int
 				
 			
 				
-					STREET string `json:"address" firestore:"address"`
+					STREET string
 				
 			
 				
-					TOWNORCITY string `json:"address" firestore:"address"`
+					TOWN_OR_CITY string
 				
 			
 				
-					COUNTRY string `json:"address" firestore:"address"`
+					COUNTRY string
 				
 			
 		
@@ -1000,7 +1000,7 @@ type FieldsPARENT struct {
 
 func (x *PARENT) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"Parent","names":null,"plural":"parents","json":"","context":"Define the main object for storing information about each rescued parent","children":[{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per parent, detailing health-related observations","parents":["Parent"],"fields":null,"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"id":"NAME","context":"The name of the parent","name":"name","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"SPECIES","context":"The species of the parent","name":"species","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"AGE","context":"The age of the parent","name":"age","type":"uint","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":true,"filter":false,"range":{"min":0,"max":-1},"regexp":"","regexpHex":""},{"id":"BIRTHDAY","context":"The D.O.B. of the parent","name":"birthday","type":"date","element":{"Name":"DATE","Go":"string","Input":"input","Type":"date"},"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"ADDRESS","context":"The D.O.B. of the parent","name":"address","type":"address","element":null,"inputs":[{"id":"BUILDINGNUMBER","context":"the number of the building on the street","name":"building number","type":"int","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"APARTMENTNUMBER","context":"if applicable, the number of the unit or apartment in the building","name":"apartment number","type":"int","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":false,"filter":false,"regexp":"","regexpHex":""},{"id":"STREET","context":"the street where the building is","name":"street","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":75},"regexp":"","regexpHex":""},{"id":"TOWNORCITY","context":"the town or city where the street is","name":"town or city","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":50},"regexp":"","regexpHex":""},{"id":"COUNTRY","context":"the country where the town or city is","name":"country","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":50},"regexp":"","regexpHex":""}],"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"Parent","names":null,"plural":"parents","json":"","context":"Define the main object for storing information about each rescued parent","children":[{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per parent, detailing health-related observations","parents":["Parent"],"fields":null,"inputs":[{"id":"NOTES","context":"notes about the parent's health checkup","name":"notes","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}],"fields":[{"id":"NAME","context":"The name of the parent","name":"name","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"SPECIES","context":"The species of the parent","name":"species","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"AGE","context":"The age of the parent","name":"age","type":"uint","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":true,"filter":false,"range":{"min":0,"max":-1},"regexp":"","regexpHex":""},{"id":"BIRTHDAY","context":"The D.O.B. of the parent","name":"birthday","type":"date","element":{"Name":"DATE","Go":"string","Input":"input","Type":"date"},"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"ADDRESS","context":"The D.O.B. of the parent","name":"address","type":"address","element":null,"inputs":[{"id":"BUILDING_NUMBER","context":"the number of the building on the street","name":"building number","type":"int","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"APARTMENT_NUMBER","context":"if applicable, the number of the unit or apartment in the building","name":"apartment number","type":"int","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":false,"filter":false,"regexp":"","regexpHex":""},{"id":"STREET","context":"the street where the building is","name":"street","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":75},"regexp":"","regexpHex":""},{"id":"TOWN_OR_CITY","context":"the town or city where the street is","name":"town or city","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":50},"regexp":"","regexpHex":""},{"id":"COUNTRY","context":"the country where the town or city is","name":"country","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":50},"regexp":"","regexpHex":""}],"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""}],"inputs":[{"id":"NAME","context":"The name of the parent","name":"name","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"SPECIES","context":"The species of the parent","name":"species","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":30},"regexp":"","regexpHex":""},{"id":"AGE","context":"The age of the parent","name":"age","type":"uint","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":true,"filter":false,"range":{"min":0,"max":-1},"regexp":"","regexpHex":""},{"id":"BIRTHDAY","context":"The D.O.B. of the parent","name":"birthday","type":"date","element":{"Name":"DATE","Go":"string","Input":"input","Type":"date"},"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"BUILDING_NUMBER","context":"the number of the building on the street","name":"building number","type":"int","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"APARTMENT_NUMBER","context":"if applicable, the number of the unit or apartment in the building","name":"apartment number","type":"int","element":{"Name":"INT","Go":"int","Input":"input","Type":"number"},"inputReference":"","required":false,"filter":false,"regexp":"","regexpHex":""},{"id":"STREET","context":"the street where the building is","name":"street","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":75},"regexp":"","regexpHex":""},{"id":"TOWN_OR_CITY","context":"the town or city where the street is","name":"town or city","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":50},"regexp":"","regexpHex":""},{"id":"COUNTRY","context":"the country where the town or city is","name":"country","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":50},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1018,11 +1018,13 @@ func (x *PARENT) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	_, exists = m["name"]
-	if true && !exists {
-		return errors.New("required field 'NAME' not supplied")
-	}
-	if exists {
+		
+		_, exists = m["NAME"]
+		if true && !exists {
+			return errors.New("required field 'NAME' not supplied")
+		}
+		
+
 		var exp string
 		
 			x.Fields.NAME, err = assertSTRING(m, "NAME")
@@ -1051,14 +1053,15 @@ func (x *PARENT) ValidateObject(m map[string]interface{}) error {
 				}
 			
 		
-	}
 	
 
-	_, exists = m["species"]
-	if true && !exists {
-		return errors.New("required field 'SPECIES' not supplied")
-	}
-	if exists {
+		
+		_, exists = m["SPECIES"]
+		if true && !exists {
+			return errors.New("required field 'SPECIES' not supplied")
+		}
+		
+
 		var exp string
 		
 			x.Fields.SPECIES, err = assertSTRING(m, "SPECIES")
@@ -1087,14 +1090,15 @@ func (x *PARENT) ValidateObject(m map[string]interface{}) error {
 				}
 			
 		
-	}
 	
 
-	_, exists = m["age"]
-	if true && !exists {
-		return errors.New("required field 'AGE' not supplied")
-	}
-	if exists {
+		
+		_, exists = m["AGE"]
+		if true && !exists {
+			return errors.New("required field 'AGE' not supplied")
+		}
+		
+
 		var exp string
 		
 			x.Fields.AGE, err = assertINT(m, "AGE")
@@ -1123,14 +1127,15 @@ func (x *PARENT) ValidateObject(m map[string]interface{}) error {
 				}
 			
 		
-	}
 	
 
-	_, exists = m["birthday"]
-	if true && !exists {
-		return errors.New("required field 'BIRTHDAY' not supplied")
-	}
-	if exists {
+		
+		_, exists = m["BIRTHDAY"]
+		if true && !exists {
+			return errors.New("required field 'BIRTHDAY' not supplied")
+		}
+		
+
 		var exp string
 		
 			x.Fields.BIRTHDAY, err = assertSTRING(m, "BIRTHDAY")
@@ -1150,18 +1155,14 @@ func (x *PARENT) ValidateObject(m map[string]interface{}) error {
 			}
 			
 		
-	}
 	
 
-	_, exists = m["address"]
-	if true && !exists {
-		return errors.New("required field 'ADDRESS' not supplied")
-	}
-	if exists {
+		
+
 		var exp string
 		
 			
-				x.Fields.BUILDINGNUMBER, err = assertINT(m, "BUILDINGNUMBER")
+				x.Fields.BUILDING_NUMBER, err = assertINT(m, "BUILDING_NUMBER")
 				if err != nil {
 					return errors.New(err.Error())
 				}
@@ -1172,13 +1173,13 @@ func (x *PARENT) ValidateObject(m map[string]interface{}) error {
 					if err != nil {
 						log.Println(err)
 					}
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.BUILDINGNUMBER)) {
-						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.BUILDINGNUMBER)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.BUILDING_NUMBER)) {
+						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.BUILDING_NUMBER)
 					}
 				}
 				
 			
-				x.Fields.APARTMENTNUMBER, err = assertINT(m, "APARTMENTNUMBER")
+				x.Fields.APARTMENT_NUMBER, err = assertINT(m, "APARTMENT_NUMBER")
 				if err != nil {
 					return errors.New(err.Error())
 				}
@@ -1189,8 +1190,8 @@ func (x *PARENT) ValidateObject(m map[string]interface{}) error {
 					if err != nil {
 						log.Println(err)
 					}
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.APARTMENTNUMBER)) {
-						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.APARTMENTNUMBER)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.APARTMENT_NUMBER)) {
+						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.APARTMENT_NUMBER)
 					}
 				}
 				
@@ -1221,7 +1222,7 @@ func (x *PARENT) ValidateObject(m map[string]interface{}) error {
 					}
 				
 			
-				x.Fields.TOWNORCITY, err = assertSTRING(m, "TOWNORCITY")
+				x.Fields.TOWN_OR_CITY, err = assertSTRING(m, "TOWN_OR_CITY")
 				if err != nil {
 					return errors.New(err.Error())
 				}
@@ -1232,17 +1233,17 @@ func (x *PARENT) ValidateObject(m map[string]interface{}) error {
 					if err != nil {
 						log.Println(err)
 					}
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.TOWNORCITY)) {
-						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.TOWNORCITY)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.TOWN_OR_CITY)) {
+						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.TOWN_OR_CITY)
 					}
 				}
 				
-					if err := assertRangeMin(1, x.Fields.TOWNORCITY); err != nil {
+					if err := assertRangeMin(1, x.Fields.TOWN_OR_CITY); err != nil {
 						
 						return err
 						
 					}
-					if err := assertRangeMax(50, x.Fields.TOWNORCITY); err != nil {
+					if err := assertRangeMax(50, x.Fields.TOWN_OR_CITY); err != nil {
 						return err
 					}
 				
@@ -1274,7 +1275,6 @@ func (x *PARENT) ValidateObject(m map[string]interface{}) error {
 				
 			
 		
-	}
 	
 
 	// extract name field if exists
@@ -1396,14 +1396,14 @@ func (user *User) NewHEALTHCHECKUP(parent *Internals, fields FieldsHEALTHCHECKUP
 type FieldsHEALTHCHECKUP struct {
 	
 		
-			NOTES string `json:"notes" firestore:"notes"`
+			NOTES string
 		
 	
 }
 
 func (x *HEALTHCHECKUP) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per parent, detailing health-related observations","parents":["Parent"],"fields":[{"id":"NOTES","context":"notes about the parent's health checkup","name":"notes","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"healthCheckup","names":null,"plural":"checkups","json":"","context":"A record of each health checkup per parent, detailing health-related observations","parents":["Parent"],"fields":[{"id":"NOTES","context":"notes about the parent's health checkup","name":"notes","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"inputs":[{"id":"NOTES","context":"notes about the parent's health checkup","name":"notes","type":"string","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":1,"max":10000},"regexp":"","regexpHex":""}],"listMode":"","options":{"readonly":false,"admin":false,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1421,11 +1421,13 @@ func (x *HEALTHCHECKUP) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	_, exists = m["notes"]
-	if true && !exists {
-		return errors.New("required field 'NOTES' not supplied")
-	}
-	if exists {
+		
+		_, exists = m["NOTES"]
+		if true && !exists {
+			return errors.New("required field 'NOTES' not supplied")
+		}
+		
+
 		var exp string
 		
 			x.Fields.NOTES, err = assertSTRING(m, "NOTES")
@@ -1454,7 +1456,6 @@ func (x *HEALTHCHECKUP) ValidateObject(m map[string]interface{}) error {
 				}
 			
 		
-	}
 	
 
 	// extract name field if exists
@@ -1574,28 +1575,28 @@ type FieldsADOPTER struct {
 		
 			
 				
-					FIRSTNAME string `json:"adoptername" firestore:"adoptername"`
+					FIRST_NAME string
 				
 			
 				
-					MIDDLENAMES string `json:"adoptername" firestore:"adoptername"`
+					MIDDLE_NAMES string
 				
 			
 				
-					LASTNAME string `json:"adoptername" firestore:"adoptername"`
+					LAST_NAME string
 				
 			
 		
 	
 		
-			ADOPTERPHONENUMBER string `json:"adopterphonenumber" firestore:"adopterphonenumber"`
+			ADOPTER_PHONE_NUMBER string
 		
 	
 }
 
 func (x *ADOPTER) Schema() *models.Object {
 	obj := &models.Object{}
-	json.Unmarshal([]byte(`{"name":"adopter","names":null,"plural":"adopters","json":"","context":"Stores information about individuals who adopt parents","fields":[{"id":"ADOPTERNAME","context":"The name of the adopter","name":"adopter name","type":"person.name","element":null,"inputs":[{"id":"FIRSTNAME","context":"A name or names of something or someone","name":"first-name","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"MIDDLENAMES","context":"A name or names of something or someone","name":"middle-names","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":false,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"LASTNAME","context":"A name or names of something or someone","name":"last-name","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""}],"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"ADOPTERPHONENUMBER","context":"The phone number of the adopter","name":"adopter phone number","type":"phone","element":{"Name":"PHONE","Go":"string","Input":"input","Type":"tel"},"inputReference":"","required":true,"filter":false,"regexp":"^\\+?[1-9]\\d{1,14}$","regexpHex":"5e5c2b3f5b312d395d5c647b312c31347d24"}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
+	json.Unmarshal([]byte(`{"name":"adopter","names":null,"plural":"adopters","json":"","context":"Stores information about individuals who adopt parents","fields":[{"id":"ADOPTER_NAME","context":"The name of the adopter","name":"adopter name","type":"person.name","element":null,"inputs":[{"id":"FIRST_NAME","context":"A name or names of something or someone","name":"first-name","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"MIDDLE_NAMES","context":"A name or names of something or someone","name":"middle-names","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":false,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"LAST_NAME","context":"A name or names of something or someone","name":"last-name","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""}],"inputReference":"","required":true,"filter":false,"regexp":"","regexpHex":""},{"id":"ADOPTER_PHONE_NUMBER","context":"The phone number of the adopter","name":"adopter phone number","type":"phone","element":{"Name":"PHONE","Go":"string","Input":"input","Type":"tel"},"inputReference":"","required":true,"filter":false,"regexp":"^\\+?[1-9]\\d{1,14}$","regexpHex":"5e5c2b3f5b312d395d5c647b312c31347d24"}],"inputs":[{"id":"FIRST_NAME","context":"A name or names of something or someone","name":"first-name","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"MIDDLE_NAMES","context":"A name or names of something or someone","name":"middle-names","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":false,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"LAST_NAME","context":"A name or names of something or someone","name":"last-name","type":"name","element":{"Name":"STRING","Go":"string","Input":"input","Type":"text"},"inputReference":"","required":true,"filter":false,"range":{"min":2,"max":50},"regexp":"","regexpHex":""},{"id":"ADOPTER_PHONE_NUMBER","context":"The phone number of the adopter","name":"adopter phone number","type":"phone","element":{"Name":"PHONE","Go":"string","Input":"input","Type":"tel"},"inputReference":"","required":true,"filter":false,"regexp":"^\\+?[1-9]\\d{1,14}$","regexpHex":"5e5c2b3f5b312d395d5c647b312c31347d24"}],"listMode":"","options":{"readonly":false,"admin":true,"member":null,"job":false,"comment":false,"order":false,"file":false,"image":false,"photo":false,"exif":false,"font":false,"topicCreate":null,"topics":null,"assetlayer":null,"handcash":{"Type":"","Payments":null,"Mint":null},"pusher":false,"permissions":{"AdminsOnly":false,"AdminsEdit":false},"filterFields":null},"tags":null,"childTags":null}`), obj)
 	return obj
 }
 
@@ -1613,15 +1614,12 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 	var exists bool
 	
 
-	_, exists = m["adoptername"]
-	if true && !exists {
-		return errors.New("required field 'ADOPTERNAME' not supplied")
-	}
-	if exists {
+		
+
 		var exp string
 		
 			
-				x.Fields.FIRSTNAME, err = assertSTRING(m, "FIRSTNAME")
+				x.Fields.FIRST_NAME, err = assertSTRING(m, "FIRST_NAME")
 				if err != nil {
 					return errors.New(err.Error())
 				}
@@ -1632,22 +1630,22 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 					if err != nil {
 						log.Println(err)
 					}
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.FIRSTNAME)) {
-						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.FIRSTNAME)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.FIRST_NAME)) {
+						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.FIRST_NAME)
 					}
 				}
 				
-					if err := assertRangeMin(2, x.Fields.FIRSTNAME); err != nil {
+					if err := assertRangeMin(2, x.Fields.FIRST_NAME); err != nil {
 						
 						return err
 						
 					}
-					if err := assertRangeMax(50, x.Fields.FIRSTNAME); err != nil {
+					if err := assertRangeMax(50, x.Fields.FIRST_NAME); err != nil {
 						return err
 					}
 				
 			
-				x.Fields.MIDDLENAMES, err = assertSTRING(m, "MIDDLENAMES")
+				x.Fields.MIDDLE_NAMES, err = assertSTRING(m, "MIDDLE_NAMES")
 				if err != nil {
 					return errors.New(err.Error())
 				}
@@ -1658,20 +1656,20 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 					if err != nil {
 						log.Println(err)
 					}
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.MIDDLENAMES)) {
-						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.MIDDLENAMES)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.MIDDLE_NAMES)) {
+						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.MIDDLE_NAMES)
 					}
 				}
 				
-					if err := assertRangeMin(2, x.Fields.MIDDLENAMES); err != nil {
+					if err := assertRangeMin(2, x.Fields.MIDDLE_NAMES); err != nil {
 						
 					}
-					if err := assertRangeMax(50, x.Fields.MIDDLENAMES); err != nil {
+					if err := assertRangeMax(50, x.Fields.MIDDLE_NAMES); err != nil {
 						return err
 					}
 				
 			
-				x.Fields.LASTNAME, err = assertSTRING(m, "LASTNAME")
+				x.Fields.LAST_NAME, err = assertSTRING(m, "LAST_NAME")
 				if err != nil {
 					return errors.New(err.Error())
 				}
@@ -1682,33 +1680,34 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 					if err != nil {
 						log.Println(err)
 					}
-					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.LASTNAME)) {
-						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.LASTNAME)
+					if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.LAST_NAME)) {
+						return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.LAST_NAME)
 					}
 				}
 				
-					if err := assertRangeMin(2, x.Fields.LASTNAME); err != nil {
+					if err := assertRangeMin(2, x.Fields.LAST_NAME); err != nil {
 						
 						return err
 						
 					}
-					if err := assertRangeMax(50, x.Fields.LASTNAME); err != nil {
+					if err := assertRangeMax(50, x.Fields.LAST_NAME); err != nil {
 						return err
 					}
 				
 			
 		
-	}
 	
 
-	_, exists = m["adopterphonenumber"]
-	if true && !exists {
-		return errors.New("required field 'ADOPTERPHONENUMBER' not supplied")
-	}
-	if exists {
+		
+		_, exists = m["ADOPTER_PHONE_NUMBER"]
+		if true && !exists {
+			return errors.New("required field 'ADOPTER_PHONE_NUMBER' not supplied")
+		}
+		
+
 		var exp string
 		
-			x.Fields.ADOPTERPHONENUMBER, err = assertSTRING(m, "ADOPTERPHONENUMBER")
+			x.Fields.ADOPTER_PHONE_NUMBER, err = assertSTRING(m, "ADOPTER_PHONE_NUMBER")
 			if err != nil {
 				return errors.New(err.Error())
 			}
@@ -1719,13 +1718,12 @@ func (x *ADOPTER) ValidateObject(m map[string]interface{}) error {
 				if err != nil {
 					log.Println(err)
 				}
-				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.ADOPTERPHONENUMBER)) {
-					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.ADOPTERPHONENUMBER)
+				if !RegExp(string(b), fmt.Sprintf("%v", x.Fields.ADOPTER_PHONE_NUMBER)) {
+					return fmt.Errorf("failed to regexpHex: %s >> %s", string(b), x.Fields.ADOPTER_PHONE_NUMBER)
 				}
 			}
 			
 		
-	}
 	
 
 	// extract name field if exists

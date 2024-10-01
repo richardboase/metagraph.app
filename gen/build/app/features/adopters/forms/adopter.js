@@ -28,15 +28,15 @@ export function AdopterForm(props) {
 	return (
 		<div className='flex flex-col'>
 			
-			<Input id="FIRSTNAME" type='name' required={ true } title="adopter first-name" placeholder="adopter first-name" inputChange={handleInputChange}/><Spacer/>
+			<Input id="FIRST_NAME" ftype={ {"Name":"STRING","Go":"string","Input":"input","Type":"text"} } required={ true } title="adopter first-name" placeholder="adopter first-name" inputChange={handleInputChange}/><Spacer/>
 			
-			<Input id="MIDDLENAMES" type='name' required={ false } title="adopter middle-names" placeholder="adopter middle-names" inputChange={handleInputChange}/><Spacer/>
+			<Input id="MIDDLE_NAMES" ftype={ {"Name":"STRING","Go":"string","Input":"input","Type":"text"} } required={ false } title="adopter middle-names" placeholder="adopter middle-names" inputChange={handleInputChange}/><Spacer/>
 			
-			<Input id="LASTNAME" type='name' required={ true } title="adopter last-name" placeholder="adopter last-name" inputChange={handleInputChange}/><Spacer/>
+			<Input id="LAST_NAME" ftype={ {"Name":"STRING","Go":"string","Input":"input","Type":"text"} } required={ true } title="adopter last-name" placeholder="adopter last-name" inputChange={handleInputChange}/><Spacer/>
 			
-			<Input id="ADOPTERPHONENUMBER" type='phone' required={ true } title="adopter adopter phone number" placeholder="adopter adopter phone number" inputChange={handleInputChange}/><Spacer/>
+			<Input id="ADOPTER_PHONE_NUMBER" ftype={ {"Name":"PHONE","Go":"string","Input":"input","Type":"tel"} } required={ true } title="adopter adopter phone number" placeholder="adopter adopter phone number" inputChange={handleInputChange}/><Spacer/>
 			
-			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["first-name","last-name","adopter phone number"]}/>
+			<Submit text="Save" inputs={inputs} submit={props.submit} assert={["FIRST_NAME","LAST_NAME","ADOPTER_PHONE_NUMBER"]}/>
 			
 		</div>
 	);

@@ -10,7 +10,7 @@ export default function Input(props) {
 		}
 		const data = {
 			"id": id,
-			"type": props.type,
+			"ftype": props.ftype,
 			"value": value,
 			"required": props.required,
 		}
@@ -29,7 +29,7 @@ export default function Input(props) {
 		props.inputChange(
 			{
 				"id": id,
-				"type": props.type,
+				"ftype": props.ftype,
 				"value": value,
 				"required": props.required,
 			}
@@ -43,11 +43,11 @@ export default function Input(props) {
 				<div className="m-2"></div>
 				{
 					props.type == "number" && <div>
-						<input disabled={(props.disabled == true)} className="p-4 border" id={props.id} type={props.type} defaultValue={props.value} onChange={changeEvent} onLoad={changeEventOnload}/>
+						<input disabled={(props.disabled == true)} className="p-4 border" id={props.id} type={props.ftype.Type} defaultValue={props.value} onChange={changeEvent} onLoad={changeEventOnload}/>
 					</div>
 				}
 				{
-					props.type != "number" && <input disabled={(props.disabled == true)} className="p-4 border" id={props.id} type={props.type} defaultValue={props.value} onChange={changeEvent} onLoad={changeEventOnload} placeholder={props.placeholder} />
+					props.type != "number" && <input disabled={(props.disabled == true)} className="p-4 border" id={props.id} type={props.ftype.Type} defaultValue={props.value} onChange={changeEvent} onLoad={changeEventOnload} placeholder={props.placeholder} />
 				}
 			</div>
 		</>
